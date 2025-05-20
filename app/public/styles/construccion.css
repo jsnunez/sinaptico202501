@@ -1,0 +1,426 @@
+/* Base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    line-height: 1.6;
+    color: #fff;
+    background-color: #0f0a1e;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+/* Fondo neuronal animado */
+.neuron-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+#neuronCanvas {
+    width: 100%;
+    height: 100%;
+}
+
+/* Contenedor principal */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 2rem;
+}
+
+.content {
+    max-width: 800px;
+    text-align: center;
+    background-color: rgba(26, 16, 50, 0.8);
+    padding: 3rem;
+    border-radius: 1rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(124, 58, 237, 0.2);
+}
+
+/* Logo */
+.logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 2rem;
+}
+
+.logo-icon {
+    margin-right: 0.5rem;
+    animation: pulse 2s infinite;
+}
+
+.logo-text {
+    background: linear-gradient(to right, #ffffff, #e9d5ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Título y descripción */
+.title {
+    font-size: 3rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+}
+
+.highlight {
+    color: #a78bfa;
+    position: relative;
+}
+
+.highlight::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 0.3rem;
+    background: linear-gradient(90deg, #7c3aed, #4338ca);
+    border-radius: 0.5rem;
+}
+
+.description {
+    font-size: 1.25rem;
+    color: #d1d5db;
+    margin-bottom: 2.5rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Animación de sinapsis */
+.synapse-animation {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 3rem 0;
+    position: relative;
+    height: 80px;
+}
+
+.neuron {
+    width: 50px;
+    height: 50px;
+    background: radial-gradient(circle, #7c3aed 0%, #4338ca 100%);
+    border-radius: 50%;
+    position: relative;
+    box-shadow: 0 0 20px rgba(124, 58, 237, 0.6);
+}
+
+.neuron::before, .neuron::after {
+    content: '';
+    position: absolute;
+    background: #a78bfa;
+    border-radius: 50%;
+}
+
+.neuron-1::before {
+    width: 15px;
+    height: 15px;
+    top: 5px;
+    right: 5px;
+    animation: pulse 2s infinite;
+}
+
+.neuron-1::after {
+    width: 10px;
+    height: 10px;
+    bottom: 8px;
+    left: 8px;
+    animation: pulse 3s infinite;
+}
+
+.neuron-2::before {
+    width: 12px;
+    height: 12px;
+    top: 8px;
+    left: 8px;
+    animation: pulse 2.5s infinite;
+}
+
+.neuron-2::after {
+    width: 8px;
+    height: 8px;
+    bottom: 5px;
+    right: 10px;
+    animation: pulse 1.8s infinite;
+}
+
+.synapse-path {
+    flex: 1;
+    height: 4px;
+    background: linear-gradient(90deg, rgba(124, 58, 237, 0.3), rgba(124, 58, 237, 0.7));
+    margin: 0 15px;
+    position: relative;
+    overflow: hidden;
+}
+
+.pulse-dot {
+    width: 10px;
+    height: 10px;
+    background-color: #a78bfa;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    animation: transmit 3s infinite linear;
+    box-shadow: 0 0 10px #a78bfa, 0 0 20px #a78bfa;
+}
+
+/* Barra de progreso */
+.progress-container {
+    margin-bottom: 2.5rem;
+}
+
+.progress-bar {
+    height: 10px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 65%;
+    background: linear-gradient(90deg, #7c3aed, #4338ca);
+    border-radius: 5px;
+    position: relative;
+    animation: pulse-opacity 2s infinite;
+}
+
+.progress-text {
+    font-size: 0.875rem;
+    color: #d1d5db;
+    text-align: right;
+}
+
+/* Contador regresivo */
+.countdown {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+}
+
+.countdown-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.countdown-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #7c3aed, #4338ca);
+    border-radius: 0.5rem;
+    width: 70px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.countdown-number::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgba(255, 255, 255, 0.1), transparent);
+}
+
+.countdown-label {
+    font-size: 0.75rem;
+    color: #d1d5db;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Contacto y redes sociales */
+.contact {
+    margin-bottom: 1.5rem;
+    color: #d1d5db;
+}
+
+.contact a {
+    color: #a78bfa;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.contact a:hover {
+    color: #7c3aed;
+    text-decoration: underline;
+}
+
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+}
+
+.social-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    color: #d1d5db;
+    transition: all 0.2s;
+}
+
+.social-link:hover {
+    background-color: #7c3aed;
+    color: white;
+    transform: translateY(-3px);
+}
+
+/* Formulario de notificación */
+.notify-form {
+    margin-top: 2rem;
+}
+
+.notify-form p {
+    margin-bottom: 1rem;
+    color: #d1d5db;
+}
+
+.notify-form form {
+    display: flex;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.notify-form input {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border: 1px solid rgba(124, 58, 237, 0.3);
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 0.375rem 0 0 0.375rem;
+    color: white;
+    font-size: 0.875rem;
+}
+
+.notify-form input:focus {
+    outline: none;
+    border-color: #7c3aed;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.notify-form button {
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(135deg, #7c3aed, #4338ca);
+    color: white;
+    border: none;
+    border-radius: 0 0.375rem 0.375rem 0;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.notify-form button:hover {
+    background: linear-gradient(135deg, #6d28d9, #3730a3);
+    transform: translateY(-1px);
+}
+
+/* Animaciones */
+@keyframes pulse {
+    0% {
+        transform: scale(0.95);
+        opacity: 0.7;
+    }
+    50% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(0.95);
+        opacity: 0.7;
+    }
+}
+
+@keyframes pulse-opacity {
+    0% {
+        opacity: 0.8;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.8;
+    }
+}
+
+@keyframes transmit {
+    0% {
+        left: -10px;
+    }
+    100% {
+        left: 100%;
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .content {
+        padding: 2rem;
+    }
+    
+    .title {
+        font-size: 2rem;
+    }
+    
+    .description {
+        font-size: 1rem;
+    }
+    
+    .countdown {
+        gap: 0.75rem;
+    }
+    
+    .countdown-number {
+        font-size: 1.5rem;
+        width: 50px;
+        height: 50px;
+    }
+    
+    .notify-form form {
+        flex-direction: column;
+    }
+    
+    .notify-form input {
+        border-radius: 0.375rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .notify-form button {
+        border-radius: 0.375rem;
+    }
+}

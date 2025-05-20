@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Control</title>
+    <link rel="stylesheet" href="styles/dashboard.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+    <!-- Fondo neuronal -->
+    <div class="neural-background">
+        <canvas id="neuralCanvas"></canvas>
+    </div>
+
+    <!-- Encabezado -->
+    <div class="header">
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-trophy"></i>
+            </div>
+            <div class="logo-text">Control sinaptico</div>
+        </div>
+        <div class="nav">
+            <button class="nav-button" data-page="dashboard">Dashboard</button>
+            <button class="nav-button" data-page="helice">Helice</button>
+            <button class="nav-button" data-page="usuarios">Usuarios</button>
+            <button class="nav-button" data-page="entidades">Entidades</button>
+            <button class="nav-button " data-page="retos">Retos</button>
+            <button class="nav-button" data-page="muro">Muro</button>
+            <button class="nav-button active" data-page="eventosDashboard">Eventos</button>
+            <button class="nav-button" data-page="conocimientoDashboard">conocimiento</button>
+
+
+        </div>
+    </div>
+    <!-- Contenedor de bienvenida -->
+    <div class="welcome-container">
+        <div class="welcome-text">
+            <h2>Gestión de Convocatoria y Eventos</h2>
+            <p class="subtitle">Crea, modifica y elimina las Convocatoria y Eventos de la aplicación</p>
+        </div>
+        <div class="action-buttons">
+            <button class="action-button" id="btnNuevoReto">
+                <i class="fas fa-plus button-icon"></i>
+                Nuevo convocatoria o evento
+            </button>
+        </div>
+    </div>
+
+    <!-- Filtros -->
+    <div class="filter-container">
+        <input type="text" id="buscarReto" placeholder="Buscar retos..." class="filter-input">
+    </div>
+
+    <!-- Tabla de retos -->
+    <div class="main-content">
+        <table class="data-table" id="tablaConvocatorias">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Título</th>
+                    <th>Financiamiento</th>
+                    <th>organizador</th>
+                    <th>URL Convocatoria</th>
+                    <th>Tipo Convocatoria</th>
+                    <th>Fecha finalizacion</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Los datos se cargarán dinámicamente con JavaScript -->
+            </tbody>
+        </table>
+    </div>
+    <div id="modalCrearReto" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h1>Crear Nueva Convocatoria o Evento</h1>
+            <form id="crearRetoForm">
+                <label for="nombre">Nombre del Reto:</label>
+                <input type="text" id="nombre" name="nombre" required>
+
+                <label for="ubicacionVideo">Ubicación del Video:</label>
+                <input type="file" id="video" name="video" accept="video/*">
+
+                <label for="descripcion">Descripción:</label>
+                <textarea id="descripcion" name="descripcion"></textarea>
+
+                <label for="ubicacionFicha">Ubicación de la Ficha:</label>
+                <input type="file" id="ficha" name="ficha" accept=".pdf,.doc,.docx">
+
+                <button type="submit">Crear Reto</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de edición -->
+    <div id="modalEdicion" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="opcionConvocatoria">Editar Convocatoria</h3>
+                <span id="closeModalEdicion" class="close">&times;</span>
+            </div>
+            <form id="formEditarConvocatoria">
+                <div class="form-group">
+                    <label for="nombre">Nombre:</label>
+                    <input type="text" id="nombreConvocatoria" name="nombre" required>
+                </div>
+                <div class="form-group">
+                    <label for="financiamiento">Financiamiento:</label>
+                    <input type="text" id="financiamiento" name="financiamiento">
+                </div>
+                <div class="form-group">
+                    <label for="organizador">Organizador:</label>
+                    <input type="text" id="organizador" name="organizador">
+                </div>
+                <div class="form-group">
+                    <label for="urlConvocatoria">URL Convocatoria:</label>
+                    <input type="text" id="urlConvocatoria" name="urlConvocatoria">
+                </div>
+                <div class="form-group">
+                    <label for="tipoConvocatoria">Tipo Convocatoria:</label>
+                    <select id="tipoConvocatoria" name="tipoConvocatoria" required>
+                        <option value="">Selecciona un tipo</option>
+                        <!-- Se llenará dinámicamente -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="fechaLimite">Fecha Límite:</label>
+                    <input type="date" id="fechaLimite" name="fechaLimite" required>
+                </div>
+                <button type="submit" id="btnGuardarCambios" class="modal-button">Guardar cambios</button>
+            </form>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+    <!-- Modal -->
+    <div id="modalAplicaciones" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close" onclick="cerrarModalAplicaciones()">&times;</span>
+            <h2>Aplicaciones al Reto</h2>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Entidad</th>
+                        <th>Correo</th>
+                        <th>Teléfono</th>
+                        <th>Archivos</th>
+                        <th>Fecha de Aplicación</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaAplicacionesBody">
+                    <!-- Se insertarán dinámicamente -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    <script src="/js/config.js"></script>
+    <script src="js/NavegacionDash.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            let idConvocatoriaEditando = null; // Variable global
+            document.getElementById('btnNuevoReto').addEventListener('click', async () => {
+                idConvocatoriaEditando = null; // indica que es una nueva convocatoria
+
+                // Limpiar el formulario
+                document.getElementById('formEditarConvocatoria').reset();
+
+                // Establecer la fecha mínima como hoy (opcional)
+                const hoy = new Date().toISOString().split('T')[0];
+                document.getElementById('fechaLimite').setAttribute('min', hoy);
+
+                // Cargar tipos de convocatoria
+                await cargarTiposConvocatoria();
+                // Cambiar texto del botón si quieres
+                document.getElementById('opcionConvocatoria').innerText = 'Crear Convocatoria';
+                // Mostrar el modal
+                modalEdicion.style.display = "block";
+            });
+            async function cargarTiposConvocatoria() {
+                try {
+                    const res = await fetch('/api/tipoConvocatorias'); // Ajusta la ruta si es distinta
+                    const tipos = await res.json();
+
+                    const select = document.getElementById('tipoConvocatoria');
+                    select.innerHTML = '<option value="">Selecciona un tipo</option>';
+
+                    tipos.forEach(tipo => {
+                        const option = document.createElement('option');
+                        option.value = tipo.id;
+                        option.textContent = tipo.nombre;
+                        select.appendChild(option);
+                    });
+                } catch (error) {
+                    console.error('Error al cargar tipos de convocatoria:', error);
+                }
+            }
+
+            try {
+                const response = await fetch('/api/convocatorias');
+                const data = await response.json();
+
+                const tbody = document.querySelector('#tablaConvocatorias tbody');
+                tbody.innerHTML = ''; // Limpiar contenido previo
+
+                const hoy = new Date();
+                hoy.setHours(0, 0, 0, 0); // Normaliza hora
+
+                data.forEach(convocatoria => {
+                    const row = document.createElement('tr');
+
+                    const fechaLimite = new Date(convocatoria.fechaLimite);
+                    fechaLimite.setHours(0, 0, 0, 0);
+
+                    if (fechaLimite < hoy) {
+                        row.classList.add('fila-vencida');
+                    }
+
+                    row.innerHTML = `
+        <td>${convocatoria.id}</td>
+        <td>${convocatoria.nombre}</td>
+        <td>${convocatoria.financiamiento || 'No especificado'}</td>
+        <td>${convocatoria.organizador || 'No especificado'}</td>
+        <td><a href="https://${convocatoria.urlConvocatoria}" target="_blank">${convocatoria.urlConvocatoria}</a></td>
+        <td>${convocatoria.tipoConvocatoria?.nombre || 'No asignado'}</td>
+        <td>${new Date(convocatoria.fechaLimite).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}</td>
+        <td>
+          <div class="action-icons">
+            <span class="action-icon edit" data-id="${convocatoria.id}" title="Editar"><i class="bi bi-pencil-square"></i></span>
+            <span class="action-icon delete" data-id="${convocatoria.id}" title="Eliminar"><i class="bi bi-trash3"></i></span>
+          </div>
+        </td>
+      `;
+
+                    tbody.appendChild(row);
+                });
+                // Añadir el evento de eliminación a los iconos de eliminar
+                document.querySelectorAll('.action-icon.delete').forEach(icon => {
+
+                    icon.addEventListener('click', (e) => {
+                        const convocatoriaIdToDelete = e.target.closest('.action-icon').getAttribute('data-id');
+
+                        // Usar SweetAlert para confirmar la eliminación
+                        Swal.fire({
+                            title: '¿Estás seguro?',
+                            text: '¡Esta acción no se puede deshacer!',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonText: 'Sí, eliminar',
+                            cancelButtonText: 'Cancelar',
+                        }).then(async (result) => {
+                            if (result.isConfirmed) {
+                                try {
+                                    // Realizar la solicitud DELETE
+                                    const deleteResponse = await fetch(`/api/convocatorias/${convocatoriaIdToDelete}`, {
+                                        method: 'DELETE',
+                                    });
+
+                                    if (deleteResponse.ok) {
+                                        Swal.fire(
+                                            'Eliminado!',
+                                            'La convocatoria ha sido eliminada.',
+                                            'success'
+                                        );
+
+                                        // Eliminar la fila de la tabla
+                                        const rowToDelete = document.querySelector(`.action-icon.delete[data-id="${convocatoriaIdToDelete}"]`).closest('tr');
+                                        rowToDelete.remove();
+                                    } else {
+                                        Swal.fire(
+                                            'Error',
+                                            'Hubo un problema al eliminar la convocatoria.',
+                                            'error'
+                                        );
+                                    }
+                                } catch (error) {
+                                    console.error('Error al eliminar la convocatoria:', error);
+                                    Swal.fire(
+                                        'Error',
+                                        'Hubo un error al intentar eliminar la convocatoria.',
+                                        'error'
+                                    );
+                                }
+                            }
+                        });
+                    });
+                });
+                async function cargarTiposConvocatoria() {
+                    try {
+                        const res = await fetch('/api/tipoConvocatorias'); // Ajusta la ruta si es distinta
+                        const tipos = await res.json();
+
+                        const select = document.getElementById('tipoConvocatoria');
+                        select.innerHTML = '<option value="">Selecciona un tipo</option>';
+
+                        tipos.forEach(tipo => {
+                            const option = document.createElement('option');
+                            option.value = tipo.id;
+                            option.textContent = tipo.nombre;
+                            select.appendChild(option);
+                        });
+                    } catch (error) {
+                        console.error('Error al cargar tipos de convocatoria:', error);
+                    }
+                }
+
+                document.querySelectorAll('.action-icon.edit').forEach(icon => {
+                    icon.addEventListener('click', async (e) => {
+                        const convocatoriaIdToEdit = e.target.closest('.action-icon').getAttribute('data-id');
+                        const convocatoriaToEdit = data.find(c => c.id === parseInt(convocatoriaIdToEdit));
+                        if (!convocatoriaToEdit) return;
+
+                        idConvocatoriaEditando = convocatoriaToEdit.id; // Guardar para el submit
+                        document.getElementById('opcionConvocatoria').innerText = 'Editar Convocatoria id: ' + idConvocatoriaEditando;
+
+                        await cargarTiposConvocatoria();
+                        document.getElementById('tipoConvocatoria').value = convocatoriaToEdit.tipoConvocatoriaId;
+                        document.getElementById('nombreConvocatoria').value = convocatoriaToEdit.nombre;
+                        document.getElementById('financiamiento').value = convocatoriaToEdit.financiamiento || '';
+                        document.getElementById('organizador').value = convocatoriaToEdit.organizador || '';
+                        document.getElementById('urlConvocatoria').value = convocatoriaToEdit.urlConvocatoria || '';
+                        if (convocatoriaToEdit.fechaLimite) {
+                            const fecha = new Date(convocatoriaToEdit.fechaLimite);
+                            const yyyyMMdd = fecha.toISOString().split('T')[0]; // obtiene sólo la parte de la fecha
+                            document.getElementById('fechaLimite').value = yyyyMMdd;
+                        } else {
+                            document.getElementById('fechaLimite').value = '';
+                        }
+                        modalEdicion.style.display = "block";
+                    });
+                });
+
+
+                // Cerrar el modal al hacer clic en la X
+                closeModalEdicion.addEventListener('click', () => {
+                    modalEdicion.style.display = "none";
+                });
+
+                // Cerrar el modal si se hace clic fuera de él
+                window.addEventListener('click', (event) => {
+                    if (event.target === modalEdicion) {
+                        modalEdicion.style.display = "none";
+                    }
+                });
+
+                // Manejar el formulario de edición
+                formEditarConvocatoria.addEventListener('submit', async (e) => {
+
+
+                    e.preventDefault();
+
+                    const id = idConvocatoriaEditando;
+                    const nombre = document.getElementById('nombreConvocatoria').value;
+                    const financiamiento = document.getElementById('financiamiento').value;
+                    const organizador = document.getElementById('organizador').value;
+                    const urlConvocatoria = document.getElementById('urlConvocatoria').value;
+                    const tipoConvocatoriaId = document.getElementById('tipoConvocatoria').value;
+                    const fechaInput = document.getElementById('fechaLimite').value;
+                    const fechaLimite = new Date(fechaInput + 'T00:00:00'); // Agrega la hora local explícita
+
+                    // Construir objeto de datos
+                    const datosConvocatoria = {
+                        nombre,
+                        financiamiento,
+                        organizador,
+                        urlConvocatoria,
+                        tipoConvocatoriaId,
+                        fechaLimite
+                    };
+
+                    try {
+                        let response;
+
+                        if (id) {
+                            // EDITAR (PUT)
+                            response = await fetch(`/api/convocatorias/${id}`, {
+                                method: 'PUT',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify(datosConvocatoria)
+                            });
+                        } else {
+                            // CREAR (POST)
+                            response = await fetch('/api/convocatorias', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify(datosConvocatoria)
+                            });
+                        }
+
+                        if (response.ok) {
+                            const mensaje = id ? 'actualizada' : 'creada';
+                            Swal.fire('¡Éxito!', `La convocatoria ha sido ${mensaje}.`, 'success');
+
+                            modalEdicion.style.display = "none"; // Cerrar el modal
+
+                            // Limpiar campos del formulario
+                            document.getElementById('formEditarConvocatoria').reset();
+
+                            // Recargar la tabla
+                         
+                        }
+                        else {
+                            Swal.fire(
+                                'Error',
+                                'Hubo un problema al actualizar la convocatoria.',
+                                'error'
+                            );
+                        }
+                    } catch (error) {
+                        console.error('Error al actualizar la convocatoria:', error);
+                        Swal.fire(
+                            'Error',
+                            'Hubo un error al intentar actualizar la convocatoria.',
+                            'error'
+                        );
+                    }
+                       location.reload();
+                });
+
+            } catch (error) {
+                console.error('Error al cargar las convocatorias:', error);
+            }
+        });
+
+        async function cargarTiposConvocatoria() {
+            try {
+                const res = await fetch('/api/tipoConvocatorias'); // Ajusta la ruta si es distinta
+                const tipos = await res.json();
+
+                const select = document.getElementById('tipoConvocatoria');
+                select.innerHTML = '<option value="">Selecciona un tipo</option>';
+
+                tipos.forEach(tipo => {
+                    const option = document.createElement('option');
+                    option.value = tipo.id;
+                    option.textContent = tipo.nombre;
+                    select.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error al cargar tipos de convocatoria:', error);
+            }
+        }
+        async function recargarTablaConvocatorias() {
+            try {
+                const response = await fetch('/api/convocatorias');
+                const data = await response.json();
+
+                const tbody = document.querySelector('#tablaConvocatorias tbody');
+                tbody.innerHTML = '';
+
+                const hoy = new Date();
+                hoy.setHours(0, 0, 0, 0);
+
+                data.forEach(convocatoria => {
+                    const row = document.createElement('tr');
+
+                    const fechaLimite = new Date(convocatoria.fechaLimite);
+                    fechaLimite.setHours(0, 0, 0, 0);
+
+                    if (fechaLimite < hoy) {
+                        row.classList.add('fila-vencida');
+                    }
+
+                    row.innerHTML = `
+        <td>${convocatoria.id}</td>
+        <td>${convocatoria.nombre}</td>
+        <td>${convocatoria.financiamiento || 'No especificado'}</td>
+        <td>${convocatoria.organizador || 'No especificado'}</td>
+        <td><a href="https://${convocatoria.urlConvocatoria}" target="_blank">Ver enlace</a></td>
+        <td>${convocatoria.tipoConvocatoria?.nombre || 'No asignado'}</td>
+        <td>${new Date(convocatoria.fechaLimite).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}</td>
+        <td>
+          <div class="action-icons">
+            <span class="action-icon edit" data-id="${convocatoria.id}" title="Editar"><i class="bi bi-pencil-square"></i></span>
+            <span class="action-icon delete" data-id="${convocatoria.id}" title="Eliminar"><i class="bi bi-trash3"></i></span>
+          </div>
+        </td>
+      `;
+
+                    tbody.appendChild(row);
+                });
+
+                // Volver a asignar eventos a los nuevos botones
+                asignarEventosAcciones(data);
+            } catch (error) {
+                console.error('Error al recargar convocatorias:', error);
+            }
+        }
+        function asignarEventosAcciones(data) {
+            document.querySelectorAll('.action-icon.delete').forEach(icon => {
+                icon.addEventListener('click', (e) => {
+                    // ... tu lógica de eliminar
+                });
+            });
+
+            document.querySelectorAll('.action-icon.edit').forEach(icon => {
+                icon.addEventListener('click', async (e) => {
+                    const id = e.target.closest('.action-icon').getAttribute('data-id');
+                    const convocatoria = data.find(c => c.id === parseInt(id));
+                    if (!convocatoria) return;
+
+                    idConvocatoriaEditando = convocatoria.id;
+
+                    await cargarTiposConvocatoria();
+                    document.getElementById('tipoConvocatoria').value = convocatoria.tipoConvocatoriaId;
+                    document.getElementById('nombreConvocatoria').value = convocatoria.nombre;
+                    document.getElementById('financiamiento').value = convocatoria.financiamiento || '';
+                    document.getElementById('organizador').value = convocatoria.organizador || '';
+                    document.getElementById('urlConvocatoria').value = convocatoria.urlConvocatoria || '';
+                    if (convocatoria.fechaLimite) {
+                        const fecha = new Date(convocatoria.fechaLimite);
+                        const yyyyMMdd = fecha.toISOString().split('T')[0]; // obtiene sólo la parte de la fecha
+                        document.getElementById('fechaLimite').value = yyyyMMdd;
+                    } else {
+                        document.getElementById('fechaLimite').value = '';
+                    }
+                    modalEdicion.style.display = "block";
+                });
+            });
+        }
+
+
+    </script>
+
+
+</body>
+
+</html>

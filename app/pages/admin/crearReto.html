@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Reto</title>
+    <link rel="stylesheet" href="styles/crearReto.css"> <!-- Optional CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</head>
+<body>
+    <h1>Crear Nuevo Reto</h1>
+    <form id="crearRetoForm" >
+        <label for="nombre">Nombre del Reto:</label>
+        <input type="text" id="nombre" name="nombre" required>
+
+        <label for="ubicacionVideo">Ubicación del Video:</label>
+        <input type="file" id="video" name="video" accept="video/*">
+
+        <label for="descripcion">Descripción:</label>
+        <textarea id="descripcion" name="descripcion"></textarea>
+
+        <label for="ubicacionFicha">Ubicación de la Ficha:</label>
+        <input type="file" id="ficha" name="ficha" accept=".pdf,.doc,.docx">
+
+        <button type="submit">Crear Reto</button>
+    </form>
+
+
+    <script src="/js/config.js"></script>
+
+    <script src="js/crearReto.js"></script> <!-- Optional JavaScript -->
+</body>
+</html>

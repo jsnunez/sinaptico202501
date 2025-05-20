@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Registro de Empresa</title>
+    <link rel="stylesheet" href="stylehelice.css">
+<style>
+    form{
+        display: flex
+;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    width: 50vw;
+    }
+</style>
+</head>
+
+<body>
+    <h2>Formulario de Registro de Empresa</h2>
+    <form id="empresa-form" action="#" method="POST">
+        <!-- Razón Social -->
+        <label for="razon-social">Razón Social:</label>
+        <input type="text" id="razon-social" name="razon-social" required><br><br>
+
+        <!-- Número de Identificación -->
+        <label for="num-identificacion">Número de Identificación:</label>
+        <input type="text" id="num-identificacion" name="num-identificacion" required><br><br>
+
+        <!-- Tipo de Entidad -->
+        <label for="tipo-entidad">Tipo de Entidad:</label>
+        <select id="tipo-entidad" name="tipo-entidad" required>
+            <option value="Sociedad Anónima">Sociedad Anónima</option>
+            <option value="Sociedad Limitada">Sociedad Limitada</option>
+            <option value="Persona Natural">Persona Natural</option>
+            <!-- Agregar más opciones según sea necesario -->
+        </select><br><br>
+
+        <!-- Naturaleza Jurídica -->
+        <label for="naturaleza-juridica">Naturaleza Jurídica:</label>
+        <select id="naturaleza-juridica" name="naturaleza-juridica" required>
+            <option value="Privada">Privada</option>
+            <option value="Pública">Pública</option>
+            <option value="Mixta">Mixta</option>
+        </select><br><br>
+
+        <!-- Actividad Económica -->
+        <label for="actividad-economica">Actividad Económica:</label>
+        <input type="text" id="actividad-economica" name="actividad-economica" required><br><br>
+
+        <!-- Correo de Contacto -->
+        <label for="correo">Correo de Contacto:</label>
+        <input type="email" id="correo" name="correo" required><br><br>
+
+        <!-- Teléfono -->
+        <label for="telefono">Teléfono:</label>
+        <input type="tel" id="telefono" name="telefono" required><br><br>
+
+        <!-- Fecha de Constitución -->
+        <label for="fecha-constitucion">Fecha de Constitución:</label>
+        <input type="date" id="fecha-constitucion" name="fecha-constitucion" required><br><br>
+
+        <!-- Departamento -->
+        <label for="departamento">Departamento:</label>
+        <input type="text" id="departamento" name="departamento" required><br><br>
+
+        <!-- Ciudad -->
+        <label for="ciudad">Ciudad:</label>
+        <input type="text" id="ciudad" name="ciudad" required><br><br>
+
+        <!-- Dirección -->
+        <label for="direccion">Dirección:</label>
+        <input type="text" id="direccion" name="direccion" required><br><br>
+
+        <!-- Facebook -->
+        <label for="facebook">Facebook:</label>
+        <input type="url" id="facebook" name="facebook"><br><br>
+
+        <!-- Instagram -->
+        <label for="instagram">Instagram:</label>
+        <input type="url" id="instagram" name="instagram"><br><br>
+
+        <!-- Página Web -->
+        <label for="paginaweb">Página Web:</label>
+        <input type="url" id="paginaweb" name="paginaweb"><br><br>
+
+        <!-- Logo -->
+        <label for="logo">Logo:</label>
+        <input type="file" id="logo" name="logo" accept="image/*"><br><br>
+
+        <!-- Descripción de la Empresa -->
+        <label for="descripcion">Descripción de la Empresa:</label>
+        <textarea id="descripcion" name="descripcion" rows="4" required></textarea><br><br>
+
+        <!-- Coordenadas (latitud y longitud) -->
+        <!-- <label for="latitud">Latitud:</label>
+        <input type="text" id="latitud" name="latitud" readonly><br><br>
+
+        <label for="longitud">Longitud:</label>
+        <input type="text" id="longitud" name="longitud" readonly><br><br> -->
+
+        <!-- Botón para obtener coordenadas -->
+
+        <!-- Enviar Formulario -->
+        <button type="submit">Registrar Empresa</button>
+    </form>
+</body>
+
+
+</html>

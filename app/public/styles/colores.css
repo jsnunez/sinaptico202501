@@ -1,0 +1,25 @@
+
+:root {
+    --primary-color: #3366CC;
+    --secondary-color: #5d8dee;
+    --accent-color: #8e2de2;
+    --text-color: #3366CC;
+    --select-btn: #5f86d4;
+    --text-description:#000;
+    --light-text: #fff;
+    --light-color:#fff;
+    --gray-color: #6c757d;
+    --background-color: #f8f9fa;
+    --card-bg: #ffffff;
+    --synapse-color-1: #6e48aa;
+    --synapse-color-2: #9d50bb;
+    --synapse-pulse: rgba(110, 72, 170, 0.5);
+    --gradient-1: linear-gradient(135deg, #3366CC 0%, #5f86d4 50%, #84a3e2 100%);;
+    --gradient-2: linear-gradient(135deg, #3366CC 0%, #5f86d4 100%);
+    --shadow: 0 10px 20px rgba(110, 72, 170, 0.1);
+    --card-shadow: 0 15px 25px rgba(110, 72, 170, 0.08);
+    --transition: all 0.3s ease;
+    --yellow: #fbbf24;
+    --red: #ef4444;
+  }
+  

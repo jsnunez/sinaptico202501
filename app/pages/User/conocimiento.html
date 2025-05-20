@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sinaptico - Innovación Abierta</title>
+    <link rel="stylesheet" href="styles/colores.css">
+
+    <link rel="stylesheet" href="styles/stylehelice2.css">
+    <link rel="stylesheet" href="styles/innovacion.css">
+    <link rel="stylesheet" href="styles/clasificados.css">
+    <link rel="stylesheet" href="styles/conocimiento.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</head>
+
+<body>
+
+    <!-- Encabezado -->
+    <header class="header">
+        <div  onclick="window.location.href='/helice'" class="logo">
+            <!-- <span class="logo-icon">⚡</span> -->
+            <span class="logo-text">SINAPTICO</span>
+        </div>
+        <nav class="nav">
+            <button class="nav-button pulse" onclick="window.location.href='/helice'">Hélice</button>
+            <button class="nav-button pulse" onclick="window.location.href='/innovacion'">Innovación</button>
+
+            <button class="nav-button pulse" onclick="window.location.href='/Conocimiento'">Conocimiento</button>
+                        <button class="nav-button pulse" onclick="window.location.href='/eventos'">Eventos</button>
+
+            <button class="nav-button pulse" onclick="irEnConstruccion()">Mapa</button>
+            
+            <button class="nav-button pulse" id="cerrarSesion">Cerrar sesión</button>
+        </nav>
+    </header>
+    <div class="welcome-container">
+        <div class="welcome-text">
+            <h2 id="bienvenido">Bienvenido </h2>
+            <p class="subtitle">Conectando entidades para potenciar la innovación</p>
+        </div>
+
+    </div>
+
+
+
+
+    <div class="main-content" id="conocimientoMainContent">
+        <!-- Tarjetas de la triple hélice -->
+        <div class="helix-title">
+            <h3>Gestion del Conocimiento</h3>
+            <p>Explora recursos, invetigaciones y documentos seleccionados para tu conocimiento</p>
+        </div>
+
+        <div class="cards-container">
+            <!-- Estado Card -->
+            <div id="Recursos" class="card">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="card-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="1.5">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                        </div>
+                        <h3 class="card-title">Cursos</h3>
+                        <p class="card-text">Amplia tus conocimientos con nuestros Recursos</p>
+                        </p>
+                    </div>
+                    <div class="card-back">
+                        <div class="synapse-icon"></div>
+                        <h3 class="card-title">Ver Contenido</h3>
+                        <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo itaque
+                            quasi
+                            aspernatur distinctio consequuntur eum quo voluptatem quisquam, corrupti corporis est
+                            quaerat voluptate
+                            doloremque accusantium officiis harum hic fuga repudiandae!
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Academia Card -->
+            <div id="biblioteca" class="card">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="card-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="1.5">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                        </div>
+                        <h3 class="card-title">Biblioteca</h3>
+                        <p class="card-text">nuestra biblioteca de recursos</p>
+                        </p>
+                    </div>
+                    <div class="card-back">
+                        <div class="synapse-icon"></div>
+                        <h3 class="card-title">Ver Contenido</h3>
+                        <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo itaque
+                            quasi
+                            aspernatur distinctio consequuntur eum quo voluptatem quisquam, corrupti corporis est
+                            quaerat voluptate
+                            doloremque accusantium officiis harum hic fuga repudiandae!
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Challenges Section -->
+    <section id="cursosSection" class="main-content" style="display: none;">
+        <div class="container">
+            <div class="section-header">
+                <i class="fas fa-rocket"></i>
+                <h2>2025 -  Cursos activos</h2>
+            </div>
+
+            <div class="challenges-grid">
+
+            </div>
+
+    </section>
+
+    <section id="courseContainer" class="main-content" style="display: none;">
+        <div class="container">
+            <div class="section-header">
+                <i class="fas fa-rocket"></i>
+                <h2>2025 -  Cursos activos</h2>
+            </div>
+
+            <div class="challenges-grid">
+
+            </div>
+
+    </section>
+    
+    <!-- clasificados Section -->
+    <section id="bibliotecaSection" class="main-content" style="display: none;">
+        <div class="container" id="bibliotecaConocimiento">
+            <section class="page-title">
+                <h1>Biblioteca de Conocimiento</h1>
+            </section>
+
+            <div class="filter-container" id="filtros">
+                <input type="text" id="buscarCurso" placeholder="Nombre recurso" class="filter-input">
+            </div>
+
+            <!-- Único contenedor para todos los Recursos -->
+            <div class="grid-container" id="grid-container">
+                <div class="grid-item">
+                    <div class="card-recurso">
+                        <h3 class="card-title">Recurso 1</h3>
+                        <p class="card-subtitle">Descripción breve del Recurso 1</p>
+                        <button >Ver más</button>
+                    </div>
+                </div>
+
+                <div class="grid-item">
+                    <div class="card-recurso">
+                        <h3 class="card-title">Recurso 2</h3>
+                        <p class="card-subtitle">Descripción breve del Recurso 2</p>
+                        <button>Ver más</button>
+                    </div>
+                </div>
+
+                <div class="grid-item">
+                    <div class="card-recurso">
+                        <h3 class="card-title">Recurso 3</h3>
+                        <p class="card-subtitle">Descripción breve del Recurso 3</p>
+                        <button>Ver más</button>
+                    </div>
+                </div>
+                <div class="grid-item">
+                    <div class="card-recurso">
+                        <h3 class="card-title">Recurso 3</h3>
+                        <p class="card-subtitle">Descripción breve del Recurso 3</p>
+                        <button>Ver más</button>
+                    </div>
+                </div>
+                <div class="grid-item">
+                    <div class="card-recurso">
+                        <h3 class="card-title">Recurso 3</h3>
+                        <p class="card-subtitle">Descripción breve del recurso 3</p>
+                        <button>Ver más</button>
+                    </div>
+                </div>
+                <div class="grid-item">
+                    <div class="card-recurso">
+                        <h3 class="card-title">Recurso 3</h3>
+                        <p class="card-subtitle">Descripción breve del Recurso 3</p>
+                        <button>Ver más</button>
+                    </div>
+                </div>
+                <div class="grid-item">
+                    <div class="card-recurso">
+                        <h3 class="card-title">Recurso 3</h3>
+                        <p class="card-subtitle">Descripción breve del Recurso 3</p>
+                        <button>Ver más</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="container" id="documentosInteres">
+            <section class="page-title">
+                <h1>Documento de Interés</h1>
+            </section>
+            <div class="documentos-lista">
+                <ul>
+                    <li>Guia metodologica</li>
+                    <li>Informe Tecnico</li>
+                    <li>Politica de Acceso Abierto</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Create classified modal -->
+    <div class="modal-backdrop" id="create-classified-modal">
+        <div class="modalClasificado">
+            <div class="modal-header">
+                <h2 class="modal-title">Publicar un nuevo clasificado</h2>
+                <p class="modal-description">Completa el formulario para publicar tu clasificado.</p>
+            </div>
+            <div class="modal-body">
+                <form id="create-classified-form">
+                    <div class="form-group">
+                        <label for="classified-title" class="form-label">Título del clasificado</label>
+                        <input type="text" id="classified-title" class="form-input"
+                            placeholder="Ej: Diseño de logotipo profesional" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="classified-category" class="form-label">Categoría</label>
+                            <select id="classified-category" class="form-select" required>
+                                <option value="">Seleccionar categoría</option>
+                                <option value="Diseño gráfico">Diseño gráfico</option>
+                                <option value="Desarrollo web">Desarrollo web</option>
+                                <option value="Marketing digital">Marketing digital</option>
+                                <option value="Redacción">Redacción</option>
+                                <option value="Traducción">Traducción</option>
+                                <option value="Video y animación">Video y animación</option>
+                                <option value="Música y audio">Música y audio</option>
+                                <option value="Programación">Programación</option>
+                                <option value="Negocios">Negocios</option>
+                                <option value="Estilo de vida">Estilo de vida</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="classified-price" class="form-label">Precio/Presupuesto (COP)</label>
+                            <input type="text" id="classified-price" class="form-input" placeholder="Ej: 100000"
+                                required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="classified-description" class="form-label">Descripción</label>
+                        <textarea id="classified-description" class="form-input form-textarea"
+                            placeholder="Describe detalladamente tu servicio o solicitud..." required></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="classified-delivery" class="form-label">Tiempo de entrega</label>
+                            <select id="classified-delivery" class="form-select" required>
+                                <option value="">Seleccionar tiempo</option>
+                                <option value="24 horas">24 horas</option>
+                                <option value="3 días">3 días</option>
+                                <option value="7 días">7 días</option>
+                                <option value="14 días">14 días</option>
+                                <option value="30 días o más">30 días o más</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="classified-location" class="form-label">Ubicación</label>
+                            <input type="text" id="classified-location" class="form-input"
+                                placeholder="Ej: Bucaramanga,Colombia" required>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="cancel-classified-btn">Cancelar</button>
+                <button class="btn btn-primary" id="submit-classified-btn">Publicar clasificado</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact classified modal -->
+    <div class="modal-backdrop" id="contact-classified-modal">
+        <div class="modalClasificado">
+            <div class="modal-header">
+                <h2 class="modal-title">Contactar por este clasificado</h2>
+                <p class="modal-description">Estás contactando por: <span id="contact-classified-title"
+                        class="font-medium"></span></p>
+            </div>
+            <div class="modal-body">
+                <form id="contact-classified-form">
+                    <div class="form-group">
+                        <label for="contact-name" class="form-label">Nombre completo</label>
+                        <input type="text" id="contact-name" class="form-input" placeholder="Tu nombre completo"
+                            required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="contact-email" class="form-label">Correo electrónico</label>
+                            <input type="email" id="contact-email" class="form-input" placeholder="tu@email.com"
+                                required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="contact-phone" class="form-label">Teléfono</label>
+                            <input type="text" id="contact-phone" class="form-input" placeholder="+57 600 000 000">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contact-message" class="form-label">Mensaje</label>
+                        <textarea id="contact-message" class="form-input form-textarea"
+                            placeholder="Escribe tu mensaje o propuesta..." required></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="cancel-contact-btn">Cancelar</button>
+                <button class="btn btn-primary" id="submit-contact-btn">Enviar mensaje</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/config.js"></script>
+    <script src="/js/cursos.js"></script>
+
+
+    <script>
+        function irEnConstruccion() {
+            window.location.href = "/construccion"; // o la ruta que tengas
+        }
+        const toggleViewBtn = document.getElementById('toggleViewBtn');
+        const classifiedWall = document.querySelector('.classified-wall');
+
+
+
+        function obtenerCookie(nombre) {
+            const nombreCookie = `${nombre}=`;
+            const cookies = document.cookie.split(';');
+
+            for (let i = 0; i < cookies.length; i++) {
+                let cookie = cookies[i].trim();
+
+                if (cookie.indexOf(nombreCookie) === 0) {
+                    return cookie.substring(nombreCookie.length, cookie.length);
+                }
+            }
+            return null; // Retorna null si no se encuentra la cookie
+        }
+        document.addEventListener("DOMContentLoaded", function () {
+            // Ejemplo de cómo leer la cookie "usuario"
+            const usuario = obtenerCookie("user");
+            cleanedStr = usuario.replace(/%20/g, " "); // Reemplaza '%20' por un espacio
+            cleanedStr = decodeURIComponent(cleanedStr);
+            document.getElementById('bienvenido').innerText = "Bienvenido  " + cleanedStr;
+        });
+    </script>
+
+    <script>
+        document.getElementById("cerrarSesion").addEventListener("click", () => {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: '¿Querés cerrar sesión?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, cerrar sesión',
+                cancelButtonText: 'Cancelar',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Borrar cookies y redirigir
+                    document.cookie = 'jwt=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+                    document.cookie = 'user=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+                    document.cookie = 'userId=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+                    document.location.href = "/";
+                }
+                // Si el usuario cancela, no pasa nada
+            });
+        });
+
+        document.getElementById("biblioteca").addEventListener("click", () => {
+            document.getElementById("conocimientoMainContent").style.display = "none";
+            document.getElementById("bibliotecaSection").style.display = "flex";
+            document.getElementById("cursosSection").style.display = "none";
+        });
+        document.getElementById("Recursos").addEventListener("click", () => {
+            document.getElementById("conocimientoMainContent").style.display = "none";
+            document.getElementById("bibliotecaSection").style.display = "none";
+            document.getElementById("cursosSection").style.display = "block";
+        });
+
+
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const gridContainer = document.getElementById("grid-container");
+            const buscarInput = document.getElementById("buscarCurso");
+        
+            // Función para renderizar Recursos
+            function renderCursos(Recursos) {
+                gridContainer.innerHTML = ""; // Limpiar contenedor
+                Recursos.forEach(recurso => {
+                    const card = document.createElement("div");
+                    card.className = "grid-item";
+                    card.innerHTML = `
+                        <div class="card-recurso">
+                            <h3 class="card-title">${recurso.nombre}</h3>
+                            <p class="card-subtitle">${recurso.descripcion}</p>
+                        <button class="action-button" onclick="window.open('recursos/${recurso.ubicacion}', '_blank')">Ver más</button>
+
+                        </div>
+                    `;
+                    gridContainer.appendChild(card);
+                });
+            }
+        
+            // Obtener Recursos desde la API
+            async function cargarCursos() {
+                try {
+                    const res = await fetch(`/api/recurso`); // Ajusta la URL según tu backend
+                    const data = await res.json();
+                    renderCursos(data);
+                } catch (error) {
+                    console.error("Error al cargar Recursos:", error);
+                }
+            }
+        
+            // Filtro de búsqueda
+            buscarInput.addEventListener("input", async () => {
+                const texto = buscarInput.value.toLowerCase();
+                try {
+                    const res = await fetch(`/api/recurso`);
+                    const data = await res.json();
+                    const filtrados = data.filter(recurso =>
+                        recurso.nombre.toLowerCase().includes(texto)
+                    );
+                    renderCursos(filtrados);
+                } catch (error) {
+                    console.error("Error al filtrar Recursos:", error);
+                }
+            });
+        
+            // Inicializar
+            cargarCursos();
+        });
+        </script>
+        
+</body>
+
+</html>

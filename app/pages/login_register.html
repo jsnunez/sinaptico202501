@@ -1,0 +1,74 @@
+  <!-- Right side - Login and Registration -->
+<div class="auth-panel">
+    <div class="auth-container">
+        <div class="auth-header">
+            <h2>Bienvenido </h2>
+            <p>Ingresa credenciales para mayor informacion</p>
+        </div>
+
+        <div class="tabs">
+            <div class="tab-header">
+                <div class="tab-trigger active" data-tab="login">Iniciar Sesion</div>
+                <div class="tab-trigger" data-tab="register">Registrate</div>
+            </div>
+
+            <div class="tab-content">
+                <!-- Login Form -->
+                <div class="tab-pane active" id="login">
+                    <form id="loginForm">
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" placeholder="name@example.com" required>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="password-header">
+                                <label for="password">Constraseña</label>
+                                <a id="recuperarPass" class="forgot-password">olvidaste tu contraseña?</a>
+                            </div>
+                            <input type="password" id="password" required>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Conectar</button>
+
+                        <p class="error escondido">Error al iniciar sesión</p>
+
+
+                    </form>
+                </div>
+
+                <!-- Register Form -->
+                <div class="tab-pane" id="register">
+                    <form id="registerForm">
+                        <div class="form-group">
+                            <label for="user">Nombre completo</label>
+                            <input type="text" id="user" placeholder="John Doe" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="register-email">Email</label>
+                            <input type="email" id="register-email" placeholder="name@example.com" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="register-password">contraseña</label>
+                            <input type="password" id="register-password" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="confirm-password">Confirma Contraseña </label>
+                            <input type="password" id="confirm-password" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="telefono">telefono </label>
+                            <input type="tel" id="telefono" required>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Crear cuenta</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

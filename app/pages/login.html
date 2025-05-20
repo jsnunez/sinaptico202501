@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sinaptico</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="login.js" defer></script>
+    <link rel="stylesheet" href="stylelogin.css">
+
+  
+</head>
+
+<body>
+    <div class="container">
+        <h1>SINAPTIC</h1>
+        <p>Sinaptico es una plataforma que, al igual que las neuronas se conectan a través de sinapsis, busca conectar
+            diferentes sectores de la sociedad. Esta interconexión permite generar un flujo constante de ideas,
+            creatividad y soluciones para los retos actuales y futuros. Al igual que los neurotransmisores transmiten
+            impulsos, Sinaptico facilita el intercambio de conocimientos y recursos, como retos, eventos y oportunidades
+            de aprendizaje, para fomentar la innovación y el desarrollo colectivo.</p>
+        <div class="stats">
+            <div class="stat"> 
+                <i class="bi bi-building"></i>
+                <span id="empresas">0</span>
+                <p>Empresas</p>
+               </div>
+               <div class="stat">
+                 <i class="bi bi-building"></i>
+                <span id="actores">0</span>
+                <p>Actores</p>
+               </div>
+               <div class="stat"> 
+                <i class="bi bi-building"></i>
+                <span id="consultores">0</span>
+                <p>Consultores</p>
+               </div>
+               <div class="stat">
+                 <i class="bi bi-building"></i>
+                <span id="emprendedores">0</span>
+                <p>Emprendedores</p>
+               </div>
+               <div class="stat">
+                 <i class="bi bi-building"></i>
+                <span id="usuarios">0</span>
+                <p>Usuarios</p>
+               </div>
+         
+        </div>
+        <div class="buttons">
+            <button onclick="showModal()">RETOS</button>
+            <button onclick="showModal()">EVENTOS</button>
+            <button onclick="showModal()">SERVICIOS</button>
+        </div>
+    </div>
+    <div class="login-container">
+        <h2>Bienvenido a sinaptico para obtener mayor información crea un usuario o inicia sesión</h2>
+        <form id="login-form">
+        <input type="text" name="user" id="user" placeholder="Correo electrónico" required>
+        <input type="password" name="password" id="password" placeholder="Contraseña" required>
+        <button type="submit" class="login-btn">Iniciar Sesión</button>
+        <p>¿Sin cuenta? <a href="/register">Registrarse</a></p>
+        <p class="error escondido">Error al iniciar sesión</p>
+
+    </div>
+    <div id="modal" class="modal">
+        <span><i class="bi bi-exclamation-circle"></i></span>
+        <p>SE REQUIERE ESTAR REGISTRADO PARA ACCEDER A ESTA INFORMACIÓN</p>
+        <button onclick="closeModal()">Cerrar</button>
+    </div>
+    <script>
+        function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        document.getElementById("empresas").textContent = getRandomInt(1, 10);
+        document.getElementById("actores").textContent = getRandomInt(1, 10);
+        document.getElementById("consultores").textContent = getRandomInt(5, 10);
+        document.getElementById("emprendedores").textContent = getRandomInt(5, 10);
+        document.getElementById("usuarios").textContent = getRandomInt(5, 10);
+
+        function showModal() {
+            document.getElementById("modal").style.display = "block";
+        }
+
+        function closeModal() {
+            document.getElementById("modal").style.display = "none";
+        }
+    </script>
+</body>
+
+</html>

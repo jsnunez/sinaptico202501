@@ -1,0 +1,195 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    color: white;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.container {
+    background-image: url('fondolateral.png');
+    background-size: 200px 200px;
+    /* Imagen más pequeña, 200px de ancho y 200px de alto */
+
+    background-size: cover;
+    background-position: center;
+    padding-top: 10vh;
+    border-color: black;
+    width: 30vw;
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-right: 10vw;
+    padding-left: 10vw;
+
+}
+
+.login-container {
+    display: flex;
+    width: 30vw;
+    height: 100vh;
+    background: white;
+    color: black;
+    border-radius: 0;
+    text-align: center;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-right: 10vw;
+    padding-left: 10vw;
+
+}
+
+.stats {
+    display: flex;
+    justify-content: center;
+    gap: 1vw;
+    margin: 2vh 0;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 30vw;
+    height: 30vh;
+}
+
+.stat {
+    background: #B2C4FF;
+    color: black;
+
+    border-radius: 100%;
+    width: 7vw;
+
+    height: 7vw;
+    align-content: center;
+}
+
+
+.buttons button {
+    margin: 10px;
+    padding: 1vw 1vh;
+    width: 6vw;
+    font-size: 0.8vw;
+    border: none;
+    border-radius: 5px;
+    background: white;
+    color: black;
+    cursor: pointer;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+
+}
+
+h2 {
+
+    font-size: 2vw;
+    text-align: center;
+    padding-bottom: 3vh;
+}
+
+.container h1 {
+
+    font-size: 4vw;
+}
+
+p {
+margin: 0px;
+    font-size: 0.8vw;
+}
+
+.stat i {
+    font-size: 1.5vw;
+}
+
+.stat span {
+    font-size: 1.5vw;
+}
+
+
+
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    color: black;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+.modal span {
+    color: red;
+    font-size: 100px;
+    display: block;
+}
+
+input {
+    width: 80%;
+    padding: 1vw;
+    margin: 1vw 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 0.8vw;
+}
+
+.login-btn {
+    background: #7B76F1;
+    color: white;
+    font-size: 0.8vw;
+    padding: 1vw;
+    border: none;
+    border-radius: 100px;
+    cursor: pointer;
+    margin-top: 3vh;
+    margin-bottom: 3vh;
+}
+
+.escondido {
+    display: none;
+}
+
+/* Estilo del contenedor de carga */
+.loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    color: white;
+    font-size: 24px;
+    text-align: center;
+}
+
+/* Animación del spinner (círculo giratorio) */
+.spinner {
+    border: 8px solid #f3f3f3;
+    border-top: 8px solid #3498db;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 2s linear infinite;
+}
+
+/* Definir la animación para el spinner */
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}

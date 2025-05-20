@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Control</title>
+    <link rel="stylesheet" href="styles/dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Fondo neuronal -->
+    <div class="neural-background">
+        <canvas id="neuralCanvas"></canvas>
+    </div>
+
+    <!-- Encabezado -->
+    <div class="header">
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-trophy"></i>
+            </div>
+            <div class="logo-text">Control sinaptico</div>
+        </div>
+        <div class="nav">
+            <button class="nav-button active" data-page="dashboard">Dashboard</button>
+            <button class="nav-button" data-page="helice">Helice</button>
+            <button class="nav-button" data-page="usuarios">Usuarios</button>
+            <button class="nav-button" data-page="entidades">Entidades</button>
+            <button class="nav-button" data-page="retos">Retos</button>
+            <button class="nav-button" data-page="muro">Muro</button>
+            <button class="nav-button" data-page="eventosDashboard">Eventos</button>
+            <button class="nav-button" data-page="conocimientoDashboard">conocimiento</button>
+
+
+        </div>
+    </div>
+
+    <!-- Contenedor de bienvenida -->
+    <div class="welcome-container">
+        <div class="welcome-text">
+            <h2>Panel de Control</h2>
+            <p class="subtitle">Bienvenido al panel de administración de la aplicación</p>
+        </div>
+        <div class="action-buttons">
+            <button class="action-button" data-page="usuarios">
+                <i class="fas fa-users button-icon"></i>
+                Gestionar Usuarios
+            </button>
+            <button class="action-button" data-page="entidades">
+                <i class="fas fa-building button-icon"></i>
+                Gestionar Entidades
+            </button>
+            <button class="action-button" data-page="retos">
+                <i class="fas fa-trophy button-icon"></i>
+                Gestionar Retos
+            </button>
+        </div>
+    </div>
+
+    <!-- Estadísticas -->
+    <div class="main-content">
+        <div class="stats-title">
+            <h3>Estadísticas Generales</h3>
+            <p>Resumen de la actividad en la plataforma</p>
+        </div>
+        <div class="counters-container">
+            <div class="counter">
+                <div class="pulse-ring"></div>
+                <div class="counter-number" id="usuarios">0</div>
+                <div class="counter-label">Usuarios</div>
+            </div>
+            <div class="counter">
+                <div class="pulse-ring"></div>
+                <div class="counter-number" id="entidades">0</div>
+                <div class="counter-label">Entidades</div>
+            </div>
+            <div class="counter">
+                <div class="pulse-ring"></div>
+                <div class="counter-number" id="retos">0</div>
+                <div class="counter-label">Retos</div>
+            </div>
+            <div class="counter">
+                <div class="pulse-ring"></div>
+                <div class="counter-number" id="publicaciones">0</div>
+                <div class="counter-label">actividad muro</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tarjetas de acceso rápido -->
+    <div class="main-content">
+        <div class="helix-title">
+            <h3>Acceso Rápido</h3>
+            <p>Accede rápidamente a las principales funciones del panel</p>
+        </div>
+        <div class="cards-container">
+            <div class="card" data-page="usuarios">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="card-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3 class="card-title">Gestión de Usuarios</h3>
+                        <p class="card-text">Administra los usuarios de la aplicación</p>
+                    </div>
+                    <div class="card-back">
+                        <div class="synapse-icon"></div>
+                        <h3 class="card-title">Usuarios</h3>
+                        <p class="card-text">Crea, edita y elimina usuarios. Asigna roles y permisos.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="card" data-page="entidades">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="card-icon">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <h3 class="card-title">Gestión de Entidades</h3>
+                        <p class="card-text">Administra las entidades de la aplicación</p>
+                    </div>
+                    <div class="card-back">
+                        <div class="synapse-icon"></div>
+                        <h3 class="card-title">Entidades</h3>
+                        <p class="card-text">Crea, edita y elimina entidades. Habilita o deshabilita según sea necesario.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="card" data-page="retos">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="card-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <h3 class="card-title">Gestión de Retos</h3>
+                        <p class="card-text">Administra los retos de la aplicación</p>
+                    </div>
+                    <div class="card-back">
+                        <div class="synapse-icon"></div>
+                        <h3 class="card-title">Retos</h3>
+                        <p class="card-text">Crea, edita y elimina retos. Establece fechas y dificultad.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/js/config.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/NavegacionDash.js"></script>
+    <script src="js/estadisticas.js"></script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+#bibliotecaSection {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+
+.page-title {
+    text-align: left;
+    max-width: 90%;
+    margin-bottom: 0;
+}
+
+#bibliotecaConocimiento {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: flex-start;
+    padding-left: 2rem;
+}
+
+#filtros {
+    margin: 0;
+    max-width: 60%;
+    padding: 0.5rem;
+    background: #fff;
+    border-radius: 15px;
+    border: 1px solid var(--gray-color);
+    display: flex;
+    gap: 0.5rem;
+}
+
+.filter-input {
+    width: 50vw;
+}
+
+.grid-container {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.grid-item {
+    width: calc(50% - 1rem);
+}
+@media (max-width: 768px) {
+    #bibliotecaSection {
+        flex-wrap: wrap;
+        flex-direction: column-reverse;
+    }
+    .grid-item {
+    width: calc(100% - 1rem);
+}
+#filtros {
+   max-width: 100%;
+ 
+}
+#documentosInteres {
+    margin-bottom: 1vh;
+}
+}
+
+.card-curso {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: left;
+    background-color: #f9f9f9;
+    height: 100%;
+}
+
+.card-title {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.card-subtitle {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 1rem;
+    height: 20vh;
+    overflow-y: auto;        /* activa el scroll vertical */
+    scrollbar-width: thin;   /* para Firefox */
+    padding-right: 5px;      /* espacio para la barra de scroll */
+}
+ul{
+    list-style-type:disc;
+    padding-left: 20px;
+}
+
+
+.btniniciar{
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+
+#courseInfoContainer{
+text-align: center;}
+
+.video-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #fffbe6; /* amarillo claro por defecto */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  padding: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.video-item.visto {
+  background-color: #e6ffe6; /* verde claro */
+  /* text-decoration: line-through; */
+  opacity: 0.8;
+}
+
+.video-item:hover {
+  background-color: #fff3cd;
+}
+
+.video-link {
+  flex-grow: 1;
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+}
+
+.video-checkbox {
+  width: 18px;
+  height: 18px;
+  accent-color: #28a745;
+  border: 2px solid #28a745;
+  border-radius: 4px;
+  cursor: not-allowed;
+}

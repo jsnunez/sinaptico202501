@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Control</title>
+    <link rel="stylesheet" href="styles/dashboard.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script></head>
+<body>
+    <!-- Fondo neuronal -->
+    <div class="neural-background">
+        <canvas id="neuralCanvas"></canvas>
+    </div>
+
+    <!-- Encabezado -->
+    <div class="header">
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-trophy"></i>
+            </div>
+            <div class="logo-text">Control sinaptico</div>
+        </div>
+        <div class="nav">
+            <button class="nav-button" data-page="dashboard">Dashboard</button>
+            <button class="nav-button" data-page="helice">Helice</button>
+            <button class="nav-button" data-page="usuarios">Usuarios</button>
+            <button class="nav-button" data-page="entidades">Entidades</button>
+            <button class="nav-button active" data-page="retos">Retos</button>
+            <button class="nav-button" data-page="muro">Muro</button>
+            <button class="nav-button" data-page="eventosDashboard">Eventos</button>
+            <button class="nav-button" data-page="conocimientoDashboard">conocimiento</button>
+
+        </div>
+    </div>
+    <!-- Contenedor de bienvenida -->
+    <div class="welcome-container">
+        <div class="welcome-text">
+            <h2>Gestión de Cursos</h2>
+            <p class="subtitle">Crea, modifica y elimina los cursos de la aplicación</p>
+        </div>
+        <div class="action-buttons">
+            <button class="action-button" id="btnNuevoReto">
+                <i class="fas fa-plus button-icon"></i>
+                Nuevo Curso
+            </button>
+        </div>
+    </div>
+
+    <!-- Filtros -->
+    <div class="filter-container">
+        <input type="text" id="buscarReto" placeholder="Buscar curso..." class="filter-input">
+    </div>
+
+    <!-- Tabla de retos -->
+    <div class="main-content">
+        <table class="data-table" id="tablaRetos">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Título</th>
+                    <th>Descripcion</th>
+                    <th>video intro</th>
+                    <th>Temario</th>
+                    <th>Videos Curso</th>
+                    <th>Aplicaciones</th>
+                    <th>Fecha Creacion</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Los datos se cargarán dinámicamente con JavaScript -->
+            </tbody>
+        </table>
+    </div>
+    <div id="modalCrearReto" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h1>Crear Nuevo Reto</h1>
+            <form id="crearRetoForm">
+                <label for="nombre">Nombre del Curso:</label>
+                <input type="text" id="nombre" name="nombre" required>
+              
+                  <label for="descripcion">Descripción:</label>
+                <textarea id="descripcion" name="descripcion"></textarea>
+                <label for="duracion">Duración:</label>
+                <textarea id="duracion" name="duracion"></textarea>
+         
+                <label for="ubicacionVideo">Ubicación del Video:</label>
+                <input type="file" id="video" name="video" accept="video/*">
+              
+
+                <label for="ubicacionFicha">Ubicación del temario:</label>
+                <input type="file" id="ficha" name="temario" accept=".pdf,.doc,.docx">
+
+                <button type="submit">Crear Curso</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="modalEditarReto" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h1 Id="IdReto">Editar Reto</h1>
+            <form id="ediRetoForm">
+                <input type="hidden" id="retoId" name="retoId">
+                <label for="nombre">Nombre del Reto:</label>
+                <input type="text" id="nombreReto" name="nombre" required>
+
+                <div id="videoContainer">
+                    <label for="toggleVideo">Cambiar video</label>
+                    <input type="checkbox" id="toggleVideo" onchange="toggleVideoInput(this)">
+                    <input type="file" id="videoReto" name="video" accept="video/*" disabled>
+                </div>
+                
+                <label for="descripcion">Descripción:</label>
+                <textarea id="descripcionReto" name="descripcion"></textarea>
+
+                <div id="fichaContainer">
+                    <label for="toggleFicha">Cambiar ficha</label>
+                    <input type="checkbox" id="toggleFicha" onchange="toggleFichaInput(this)">
+                    <input type="file" id="fichaReto" name="ficha" accept="application/pdf" disabled>
+                </div>
+                
+
+                <button type="submit">Editar Reto</button>
+            </form>
+        </div>
+    </div>
+   
+
+    <!-- Modal para ver detalles del reto -->
+    <div id="modalDetallesReto" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="modal-header">
+                <h3>Detalles del Reto</h3>
+            </div>
+            <div class="modal-info">
+                <h3 id="detalleTituloReto" class="detalle-titulo"></h3>
+                <div class="detalle-badges" id="detalleBadges"></div>
+                <p id="detalleDescripcionReto" class="detalle-descripcion"></p>
+                <div class="detalle-grid">
+                    <div>
+                        <span class="detalle-label">Fecha de inicio:</span>
+                        <p id="detalleFechaInicio"></p>
+                    </div>
+                    <div>
+                        <span class="detalle-label">Fecha de fin:</span>
+                        <p id="detalleFechaFin"></p>
+                    </div>
+                </div>
+            </div>
+            <button class="modal-button" id="btnCerrarDetalles">Cerrar</button>
+        </div>
+    </div>
+
+    <!-- Modal de confirmación para eliminar -->
+    <div id="modalConfirmacion" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Confirmar Eliminación</h3>
+            </div>
+            <p>¿Estás seguro de que deseas eliminar este reto?</p>
+            <div class="modal-actions">
+                <button id="btnCancelarEliminar" class="modal-button-secondary">Cancelar</button>
+                <button id="btnConfirmarEliminar" class="modal-button">Eliminar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de video -->
+    <div id="videoModal"
+    style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.8); justify-content:center; align-items:center;"
+    onclick="cerrarModalVideo(event)">
+    
+    <div id="videoContainer" style="position:relative; width:80%; max-width:800px;" onclick="event.stopPropagation()">
+        
+        <!-- LA "X" con z-index más alto -->
+        <span onclick="cerrarModalVideo()" 
+              style="position:absolute; top:10px; right:20px; color:white; font-size:30px; cursor:pointer; z-index: 10;">
+              &times;
+        </span>
+
+        <!-- EL VIDEO con z-index menor -->
+        <video id="videoPlayer" controls style="width:100%; z-index:1;">
+            <source id="videoSource" src="" type="video/mp4">
+            Tu navegador no soporta videos HTML5.
+        </video>
+    </div>
+</div>
+
+    <!-- Modal de ficha pdf -->
+    <div id="fichaModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.8); justify-content:center; align-items:center;" onclick="cerrarFichaModal(event)">
+        <div id="fichaContainer" style="position:relative; width:80%; height:90%; max-width:800px;" onclick="event.stopPropagation()">
+            <span onclick="cerrarFichaModal()" 
+            style="position:absolute; top:5vh; right:20px; color:black; font-size:5vh; cursor:pointer; z-index: 99;">
+            &times;
+      </span>
+            <iframe id="fichaViewer" src="" width="100%" height="100%" style="border:none;"></iframe>
+        </div>
+    </div>
+
+<div id="modalListadoVideos"class="modal" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-header" id="modalHeaderListadoVideos">
+      <span class="close" onclick="cerrarModalAplicaciones()">&times;</span>
+      <h2 id="idCursoVideos">Listado Videos Curso</h2>
+
+        <button id="btnAgregarVideo" class="action-button" >
+            Agregar Video
+        </button>
+        </div>
+      <table id="tablaVideos" class="data-table">
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>Titulo</th>
+            <th>Descripcion</th>
+            <th>duracion</th>
+            <th>Video</th>
+            <th>Fecha</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="tablaAplicacionesBody">
+          <!-- Se insertarán dinámicamente -->
+        </tbody>
+      </table>
+</div>
+    <!-- Modal -->
+<div id="modalAplicaciones" class="modal" style="display: none;">
+    <div class="modal-content">
+      <span class="close" onclick="cerrarModalAplicaciones()">&times;</span>
+      <h2>Aplicaciones al Reto</h2>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Entidad</th>
+            <th>Correo</th>
+            <th>Teléfono</th>
+            <th>Archivos</th>
+            <th>Fecha de Aplicación</th>
+          </tr>
+        </thead>
+        <tbody id="tablaAplicacionesBody">
+          <!-- Se insertarán dinámicamente -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+    
+<!-- Modal para agregar video al curso -->
+<div id="modalAgregarVideo" class="modal" style="display:none;">
+    <div class="modal-content">
+        <span class="close" onclick="cerrarModalAgregarVideo()">&times;</span>
+        <h2>Agregar Video al Curso</h2>
+        <form id="formAgregarVideo">
+            <label for="tituloVideo">Título:</label>
+            <input type="text" id="tituloVideo" name="tituloVideo" required>
+
+            <label for="descripcionVideo">Descripción:</label>
+            <textarea id="descripcionVideo" name="descripcionVideo" required></textarea>
+
+            <label for="duracionVideo">Duración:</label>
+            <input type="text" id="duracionVideo" name="duracionVideo" required placeholder="Ej: 10:30">
+
+            <label for="archivoVideo">Video:</label>
+            <input type="file" id="archivoVideo" name="archivoVideo" accept="video/*" required>
+
+            <button type="submit" class="action-button">Agregar Video</button>
+        </form>
+    </div>
+</div>
+<script>
+function cerrarModalAgregarVideo() {
+    document.getElementById("modalAgregarVideo").style.display = "none";
+}
+document.getElementById("btnAgregarVideo")?.addEventListener("click", function() {
+    document.getElementById("modalAgregarVideo").style.display = "flex";
+});
+document.getElementById("formAgregarVideo")?.addEventListener("submit", function(e) {
+    e.preventDefault();
+    // Aquí va la lógica para enviar el video al backend
+    // Puedes agregar validaciones y peticiones AJAX según tu necesidad
+    cerrarModalAgregarVideo();
+});
+</script>
+    <script src="/js/config.js"></script>
+    <script src="js/NavegacionDash.js"></script>
+
+    <script src="js/crearCurso.js"></script>
+    <script src="js/dashboardCursos.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            cargarRetos();
+        })
+
+
+       function mostrarAplicaciones(retoId) {
+  fetch(`/api/retos/obtenerAplicaciones?retoId=${retoId}`)
+    .then(response => {
+      if (!response.ok) throw new Error("No se encontraron aplicaciones.");
+      return response.json();
+    })
+    .then(aplicaciones => {
+      const tbody = document.getElementById("tablaAplicacionesBody");
+      tbody.innerHTML = ""; // Limpiar tabla
+
+      aplicaciones.forEach(ap => {
+        const tr = document.createElement("tr");
+        const archivos = [ap.file1, ap.file2, ap.file3, ap.file4, ap.file5, ap.file6, ap.file7]
+  .filter(Boolean)
+  .map((file, index) => `
+    <a href="/datosRetos/${ap.retoId}/${file}" 
+       target="_blank" 
+       class="btn btn-outline-danger btn-sm me-1 mb-1"
+       title="Archivo ${index + 1}" 
+       data-bs-toggle="tooltip" 
+       data-bs-placement="top">
+      <i class="bi bi-file-earmark-pdf-fill"></i>
+    </a>
+  `)
+  .join(" ");
+
+        tr.innerHTML = `
+          <td>${ap.entidad.razonSocial}</td>
+          <td>${ap.entidad.correo}</td>
+          <td>${ap.entidad.telefono}</td>
+          <td>${archivos}</td>
+          <td>${new Date(ap.createdAt).toLocaleDateString()}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      document.getElementById("modalAplicaciones").style.display = "flex";
+    })
+    .catch(err => {
+        Swal.fire({
+    icon: 'question', // El tipo de alerta: 'success', 'error', 'warning', 'info', 'question'
+    title: 'Sin Aplicacion',
+    text: 'No se encontraron aplicaciones.',
+  });
+    });
+}
+
+// Inicializar todos los tooltips de Bootstrap
+document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
+  new bootstrap.Tooltip(el);
+});
+
+function cerrarModalAplicaciones() {
+  document.getElementById("modalListadoVideos").style.display = "none";
+}
+
+window.onclick = function(event) {
+  const modal = document.getElementById('modalListadoVideos');
+  if (event.target === modal) {
+    modal.style.display = "none";
+  }
+}
+
+    </script>
+
+</body>
+
+</html>

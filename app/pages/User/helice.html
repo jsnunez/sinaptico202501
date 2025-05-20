@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SINAPTICO</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <link rel="stylesheet" href="styles/colores.css">
+    <link rel="stylesheet" href="styles/stylehelice2.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+</head>
+
+<body>
+    <!-- Fondo de animación neuronal -->
+    <div class="neural-background">
+        <canvas id="neuralCanvas"></canvas>
+    </div>
+
+    <!-- Encabezado -->
+    <header class="header">
+        <div onclick="window.location.href='/helice'" class="logo">
+            <!-- <span class="logo-icon">⚡</span> -->
+            <span class="logo-text">SINAPTICO</span>
+        </div>
+        <nav class="nav">
+            <button class="nav-button pulse" onclick="window.location.href='/helice'">Hélice</button>
+            <button class="nav-button pulse" onclick="window.location.href='/innovacion'">Innovación</button>
+
+            <button class="nav-button pulse" onclick="window.location.href='/Conocimiento'">Conocimiento</button>
+            <button class="nav-button pulse" onclick="window.location.href='/eventos'">Eventos</button>
+
+            <button class="nav-button pulse" onclick="irEnConstruccion()">Mapa</button>
+
+            <button class="nav-button pulse" id="cerrarSesion">Cerrar sesión</button>
+        </nav>
+    </header>
+
+    <!-- Bienvenida y botones de acción -->
+    <div class="welcome-container">
+        <div id="userPhoto"> 
+            <img src="img/sinfoto.jpg" alt="">
+        </div>
+
+        <div class="welcome-text">
+            <h2 id="bienvenido">Hola </h2>
+            <!-- <p class="subtitle">Conectando entidades para potenciar la innovación</p> -->
+        </div>
+        <div class="action-buttons">
+            <button class="action-button" id="crearEntidad" style="display: none;">
+
+                <span class="button-icon">+</span>Crear entidad
+            </button>
+            <button class="action-button" id="vincularEntidad" style="display: flex;">
+                <span class="button-icon">+</span> vincular entidad
+            </button>
+            <button class="action-button" id="editarEntidad" style="display: none;">
+                <span class="button-icon">✏️</span> Editar entidad
+            </button>
+
+            <button class="action-button" id="asignarServicio" style="display: none;"
+                onclick="abrirModalAgregarServicio()">
+                <span class="button-icon">🔄</span> Servicios
+            </button>
+        </div>
+    </div>
+
+    <!-- solicitiudes para mi actor-->
+    <div class="main-content" id="solicitudes" style="display: none;">
+        <div class="helix-title">
+            <h3>Mis Integrantes</h3>
+            <div class="solicitudes-list"></div>
+            <table style="width:100%;border-collapse:collapse;">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                        <th>Cargo</th>
+                        <th>estado</th>
+                    </tr>
+                </thead>
+                <tbody id="solicitudes-list-body">
+                    <!-- Las solicitudes se cargarán aquí -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+    </div>
+
+    <!-- Filtros -->
+    <div class="filter-container" style="display: none;" id="filtros">
+        <input type="text" id="buscarEntidad" placeholder="Nombre Entidad" class="filter-input">
+        <button class="filter-button" id="Todos1">Todos</button>
+
+        <button class="filter-button" id="Empresas">Empresas</button>
+        <button class="filter-button" id="Emprendimientos">Emprendimientos</button>
+        <button class="filter-button" id="Startups">Startups</button>
+        <button class="filter-button" id="Universidad">Universidades</button>
+        <!-- Filtros -->
+
+    </div>
+
+    <!-- Contenido principal - Listado -->
+    <div class="main-content" id="listado">
+        <!-- Las tarjetas de empresas se cargarán aquí -->
+    </div>
+
+    <!-- Contenido principal - Entidades -->
+    <div class="main-content" id="entidades">
+        <!-- Tarjetas de la triple hélice -->
+        <div class="helix-title">
+            <h3>Modelo de cuadruple Hélice</h3>
+            <p>Interacción entre Estado, Academia y Sociedad para impulsar la innovación</p>
+        </div>
+
+        <div class="cards-container">
+            <!-- Estado Card -->
+            <div id="directorio" class="card">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="card-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-person-fill"
+                                viewBox="0 0 16 16">
+                                <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
+                            </svg>
+                        </div>
+                        <h3 class="card-title">Directorio</h3>
+                        <p class="card-text">Consulta el listado completo de entidades registradas en nuestra
+                            plataforma.</p>
+                        </p>
+                    </div>
+                    <div class="card-back">
+                        <h3 class="card-title">Ver Contenido</h3>
+                        <p class="card-text">Explora el perfil de cada organización registrada y conecta con sus
+                            iniciativas.</p>
+
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Academia Card -->
+            <div class="card">
+                <div class="card-inner" onclick="window.location.href='/innovacion'">
+                    <div class="card-front">
+                        <div class="card-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-lightbulb-fill"
+                                viewBox="0 0 16 16">
+                                <path
+                                    d="M2 6a6 6 0 1 1 10.174 4.31c-.203.196-.359.4-.453.619l-.762 1.769A.5.5 0 0 1 10.5 13h-5a.5.5 0 0 1-.46-.302l-.761-1.77a2 2 0 0 0-.453-.618A5.98 5.98 0 0 1 2 6m3 8.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1l-.224.447a1 1 0 0 1-.894.553H6.618a1 1 0 0 1-.894-.553L5.5 15a.5.5 0 0 1-.5-.5" />
+                            </svg>
+                        </div>
+                        <h3 class="card-title">Innovacion Abierta</h3>
+                        <p class="card-text">Conecta con empresas que buscan soluciones innovadoras a desafíos
+                            reales.
+                        </p>
+                    </div>
+                    <div class="card-back">
+                        <h3 class="card-title">Ver Contenido</h3>
+                        <p class="card-text">Descubre retos abiertos y propón soluciones que generen impacto.</p>
+
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sociedad Card -->
+            <div class="card">
+                <div class="card-inner" onclick="window.location.href='/Conocimiento'">
+                    <div class="card-front">
+                        <div class="card-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-card-list"
+                                viewBox="0 0 16 16">
+                                <path
+                                    d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2z" />
+                                <path
+                                    d="M5 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 5 8m0-2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m0 5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-1-5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0M4 8a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0m0 2.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0" />
+                            </svg>
+                        </div>
+                        <h3 class="card-title">Capacitacion</h3>
+                        <p class="card-text">Accede a programas de formación para fortalecer tus capacidades y
+                            conocimientos.</p>
+                    </div>
+                    <div class="card-back">
+                        <h3 class="card-title">Ver Contenido</h3>
+                        <p class="card-text">Revisa los cursos disponibles y fortalece tus competencias
+                            profesionales.
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Innovación Card -->
+            <div class="card">
+                <div class="card-inner" onclick="window.location.href='/eventos'">
+                    <div class="card-front">
+                        <div class="card-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-calendar-date-fill"
+                                viewBox="0 0 16 16">
+                                <path
+                                    d="M4 .5a.5.5 0 0 0-1 0V1H2a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-1 0V1H4zm5.402 9.746c.625 0 1.184-.484 1.184-1.18 0-.832-.527-1.23-1.16-1.23-.586 0-1.168.387-1.168 1.21 0 .817.543 1.2 1.144 1.2" />
+                                <path
+                                    d="M16 14V5H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2m-6.664-1.21c-1.11 0-1.656-.767-1.703-1.407h.683c.043.37.387.82 1.051.82.844 0 1.301-.848 1.305-2.164h-.027c-.153.414-.637.79-1.383.79-.852 0-1.676-.61-1.676-1.77 0-1.137.871-1.809 1.797-1.809 1.172 0 1.953.734 1.953 2.668 0 1.805-.742 2.871-2 2.871zm-2.89-5.435v5.332H5.77V8.079h-.012c-.29.156-.883.52-1.258.777V8.16a13 13 0 0 1 1.313-.805h.632z" />
+                            </svg>
+                        </div>
+                        <h3 class="card-title">Eventos y Convocatorias</h3>
+                        <p class="card-text">Infórmate sobre eventos, talleres y oportunidades de participación en
+                            nuestro ecosistema.</p>
+                    </div>
+                    <div class="card-back">
+                        <h3 class="card-title">Ver Contenido</h3>
+                        <p class="card-text">Participa en convocatorias, charlas y encuentros del ecosistema de
+                            innovación.</p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contadores -->
+        <div class="stats-title">
+            <h3>Estadísticas del Ecosistema</h3>
+            <p>Nodos activos en nuestra red neural de innovación</p>
+        </div>
+
+
+
+        <div class="counters-container">
+            <div class="counter">
+                <div class="pulse-ring"></div>
+                <div class="counter-number" id="usuarios">0</div>
+                <div class="counter-label">Usuarios</div>
+            </div>
+            <div class="counter">
+                <div class="pulse-ring"></div>
+                <div class="counter-number" id="entidadesCount">0</div>
+                <div class="counter-label">Entidades</div>
+            </div>
+            <div class="counter">
+                <div class="pulse-ring"></div>
+                <div class="counter-number" id="retos">0</div>
+                <div class="counter-label">Retos</div>
+            </div>
+            <div class="counter">
+                <div class="pulse-ring"></div>
+                <div class="counter-number" id="publicaciones">0</div>
+                <div class="counter-label">actividad muro</div>
+            </div>
+
+
+
+        </div>
+    </div>
+
+    <!-- Modal Foto de Perfil -->
+    <div id="modalFotoPerfil" class="modal">
+        <div class="modal-content">
+            <span class="close" id="cerrarModalFotoPerfil">&times;</span>
+            <h2>Actualizar Foto de Perfil</h2>
+            <form id="formFotoPerfil">
+                <div class="form-group" style="text-align:center;">
+                    <img id="previewFotoPerfil" src="" alt="Foto actual"
+                        style="width:100px;height:100px;border-radius:50%;object-fit:cover;margin-bottom:15px;">
+                </div>
+                <div class="form-group">
+                    <input type="file" id="inputFotoPerfil" name="fotoPerfil" accept="image/*" required>
+                </div>
+                <button type="submit" class="modal-button">Guardar Foto</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        // Abrir modal al hacer clic en la foto de usuario
+        document.getElementById('userPhoto').onclick = function () {
+            document.getElementById('modalFotoPerfil').style.display = 'block';
+            // Opcional: cargar foto actual si tienes la URL
+            // document.getElementById('previewFotoPerfil').src = 'URL_DE_LA_FOTO_ACTUAL';
+        };
+        // Cerrar modal
+        document.getElementById('cerrarModalFotoPerfil').onclick = function () {
+            document.getElementById('modalFotoPerfil').style.display = 'none';
+        };
+        // Vista previa de la imagen seleccionada
+        document.getElementById('inputFotoPerfil').onchange = function (e) {
+            const file = e.target.files[0];
+            if (file) {
+                document.getElementById('previewFotoPerfil').src = URL.createObjectURL(file);
+            }
+        };
+        // Guardar foto (debes implementar la lógica de subida en tu backend)
+        document.getElementById('formFotoPerfil').onsubmit = function (e) {
+            e.preventDefault();
+            const file = document.getElementById('inputFotoPerfil').files[0];
+            if (!file) return;
+            // Ejemplo de subida con fetch y FormData
+            const formData = new FormData();
+            formData.append('fotoPerfil', file);
+            fetch('/api/usuario/foto', {
+                method: 'POST',
+                body: formData
+            }).then(res => res.json())
+                .then(data => {
+                    // Actualiza la foto en la interfaz si es necesario
+                    document.getElementById('modalFotoPerfil').style.display = 'none';
+                    // document.getElementById('userPhoto').innerHTML = '<img src="URL_NUEVA_FOTO" ...>';
+                    location.reload(); // O actualiza solo la foto
+                }).catch(() => {
+                    alert('Error al subir la foto');
+                });
+        };
+    </script>
+    <!-- Modal Empresa -->
+    <div id="empresaModal" class="modal">
+        <div class="modal-content" id="infoEmpresas">
+            <span class="close">&times;</span>
+            <h1 id="modalRazonSocial">
+                </h2>
+                <h3 id="tipoEntidad">
+            </h1>
+            <div class="modal-info">
+                <p><strong>Descripcion:</strong> </p>
+                <p><span id="descripcionEmpresa"></span></p>
+                <p><strong>Servicios:</strong> </p>
+                <div id="serviciosAsociados"></div>
+                <p><strong>Ubicacion:</strong> </p>
+                <p><span id="UbicacionEntidad"></span></p>
+                <p><strong>Persona de contacto:</strong> </p>
+                <p><span id="contactoEntidad"></span></p>
+
+                <div class="contact-info">
+                    <div>
+                        <p><strong>Telefono:</strong> </p>
+                        <p><span id="telefonoEntidad"></span>
+                        </p>
+                    </div>
+                    <div><button class="action-button" id="contactarTelBtn">Contactar</button> </div>
+                </div>
+                <p><strong>Integrantes:</strong> </p>
+                <div id="integrantesAsociados"></div>
+                <div class="social-icons">
+                    <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook"></i></a>
+                    <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="https://twitter.com" target="_blank"><i class="fab fa-x"></i></a>
+                    <a href="https://linkedin.com" target="_blank"><i class="fab fa-linkedin"></i></a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Unirme -->
+    <div id="modalUnirme" class="modal">
+        <div class="modal-content">
+            <!-- <span class="modal-icon">⚡</span> -->
+            <h1 id="modalUnirmeTitulo">Vincularme a un actor</h1>
+            <p id="modalUnirmeIdentificacion"></p>
+
+            <form id="formUnirme">
+                <div class="form-group">
+                    <input type="text" id="userId" name="userId" disabled required style="display: none;">
+                </div>
+                <div class="form-group">
+                    <label for="nombreUnir">Nombre:</label>
+                    <input type="text" id="nombreUnir" name="nombreUnir" disabled required>
+                </div>
+
+                <div class="form-group">
+                    <label for="cargoId">Cargo:</label>
+                    <select id="cargoId" name="cargoId" required>
+
+                    </select>
+
+                </div>
+                <div class="form-group">
+                    <input type="text" id="cargoPersonaNuevoVincular" name="cargoPersonaNuevo"
+                        placeholder="Ingrese el nuevo cargo" required>
+                    <button type="button" class="action-button" id="crearCargoVincularButton">Crear cargo</button>
+                </div>
+
+                <div class="form-group">
+                    <label for="entidadId">Entidad:</label>
+                    <select id="entidadId" name="entidadId" required>
+
+                    </select>
+                </div>
+
+                <button type="submit" class="modal-button" id="unirEmpresa">Enviar</button>
+            </form>
+            <button id="CerrarModal" class="modal-button">Cerrar</button>
+        </div>
+    </div>
+    <!-- Modal Editar -->
+    <div id="modalEditar" class="modal">
+        <div class="modal-content">
+            <form id="entidad-form-editar">
+                <div class="titulo-datos" id="titulo-datos-entidad">
+                    <!-- Los campos se agregarán dinámicamente -->
+                </div>
+                <div class="datos-entidad" id="datos-entidad">
+                    <!-- Los campos se agregarán dinámicamente -->
+                </div>
+                <button type="submit" class="modal-button">Editar Entidad</button>
+            </form>
+
+            <button class="modal-button" id="cerrarModalEditar">Cerrar</button>
+        </div>
+    </div>
+    <div id="modalEditar" class="modal">
+        <div class="modal-content">
+            <form id="entidad-form-editar">
+                <div class="titulo-datos" id="titulo-datos-entidad">
+                    <!-- Los campos se agregarán dinámicamente -->
+                </div>
+                <div class="datos-entidad" id="datos-entidad">
+                    <!-- Los campos se agregarán dinámicamente -->
+                </div>
+                <button type="submit" class="modal-button">Editar Entidad</button>
+            </form>
+
+            <button class="modal-button" id="cerrarModalEditar">Cerrar</button>
+        </div>
+    </div>
+    <!-- Modal Crear Entidad -->
+    <div class="overlay"></div>
+    <div id="myModalAsignarServicio" class="modal">
+        <div class="modal-content">
+            <form id="servicio-form-crear">
+                <div class="modal-header">
+                    <h3>Crear Nuevo Servicio</h3>
+                </div>
+
+                <!-- <label for="descripcionServicio">Descripción:</label> -->
+                <input type="text" id="descripcionServicio" name="descripcionServicio" maxlength="50" required
+                    style="width: 100%; height: 40px;" placeholder="Descripcion, maximo 50 caracteres">
+
+                <button type="submit" class="modal-button">Crear Servicio</button>
+            </form>
+
+            <div class="modal-header">
+                <h3>Mis Servicio</h3>
+            </div>
+            <div class="tabla-scroll" id="misServiciosTabla">
+
+            </div>
+            <button class="modal-button" id="cerrarModal">Cerrar</button>
+        </div>
+
+    </div>
+    <!-- Modal Crear Entidad -->
+    <div class="overlay"></div>
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Crear Actor</h3>
+            </div>
+
+            <!-- <div class="entity-type-selector">
+                <button id="Empresa" class="entity-type-button active" onclick="changeForm('Empresa')">Empresa</button>
+                <button class="entity-type-button" onclick="changeForm('universidad')">Universidad</button>
+                <button class="entity-type-button" onclick="changeForm('emprendimiento')">Emprendimiento</button>
+                <button class="entity-type-button" onclick="changeForm('startup')">Startup</button>
+                <button class="entity-type-button" onclick="changeForm('otro')">Otro</button>
+            </div> -->
+
+            <form id="entidad-form">
+
+                <div class="datos-entidad" id="datos-entidad-crear">
+                    <!-- Los campos se agregarán dinámicamente -->
+                </div>
+
+                <button type="submit" class="modal-button">Crear Actor</button>
+            </form>
+
+
+
+            <button class="modal-button" id="cerrarModal">Cerrar</button>
+        </div>
+    </div>
+    <!-- Scripts -->
+    <script src="js/helice2.js"></script>
+    <script src="/js/config.js"></script>
+    <script src="js/enviarformulario.js"></script>
+    <script src="admin.js"></script>
+    <script src="js/formularios.js"></script>
+    <script src="js/llamarEntidades.js"></script>
+    <script src="js/editarEntidad.js"></script>
+    <script src="js/cargarDatos.js"></script>
+    <script src="js/unirConEntidad.js"></script>
+    <script src="js/agregarServicioEntidad.js"></script>
+    <script src="js/estadisticas.js"></script>
+    <script src="js/solicitudesVincuncular.js"></script>
+
+    <script>
+        function irEnConstruccion() {
+            window.location.href = "/construccion"; // o la ruta que tengas
+        }
+        fetchChallengeCount();
+        fetchEntidadesCount();
+        fetchUserCount();
+    </script>
+</body>
+
+</html>

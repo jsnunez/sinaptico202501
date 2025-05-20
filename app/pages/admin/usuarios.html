@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Control</title>
+    <link rel="stylesheet" href="styles/dashboard.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+    <!-- Fondo neuronal -->
+    <div class="neural-background">
+        <canvas id="neuralCanvas"></canvas>
+    </div>
+
+    <!-- Encabezado -->
+    <div class="header">
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-trophy"></i>
+            </div>
+            <div class="logo-text">Control sinaptico</div>
+        </div>
+        <div class="nav">
+            <button class="nav-button" data-page="dashboard">Dashboard</button>
+            <button class="nav-button" data-page="helice">Helice</button>
+            <button class="nav-button active" data-page="usuarios">Usuarios</button>
+            <button class="nav-button" data-page="entidades">Entidades</button>
+            <button class="nav-button" data-page="retos">Retos</button>
+            <button class="nav-button" data-page="muro">Muro</button>
+            <button class="nav-button" data-page="eventosDashboard">Eventos</button>
+            <button class="nav-button" data-page="conocimientoDashboard">conocimiento</button>
+
+        </div>
+    </div>
+
+    <!-- Contenedor de bienvenida -->
+    <div class="welcome-container">
+        <div class="welcome-text">
+            <h2>Gestión de Usuarios</h2>
+            <p class="subtitle">Administra los usuarios de la aplicación</p>
+        </div>
+        <!-- <div class="action-buttons">
+            <button class="action-button" id="btnNuevoUsuario">
+                <i class="fas fa-user-plus button-icon"></i>
+                Nuevo Usuario
+            </button>
+        </div> -->
+    </div>
+
+    <!-- Filtros -->
+    <div class="filter-container">
+        <input type="text" id="buscarUsuario" placeholder="Buscar usuarios..." class="filter-input">
+    </div>
+
+    <!-- Tabla de usuarios -->
+    <div class="main-content">
+        <table class="data-table" id="tablaUsuarios">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Email</th>
+                    <th>Rol</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Los datos se cargarán dinámicamente con JavaScript -->
+            </tbody>
+        </table>
+        <div class="pagination"></div>
+
+    </div>
+
+    <!-- Modal para crear/editar usuario -->
+    <div id="modalUsuario" class="modal">
+        <div class="modal-content">
+            <span id="cerrarModalEditar" class="close">&times;</span>
+            <div class="modal-header">
+                <h3 id="tituloModalUsuario">Nuevo Usuario</h3>
+            </div>
+            <form id="formUsuario">
+                <input type="hidden" id="usuarioId">
+                <div class="input-box">
+                    <span>Nombre</span>
+                    <input type="text" id="nombreUsuario" required>
+                </div>
+                <div class="input-box">
+                    <span>Email</span>
+                    <input type="email" id="emailUsuario" required>
+                </div>
+                <div class="input-box">
+                    <span>Rol</span>
+                    <select id="rolUsuario">
+                        <option value="3">Administrador</option>
+                        <option value="2">Editor</option>
+                        <option value="1">Usuario</option>
+                    </select>
+                </div>
+                <div class="input-box" id="estadoUsuarioContainer">
+                    <span>Estado</span>
+                    <select id="estadoUsuario">
+                        <option value="1">Activo</option>
+                        <option value="0">Inactivo</option>
+                    </select>
+                </div>
+                <button type="submit" id="btnGuardarUsuario" class="modal-button">Guardar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de confirmación para eliminar -->
+    <div id="modalConfirmacion" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Confirmar Eliminación</h3>
+            </div>
+            <p id="idEliminar">¿Estás seguro de que deseas eliminar este usuario?</p>
+          
+            <div class="modal-actions">
+                <button id="btnCancelarEliminar" class="modal-button-secondary">Cancelar</button>
+                <button id="btnConfirmarEliminar" class="modal-button">Eliminar</button>
+            </div>
+        </div>
+    </div>
+    <script src="/js/config.js"></script>
+    <script src="js/NavegacionDash.js"></script>
+
+    <script src="js/dashboardUsuarios.js"></script>
+<script>
+
+</script>
+</body>
+</html>

@@ -1,0 +1,150 @@
+[
+    {
+      "id": 1,
+      "title": "Diseño de logotipo profesional para tu marca",
+      "description": "Crearé un logotipo único y profesional que represente la identidad de tu marca. Incluye revisiones ilimitadas y archivos en alta resolución.",
+      "price": "$120",
+      "category": "Diseño gráfico",
+      "rating": 4.9,
+      "reviews": 156,
+      "deliveryTime": "3 días",
+      "location": "Madrid, España",
+      "provider": {
+        "id": 101,
+        "name": "Laura Martínez",
+        "avatar": "placeholder.svg"
+      },
+      "createdAt": "2025-4-27",
+      "pinned": false,
+      "isNew": false,
+      "featured": true,
+      "type": "offer"
+    },
+    {
+      "id": 2,
+      "title": "Desarrollo de sitio web con WordPress",
+      "description": "Crearé un sitio web profesional y responsivo utilizando WordPress. Incluye instalación, configuración y personalización de tema.",
+      "price": "$350",
+      "category": "Desarrollo web",
+      "rating": 4.8,
+      "reviews": 89,
+      "deliveryTime": "7 días",
+      "location": "Barcelona, España",
+      "provider": {
+        "id": 102,
+        "name": "Carlos Rodríguez",
+        "avatar": "placeholder.svg"
+      },
+      "createdAt": "2023-12-20T00:00:00Z",
+      "pinned": false,
+      "isNew": false,
+      "featured": false,
+      "type": "offer"
+    },
+    {
+      "id": 3,
+      "title": "Necesito traductor inglés-español para documentos técnicos",
+      "description": "Busco un traductor profesional para traducir manuales técnicos del inglés al español. Se requiere experiencia en terminología técnica.",
+      "price": "$0.05/palabra",
+      "category": "Traducción",
+      "rating": 4.7,
+      "reviews": 124,
+      "deliveryTime": "24 horas",
+      "location": "Valencia, España",
+      "provider": {
+        "id": 103,
+        "name": "Ana García",
+        "avatar": "placeholder.svg"
+      },
+      "createdAt": "2023-12-25T00:00:00Z",
+      "pinned": true,
+      "isNew": false,
+      "featured": true,
+      "type": "request"
+    },
+    {
+      "id": 4,
+      "title": "Busco especialista en marketing para redes sociales",
+      "description": "Necesito un experto en marketing digital para desarrollar una estrategia completa para mis redes sociales. Incluye análisis de competencia y calendario editorial.",
+      "price": "$200",
+      "category": "Marketing digital",
+      "rating": 4.6,
+      "reviews": 78,
+      "deliveryTime": "5 días",
+      "location": "Sevilla, España",
+      "provider": {
+        "id": 104,
+        "name": "Miguel Fernández",
+        "avatar": "placeholder.svg"
+      },
+      "createdAt": "2023-12-30T00:00:00Z",
+      "pinned": false,
+      "isNew": false,
+      "featured": false,
+      "type": "request"
+    },
+    {
+      "id": 5,
+      "title": "Edición y retoque de fotografías profesionales",
+      "description": "Servicio de edición y retoque fotográfico profesional. Corrección de color, retoque de piel, eliminación de fondos y más.",
+      "price": "$40/foto",
+      "category": "Diseño gráfico",
+      "rating": 4.9,
+      "reviews": 112,
+      "deliveryTime": "2 días",
+      "location": "Málaga, España",
+      "provider": {
+        "id": 105,
+        "name": "Sofía López",
+        "avatar": "placeholder.svg"
+      },
+      "createdAt": "2024-01-05T00:00:00Z",
+      "pinned": false,
+      "isNew": true,
+      "featured": false,
+      "type": "offer"
+    },
+    {
+      "id": 6,
+      "title": "Necesito desarrollador para aplicación móvil",
+      "description": "Busco desarrollador con experiencia en aplicaciones móviles nativas para iOS y Android. El proyecto incluye diseño de UI/UX, desarrollo y publicación en tiendas.",
+      "price": "$1500",
+      "category": "Programación",
+      "rating": 4.8,
+      "reviews": 67,
+      "deliveryTime": "30 días",
+      "location": "Bilbao, España",
+      "provider": {
+        "id": 999,
+        "name": "Usuario Actual",
+        "avatar": "placeholder.svg"
+      },
+      "createdAt": "2024-01-10T00:00:00Z",
+      "pinned": false,
+      "isNew": true,
+      "featured": false,
+      "type": "request"
+    },
+    {
+      "id": 7,
+      "title": "Desarrollo de sitio web con WordPress",
+      "description": "Crearé un sitio web profesional y responsivo utilizando WordPress. Incluye instalación, configuración y personalización de tema.",
+      "price": "$350",
+      "category": "Desarrollo web",
+      "rating": 4.8,
+      "reviews": 89,
+      "deliveryTime": "7 días",
+      "location": "Barcelona, España",
+      "provider": {
+        "id": 102,
+        "name": "Carlos Rodríguez",
+        "avatar": "placeholder.svg"
+      },
+      "createdAt": "2023-12-20T00:00:00Z",
+      "pinned": false,
+      "isNew": false,
+      "featured": false,
+      "type": "offer"
+    }
+  ]
+  

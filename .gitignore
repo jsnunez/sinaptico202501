@@ -1,0 +1,7 @@
+
+node_modules
+.env
+app/public/fichas/
+app/public/videos/
+app/public/logos/
+app/public/datosRetos/
