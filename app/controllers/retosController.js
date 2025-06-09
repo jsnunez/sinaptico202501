@@ -39,12 +39,13 @@ export const createReto = async (req, res) => {
         return res.status(400).json({ message: err.message });
       }
   
-      const { nombre, descripcion } = req.body;
+      const { nombre, descripcion,userId} = req.body;
   
       try {
         const newReto = await Reto.create({
           nombre,
           descripcion,
+          userId,
           ubicacionVideo: req.files.video ? req.files.video[0].filename : null,
           ubicacionFicha: req.files.ficha ? req.files.ficha[0].filename : null,
         });
@@ -246,5 +247,28 @@ console.log('ID del reto:', req.query); // Agrega este log para depuración
   } catch (error) {
     console.error('Error al obtener aplicaciones:', error);
     res.status(500).json({ message: 'Error al obtener las aplicaciones', error });
+  }
+};
+
+
+export const cambiarEstadoHabilitado = async (req, res) => {
+  const { id } = req.params;
+  const { habilitado } = req.body;
+
+  if (typeof habilitado !== 'boolean') {
+    return res.status(400).json({ message: 'El campo habilitado debe ser booleano' });
+  }
+
+  try {
+    const reto = await Reto.findByPk(id);
+    if (!reto) {
+      return res.status(404).json({ message: 'Reto no encontrado' });
+    }
+    reto.habilitado = habilitado;
+    await reto.save();
+    res.status(200).json({ message: 'Estado actualizado correctamente', reto });
+  } catch (error) {
+    console.error('Error al cambiar estado habilitado:', error);
+    res.status(500).json({ message: 'Error al cambiar el estado', error });
   }
 };

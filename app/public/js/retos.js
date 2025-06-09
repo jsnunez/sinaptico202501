@@ -71,7 +71,12 @@ try {
 
   challengesGrid.innerHTML = "";
 
+
   challenges.forEach(challenge => {
+    if (!challenge.habilitado) {
+      // Si el reto no está habilitado, no mostrar el botón de aplicar
+      return;
+    }
     const challengeCard = document.createElement("div");
     challengeCard.classList.add("challenge-card");
 
@@ -120,6 +125,14 @@ try {
       openModalBtn.style.backgroundColor = "red";
       return;
         }
+        // Si el usuario ya está registrado como entidad pero no está habilitado aún
+        if (habilitadaData.mensaje === "Usuario encontrado") {
+          openModalBtn.disabled = true;
+          openModalBtn.textContent = "Contactate con el administrador de la empresa para aplicar";
+          openModalBtn.classList.add("disabled");
+          openModalBtn.style.backgroundColor = "orange";
+        }
+
 
         // Check if the entity has already applied to the challenge
         const response = await fetch(`${API_BASE_URL}/api/retos/verificar-aplicacion?entidadId=${DatosEntidad.entidad.id}&retoId=${challenge.id}`);
@@ -246,3 +259,6 @@ console.log("Form data:", userid);
   challengesGrid.innerHTML = "<p>Error loading challenges. Please try again later.</p>";
 }
 });
+
+
+

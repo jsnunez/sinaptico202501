@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
 console.log('Formulario enviado'); // Agrega un log para verificar el envío del formulario
         const formData = new FormData(form);
 
+
         try {
             const response = await fetch(`${API_BASE_URL}/api/curso`, {
                 method: 'POST',

@@ -1,10 +1,11 @@
 // Assuming you have a similar structure for another button and modal
 document.getElementById("vincularEntidad").addEventListener("click", () => {
  const userId = obtenerCookie("userId");
+    const nombre = obtenerCookie("user");
     document.getElementById('modalUnirme').style.display = 'block';
     document.getElementById('userId').value = userId;
 
-    document.getElementById('nombreUnir').value = cleanedStr;
+    document.getElementById('nombreUnir').value = nombre;
     
     agregarCargosUnir();
     agregarEntidadesUnir()
@@ -82,6 +83,7 @@ console.log(entidades);
                   });
                 
                 document.getElementById('modalUnirme').style.display = 'none';
+                window.location.reload();
             } else {
                 console.error('Error al enviar los datos:', response.statusText);
                 alert('Hubo un error al realizar la unión.');

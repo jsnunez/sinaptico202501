@@ -1,6 +1,7 @@
 
 async function fetchUserCount() {
   try {
+    
     const res = await fetch(`${API_BASE_URL}/api/user/count`, {
       method: "GET",
       headers: { "Content-Type": "application/json" }
@@ -84,3 +85,45 @@ async function fetchEntidadesCount() {
   }
 }
 
+
+async function fetchConvocatoriasCount() {
+  try {
+    const res = await fetch("/api/convocatorias/cantidadConvocatorias", {
+      method: "GET",
+      headers: { "Content-Type": "application/json" }
+    });
+
+    if (!res.ok) {
+      throw new Error("No se pudo obtener la cantidad de convocatorias.");
+    }
+
+    const data = await res.json();
+    const convocatoriaCountElement = document.getElementById("convocatoriasCount");
+    if (convocatoriaCountElement) {
+      convocatoriaCountElement.textContent = ` ${data.count}`;
+    }
+  } catch (error) {
+    console.error("Error al obtener la cantidad de convocatorias:", error.message);
+  }
+}
+
+async function fetchEventosCount() {
+  try {
+    const res = await fetch("/api/convocatorias/cantidadEventos", {
+      method: "GET",
+      headers: { "Content-Type": "application/json" }
+    });
+
+    if (!res.ok) {
+      throw new Error("No se pudo obtener la cantidad de eventos.");
+    }
+
+    const data = await res.json();
+    const eventoCountElement = document.getElementById("eventosCount");
+    if (eventoCountElement) {
+      eventoCountElement.textContent = ` ${data.count}`;
+    }
+  } catch (error) {
+    console.error("Error al obtener la cantidad de eventos:", error.message);
+  }
+}

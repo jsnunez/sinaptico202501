@@ -14,7 +14,7 @@ const Convocatoria = sequelize.define('Convocatoria', {
         type: DataTypes.STRING,
         allowNull: true,
     },
-        urlConvocatoria: {
+    urlConvocatoria: {
         type: DataTypes.STRING,
         allowNull: true,
     },
@@ -29,6 +29,11 @@ const Convocatoria = sequelize.define('Convocatoria', {
             model: 'tipoConvocatorias', // nombre de tabla
             key: 'id'
         }
+    },
+    habilitado: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
     }
 }, {
     tableName: 'convocatorias',

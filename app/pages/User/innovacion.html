@@ -21,42 +21,52 @@
 <body>
 
   <!-- Encabezado -->
- <header class="header">
-        <div  onclick="window.location.href='/helice'" class="logo">
-            <!-- <span class="logo-icon">⚡</span> -->
-            <span class="logo-text">SINAPTICO</span>
-        </div>
-        <nav class="nav">
-            <button class="nav-button pulse" onclick="window.location.href='/helice'">Hélice</button>
-            <button class="nav-button pulse" onclick="window.location.href='/innovacion'">Innovación</button>
+  <header class="header">
+    <div onclick="window.location.href='/helice'" class="logo">
+      <!-- <span class="logo-icon">⚡</span> -->
+      <span class="logo-text">SINAPTICO</span>
+    </div>
+    <nav class="nav">
+      <button class="nav-button pulse" onclick="window.location.href='/helice'">Hélice</button>
+      <button class="nav-button pulse" onclick="window.location.href='/innovacion'">Innovación</button>
 
-            <button class="nav-button pulse" onclick="window.location.href='/Conocimiento'">Conocimiento</button>
-                        <button class="nav-button pulse" onclick="window.location.href='/eventos'">Eventos</button>
+      <button class="nav-button pulse" onclick="window.location.href='/Conocimiento'">Conocimiento</button>
+      <button class="nav-button pulse" onclick="window.location.href='/convocatorias'">Convocatorias</button>
 
-            <button class="nav-button pulse" onclick="irEnConstruccion()">Mapa</button>
-            
-            <button class="nav-button pulse" id="cerrarSesion">Cerrar sesión</button>
-        </nav>
-    </header>
+      <button class="nav-button pulse" onclick="window.location.href='/eventos'">Eventos</button>
+
+      <button class="nav-button pulse" onclick="irEnConstruccion()">Mapa</button>
+
+      <button class="nav-button pulse" id="cerrarSesion">Cerrar sesión</button>
+    </nav>
+  </header>
   <div class="welcome-container">
+    <div id="userPhoto">
+      <img id="imagenPerfil" src="img/sinfoto.jpg" alt="Foto de perfil"
+        onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
+    </div>
+
     <div class="welcome-text">
-      <h2 id="bienvenido">Bienvenido </h2>
-      <p class="subtitle">Conectando entidades para potenciar la innovación</p>
+      <h2 id="bienvenido">Hola </h2>
+      <!-- <p class="subtitle">Conectando entidades para potenciar la innovación</p> -->
     </div>
     <div class="action-buttons">
-      <button class="action-button" id="crearEntidad" style="display: none;">
-        <span class="button-icon">+</span> Crear entidad
+      <button class="action-button" id="crearReto" style="display: none;">
+
+        <span class="button-icon">+</span>Crear Reto
+      </button>
+      <button class="action-button" id="vincularEntidad" style="display: none;">
+        <span class="button-icon">+</span> vincular entidad
       </button>
       <button class="action-button" id="editarEntidad" style="display: none;">
         <span class="button-icon">✏️</span> Editar entidad
       </button>
-      <button class="action-button" id="asignarServicio" style="display: none;">
-        <span class="button-icon">🔄</span> Agregar Servicios
+
+      <button class="action-button" id="asignarServicio" style="display: none;" onclick="abrirModalAgregarServicio()">
+        <span class="button-icon">🔄</span> Servicios
       </button>
     </div>
   </div>
-
-
 
 
   <!-- Contenido principal - Entidades -->
@@ -306,11 +316,36 @@
     </div>
   </div>
 
+
+  <div id="modalCrearReto" class="modal" style="display: none;">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h1>Crear Nuevo Reto</h1>
+      <form id="crearRetoForm">
+        <label for="nombre">Nombre del Reto:</label>
+        <input type="text" id="nombre" name="nombre" required>
+
+        <label for="ubicacionVideo">Ubicación del Video:</label>
+        <input type="file" id="video" name="video" accept="video/*">
+
+        <label for="descripcion">Descripción:</label>
+        <textarea id="descripcion" name="descripcion"></textarea>
+
+        <label for="ubicacionFicha">Ubicación de la Ficha:</label>
+        <input type="file" id="ficha" name="ficha" accept=".pdf,.doc,.docx">
+
+        <button type="submit">Crear Reto</button>
+      </form>
+    </div>
+  </div>
+
   <script src="/js/config.js"></script>
 
   <script src="js/retos.js"></script>
   <script src="js/clasificadosMostrar.js"></script>
   <script src="js/ContactarServicio.js"></script>
+      <script src="js/crearReto.js"></script>
+
   <script>
 
     const priceInput = document.getElementById('classified-price');
@@ -360,9 +395,89 @@
     const wall = document.querySelector('.classified-wall');
 
 
+    document.addEventListener("DOMContentLoaded", async function () {
 
-  
+      const usuario = obtenerCookie("user");
+      const userId = obtenerCookie("userId");
+      const userData = cargarDatosUsuario(userId);
+      console.log(userData.fotoPerfil);
+      // ✅ Verificación de cookies
+      if (!usuario || !userId) {
+        document.getElementById('bienvenido').innerText = "Error: No se encontró la información del usuario.";
+        return;
+      }
 
+      // ✅ Limpieza del nombre del usuario
+      let cleanedStr = decodeURIComponent(usuario.replace(/%20/g, " "));
+      let nombreUsuario = cleanedStr.split(" ")[0];
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/entidad/verificar-entidad/${userId}`);
+        const data = await response.json();
+        console.log(data);
+        if (data.success && data.entidad && data.entidad.UserAdminId) {
+          idEntidad = data.entidad.id;
+
+          const estado = data.entidad.habilitado == 1 ? "Habilitado" : "Deshabilitado (estamos revisando tus datos)";
+
+          document.getElementById("crearReto").style.display = data.entidad.habilitado == 1 ? "block" : "none";
+          // document.getElementById("editarEntidad").style.display = data.entidad.habilitado == 1 ? "block" : "none";
+          // document.getElementById("asignarServicio").style.display = data.entidad.habilitado == 1 ? "block" : "none";
+          document.getElementById("vincularEntidad").style.display = "none";
+          document.getElementById('bienvenido').innerText =
+            `Hola ${nombreUsuario}, eres el administrador de ${data.entidad.razonSocial}. Actualmente tu estado es: ${estado}`;
+
+
+        } else {
+          // ✅ Verificar si pertenece a una entidad como usuarioempresa
+          const usuarioData = await verificarUsuarioEntidad(userId);
+          console.log(usuarioData)
+
+          if (usuarioData.length > 0) {
+            document.getElementById('bienvenido').innerText =
+              `Hola ${nombreUsuario},  Tu eres ${usuarioData[0].Cargo.nombre} del actor ${usuarioData[0].empresa.razonSocial} tu estado es
+           ${usuarioData[0].estado == 1 ? "Habilitado" : "Deshabilitado (contacta con el administrador de la entidad)"}`;
+            document.getElementById("vincularEntidad").style.display = "none";
+          } else {
+            document.getElementById('bienvenido').innerText =
+              `Hola ${nombreUsuario}, no estás unido a ninguna entidad.`;
+          }
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        document.getElementById('bienvenido').innerText =
+          "Ocurrió un error al verificar tu entidad. Por favor intenta más tarde.";
+      }
+    });
+
+
+
+    async function cargarDatosUsuario(userId) {
+      const response = await fetch(`${API_BASE_URL}/api/user/${userId}`);
+      const data = await response.json();
+
+      document.getElementById("imagenPerfil").src = data.fotoPerfil ? "photo/" + data.fotoPerfil : "photo/sinfoto.jpg";
+
+
+
+      console.log(data);
+      return data;
+    }
+
+    document.getElementById("crearReto").addEventListener("click", function () {
+      document.getElementById("modalCrearReto").style.display = "block";
+    });
+
+    document.querySelector("#modalCrearReto .close").addEventListener("click", function () {
+      document.getElementById("modalCrearReto").style.display = "none";
+    });
+
+    // ✅ Función para verificar si el usuario pertenece a una entidad
+    async function verificarUsuarioEntidad(userId) {
+      const response = await fetch(`${API_BASE_URL}/api/usuarioempresa/user/${userId}`);
+      const data = await response.json();
+      return data; // { exists: true, entidad: {...} }
+    }
   </script>
 </body>
 

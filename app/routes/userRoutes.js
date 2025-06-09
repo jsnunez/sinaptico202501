@@ -10,7 +10,8 @@ import {
   getUserEmailById,
   updateUser,
   deleteUser,
-  deleteUserWithEntidades
+  deleteUserWithEntidades,
+  cambiarFoto
 } from '../controllers/userController.js';
 
 const router = express.Router();
@@ -32,5 +33,6 @@ router.get('/email/:id', getUserEmailById);
 router.put('/:id', authorization.soloAdmin, updateUser);
 router.delete('/:id', authorization.soloAdmin, deleteUser);
 router.delete('/:id/with-entidades', authorization.soloAdmin, deleteUserWithEntidades);
+router.put('/cambiarFoto/:id', cambiarFoto);
 
 export default router;

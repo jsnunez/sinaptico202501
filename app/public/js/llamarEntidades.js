@@ -38,7 +38,7 @@ function cargarEmpresas(empresas) {
       empresaCard.classList.add('cardinfo');
       let rutaCompleta = empresa.logo;
       empresaCard.innerHTML = `
-            <img src="/logos/${rutaCompleta}" alt="Logo Empresa" class="card-icon">
+            <img src="/logos/${rutaCompleta}" alt="Logo Empresa" class="card-icon" onerror="this.onerror=null;this.src='/img/sinfoto.jpg';">
             <h3 class="card-title">${empresa.razonSocial}</h3>
             <p class="card-text">${empresa.actividadEconomica}</p>
         <button class="botonEntidad" id="masinfo${empresa.numIdentificacion}" ">Mas informacion</button>
@@ -129,15 +129,20 @@ document.addEventListener('DOMContentLoaded', function () {
       telefono.textContent = empresa.telefono;
     }
     let contador = telefono.getAttribute('data-contador') || 0;
-    contador = parseInt(contador) + 1;
-    telefono.setAttribute('data-contador', contador);
-    let contadorSpan = document.getElementById('contadorContactos');
-    if (!contadorSpan) {
-      contadorSpan = document.createElement('span');
-      contadorSpan.id = 'contadorContactos';
-      telefono.parentNode.appendChild(contadorSpan);
+    // Hacer PUT para aumentar el contador en el backend
+    if (empresa && empresa.id) {
+      fetch(`${API_BASE_URL}/api/entidad/aumentarContadorContacto/${empresa.id}`, {
+      method: 'PUT'
+      }).catch(err => console.error('Error al aumentar contador:', err));
     }
-    contadorSpan.textContent = ` (Contactado ${contador} veces)`;
+    // telefono.setAttribute('data-contador', contador);
+    // let contadorSpan = document.getElementById('contadorContactos');
+    // if (!contadorSpan) {
+    //   contadorSpan = document.createElement('span');
+    //   contadorSpan.id = 'contadorContactos';
+    //   telefono.parentNode.appendChild(contadorSpan);
+    // }
+    // contadorSpan.textContent = ` (Contactado ${contador} veces)`;
   };
 
   // Cerrar modal al hacer click en la X

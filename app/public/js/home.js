@@ -379,76 +379,6 @@ recupearPass.addEventListener("click", async () => {
   }
 });
 
-// Fetch and display the number of users
-async function fetchUserCount() {
-  try {
-    const res = await fetch("/api/user/count", {
-      method: "GET",
-      headers: { "Content-Type": "application/json" }
-    });
-
-    if (!res.ok) {
-      throw new Error("No se pudo obtener la cantidad de usuarios.");
-    }
-
-    const data = await res.json();
-    const userCountElement = document.getElementById("usuarios");
-    if (userCountElement) {
-      userCountElement.textContent = ` ${data.count}`;
-    }
-  } catch (error) {
-    console.error("Error al obtener la cantidad de usuarios:", error.message);
-  }
-}
-// Fetch and display the number of companies
-async function fetchCompanyCount() {
-  try {
-    const res = await fetch("/api/entidad/cantidadEmpresas", {
-      method: "GET",
-      headers: { "Content-Type": "application/json" }
-    });
-
-    if (!res.ok) {
-      throw new Error("No se pudo obtener la cantidad de empresas.");
-    }
-
-    const data = await res.json();
-    const companyCountElement = document.getElementById("empresas");
-    if (companyCountElement) {
-      companyCountElement.textContent = ` ${data.cantidad}`;
-    }
-  } catch (error) {
-    console.error("Error al obtener la cantidad de empresas:", error.message);
-  }
-}
-
-// Fetch and display the number of startups
-async function fetchStartupCount() {
-  try {
-    const res = await fetch("/api/entidad/cantidadEmprendimientos", {
-      method: "GET",
-      headers: { "Content-Type": "application/json" }
-    });
-
-    if (!res.ok) {
-      throw new Error("No se pudo obtener la cantidad de emprendimientos.");
-    }
-
-    const data = await res.json();
-    const startupCountElement = document.getElementById("emprendedores");
-    if (startupCountElement) {
-      startupCountElement.textContent = ` ${data.cantidad}`;
-    }
-  } catch (error) {
-    console.error("Error al obtener la cantidad de emprendimientos:", error.message);
-  }
-}
-
-// Call the functions on page load
-fetchCompanyCount();
-fetchStartupCount();
-// Call the function on page load
-fetchUserCount();
 // Close modal when clicking outside of it
 window.addEventListener("click", (event) => {
   if (event.target === retosModal) {
@@ -472,3 +402,49 @@ const sidePanel = document.getElementById('side-panel');
 //   // Expandir o contraer el panel lateral
 //   sidePanel.classList.toggle('expanded');
 // });
+
+
+ function mensajeRegistrar() {
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Registrate para obtener más información',
+                    showCancelButton: true,
+                    confirmButtonText: 'Registrarme',
+                    cancelButtonText: 'Cerrar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        document.getElementById("authModal").style.display = "block";
+                        // Cambia a la pestaña de registro
+                        document.querySelector('.tab-trigger[data-tab="register"]').click();
+                    }
+                });
+
+            }
+
+            document.addEventListener('DOMContentLoaded', function () {
+                // Cargar el mapa SVG
+                fetch('mapa/mapa1.svg')
+                    .then(response => response.text())
+                    .then(svg => {
+                        document.getElementById('mapa').innerHTML = svg;
+                        agregarInteractividad();
+                    });
+            });
+       
+            function inicioSesion() {
+                document.getElementById("authModal").style.display = "block";
+            }
+
+            function closeModal() {
+                document.getElementById("authModal").style.display = "none";
+            }
+
+            // Cerrar al hacer clic fuera del contenido
+            window.onclick = function (event) {
+                const modal = document.getElementById("authModal");
+                if (event.target === modal) {
+                    modal.style.display = "none";
+                }
+            }
+
+

@@ -4,7 +4,7 @@ import Servicio from "../models/servicio.js"
 export const crearServicio = async (req, res) => {
     try {
         const newServicio = new Servicio(req.body);
-        console.log(req.body)
+        // console.log(req.body)
         const savedServicio = await newServicio.save();
         res.status(201).json(savedServicio);
     } catch (error) {

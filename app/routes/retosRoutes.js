@@ -1,6 +1,6 @@
 // /api/retos
 import express from 'express';
-import { getRetos, createReto, aplicarReto ,verificarAplicacion, getRetoById,updateRetoByFk,getCantidadRetos,obtenerAplicaciones } from '../controllers/retosController.js';
+import { getRetos, createReto, aplicarReto ,verificarAplicacion, getRetoById,updateRetoByFk,getCantidadRetos,obtenerAplicaciones,cambiarEstadoHabilitado } from '../controllers/retosController.js';
 
 const router = express.Router();
 
@@ -12,6 +12,6 @@ router.get('/:id', getRetoById);
 router.post('/', createReto);
 router.post('/aplicar', aplicarReto); 
 router.put('/:fk', updateRetoByFk);
-
+router.put('/habilitar/:id', cambiarEstadoHabilitado);
 
 export default router;

@@ -1,7 +1,7 @@
 // /api/entidad
 
 import express from 'express';
-import { verificarEntidad, obtenerEntidad,crearEntidad,editarEntidad,obtenerEntidadesHabilitadas} from '../controllers/entidadController.js';  // Importar el controlador
+import { verificarEntidad, obtenerEntidad,crearEntidad,editarEntidad,obtenerEntidadesHabilitadas,aumentarContadorEntidad} from '../controllers/entidadController.js';  // Importar el controlador
 import { obtenerCantidadEmpresas, obtenerCantidadEmprendimientos,cambiarEstadoHabilitado ,obtenerCantidadEntidades} from '../controllers/entidadController.js';
 
 
@@ -26,4 +26,6 @@ router.get('/cantidadEntidades', obtenerCantidadEntidades);
 router.get('/cantidadEmpresas', obtenerCantidadEmpresas);
 router.get('/cantidadEmprendimientos', obtenerCantidadEmprendimientos);
 router.post('/cambiarEstado/:id',cambiarEstadoHabilitado) 
+router.put('/aumentarContadorContacto/:id',aumentarContadorEntidad); 
+   
 export default router;

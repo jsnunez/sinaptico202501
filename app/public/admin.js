@@ -16,6 +16,7 @@ document.getElementById("cerrarSesion").addEventListener("click", () => {
       document.cookie = 'user=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
       document.cookie = 'userId=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
       document.location.href = "/";
+      
     }
     // Si el usuario cancela, no pasa nada
   });
@@ -31,7 +32,6 @@ document.getElementById("Todos1").addEventListener("click", () => {
   var listado = document.getElementById("listado");
   listado.style.display = "flex";
   cargarEmpresas(todasLasEmpresas);
-
 
 })
 
@@ -147,9 +147,11 @@ async function verificarUsuarioEntidad(userId) {
 }
 
 document.addEventListener("DOMContentLoaded", async function () {
+
   const usuario = obtenerCookie("user");
   const userId = obtenerCookie("userId");
-
+        const userData=cargarDatosUsuario(userId);
+              console.log(userData.fotoPerfil);
   // ✅ Verificación de cookies
   if (!usuario || !userId) {
     document.getElementById('bienvenido').innerText = "Error: No se encontró la información del usuario.";
@@ -177,6 +179,8 @@ document.addEventListener("DOMContentLoaded", async function () {
         `Hola ${nombreUsuario}, eres el administrador de ${data.entidad.razonSocial}. Actualmente tu estado es: ${estado}`;
       document.getElementById("solicitudes").style.display = "block";
       await fetchSolicitudes(idEntidad);
+      
+
     } else {
       // ✅ Verificar si pertenece a una entidad como usuarioempresa
       const usuarioData = await verificarUsuarioEntidad(userId);
@@ -185,7 +189,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       if (usuarioData.length > 0) {
         document.getElementById('bienvenido').innerText =
           `Hola ${nombreUsuario},  Tu eres ${usuarioData[0].Cargo.nombre} del actor ${usuarioData[0].empresa.razonSocial} tu estado es
-           ${usuarioData[0].estado == 1 ? "Habilitado" : "Deshabilitado (contaacta con el administrador de la entidad)"}`;
+           ${usuarioData[0].estado == 1 ? "Habilitado" : "Deshabilitado (contacta con el administrador de la entidad)"}`;
         document.getElementById("vincularEntidad").style.display = "none";
       } else {
         document.getElementById('bienvenido').innerText =
@@ -199,3 +203,18 @@ document.addEventListener("DOMContentLoaded", async function () {
       "Ocurrió un error al verificar tu entidad. Por favor intenta más tarde.";
   }
 });
+
+
+// cargar datos usuario
+async function cargarDatosUsuario(userId) {
+  const response = await fetch(`${API_BASE_URL}/api/user/${userId}`);
+  const data = await response.json();
+
+                document.getElementById("imagenPerfil").src = data.fotoPerfil ? "photo/" + data.fotoPerfil : "photo/sinfoto.jpg";
+
+
+                                            document.getElementById("previewFotoPerfil").src = data.fotoPerfil ? "photo/" + data.fotoPerfil : "photo/sinfoto.jpg";
+
+  console.log(data);
+  return data;
+}

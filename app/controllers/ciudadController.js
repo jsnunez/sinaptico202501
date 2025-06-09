@@ -52,7 +52,7 @@ export const getCiudadesByDepartamentoId = async (req, res) => {
 // Controlador para obtener una ciudad por su ID
 export const getCiudadById = async (req, res) => {
     const { ciudadId } = req.params;
-    console.log('ID de ciudad recibido:', ciudadId); // Agregado para depuración
+    // console.log('ID de ciudad recibido:', ciudadId); // Agregado para depuración
     try {
         const ciudad = await Ciudad.findByPk(ciudadId);
         if (ciudad) {

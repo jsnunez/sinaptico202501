@@ -24,15 +24,19 @@ const storage = multer.diskStorage({
       case 'ficha':
         dir = 'app/public/fichas';
         break;
-        case 'recurso':
+      case 'recurso':
         dir = 'app/public/recursos';
         break;
-        case 'temario':
-          dir = 'app/public/temario';
-          break;
-          case 'videoCursos':
-            dir = 'app/public/videoCursos';
-            break;
+      case 'temario':
+        dir = 'app/public/temario';
+        break;
+      case 'videoCursos':
+        dir = 'app/public/videoCursos';
+        break;
+      case 'fotoPerfil':
+        dir = 'app/public/photo';
+        console.log("Directorio de foto de perfil:", dir);
+        break;
       default:
         if (file.fieldname.startsWith('file')) {
           const retoId = req.body['challenge-id'] || 'defaultReto';

@@ -4,8 +4,9 @@ document.addEventListener('DOMContentLoaded', () => {
     form.addEventListener('submit', async (event) => {
         event.preventDefault(); // Evita el envío predeterminado del formulario
 console.log('Formulario enviado'); // Agrega un log para verificar el envío del formulario
+        const userId = obtenerCookie("userId");
         const formData = new FormData(form);
-
+ formData.append("userId", userId);
         try {
             const response = await fetch(`${API_BASE_URL}/api/retos`, {
                 method: 'POST',

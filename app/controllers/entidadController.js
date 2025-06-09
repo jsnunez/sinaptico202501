@@ -25,7 +25,7 @@ export const verificarEntidad = async (req, res) => {
       ],
 
     });
-    console.log(usuario)
+
 
     if (entidad) {
       // Si la entidad existe, enviamos los detalles de la entidad
@@ -241,7 +241,7 @@ export const editarEntidad = async (req, res) => {
 
       if (req.file) {
         nuevosDatos.logo = req.file.filename;
-        console.log(req.file)
+        // console.log(req.file)
       }
 
       // Actualizar la entidad
@@ -353,7 +353,9 @@ export const obtenerCantidadEmpresas = async (req, res) => {
 export const obtenerCantidadEntidades = async (req, res) => {
   try {
     // Contar las entidades que tienen claseEntidad igual a 'empresa'
-    const count = await Entidad.count();
+    const count = await Entidad.count({
+      where: { habilitado: true },
+    });
 
     return res.json({
 
@@ -411,5 +413,38 @@ export const cambiarEstadoHabilitado = async (req, res) => {
   } catch (error) {
     console.error('Error al cambiar el estado de habilitado:', error);
     return res.status(500).json({ message: 'Error al cambiar el estado de habilitado', error });
+  }
+};
+
+export const aumentarContadorEntidad = async (req, res) => {
+  const entidadId = req.params.id;
+
+  try {
+    // Buscar la entidad por su ID
+    const entidad = await Entidad.findByPk(entidadId);
+
+    if (!entidad) {
+      return res.status(404).json({ message: 'Entidad no encontrada' });
+    }
+
+    // Si el campo contador no existe, inicialízalo en 0
+    if (typeof entidad.contadorContacto !== 'number') {
+      entidad.contadorContacto = 0;
+    }
+
+    // Aumentar el contador en 1
+    entidad.contadorContacto += 1;
+
+    // Guardar los cambios en la base de datos
+    await entidad.save();
+
+    return res.status(200).json({
+      message: 'Contador aumentado con éxito',
+      contador: entidad.contadorContacto,
+      entidad,
+    });
+  } catch (error) {
+    console.error('Error al aumentar el contador:', error);
+    return res.status(500).json({ message: 'Error al aumentar el contador', error });
   }
 };

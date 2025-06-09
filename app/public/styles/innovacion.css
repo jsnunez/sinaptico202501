@@ -518,3 +518,66 @@
   font-size: 24px;
   cursor: pointer;
 }
+
+
+  .modal-content h1 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+
+  .modal-content form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .modal-content label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-color);
+    margin-bottom: 0.3rem;
+  }
+
+  .modal-content input[type="text"],
+  .modal-content input[type="file"],
+  .modal-content textarea {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    transition: var(--transition);
+  }
+
+  .modal-content input[type="text"]:focus,
+  .modal-content input[type="file"]:focus,
+  .modal-content textarea:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(110, 72, 170, 0.1);
+  }
+
+  .modal-content textarea {
+    resize: none;
+    height: 100px;
+  }
+
+  .modal-content button[type="submit"] {
+    background: var(--gradient-1);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.8rem;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+  }
+
+  .modal-content button[type="submit"]:hover {
+    background: var(--gradient-2);
+    transform: translateY(-2px);
+  }

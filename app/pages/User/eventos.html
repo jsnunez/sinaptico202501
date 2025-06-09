@@ -2,204 +2,293 @@
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SINAPTICO</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SINAPTICO</title>
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <link rel="stylesheet" href="styles/colores.css">
-    <link rel="stylesheet" href="styles/stylehelice2.css">
-    <link rel="stylesheet" href="styles/eventos.css">
+  <link rel="stylesheet" href="styles/colores.css">
+  <link rel="stylesheet" href="styles/stylehelice2.css">
+  <link rel="stylesheet" href="styles/eventos.css">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 </head>
 
 <body>
-    <!-- Fondo de animación neuronal -->
-    <div class="neural-background">
-        <canvas id="neuralCanvas"></canvas>
-    </div>
+  <!-- Fondo de animación neuronal -->
+  <div class="neural-background">
+    <canvas id="neuralCanvas"></canvas>
+  </div>
 
-    <!-- Encabezado -->
-    <header class="header">
-        <div class="logo">
-            <!-- <span class="logo-icon">⚡</span> -->
-            <span class="logo-text">SINAPTICO</span>
+  <!-- Encabezado -->
+  <header class="header">
+    <div class="logo">
+      <span class="logo-text">SINAPTICO</span>
+    </div>
+    <nav class="nav">
+      <button class="nav-button pulse" onclick="window.location.href='/helice'">Hélice</button>
+      <button class="nav-button pulse" onclick="window.location.href='/innovacion'">Innovación</button>
+      <button class="nav-button pulse" onclick="window.location.href='/Conocimiento'">Conocimiento</button>
+      <button class="nav-button pulse" onclick="window.location.href='/convocatorias'">Convocatorias</button>
+      <button class="nav-button pulse" onclick="window.location.href='/eventos'">Eventos</button>
+      <button class="nav-button pulse" onclick="irEnConstruccion()">Mapa</button>
+      <button class="nav-button pulse" id="cerrarSesion">Cerrar sesión</button>
+    </nav>
+  </header>
+
+  <!-- Bienvenida y botones de acción -->
+  <div class="welcome-container">
+    <div class="welcome-text">
+      <h2 id="title">Eventos</h2>
+      <p class="subtitle">Consulta los eventos activos para fortalecer tu participación en el ecosistema CTEI de Santander</p>
+    </div>
+    <div class="action-buttons" style="display: none;">
+      <button class="action-button" id="btnNuevoEvento">
+        <i class="fas fa-plus button-icon"></i>
+        Nuevo evento
+      </button>
+    </div>
+  </div>
+  <!-- Filtros -->
+  <div class="filter-container" id="filtros">
+    <input type="text" id="buscarEvento" placeholder="Nombre Evento" class="filter-input">
+    <select id="tipoFiltro" class="filter-select" style="display: none;">
+      <option value="">Todos los Tipos</option>
+      <option value="1">Convocatoria</option>
+      <option value="2">Eventos</option>
+    </select>
+    <select id="estadoFiltro" class="filter-select">
+      <option value="">Todos los Estados</option>
+      <option value="Abierto">Abierto</option>
+      <option value="Cerrado">Cerrado</option>
+    </select>
+  </div>
+
+  <div class="main-content" id="eventos"></div>
+
+  <!-- Modal de edición -->
+  <div id="modalEdicion" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="opcionEvento">Editar Evento</h3>
+        <span id="closeModalEdicion" class="close">&times;</span>
+      </div>
+      <form id="formEditarEvento">
+        <div class="form-group">
+          <label for="nombreEvento">Nombre:</label>
+          <input type="text" id="nombreEvento" name="nombre" required>
         </div>
-        <nav class="nav">
-            <button class="nav-button pulse" onclick="window.location.href='/helice'">Hélice</button>
-            <button class="nav-button pulse" onclick="window.location.href='/innovacion'">Innovación</button>
-
-            <button class="nav-button pulse" onclick="window.location.href='/Conocimiento'">Conocimiento</button>
-            <button class="nav-button pulse" onclick="window.location.href='/eventos'">Eventos</button>
-
-            <button class="nav-button pulse" onclick="irEnConstruccion()">Mapa</button>
-
-            <button class="nav-button pulse" id="cerrarSesion">Cerrar sesión</button>
-        </nav>
-    </header>
-
-    <!-- Bienvenida y botones de acción -->
-    <div class="welcome-container">
-        <div class="welcome-text">
-            <h2 id="title">Convocatorias y Eventos </h2>
-            <p class="subtitle">consulta las oportunidades activas para fortalece tu participacion en el ecosistema CTEI
-                de santander</p>
+        <div class="form-group">
+          <label for="financiamiento">Financiamiento:</label>
+          <input type="text" id="financiamiento" name="financiamiento">
         </div>
-
+        <div class="form-group">
+          <label for="organizador">Organizador:</label>
+          <input type="text" id="organizador" name="organizador">
+        </div>
+        <div class="form-group">
+          <label for="urlEvento">URL Evento:</label>
+          <input type="text" id="urlEvento" name="urlEvento">
+        </div>
+        <div class="form-group" style="display: none;">
+          <label for="tipoEvento">Tipo Evento:</label>
+          <select id="tipoEvento" name="tipoEvento" required>
+            <option value="2">evento</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="fechaLimite">Fecha Límite:</label>
+          <input type="date" id="fechaLimite" name="fechaLimite" required>
+        </div>
+        <button type="submit" id="btnGuardarCambios" class="modal-button">Guardar cambios</button>
+      </form>
     </div>
-    <!-- Filtros -->
-    <div class="filter-container" id="filtros">
-        <input type="text" id="buscarConvocatoria" placeholder="Nombre Convocatoria" class="filter-input">
+  </div>
 
-        <!-- Menú desplegable para Tipo -->
-        <select id="tipoFiltro" class="filter-select">
-            <option value="">Todos los Tipos</option>
-            <option value="1">Convocatoria</option>
-            <option value="2">Eventos</option>
-        </select>
-
-        <!-- Menú desplegable para Estado -->
-        <select id="estadoFiltro" class="filter-select">
-            <option value="">Todos los Estados</option>
-            <option value="Abierto">Abierto</option>
-            <option value="Cerrado">Cerrado</option>
-        </select>
-
-        <!-- <button class="filter-button" id="filtrarBtn">Filtrar</button> -->
-    </div>
-
-    <div class="main-content" id="convocatorias">
- 
-    </div>
-    <script src="/js/config.js"></script>
-
-<script>
-   document.getElementById("cerrarSesion").addEventListener("click", () => {
-            Swal.fire({
-                title: '¿Estás seguro?',
-                text: '¿Querés cerrar sesión?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Sí, cerrar sesión',
-                cancelButtonText: 'Cancelar',
-                reverseButtons: true
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Borrar cookies y redirigir
-                    document.cookie = 'jwt=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-                    document.cookie = 'user=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-                    document.cookie = 'userId=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-                    document.location.href = "/";
-                }
-                // Si el usuario cancela, no pasa nada
-            });
-        });
-     function irEnConstruccion() {
-            window.location.href = "/construccion"; // o la ruta que tengas
+  <script src="/js/config.js"></script>
+  <script>
+    document.getElementById("cerrarSesion").addEventListener("click", () => {
+      Swal.fire({
+        title: '¿Estás seguro?',
+        text: '¿Querés cerrar sesión?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, cerrar sesión',
+        cancelButtonText: 'Cancelar',
+        reverseButtons: true
+      }).then((result) => {
+        if (result.isConfirmed) {
+          document.cookie = 'jwt=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+          document.cookie = 'user=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+          document.cookie = 'userId=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+          document.location.href = "/";
         }
-  // Función para cargar convocatorias (con o sin filtros)
-  async function cargarConvocatorias(apiUrl = '/api/convocatorias') {
-    try {
-      const response = await fetch(apiUrl);
-      const data = await response.json();
+      });
+    });
+    function irEnConstruccion() {
+      window.location.href = "/construccion";
+    }
 
-      const container = document.getElementById('convocatorias');
-      container.innerHTML = '';
+    // Cargar eventos (tipoConvocatoriaId === 2)
+    async function cargarEventos(apiUrl = '/api/convocatorias') {
+      try {
+        const response = await fetch(apiUrl);
+        const data = await response.json();
 
-      if (!data.length) {
-        container.innerHTML = '<p>No se encontraron convocatorias.</p>';
-        return;
+        const container = document.getElementById('eventos');
+        container.innerHTML = '';
+
+        if (!data.length) {
+          container.innerHTML = '<p>No se encontraron eventos.</p>';
+          return;
+        }
+
+        data.forEach((evento, index) => {
+          if (evento.tipoConvocatoriaId === 2 && evento.habilitado == true) {
+            const card = document.createElement('div');
+            card.classList.add('convocatorias-container');
+            const url = evento.urlConvocatoria?.startsWith('http')
+              ? evento.urlConvocatoria
+              : `https://${evento.urlConvocatoria}`;
+            card.innerHTML = `
+              <div class="convocatorias-card" id="evento${index}">
+                <div class="convocatoria-header">
+                  <h3 class="convocatoria-title">${evento.nombre}</h3>
+                  <p class="convocatoria-subtitle">Financiamiento: ${evento.financiamiento || 'No especificado'}</p>
+                  <p class="convocatoria-subtitle-color">Organizador: ${evento.organizador || 'No especificado'}</p>
+                  <p class="convocatoria-subtitle-color">
+                    Fecha límite: ${evento.fechaLimite
+                      ? new Date(evento.fechaLimite).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })
+                      : 'Sin fecha'}
+                  </p>
+                </div>
+              </div>
+              <div class="lateral-derecho">
+                <div class="tipo-convocatoria">
+                  <span class="tipo-convocatoria-text">${evento.tipoConvocatoria?.nombre || 'Tipo no asignado'}</span>
+                </div>
+                <a href="${url}" target="_blank" rel="noopener noreferrer" class="action-button">Ver más</a>
+              </div>
+            `;
+            container.appendChild(card);
+          }
+        });
+      } catch (error) {
+        console.error('Error al cargar eventos:', error);
+        document.getElementById('eventos').innerHTML = '<p>Error al cargar eventos.</p>';
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      cargarEventos();
+      const buscarInput = document.getElementById('buscarEvento');
+      const tipoFiltro = document.getElementById('tipoFiltro');
+      const estadoFiltro = document.getElementById('estadoFiltro');
+
+      function aplicarFiltros() {
+        const nombre = buscarInput.value.trim();
+        const tipo = 2;
+        const estado = estadoFiltro.value;
+        const query = [];
+        if (nombre) query.push(`nombre=${encodeURIComponent(nombre)}`);
+        if (tipo) query.push(`tipo=${tipo}`);
+        if (estado) query.push(`estado=${estado}`);
+        const url = `/api/convocatorias${query.length ? '?' + query.join('&') : ''}`;
+        cargarEventos(url);
       }
 
-      data.forEach((convocatoria, index) => {
-        const card = document.createElement('div');
-        card.classList.add('convocatorias-container');
+      buscarInput.addEventListener('input', aplicarFiltros);
+      tipoFiltro.addEventListener('change', aplicarFiltros);
+      estadoFiltro.addEventListener('change', aplicarFiltros);
+    });
 
-        // Asegura que la URL externa tenga https://
-        const url = convocatoria.urlConvocatoria?.startsWith('http')
-          ? convocatoria.urlConvocatoria
-          : `https://${convocatoria.urlConvocatoria}`;
+    // Modal para nuevo evento
+    document.getElementById('btnNuevoEvento').addEventListener('click', () => {
+      document.getElementById('modalEdicion').style.display = 'block';
+      document.getElementById('opcionEvento').textContent = 'Nuevo Evento';
+      document.getElementById('formEditarEvento').reset();
+    });
 
-        card.innerHTML = `
-          <div class="convocatorias-card" id="convocatoria${index}">
-            <div class="convocatoria-header">
-              <h3 class="convocatoria-title">${convocatoria.nombre}</h3>
-              <p class="convocatoria-subtitle">Financiamiento: ${convocatoria.financiamiento || 'No especificado'}</p>
-              <p class="convocatoria-subtitle-color">Organizador: ${convocatoria.organizador || 'No especificado'}</p>
-             <p class="convocatoria-subtitle-color">
-  Fecha límite: ${convocatoria.fechaLimite 
-    ? new Date(convocatoria.fechaLimite).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }) 
-    : 'Sin fecha'}
-</p>
+    document.getElementById('closeModalEdicion').addEventListener('click', () => {
+      document.getElementById('modalEdicion').style.display = 'none';
+    });
 
-            </div>
-          </div>
-          <div class="lateral-derecho">
-            <div class="tipo-convocatoria">
-              <span class="tipo-convocatoria-text">${convocatoria.tipoConvocatoria?.nombre || 'Tipo no asignado'}</span>
-            </div>
-            <a href="${url}" target="_blank" rel="noopener noreferrer" class="action-button">Ver más</a>
-          </div>
-        `;
+    window.addEventListener('click', (event) => {
+      const modal = document.getElementById('modalEdicion');
+      if (event.target === modal) {
+        modal.style.display = 'none';
+      }
+    });
 
-        container.appendChild(card);
-      });
-    } catch (error) {
-      console.error('Error al cargar convocatorias:', error);
-      document.getElementById('convocatorias').innerHTML = '<p>Error al cargar convocatorias.</p>';
-    }
-  }
+    // Manejar el formulario de edición/creación de evento
+    document.getElementById('formEditarEvento').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const nombre = document.getElementById('nombreEvento').value;
+      const financiamiento = document.getElementById('financiamiento').value;
+      const organizador = document.getElementById('organizador').value;
+      const urlConvocatoria = document.getElementById('urlEvento').value;
+      const tipoConvocatoriaId = 2;
+      const fechaInput = document.getElementById('fechaLimite').value;
+      const fechaLimite = new Date(fechaInput + 'T00:00:00');
+      const datosEvento = {
+        nombre,
+        financiamiento,
+        organizador,
+        urlConvocatoria,
+        tipoConvocatoriaId,
+        fechaLimite
+      };
+      try {
+        const response = await fetch('/api/convocatorias', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(datosEvento)
+        });
+        if (response.ok) {
+            Swal.fire('¡Éxito!', `El evento ha sido creado. Espera que el administrador la revise y la habilite.`, 'success');
+          document.getElementById('modalEdicion').style.display = "none";
+          document.getElementById('formEditarEvento').reset();
+        } else {
+          Swal.fire('Error', 'Hubo un problema al crear el evento.', 'error');
+        }
+      } catch (error) {
+        console.error('Error al crear el evento:', error);
+        Swal.fire('Error', 'Hubo un error al intentar crear el evento.', 'error');
+      }
+    });
 
-  // Escuchar el botón "Filtrar"
-document.addEventListener('DOMContentLoaded', () => {
-  cargarConvocatorias(); // Cargar todas inicialmente
-
-  const buscarInput = document.getElementById('buscarConvocatoria');
-  const tipoFiltro = document.getElementById('tipoFiltro');
-  const estadoFiltro = document.getElementById('estadoFiltro');
-  const filtrarBtn = document.getElementById('filtrarBtn');
-
-  // Función para construir y cargar la URL con filtros
-  function aplicarFiltros() {
-    const nombre = buscarInput.value.trim();
-    const tipo = tipoFiltro.value;
-    const estado = estadoFiltro.value;
-
-    const query = [];
-
-    if (nombre) query.push(`nombre=${encodeURIComponent(nombre)}`);
-    if (tipo) query.push(`tipo=${tipo}`);
-    if (estado) query.push(`estado=${estado}`);
-
-    const url = `/api/convocatorias${query.length ? '?' + query.join('&') : ''}`;
-    cargarConvocatorias(url);
-  }
-  
-
-  // Búsqueda automática mientras escribe
-  buscarInput.addEventListener('input', () => {
-    aplicarFiltros();
-  });
-
-//   // Filtrar con el botón
-//   filtrarBtn.addEventListener('click', () => {
-//     aplicarFiltros();
-//   });
-
-  // También podrías agregar eventos para tipo y estado si quieres que se apliquen automáticamente
-  tipoFiltro.addEventListener('change', aplicarFiltros);
-  estadoFiltro.addEventListener('change', aplicarFiltros);
-});
-</script>
-
-
+    // Mostrar botón solo si es entidad
+    document.addEventListener("DOMContentLoaded", async function () {
+      function obtenerCookie(nombre) {
+        const nombreCookie = `${nombre}=`;
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+          let cookie = cookies[i].trim();
+          if (cookie.indexOf(nombreCookie) === 0) {
+            return cookie.substring(nombreCookie.length, cookie.length);
+          }
+        }
+        return null;
+      }
+      const usuario = obtenerCookie("user");
+      const userId = obtenerCookie("userId");
+      if (!usuario || !userId) return;
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/entidad/verificar-entidad/${userId}`);
+        const data = await response.json();
+        if (data.mensaje === 'Entidad encontrada') {
+          document.querySelector('.action-buttons').style.display = 'block';
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    });
+  </script>
 </body>
-
 </html>

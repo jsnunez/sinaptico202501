@@ -12,10 +12,7 @@ const User = sequelize.define('User', {
     type: DataTypes.STRING,
     allowNull: false,
   },
-    photo: {
-    type: DataTypes.STRING,
-    allowNull: true,
-  },
+
   email: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -39,6 +36,12 @@ const User = sequelize.define('User', {
     allowNull: false,
     defaultValue: 1, // Valor por defecto 1
   },
+    fotoPerfil: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    defaultValue: "sinfoto.jpg", // Valor por defecto 1
+  },
+  
   createdAt: {
     type: DataTypes.DATE,
     allowNull: false,

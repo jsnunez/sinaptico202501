@@ -67,6 +67,8 @@
                     <th>organizador</th>
                     <th>URL Convocatoria</th>
                     <th>Tipo Convocatoria</th>
+                                        <th>Estado</th>                    
+
                     <th>Fecha finalizacion</th>
                     <th>Acciones</th>
                 </tr>
@@ -213,7 +215,7 @@
             try {
                 const response = await fetch('/api/convocatorias');
                 const data = await response.json();
-
+console.log(data);
                 const tbody = document.querySelector('#tablaConvocatorias tbody');
                 tbody.innerHTML = ''; // Limpiar contenido previo
 
@@ -237,6 +239,13 @@
         <td>${convocatoria.organizador || 'No especificado'}</td>
         <td><a href="https://${convocatoria.urlConvocatoria}" target="_blank">${convocatoria.urlConvocatoria}</a></td>
         <td>${convocatoria.tipoConvocatoria?.nombre || 'No asignado'}</td>
+        <td>
+                    <div class="toggle-switch">
+                        <input type="checkbox" id="toggle-${convocatoria.id}" class="toggle-input" ${convocatoria.habilitado ? "checked" : ""}>
+                        <label for="toggle-${convocatoria.id}" class="toggle-label"></label>
+                        <span>${convocatoria.habilitado ? "habilitado" : "Deshabilitado"}</span>
+                    </div>
+                </td>
         <td>${new Date(convocatoria.fechaLimite).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}</td>
         <td>
           <div class="action-icons">
@@ -533,7 +542,39 @@
             });
         }
 
+ document.addEventListener('change', async (event) => {
+    if (event.target.classList.contains('toggle-input')) {
+      const checkbox = event.target;
+      const id = checkbox.id.replace('toggle-', '');
+      const habilitado = checkbox.checked;
 
+      try {
+        const response = await fetch(`/api/convocatorias/habilitar/${id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ habilitado })
+        });
+
+        if (response.ok) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Estado actualizado',
+            text: `El reto ha sido ${habilitado ? 'habilitado' : 'deshabilitado'}.`,
+            timer: 1200,
+            showConfirmButton: false
+          });
+        location.reload();
+        } else {
+          throw new Error('No se pudo actualizar el estado');
+        }
+      } catch (error) {
+        Swal.fire('Error', 'No se pudo actualizar el estado del reto.', 'error');
+        checkbox.checked = !habilitado; // revertir el cambio visual
+      }
+    }
+  });
     </script>
 
 

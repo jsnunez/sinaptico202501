@@ -27,6 +27,11 @@ export const  getCargoById = async (req, res) => {
 // Crear un nuevo cargo
 export const createCargo = async (req, res) => {
     try {
+        // Verificar si ya existe un cargo con el mismo nombre
+        const existingCargo = await Cargo.findOne({ where: { nombre: req.body.nombre } });
+        if (existingCargo) {
+            return res.status(400).json({ message: 'Ya existe un cargo con ese nombre' });
+        }
         const newCargo = new Cargo(req.body);
         const savedCargo = await newCargo.save();
         res.status(201).json(savedCargo);

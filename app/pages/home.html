@@ -55,10 +55,10 @@
 
 
         <div class="imgDepartamento" id="mapa">
-          
+
         </div>
     </div>
-        <!-- Estadísticas -->
+    <!-- Estadísticas -->
     <div class="main-content">
         <div class="stats-title">
             <h3>Estadísticas Generales</h3>
@@ -70,9 +70,9 @@
                 <div class="counter-number" id="usuarios">0</div>
                 <div class="counter-label">Usuarios</div>
             </div>
-            <div class="counter">
+                <div class="counter">
                 <div class="pulse-ring"></div>
-                <div class="counter-number" id="entidades">0</div>
+                <div class="counter-number" id="entidadesCount">0</div>
                 <div class="counter-label">Entidades</div>
             </div>
             <div class="counter">
@@ -82,8 +82,25 @@
             </div>
             <div class="counter">
                 <div class="pulse-ring"></div>
+                <div class="counter-number" id="convocatoriasCount">0</div>
+                <div class="counter-label">Convocatorias</div>
+            </div>
+               <div class="counter">
+                <div class="pulse-ring"></div>
+                <div class="counter-number" id="eventosCount">0</div>
+                <div class="counter-label">Eventos</div>
+            </div>
+        
+             <div class="counter">
+                <div class="pulse-ring"></div>
+                <div class="counter-number" id="Capacitaciones">0</div>
+                <div class="counter-label">Capacitaciones</div>
+            </div>
+
+            <div class="counter">
+                <div class="pulse-ring"></div>
                 <div class="counter-number" id="publicaciones">0</div>
-                <div class="counter-label">actividad muro</div>
+                <div class="counter-label">Interacciones</div>
             </div>
         </div>
     </div>
@@ -276,54 +293,14 @@
 
         <script src="/js/home.js"></script>
         <script src="/js/login.js"></script>
+        <script src="/js/config.js"></script>
+        <script src="/js/estadisticas.js"></script>
         <script>
-            function mensajeRegistrar() {
-                Swal.fire({
-                    icon: 'info',
-                    title: 'Registrate para obtener más información',
-                    showCancelButton: true,
-                    confirmButtonText: 'Registrarme',
-                    cancelButtonText: 'Cerrar'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        document.getElementById("authModal").style.display = "block";
-                        // Cambia a la pestaña de registro
-                        document.querySelector('.tab-trigger[data-tab="register"]').click();
-                    }
-                });
-
-            }
-
-            document.addEventListener('DOMContentLoaded', function () {
-                // Cargar el mapa SVG
-                fetch('mapa/mapa1.svg')
-                    .then(response => response.text())
-                    .then(svg => {
-                        document.getElementById('mapa').innerHTML = svg;
-                        agregarInteractividad();
-                    });
-            });
-        </script>
-
-        <script>
-            function inicioSesion() {
-                document.getElementById("authModal").style.display = "block";
-            }
-
-            function closeModal() {
-                document.getElementById("authModal").style.display = "none";
-            }
-
-            // Cerrar al hacer clic fuera del contenido
-            window.onclick = function (event) {
-                const modal = document.getElementById("authModal");
-                if (event.target === modal) {
-                    modal.style.display = "none";
-                }
-            }
-
-
-
+             fetchChallengeCount();
+        fetchEntidadesCount();
+        fetchUserCount();
+        fetchConvocatoriasCount();
+        fetchEventosCount();
 
         </script>
 

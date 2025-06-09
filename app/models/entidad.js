@@ -82,6 +82,11 @@ const Entidad = sequelize.define('Entidad', {
     type: DataTypes.STRING,
     allowNull: false,
   },
+     contadorContacto: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue:0, // Valor por defecto 1
+  },
   logo: {
     type: DataTypes.STRING,
     allowNull: false,

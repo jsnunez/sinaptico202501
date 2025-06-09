@@ -27,6 +27,13 @@ fila.innerHTML = `
 </td>   
 <td>${new Date(reto.createdAt).toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' })}</td>
 <td>
+                    <div class="toggle-switch">
+                        <input type="checkbox" id="toggle-${reto.id}" class="toggle-input" ${reto.habilitado ? "checked" : ""}>
+                        <label for="toggle-${reto.id}" class="toggle-label"></label>
+                        <span>${reto.habilitado ? "Habilitada" : "Deshabilitada"}</span>
+                    </div>
+                </td>
+<td>
     <div class="action-icons">
         <span class="action-icon edit" data-id="${reto.id}" title="Editar"><i class="bi bi-pencil-square"></i></span>
         <span class="action-icon delete" data-id="${reto.id}" title="Eliminar"><i class="bi bi-trash3"></i></span>
@@ -196,5 +203,39 @@ document.addEventListener('DOMContentLoaded', () => {
     if (event.target === modalEditarReto) {
       modalEditarReto.style.display = 'none';
 
+    }
+  });
+
+  document.addEventListener('change', async (event) => {
+    if (event.target.classList.contains('toggle-input')) {
+      const checkbox = event.target;
+      const id = checkbox.id.replace('toggle-', '');
+      const habilitado = checkbox.checked;
+
+      try {
+        const response = await fetch(`/api/retos/habilitar/${id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ habilitado })
+        });
+
+        if (response.ok) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Estado actualizado',
+            text: `El reto ha sido ${habilitado ? 'habilitado' : 'deshabilitado'}.`,
+            timer: 1200,
+            showConfirmButton: false
+          });
+          cargarRetos();
+        } else {
+          throw new Error('No se pudo actualizar el estado');
+        }
+      } catch (error) {
+        Swal.fire('Error', 'No se pudo actualizar el estado del reto.', 'error');
+        checkbox.checked = !habilitado; // revertir el cambio visual
+      }
     }
   });

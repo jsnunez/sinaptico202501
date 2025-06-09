@@ -104,6 +104,8 @@
   .imgDepartamento{
     height: 50vh;
     width: 50%;
+    margin-left: -10%;
+    z-index: 100;
     /* mix-blend-mode: multiply;
     filter: sepia(1) saturate(5) hue-rotate(-40deg); */
   }
@@ -581,11 +583,11 @@ svg path {
 }
 
 svg path:hover {
-  fill: #ffcc00;
+  fill: var(--yellow);
 }
 
 #mapa svg {
-  height: 100%;
+  width:  100%;
 align-items: center;
 }
 

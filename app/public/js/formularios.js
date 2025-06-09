@@ -163,11 +163,13 @@ function cargarFormulario() {
         }
         const response = await crearCargo(nuevoCargo);
         console.log(response);
+        console.log('Respuesta del servidor:', response);
         if (response.success) {
             alert('Cargo creado con éxito');
-            agregarCargos();
+                agregarCargos();
+
         } else {
-            alert('Error al crear el cargo');
+            alert(response.mensaje);
         }}
     );
 
@@ -193,9 +195,9 @@ function cargarFormulario() {
         console.log(response);
         if (response.success) {
             alert('Cargo creado con éxito');
-            agregarCargos();
+agregarCargosUnir()
         } else {
-            alert('Error al crear el cargo');
+            alert(response.mensaje);
         }
         });
     }
@@ -275,13 +277,16 @@ async function crearCargo(cargo) {
             body: JSON.stringify({ nombre: cargo }),
         });
         const data = await response.json();
+        console.log('Respuesta del servidor:', data);
         if (response.ok) {
             return { success: true, data };
         } else {
-            return { success: false, mensaje: data.mensaje || 'Error al crear el cargo' };
+                       
+
+            return { success: false, mensaje: data.message || 'Error al crear eee el cargo' };
         }
     } catch (error) {
-        console.error('Error al crear el cargo:', error);
-        return { success: false, mensaje: 'Error al crear el cargo' };
+        console.error('Error al creardddd el cargo:', error);
+        return { success: false, mensaje: 'Error al crear dddd el cargo' };
     }
 }
