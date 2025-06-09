@@ -182,27 +182,25 @@ async function llamarIntegrantes(idEntidad) {
   try {
     const response = await fetch(url);
     const datos = await response.json();
+          console.log(datos);
 
-    if (datos.length > 0) {
+    if (Array.isArray(datos) && datos.length > 0) {
+
       // Adaptar datos para estructura esperada por el resto del código
-      datos.integrantes = datos.map(item => ({
-        nombre: item.User.name,
-        rol: item.Cargo.nombre,
-        estado: item.estado
-      }));
-      let integrantes = datos.integrantes;
-      console.log(integrantes);
+      const integrantes = datos
+        .filter(item => item.estado) // Solo los activos
+        .map(item => ({
+          nombre: item.User?.name || 'Sin nombre',
+          rol: item.Cargo?.nombre || 'Sin rol'
+        }));
 
       let integrantesHTML = '<ul>';
-      let hayIntegrantes = false;
-      integrantes.forEach(integrante => {
-        if (integrante.estado == 1) {
+      if (integrantes.length > 0) {
+        integrantes.forEach(integrante => {
           integrantesHTML += `<li>${integrante.nombre} - ${integrante.rol}</li>`;
-          hayIntegrantes = true;
-        }
-      });
-      if (!hayIntegrantes) {
-        integrantesHTML += '<li>Sin ningún integrante</li>';
+        });
+      } else {
+        integrantesHTML += '<li>Sin1 ningún integrante</li>';
       }
       integrantesHTML += '</ul>';
       document.getElementById('integrantesAsociados').innerHTML = integrantesHTML;
