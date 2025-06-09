@@ -21,12 +21,16 @@ import { methods as authentication } from './controllers/authentication.controll
 import { methods as authorization } from './middlewares/authorization.js';
 import routes from './routes/index.js';
 
+//swagger
+import swaggerUi from 'swagger-ui-express';
+import swaggerSpec from './swagger/swaggerConfig.js';
 // Configurar Express
 const app = express();
 app.use(cors({ origin: 'http://127.0.0.1:5500', credentials: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(cookieParser());
+
 
 // Configuración de almacenamiento con multer
 const storage = multer.diskStorage({
@@ -41,6 +45,8 @@ const upload = multer({ storage });
 
 // API: rutas agrupadas
 app.use('/api', routes);
+// Swagger
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Auth endpoints
 app.post('/api/login', authentication.login);
