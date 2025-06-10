@@ -18,6 +18,7 @@ import Curso from "./cursoRoutes.js";
 import AplicarCurso from "./aplicarCursoRoute.js"; // Importar las rutas de AplicarCurso
 import VideosCurso from "./videosCursoRoute.js"; // Importar las rutas de VideosCurso
 import UsuarioVideos from "./usuarioVideosRoutes.js"; // Importar las rutas de UsuarioVideos
+import InvitacionRoutes from "./invitacionRoutes.js"; // Importar las rutas de Invitacion
 const router = express.Router();
 
 router.use('/entidad', entidadRoutes);
@@ -39,4 +40,5 @@ router.use('/curso', Curso); // Descomentar si se necesita la ruta de aplicarRet
 router.use('/aplicarCurso', AplicarCurso); // Descomentar si se necesita la ruta de aplicarReto
 router.use('/videosCurso', VideosCurso); // Descomentar si se necesita la ruta de videosCurso
 router.use('/usuarioVideos', UsuarioVideos); // Descomentar si se necesita la ruta de usuarioVideos
+router.use('/invitacion', InvitacionRoutes); // Descomentar si se necesita la ruta de invitacion
 export default router;

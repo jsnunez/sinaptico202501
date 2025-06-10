@@ -46,7 +46,6 @@ async function register(req, res) {
     res.status(500).send({ status: "Error", message: "Error al registrar el usuario", error: error.message });
   }
 }
-
 //--- iniciar sesion de usuarios ---//
 async function login(req, res) {
   const { email, password } = req.body;
@@ -89,9 +88,9 @@ async function login(req, res) {
 
     // Verificar el rol del usuario y redirigir según corresponda
     if (usuarioAResvisar.rol === 1) {
-      res.send({ status: "ok", message: "Usuario logueado", redirect: "/helice" });
+      res.send({ status: "ok", message: "Usuario logueado", redirect: "/helice", idusuario: usuarioAResvisar.id });
     } else if (usuarioAResvisar.rol === 3) {
-      res.send({ status: "ok", message: "Usuario logueado", redirect: "/dashboard" });
+      res.send({ status: "ok", message: "Usuario logueado", redirect: "/dashboard", idusuario: usuarioAResvisar.id });
     } else {
       res.status(403).send({ status: "Error", message: "Acceso denegado" });
     }

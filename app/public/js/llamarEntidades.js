@@ -80,7 +80,7 @@ function cargarEmpresas(empresas) {
   }
 
   document.getElementById("empresaC").innerText = empresaC;
-  document.getElementById("emprendiminetoC").innerText = emprendimientoC;
+  document.getElementById("emprendimientoC").innerText = emprendimientoC;
   document.getElementById("startupC").innerText = startupC;
   document.getElementById("universidadesC").innerText = universidadesC;
 
@@ -135,6 +135,40 @@ document.addEventListener('DOMContentLoaded', function () {
       method: 'PUT'
       }).catch(err => console.error('Error al aumentar contador:', err));
     }
+    // Enviar invitación al hacer clic en el botón de contacto
+ const userId = obtenerCookie("userId");   
+  const paraUserId = empresa.UserAdminId; // Ajusta según la estructura de tu objeto empresa
+    const mensaje = `Hola, me gustaría ponerme en contacto con ${empresa.razonSocial}`;
+    const telefonoEmpresa = empresa.telefono;
+
+    if (userId && paraUserId) {
+      fetch(`${API_BASE_URL}/api/invitacion`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        desdeuserid: userId,
+        parauserid: paraUserId,
+        mensaje,
+        telefono: telefonoEmpresa
+      })
+      })
+      .then(res => res.json())
+      .then(data => {
+        console.log('Respuesta del servidor:', data);
+      if (data && data.id) {
+        alert('Invitación enviada correctamente.');
+      } else {
+        alert('No se pudo enviar la invitación: ' + (data.error || 'Error desconocido.'));
+      }
+      })
+      .catch(err => {
+      console.error('Error al enviar invitación:', err);
+      alert('Error al enviar la invitación.');
+      });
+    }
+
     // telefono.setAttribute('data-contador', contador);
     // let contadorSpan = document.getElementById('contadorContactos');
     // if (!contadorSpan) {

@@ -40,6 +40,11 @@
             <button class="nav-button pulse" onclick="window.location.href='/eventos'">Eventos</button>
 
             <button class="nav-button pulse" onclick="irEnConstruccion()">Mapa</button>
+            <div style="position:fixed;top:10px;right:20px;z-index:1000;font-size:1.5em;cursor:pointer;">
+                <span id="icono-notif">🔔 <span
+                        style='background:red;color:white;border-radius:50%;padding:2px 7px;font-size:0.9em;'>0</span></span>
+            </div>
+            <div class="notificaciones" id="notificaciones"></div>
 
             <button class="nav-button pulse" id="cerrarSesion">Cerrar sesión</button>
         </nav>
@@ -67,7 +72,9 @@
             <button class="action-button" id="editarEntidad" style="display: none;">
                 <span class="button-icon">✏️</span> Editar entidad
             </button>
-
+            <button class="action-button" id="misContactos">
+                <span class="button-icon"><i class="bi bi-person-fill"></i></span> Mis Contactos
+            </button>
             <button class="action-button" id="asignarServicio" style="display: none;"
                 onclick="abrirModalAgregarServicio()">
                 <span class="button-icon">🔄</span> Servicios
@@ -282,6 +289,84 @@
             </form>
         </div>
     </div>
+    <!-- Modal Mis Contactos -->
+    <div id="modalMisContactos" class="modal">
+        <div class="modal-content" style="max-width:900px;">
+            <span class="close" id="cerrarModalMisContactos">&times;</span>
+            <h2>Mis Contactos Verificados</h2>
+            <div style="overflow-x:auto;">
+                <table style="width:100%;border-collapse:collapse;">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Email</th>
+                            <th>Entidad</th>
+                            <th>Teléfono</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaContactosVerificados">
+                        <!-- Los contactos verificados se cargarán aquí -->
+                    </tbody>
+                </table>
+            </div>
+            <button class="modal-button" id="cerrarModalMisContactosBtn">Cerrar</button>
+        </div>
+    </div>
+    <script>
+        document.getElementById('misContactos').onclick = function () {
+            document.getElementById('modalMisContactos').style.display = 'block';
+            fetch(`/api/invitacion/mis-contactos/${userId}`)
+                .then(res => res.json())
+                .then(data => {
+                    const tbody = document.getElementById('tablaContactosVerificados');
+                    tbody.innerHTML = '';
+                    // Mostrar contactos recibidos
+                    if (data.recibidos && Array.isArray(data.recibidos) && data.recibidos.length > 0) {
+                        data.recibidos.forEach(contacto => {
+
+                            console.log(contacto.telefono);
+
+                            const tr = document.createElement('tr');
+                            tr.innerHTML = `
+                            <td>${contacto.name || ''}</td>
+                            <td>${contacto.email || ''}</td>
+                            <td>${contacto.entidad || ''}</td>
+                            <td>${contacto.telefono || ''}</td>
+                        `;
+                            tbody.appendChild(tr);
+                            console.log(tr);
+
+                        });
+                    }
+                    // Mostrar contactos enviados
+                    if (data.enviados && Array.isArray(data.enviados) && data.enviados.length > 0) {
+                        data.enviados.forEach(contacto => {
+                            const tr = document.createElement('tr');
+                            tr.innerHTML = `
+                            <td>${contacto.name || ''}</td>
+                            <td>${contacto.email || ''}</td>
+                            <td>${contacto.entidad.razonsocial || ''}</td>
+                            <td>${contacto.telefono || ''}</td>
+                        `;
+                            tbody.appendChild(tr);
+                        });
+                    }
+                    // Si no hay contactos en ninguno
+                    if (
+                        (!data.recibidos || data.recibidos.length === 0) &&
+                        (!data.enviados || data.enviados.length === 0)
+                    ) {
+                        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No hay contactos verificados</td></tr>';
+                    }
+                });
+        };
+        document.getElementById('cerrarModalMisContactos').onclick = function () {
+            document.getElementById('modalMisContactos').style.display = 'none';
+        };
+        document.getElementById('cerrarModalMisContactosBtn').onclick = function () {
+            document.getElementById('modalMisContactos').style.display = 'none';
+        };
+    </script>
     <script>
         // Abrir modal al hacer clic en la foto de usuario
         document.getElementById('userPhoto').onclick = function () {
@@ -491,6 +576,7 @@
 
             <button class="modal-button" id="cerrarModal">Cerrar</button>
         </div>
+
     </div>
     <!-- Scripts -->
     <script src="js/helice2.js"></script>
@@ -505,6 +591,7 @@
     <script src="js/agregarServicioEntidad.js"></script>
     <script src="js/estadisticas.js"></script>
     <script src="js/solicitudesVincuncular.js"></script>
+    <script src="js/notificaciones.js"></script>
 
     <script>
         function irEnConstruccion() {

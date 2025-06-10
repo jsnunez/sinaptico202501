@@ -2,7 +2,7 @@ import { DataTypes } from 'sequelize';
 import sequelize from '../config/database.js';
 import Contacto from './contacto.js';
 import Ciudad from './ciudad.js'; // <-- Asegúrate de importar Ciudad
-
+import User from './user.js'; // Asegúrate de que la ruta sea correcta
 const Entidad = sequelize.define('Entidad', {
   claseEntidad: {
     type: DataTypes.STRING,
@@ -113,6 +113,9 @@ const Entidad = sequelize.define('Entidad', {
 });
 
 // Relaciones
+User.hasOne(Entidad, { foreignKey: 'UserAdminId', as: 'entidad' });
+
+Entidad.belongsTo(User, { foreignKey: 'UserAdminId' });
 Entidad.belongsTo(Contacto, { foreignKey: 'contactoId' });
 Entidad.belongsTo(Ciudad, { foreignKey: 'ciudadId' }); // <-- Relación con Ciudad
 

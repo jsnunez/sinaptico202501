@@ -18,6 +18,7 @@ import Curso from './curso.js';
 import AplicarCurso from './aplicarCurso.js'; // Asegúrate de que la ruta sea correcta
 import VideosCurso from './videosCurso.js'; // Asegúrate de que la ruta sea correcta
 import UsuarioVideos from './usuarioVideos.js'; // Asegúrate de que la ruta sea correcta
+import Invitacion from './invitaciones.js';
 // Definir todas las asociaciones aquí
 
 User.hasMany(UsuarioEmpresaCargo, { foreignKey: 'userId' });
@@ -47,6 +48,8 @@ Convocatoria.belongsTo(TipoConvocatorias, {
     as: 'tipoConvocatoria'
 });
 
+Invitacion.belongsTo(User, { as: 'desdeUser', foreignKey: 'desdeuserid' });
+Invitacion.belongsTo(User, { as: 'paraUser', foreignKey: 'parauserid' });
 
 export default () => {
   // Esto asegura que las asociaciones se definan solo una vez
@@ -67,4 +70,6 @@ export default () => {
   Curso.sync();
   AplicarCurso.sync();
   VideosCurso.sync();
+  UsuarioVideos.sync();
+  Invitacion.sync();
 };

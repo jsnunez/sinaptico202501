@@ -1,7 +1,7 @@
 // models/user.js
 import { DataTypes, Sequelize } from 'sequelize';
 import sequelize from '../config/database.js';  // Importa la instancia de Sequelize
-
+import Invitacion from './invitaciones.js'; // Asegúrate de que la ruta sea correcta
 const User = sequelize.define('User', {
   id: {
     type: DataTypes.INTEGER,
@@ -64,5 +64,8 @@ const User = sequelize.define('User', {
   timestamps: true, // Esto habilita los campos `createdAt` y `updatedAt`
   
 });
+User.hasMany(Invitacion, { as: 'enviadas', foreignKey: 'desdeuserid' });
+User.hasMany(Invitacion, { as: 'recibidas', foreignKey: 'parauserid' });
+
 
 export default User;

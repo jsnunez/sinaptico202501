@@ -5,6 +5,8 @@ import cookieParser from 'cookie-parser';
 import multer from 'multer';
 import path from 'path';
 import cors from 'cors';
+import http from 'http';
+import {Server} from 'socket.io';
 import { fileURLToPath } from 'url';
 
 // Configuración inicial
@@ -30,8 +32,22 @@ app.use(cors({ origin: 'http://127.0.0.1:5500', credentials: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(cookieParser());
+// --- WebSocket para notificaciones en tiempo real ---
+const server = http.createServer(app);
+const io = new Server(server, { cors: { origin: '*' } });
 
-
+// Almacenar conexiones por usuario
+const userSockets = {};
+io.on('connection', (socket) => {
+  socket.on('login', (userId) => {
+    userSockets[userId] = socket;
+  });
+  socket.on('disconnect', () => {
+    for (const id in userSockets) {
+      if (userSockets[id] === socket) delete userSockets[id];
+    }
+  });
+});
 // Configuración de almacenamiento con multer
 const storage = multer.diskStorage({
     destination: (req, file, cb) => cb(null, 'app/public/logos'),
@@ -84,7 +100,7 @@ app.get('/cursoDashboard', authorization.soloAdmin, (req, res) => res.sendFile(p
 app.get('/eventosDashboard', authorization.soloAdmin, (req, res) => res.sendFile(path.join(__dirname, 'pages/admin/eventosDashboard.html')));
 
 // Inicializar servidor
-sequelize.sync({ alter: true })
+sequelize.sync()
     .then(() => {
         console.log('Base de datos sincronizada');
         app.listen(process.env.PORT, () => {

@@ -25,6 +25,7 @@
     "sanitize-filename": "^1.6.3",
     "sequelize": "^6.37.7",
     "sinaptico": "file:",
+    "socket.io": "^4.8.1",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
     "sweetalert2": "^11.19.1"

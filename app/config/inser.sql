@@ -102,3 +102,22 @@ VALUES
 ('Puerto Carreño', 31); -- Vichada
 
 INSERT INTO `retos` VALUES (,'innovacion continua','22a00348-7d61-4594-a21a-5547ba25bed8.mp4','crea una propuesta de innovacion con enfoque en el cafe o cacao','7a7031b4-71bf-4246-827d-6fa90ccf8d64.pdf','2025-04-28 21:56:47','2025-04-28 21:56:47');
+
+INSERT INTO Entidad (
+    claseEntidad, razonSocial, habilitado, numIdentificacion, tipoEntidad, naturalezaJuridica,
+    actividadEconomica, correo, telefono, fechaConstitucion, ciudadId, direccion,
+    facebook, instagram, paginaweb, contadorContacto, logo, contactoId, UserAdminId,
+    createdAt, updatedAt
+) VALUES
+('Empresa', 'Café Innovador S.A.', 1, '900123456', 'Sociedad Anónima', 'Privada',
+ 'Producción de café', 'info@cafeinnovador.com', '3101234567', '2015-06-12', 3, 'Calle 10 #20-30',
+ 'facebook.com/cafeinnovador', 'instagram.com/cafeinnovador', 'www.cafeinnovador.com', 0, 'logo1.png', NULL, 1,
+ NOW(), NOW()),
+('Startup', 'Cacao Futuro Ltda.', 1, '901234567', 'Sociedad Limitada', 'Privada',
+ 'Transformación de cacao', 'contacto@cacaofuturo.com', '3209876543', '2019-09-01', 5, 'Carrera 15 #45-67',
+ 'facebook.com/cacaofuturo', 'instagram.com/cacaofuturo', 'www.cacaofuturo.com', 0, 'logo2.png', NULL, 2,
+ NOW(), NOW()),
+('Universidad', 'Universidad del Café', 1, '800765432', 'Persona Natural', 'Pública',
+ 'Educación superior', 'info@unidelcafe.edu.co', '6012345678', '2000-02-20', 14, 'Av. Universitaria #100-200',
+ 'facebook.com/unidelcafe', 'instagram.com/unidelcafe', 'www.unidelcafe.edu.co', 0, 'logo3.png', NULL, 1,
+ NOW(), NOW());
