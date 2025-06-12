@@ -25,3 +25,28 @@
       noti.remove();
     }, 5000); // se borra después de 5 segundos
   }
+
+// Escuchar evento de usuarios en línea
+socket.on('usuariosEnLinea', (cantidad) => {
+    mostrarUsuariosEnLinea(cantidad);
+});
+
+// Crear o actualizar el contador de usuarios en línea
+function mostrarUsuariosEnLinea(cantidad) {
+    let contador = document.getElementById('usuarios-en-linea');
+    if (!contador) {
+        contador = document.createElement('div');
+        contador.id = 'usuarios-en-linea';
+        contador.style.position = 'fixed';
+        contador.style.bottom = '20px';
+        contador.style.right = '20px';
+        contador.style.background = 'rgba(0,0,0,0.7)';
+        contador.style.color = '#fff';
+        contador.style.padding = '10px 18px';
+        contador.style.borderRadius = '8px';
+        contador.style.zIndex = '9999';
+        contador.style.fontSize = '16px';
+        document.body.appendChild(contador);
+    }
+    contador.textContent = `Usuarios en línea: ${cantidad}`;
+}

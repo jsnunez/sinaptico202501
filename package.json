@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "node app/index.js",
+    "prueba": "node app.js",
     "dev": "nodemon --exec node app/index.js"
   },
   "keywords": [],
