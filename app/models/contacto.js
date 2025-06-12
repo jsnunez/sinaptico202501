@@ -25,7 +25,17 @@ const Contacto = sequelize.define('Contacto', {
         model: Cargo,
         key: 'id',
     },
-},
+  },
+  createdAt: {
+    type: DataTypes.DATE,
+    allowNull: true,
+    defaultValue: DataTypes.NOW,
+  },
+  updatedAt: {
+    type: DataTypes.DATE,
+    allowNull: true,
+    defaultValue: DataTypes.NOW,
+  },
 }, {
   tableName: 'contactos',
   timestamps: true,

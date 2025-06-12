@@ -6,7 +6,9 @@ import multer from 'multer';
 import path from 'path';
 import cors from 'cors';
 import http from 'http';
-import {Server} from 'socket.io';
+import { initSocketIO } from './config/socketUtils.js';
+
+import { Server } from 'socket.io';
 import { fileURLToPath } from 'url';
 
 // Configuración inicial
@@ -23,44 +25,43 @@ import { methods as authentication } from './controllers/authentication.controll
 import { methods as authorization } from './middlewares/authorization.js';
 import routes from './routes/index.js';
 
-//swagger
+// Swagger
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from './swagger/swaggerConfig.js';
+
 // Configurar Express
 const app = express();
 app.use(cors({ origin: 'http://127.0.0.1:5500', credentials: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(cookieParser());
-// --- WebSocket para notificaciones en tiempo real ---
-const server = http.createServer(app);
-const io = new Server(server, { cors: { origin: '*' } });
 
-// Almacenar conexiones por usuario
-const userSockets = {};
-io.on('connection', (socket) => {
-  socket.on('login', (userId) => {
-    userSockets[userId] = socket;
-  });
-  socket.on('disconnect', () => {
-    for (const id in userSockets) {
-      if (userSockets[id] === socket) delete userSockets[id];
-    }
-  });
+// --- WebSocket para notificaciones en tiempo real ---
+// Crear servidor HTTP desde Express
+const server = http.createServer(app);
+// Crear instancia de Socket.IO vinculada al servidor HTTP
+const io = new Server(server, {
+  cors: { origin: '*' } // Para desarrollo, ajusta en producción
 });
+
+
+// Inicializa lógica del socket
+initSocketIO(io);
+
 // Configuración de almacenamiento con multer
 const storage = multer.diskStorage({
-    destination: (req, file, cb) => cb(null, 'app/public/logos'),
-    filename: (req, file, cb) => {
-        const empresaNombre = req.body.numIdentificacion;
-        const extension = path.extname(file.originalname);
-        cb(null, empresaNombre + extension);
-    }
+  destination: (req, file, cb) => cb(null, 'app/public/logos'),
+  filename: (req, file, cb) => {
+    const empresaNombre = req.body.numIdentificacion;
+    const extension = path.extname(file.originalname);
+    cb(null, empresaNombre + extension);
+  }
 });
 const upload = multer({ storage });
 
 // API: rutas agrupadas
 app.use('/api', routes);
+
 // Swagger
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
@@ -71,8 +72,8 @@ app.post('/api/recuperarPass', authentication.recuperarPassword);
 
 // Subida de archivos
 app.post('/upload', upload.single('logo'), (req, res) => {
-    console.log(`Empresa: ${req.body.nombre}, Archivo: ${req.file.filename}`);
-    res.send('Logo subido con éxito.');
+  console.log(`Empresa: ${req.body.nombre}, Archivo: ${req.file.filename}`);
+  res.send('Logo subido con éxito.');
 });
 
 // Rutas HTML públicas
@@ -99,14 +100,14 @@ app.get('/conocimientoDashboard', authorization.soloAdmin, (req, res) => res.sen
 app.get('/cursoDashboard', authorization.soloAdmin, (req, res) => res.sendFile(path.join(__dirname, 'pages/admin/cursoDashboard.html')));
 app.get('/eventosDashboard', authorization.soloAdmin, (req, res) => res.sendFile(path.join(__dirname, 'pages/admin/eventosDashboard.html')));
 
-// Inicializar servidor
+// Inicializar servidor con sequelize y luego escuchar con 'server'
 sequelize.sync()
-    .then(() => {
-        console.log('Base de datos sincronizada');
-        app.listen(process.env.PORT, () => {
-            console.log(`Servidor corriendo en el puerto ${process.env.PORT}`);
-        });
-    })
-    .catch((error) => {
-        console.error('Error al sincronizar la base de datos:', error);
+  .then(() => {
+    console.log('Base de datos sincronizada');
+    server.listen(process.env.PORT, () => {
+      console.log(`Servidor corriendo en el puerto ${process.env.PORT}`);
     });
+  })
+  .catch((error) => {
+    console.error('Error al sincronizar la base de datos:', error);
+  });

@@ -1,4 +1,3 @@
-let socket = null;
      const userId = obtenerCookie("userId"); 
 
 // Conectar socket y escuchar notificaciones al cargar la página
@@ -15,7 +14,7 @@ async function actualizarContadorNotificaciones() {
   console.log(data);
   const pendientes = data.filter(n => !n.verificado).length;
   const icono = document.getElementById('icono-notif');
-  icono.innerHTML = `🔔 <span style='background:red;color:white;border-radius:50%;padding:2px 7px;font-size:0.9em;'>${pendientes}</span>`;
+  icono.innerHTML = `🔔 <span id="notificaciones" style='background:red;color:white;border-radius:50%;padding:2px 7px;font-size:0.9em;'>${pendientes}</span>`;
 }
 
 // Modificar verNotificaciones para mostrar detalles
@@ -50,7 +49,7 @@ iconoNotif.onclick = async function() {
             div.innerHTML = '<em>No hay notificaciones</em>';
         } else {
             div.innerHTML = noVerificadas.map(n => `
-                <div id="notif-div-${n.desdeuserid}" style='background:#fffbe6;padding:8px;margin:4px 0;border:1px solid #ccc;'>
+                <div id="notif-div-${n.desdeuserid}" style='color:black; background:#fffff;padding:8px;margin:4px 0;border:1px solid #ccc;'>
                     <b>De:</b> ${n.desdeUser.name}  <b>Mensaje:</b> ${n.mensaje}
                     <span id="verif-${n.de}" style="margin-left:10px;">
                         <button onclick='aceptarInvitacion(${n.desdeuserid})'>Aceptar</button>

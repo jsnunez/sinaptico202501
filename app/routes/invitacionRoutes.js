@@ -4,6 +4,7 @@ import Invitacion from '../models/invitaciones.js';
 import User from '../models/user.js';
 import Entidad from '../models/entidad.js';
 import { Op } from 'sequelize';
+import { enviarNotificacion } from '../config/socketUtils.js'; 
 const router = express.Router();
 // Enviar invitación o mensaje usando MySQL
 
@@ -28,6 +29,14 @@ router.post('/', async (req, res) => {
             mensaje,
             telefono,
         });
+
+        // Enviar notificación al usuario invitado
+        const noti = {
+            titulo: 'Nueva invitación',
+            texto: 'Has recibido una nueva invitación.',
+        };
+        enviarNotificacion(String(parauserid), noti);
+
         res.status(201).json(invitacion);
     } catch (error) {
         res.status(500).json({ error: 'Error al crear la invitación', details: error.message });

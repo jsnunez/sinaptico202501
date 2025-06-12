@@ -27,6 +27,8 @@ Cargo.hasMany(UsuarioEmpresaCargo, { foreignKey: 'cargoId' });
 
 Ciudad.hasMany(Entidad, { foreignKey: 'ciudadId' });
 Contacto.hasMany(Entidad, { foreignKey: 'contactoId' });
+Entidad.belongsTo(Contacto, { foreignKey: 'contactoId' });
+
 Departamento.hasMany(Ciudad, { foreignKey: 'departamentoId' });
 
 Reto.hasMany(AplicarReto, { foreignKey: 'retoId' });

@@ -116,7 +116,6 @@ const Entidad = sequelize.define('Entidad', {
 User.hasOne(Entidad, { foreignKey: 'UserAdminId', as: 'entidad' });
 
 Entidad.belongsTo(User, { foreignKey: 'UserAdminId' });
-Entidad.belongsTo(Contacto, { foreignKey: 'contactoId' });
 Entidad.belongsTo(Ciudad, { foreignKey: 'ciudadId' }); // <-- Relación con Ciudad
 
 export default Entidad;
