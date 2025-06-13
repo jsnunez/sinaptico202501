@@ -376,7 +376,7 @@ inputBuscar.addEventListener("input", function () {
           estado: document.getElementById("estadoUsuario").value,
         };
   
-        fetch(`http://localhost:4000/api/user/${updatedUsuario.id}` , {
+        fetch(`/api/user/${updatedUsuario.id}` , {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -396,7 +396,7 @@ inputBuscar.addEventListener("input", function () {
             modalUsuario.style.display = "none";
             // Recargar la lista de usuarios
             alert("Usuario actualizado correctamente");
-            fetch("http://localhost:4000/api/user")
+            fetch("/api/user")
               .then((response) => response.json())
               .then((usuarios) => renderUsuarios(usuarios));
           })
