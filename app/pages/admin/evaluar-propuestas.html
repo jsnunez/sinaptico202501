@@ -1,0 +1,1456 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluación de Propuestas - SinAptico Admin</title>
+    <link rel="stylesheet" href="../../public/styles/styles.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f7fa;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 3em;
+        }
+        
+        .header p {
+            margin: 15px 0 0 0;
+            opacity: 0.9;
+            font-size: 1.3em;
+        }
+        
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            border-top: 4px solid #3498db;
+        }
+        
+        .stat-card.pending {
+            border-top-color: #f39c12;
+        }
+        
+        .stat-card.approved {
+            border-top-color: #27ae60;
+        }
+        
+        .stat-card.rejected {
+            border-top-color: #e74c3c;
+        }
+        
+        .stat-card.total {
+            border-top-color: #9b59b6;
+        }
+        
+        .stat-icon {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .stat-label {
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+        
+        .filters-section {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .filters-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+            gap: 20px;
+            align-items: end;
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .filter-group label {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            font-weight: 500;
+        }
+        
+        .filter-group select, .filter-group input {
+            padding: 10px 12px;
+            border: 2px solid #ecf0f1;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ecf0f1;
+            border-radius: 25px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        
+        .propuestas-table {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .table-header {
+            background: #f8f9fa;
+            padding: 20px;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .table-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .table-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #495057;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-evaluating {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+        
+        .status-approved {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-rejected {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .priority-badge {
+            padding: 4px 8px;
+            border-radius: 10px;
+            font-size: 0.75em;
+            font-weight: 500;
+        }
+        
+        .priority-high {
+            background: #fee;
+            color: #c53030;
+        }
+        
+        .priority-medium {
+            background: #fef5e7;
+            color: #d69e2e;
+        }
+        
+        .priority-low {
+            background: #f0fff4;
+            color: #38a169;
+        }
+        
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: 500;
+            margin: 0 2px;
+        }
+        
+        .btn-primary {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+        
+        .btn-success {
+            background-color: #27ae60;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background-color: #219a52;
+        }
+        
+        .btn-danger {
+            background-color: #e74c3c;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+        
+        .btn-warning {
+            background-color: #f39c12;
+            color: white;
+        }
+        
+        .btn-warning:hover {
+            background-color: #d68910;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #3498db;
+            color: #3498db;
+        }
+        
+        .btn-outline:hover {
+            background: #3498db;
+            color: white;
+        }
+        
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .modal-content {
+            background-color: white;
+            margin: 2% auto;
+            padding: 0;
+            border-radius: 15px;
+            width: 95%;
+            max-width: 1200px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        
+        .modal-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px 15px 0 0;
+        }
+        
+        .modal-body {
+            padding: 30px;
+        }
+        
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .close:hover {
+            opacity: 0.7;
+        }
+        
+        .propuesta-details {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+        
+        .detail-section {
+            margin-bottom: 25px;
+        }
+        
+        .detail-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 8px;
+        }
+        
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .detail-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .meta-label {
+            font-size: 0.85em;
+            color: #95a5a6;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .meta-value {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .presupuesto {
+            color: #27ae60;
+            font-size: 1.1em;
+        }
+        
+        .participants-list {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .participant-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .participant-item:last-child {
+            border-bottom: none;
+        }
+        
+        .evaluation-panel {
+            background: #fff;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        
+        .evaluation-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .criteria-evaluation {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .criteria-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        
+        .score-input {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .score-input input[type="range"] {
+            flex: 1;
+        }
+        
+        .score-display {
+            background: #3498db;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-weight: bold;
+            min-width: 40px;
+            text-align: center;
+        }
+        
+        .comments-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        
+        .comment-form textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            resize: vertical;
+            font-family: inherit;
+        }
+        
+        .decision-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 2px solid #e9ecef;
+        }
+        
+        .files-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        
+        .file-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .file-icon {
+            font-size: 2em;
+        }
+        
+        .file-info {
+            flex: 1;
+        }
+        
+        .file-name {
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        
+        .file-size {
+            font-size: 0.8em;
+            color: #7f8c8d;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #7f8c8d;
+        }
+        
+        .empty-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .filters-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .propuesta-details {
+                grid-template-columns: 1fr;
+            }
+            
+            .table-container {
+                font-size: 0.9em;
+            }
+            
+            th, td {
+                padding: 10px 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>📋 Banco de Proyectos</h1>
+            <p>Sistema administrativo para evaluar y aprobar propuestas de convocatorias</p>
+        </div>
+        
+        <!-- Estadísticas -->
+        <div class="stats-row">
+            <div class="stat-card pending">
+                <div class="stat-icon">⏳</div>
+                <div class="stat-number" id="propuestasPendientes">24</div>
+                <div class="stat-label">Pendientes de Evaluación</div>
+            </div>
+            
+            <div class="stat-card total">
+                <div class="stat-icon">📊</div>
+                <div class="stat-number" id="propuestasTotal">67</div>
+                <div class="stat-label">Propuestas Totales</div>
+            </div>
+            
+            <div class="stat-card approved">
+                <div class="stat-icon">✅</div>
+                <div class="stat-number" id="propuestasAprobadas">31</div>
+                <div class="stat-label">Aprobadas</div>
+            </div>
+            
+            <div class="stat-card rejected">
+                <div class="stat-icon">❌</div>
+                <div class="stat-number" id="propuestasRechazadas">12</div>
+                <div class="stat-label">Rechazadas</div>
+            </div>
+        </div>
+        
+        <!-- Filtros -->
+        <div class="filters-section">
+            <div class="filters-row">
+                <div class="filter-group">
+                    <label>Buscar propuestas:</label>
+                    <div class="search-box">
+                        <input type="text" id="searchInput" placeholder="🔍 Buscar por título, proponente o convocatoria..." onkeyup="filtrarPropuestas()">
+                    </div>
+                </div>
+                
+                <div class="filter-group">
+                    <label>Estado:</label>
+                    <select id="filtroEstado" onchange="filtrarPropuestas()">
+                        <option value="">Todos los estados</option>
+                        <option value="pendiente">Pendientes</option>
+                        <option value="evaluando">En Evaluación</option>
+                        <option value="aprobada">Aprobadas</option>
+                        <option value="rechazada">Rechazadas</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label>Convocatoria:</label>
+                    <select id="filtroConvocatoria" onchange="filtrarPropuestas()">
+                        <option value="">Todas las convocatorias</option>
+                        <option value="CONV-2025-001">Innovación Digital PyMEs</option>
+                        <option value="CONV-2025-002">Emprendimiento Social</option>
+                        <option value="CONV-2025-003">Sostenibilidad</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label>Prioridad:</label>
+                    <select id="filtroPrioridad" onchange="filtrarPropuestas()">
+                        <option value="">Todas las prioridades</option>
+                        <option value="alta">Alta</option>
+                        <option value="media">Media</option>
+                        <option value="baja">Baja</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label>Fecha:</label>
+                    <select id="filtroFecha" onchange="filtrarPropuestas()">
+                        <option value="">Todas las fechas</option>
+                        <option value="hoy">Hoy</option>
+                        <option value="semana">Esta semana</option>
+                        <option value="mes">Este mes</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tabla de Propuestas -->
+        <div class="propuestas-table">
+            <div class="table-header">
+                <div class="table-title">Propuestas Recibidas</div>
+                <div class="table-actions">
+                    <button class="btn btn-primary" onclick="exportarDatos()">📊 Exportar</button>
+                    <button class="btn btn-outline" onclick="actualizarDatos()">🔄 Actualizar</button>
+                </div>
+            </div>
+            
+            <div class="table-container">
+                <table id="propuestasTable">
+                    <thead>
+                        <tr>
+                            <th>ID Radicado</th>
+                            <th>Título del Proyecto</th>
+                            <th>Proponente Principal</th>
+                            <th>Convocatoria</th>
+                            <th>Fecha Radicación</th>
+                            <th>Presupuesto</th>
+                            <th>Estado</th>
+                            <th>Prioridad</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="propuestasTableBody">
+                        <!-- Las propuestas se cargan dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Evaluación -->
+    <div id="evaluacionModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close" onclick="cerrarModal()">&times;</span>
+                <h2 id="modalTitle">Evaluación de Propuesta</h2>
+                <div id="modalSubtitle">Detalles y evaluación del proyecto</div>
+            </div>
+            <div class="modal-body">
+                <div class="propuesta-details">
+                    <!-- Información del Proyecto -->
+                    <div class="main-info">
+                        <div class="detail-section">
+                            <div class="detail-title">📋 Información General</div>
+                            <div class="detail-grid" id="modalGeneralInfo">
+                                <!-- Información general del proyecto -->
+                            </div>
+                        </div>
+                        
+                        <div class="detail-section">
+                            <div class="detail-title">🎯 Descripción del Proyecto</div>
+                            <p id="modalDescripcion"></p>
+                        </div>
+                        
+                        <div class="detail-section">
+                            <div class="detail-title">👥 Participantes</div>
+                            <div id="modalParticipantes">
+                                <!-- Lista de participantes -->
+                            </div>
+                        </div>
+                        
+                        <div class="detail-section">
+                            <div class="detail-title">💰 Presupuesto</div>
+                            <div id="modalPresupuesto">
+                                <!-- Desglose del presupuesto -->
+                            </div>
+                        </div>
+                        
+                        <div class="detail-section">
+                            <div class="detail-title">📁 Documentos Adjuntos</div>
+                            <div class="files-list" id="modalDocumentos">
+                                <!-- Lista de documentos -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Panel de Evaluación -->
+                    <div class="evaluation-panel">
+                        <div class="detail-title">⚖️ Evaluación</div>
+                        
+                        <div class="evaluation-form">
+                            <div class="criteria-evaluation">
+                                <div class="criteria-title">1. Innovación y Originalidad (30%)</div>
+                                <div class="score-input">
+                                    <input type="range" id="criterio1" min="0" max="100" value="0" oninput="actualizarPuntaje(1)">
+                                    <div class="score-display" id="score1">0</div>
+                                </div>
+                                <textarea placeholder="Comentarios sobre innovación..." rows="2"></textarea>
+                            </div>
+                            
+                            <div class="criteria-evaluation">
+                                <div class="criteria-title">2. Viabilidad Técnica y Financiera (25%)</div>
+                                <div class="score-input">
+                                    <input type="range" id="criterio2" min="0" max="100" value="0" oninput="actualizarPuntaje(2)">
+                                    <div class="score-display" id="score2">0</div>
+                                </div>
+                                <textarea placeholder="Comentarios sobre viabilidad..." rows="2"></textarea>
+                            </div>
+                            
+                            <div class="criteria-evaluation">
+                                <div class="criteria-title">3. Impacto Esperado (25%)</div>
+                                <div class="score-input">
+                                    <input type="range" id="criterio3" min="0" max="100" value="0" oninput="actualizarPuntaje(3)">
+                                    <div class="score-display" id="score3">0</div>
+                                </div>
+                                <textarea placeholder="Comentarios sobre impacto..." rows="2"></textarea>
+                            </div>
+                            
+                            <div class="criteria-evaluation">
+                                <div class="criteria-title">4. Equipo Ejecutor (20%)</div>
+                                <div class="score-input">
+                                    <input type="range" id="criterio4" min="0" max="100" value="0" oninput="actualizarPuntaje(4)">
+                                    <div class="score-display" id="score4">0</div>
+                                </div>
+                                <textarea placeholder="Comentarios sobre el equipo..." rows="2"></textarea>
+                            </div>
+                            
+                            <div class="criteria-evaluation" style="background: #e8f5e8; border: 2px solid #27ae60;">
+                                <div class="criteria-title">📊 Puntaje Total</div>
+                                <div style="text-align: center; font-size: 2em; font-weight: bold; color: #27ae60;" id="puntajeTotal">0</div>
+                                <div style="text-align: center; color: #7f8c8d;">de 100 puntos</div>
+                            </div>
+                        </div>
+                        
+                        <div class="comments-section">
+                            <div class="detail-title">💬 Comentarios Generales</div>
+                            <textarea id="comentariosGenerales" placeholder="Escribe aquí tus comentarios generales sobre la propuesta, recomendaciones, observaciones o sugerencias..."></textarea>
+                        </div>
+                        
+                        <div class="decision-buttons">
+                            <button class="btn btn-success" onclick="aprobarPropuesta()" id="btnAprobar">
+                                ✅ Aprobar Propuesta
+                            </button>
+                            <button class="btn btn-danger" onclick="rechazarPropuesta()" id="btnRechazar">
+                                ❌ Rechazar Propuesta
+                            </button>
+                            <button class="btn btn-warning" onclick="solicitarAjustes()" id="btnAjustes">
+                                🔄 Solicitar Ajustes
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        // Datos ficticios de propuestas
+        const propuestasFicticias = [
+            {
+                id: 'RAD-2025-001',
+                titulo: 'PlataformaDigital PyME Connect - Sistema de Gestión Empresarial',
+                proponentePrincipal: 'TechSolutions Ltda.',
+                convocatoria: 'CONV-2025-001',
+                convocatoriaNombre: 'Innovación Digital PyMEs',
+                fechaRadicacion: '2025-07-28T14:30:00',
+                presupuestoSolicitado: 45000000,
+                duracion: 18,
+                estado: 'pendiente',
+                prioridad: 'alta',
+                descripcion: 'Desarrollo de una plataforma digital integral que permita a las PyMEs gestionar de manera eficiente sus procesos de ventas, inventarios, facturación y atención al cliente. La solución incluirá módulos de e-commerce, análisis de datos y automatización de procesos.',
+                participantes: [
+                    { tipo: 'Proponente', nombre: 'TechSolutions Ltda.', rol: 'Empresa desarrolladora', contacto: 'contacto@techsolutions.com' },
+                    { tipo: 'Aliado', nombre: 'Universidad Javeriana', rol: 'Investigación y desarrollo', contacto: 'proyectos@javeriana.edu.co' },
+                    { tipo: 'Beneficiario', nombre: 'Asociación PyMEs Bogotá', rol: 'Usuarios finales', contacto: 'info@pymebogota.org' }
+                ],
+                presupuesto: {
+                    personal: 25000000,
+                    equipos: 8000000,
+                    software: 5000000,
+                    capacitacion: 4000000,
+                    otros: 3000000
+                },
+                documentos: [
+                    { nombre: 'Propuesta_Tecnica.pdf', tipo: 'pdf', tamaño: '2.5 MB' },
+                    { nombre: 'Presupuesto_Detallado.xlsx', tipo: 'excel', tamaño: '890 KB' },
+                    { nombre: 'Cronograma_Actividades.pdf', tipo: 'pdf', tamaño: '1.2 MB' },
+                    { nombre: 'Certificados_Equipo.pdf', tipo: 'pdf', tamaño: '3.1 MB' }
+                ],
+                evaluacion: null
+            },
+            {
+                id: 'RAD-2025-002',
+                titulo: 'EcoSocial Hub - Red de Emprendimiento Sostenible',
+                proponentePrincipal: 'Fundación Verde Futuro',
+                convocatoria: 'CONV-2025-002',
+                convocatoriaNombre: 'Emprendimiento Social',
+                fechaRadicacion: '2025-07-29T09:15:00',
+                presupuestoSolicitado: 28000000,
+                duracion: 12,
+                estado: 'evaluando',
+                prioridad: 'alta',
+                descripcion: 'Creación de una red digital y física que conecte emprendedores sociales con recursos, mentores y mercados. El proyecto incluye una plataforma web, espacios de co-working comunitarios y programas de formación en emprendimiento sostenible.',
+                participantes: [
+                    { tipo: 'Proponente', nombre: 'Fundación Verde Futuro', rol: 'ONG coordinadora', contacto: 'info@verdefuturo.org' },
+                    { tipo: 'Aliado', nombre: 'SENA Regional Bogotá', rol: 'Formación técnica', contacto: 'coordinacion@sena.edu.co' },
+                    { tipo: 'Beneficiario', nombre: 'Comunidades Vulnerables', rol: 'Emprendedores objetivo', contacto: 'N/A' }
+                ],
+                presupuesto: {
+                    personal: 15000000,
+                    infraestructura: 6000000,
+                    tecnologia: 4000000,
+                    formacion: 2500000,
+                    otros: 500000
+                },
+                documentos: [
+                    { nombre: 'Proyecto_Social.pdf', tipo: 'pdf', tamaño: '4.2 MB' },
+                    { nombre: 'Analisis_Impacto.pdf', tipo: 'pdf', tamaño: '1.8 MB' },
+                    { nombre: 'Alianzas_Estrategicas.pdf', tipo: 'pdf', tamaño: '920 KB' }
+                ],
+                evaluacion: {
+                    criterio1: 85,
+                    criterio2: 78,
+                    criterio3: 92,
+                    criterio4: 80,
+                    comentarios: 'Proyecto con excelente enfoque social y buena viabilidad técnica.'
+                }
+            }
+        ];
+
+        // Generar más propuestas ficticias
+        const convocatorias = [
+            { id: 'CONV-2025-001', nombre: 'Innovación Digital PyMEs' },
+            { id: 'CONV-2025-002', nombre: 'Emprendimiento Social' },
+            { id: 'CONV-2025-003', nombre: 'Sostenibilidad' }
+        ];
+
+        const estados = ['pendiente', 'evaluando', 'aprobada', 'rechazada'];
+        const prioridades = ['alta', 'media', 'baja'];
+        const empresasEjemplo = [
+            'InnovaTech S.A.S.', 'GreenSolutions Ltda.', 'DataDriven Corp.', 
+            'SmartBusiness Inc.', 'EcoTech Colombia', 'DigitalFirst S.A.',
+            'SocialImpact Org.', 'TechForGood Ltda.', 'NextGen Solutions'
+        ];
+
+        // Generar propuestas adicionales
+        for (let i = 3; i <= 67; i++) {
+            const conv = convocatorias[Math.floor(Math.random() * convocatorias.length)];
+            const empresa = empresasEjemplo[Math.floor(Math.random() * empresasEjemplo.length)];
+            const estado = estados[Math.floor(Math.random() * estados.length)];
+            const prioridad = prioridades[Math.floor(Math.random() * prioridades.length)];
+            
+            propuestasFicticias.push({
+                id: `RAD-2025-${i.toString().padStart(3, '0')}`,
+                titulo: `Proyecto de Innovación ${i} - ${empresa}`,
+                proponentePrincipal: empresa,
+                convocatoria: conv.id,
+                convocatoriaNombre: conv.nombre,
+                fechaRadicacion: `2025-07-${Math.floor(Math.random() * 30) + 1}T${Math.floor(Math.random() * 12) + 8}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}:00`,
+                presupuestoSolicitado: Math.floor(Math.random() * 45000000) + 15000000,
+                duracion: Math.floor(Math.random() * 18) + 6,
+                estado: estado,
+                prioridad: prioridad,
+                descripcion: `Descripción del proyecto ${i} enfocado en soluciones innovadoras...`,
+                participantes: [
+                    { tipo: 'Proponente', nombre: empresa, rol: 'Empresa líder', contacto: `contacto@${empresa.toLowerCase().replace(/\s+/g, '')}.com` }
+                ],
+                presupuesto: {
+                    personal: Math.floor(Math.random() * 20000000) + 10000000,
+                    equipos: Math.floor(Math.random() * 8000000) + 2000000,
+                    software: Math.floor(Math.random() * 5000000) + 1000000,
+                    capacitacion: Math.floor(Math.random() * 3000000) + 500000,
+                    otros: Math.floor(Math.random() * 2000000) + 500000
+                },
+                documentos: [
+                    { nombre: 'Propuesta.pdf', tipo: 'pdf', tamaño: '2.1 MB' },
+                    { nombre: 'Presupuesto.xlsx', tipo: 'excel', tamaño: '750 KB' }
+                ],
+                evaluacion: estado === 'aprobada' || estado === 'rechazada' ? {
+                    criterio1: Math.floor(Math.random() * 40) + 60,
+                    criterio2: Math.floor(Math.random() * 40) + 60,
+                    criterio3: Math.floor(Math.random() * 40) + 60,
+                    criterio4: Math.floor(Math.random() * 40) + 60,
+                    comentarios: 'Evaluación completada.'
+                } : null
+            });
+        }
+
+        let propuestasFiltradas = [...propuestasFicticias];
+
+        // Formatear moneda
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('es-CO', {
+                style: 'currency',
+                currency: 'COP',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(amount);
+        }
+
+        // Formatear fecha
+        function formatDate(dateString) {
+            return new Date(dateString).toLocaleDateString('es-CO', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        // Obtener clase de estado
+        function getEstadoClass(estado) {
+            switch (estado) {
+                case 'pendiente': return 'status-pending';
+                case 'evaluando': return 'status-evaluating';
+                case 'aprobada': return 'status-approved';
+                case 'rechazada': return 'status-rejected';
+                default: return 'status-pending';
+            }
+        }
+
+        // Obtener texto del estado
+        function getEstadoTexto(estado) {
+            switch (estado) {
+                case 'pendiente': return 'Pendiente';
+                case 'evaluando': return 'En Evaluación';
+                case 'aprobada': return 'Aprobada';
+                case 'rechazada': return 'Rechazada';
+                default: return estado;
+            }
+        }
+
+        // Obtener clase de prioridad
+        function getPrioridadClass(prioridad) {
+            switch (prioridad) {
+                case 'alta': return 'priority-high';
+                case 'media': return 'priority-medium';
+                case 'baja': return 'priority-low';
+                default: return 'priority-medium';
+            }
+        }
+
+        // Renderizar tabla de propuestas
+        function renderizarPropuestas() {
+            const tbody = document.getElementById('propuestasTableBody');
+            
+            if (propuestasFiltradas.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="9" class="empty-state">
+                            <div class="empty-icon">📭</div>
+                            <div>No se encontraron propuestas que coincidan con los filtros.</div>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            const html = propuestasFiltradas.map(prop => `
+                <tr>
+                    <td><strong>${prop.id}</strong></td>
+                    <td>
+                        <div style="font-weight: 500;">${prop.titulo}</div>
+                        <div style="font-size: 0.8em; color: #7f8c8d;">${prop.convocatoriaNombre}</div>
+                    </td>
+                    <td>${prop.proponentePrincipal}</td>
+                    <td>
+                        <span style="background: #e3f2fd; color: #1976d2; padding: 4px 8px; border-radius: 10px; font-size: 0.8em;">
+                            ${prop.convocatoria}
+                        </span>
+                    </td>
+                    <td>${formatDate(prop.fechaRadicacion)}</td>
+                    <td class="presupuesto">${formatCurrency(prop.presupuestoSolicitado)}</td>
+                    <td>
+                        <span class="status-badge ${getEstadoClass(prop.estado)}">
+                            ${getEstadoTexto(prop.estado)}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="priority-badge ${getPrioridadClass(prop.prioridad)}">
+                            ${prop.prioridad.toUpperCase()}
+                        </span>
+                    </td>
+                    <td>
+                        <button class="btn btn-primary btn-sm" onclick="evaluarPropuesta('${prop.id}')">
+                            📋 Evaluar
+                        </button>
+                        <button class="btn btn-outline btn-sm" onclick="verHistorial('${prop.id}')">
+                            📊 Historial
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+
+            tbody.innerHTML = html;
+        }
+
+        // Filtrar propuestas
+        function filtrarPropuestas() {
+            const busqueda = document.getElementById('searchInput').value.toLowerCase();
+            const filtroEstado = document.getElementById('filtroEstado').value;
+            const filtroConvocatoria = document.getElementById('filtroConvocatoria').value;
+            const filtroPrioridad = document.getElementById('filtroPrioridad').value;
+            const filtroFecha = document.getElementById('filtroFecha').value;
+
+            propuestasFiltradas = propuestasFicticias.filter(prop => {
+                const coincideBusqueda = !busqueda || 
+                    prop.titulo.toLowerCase().includes(busqueda) ||
+                    prop.proponentePrincipal.toLowerCase().includes(busqueda) ||
+                    prop.id.toLowerCase().includes(busqueda);
+
+                const coincideEstado = !filtroEstado || prop.estado === filtroEstado;
+                const coincideConvocatoria = !filtroConvocatoria || prop.convocatoria === filtroConvocatoria;
+                const coincidePrioridad = !filtroPrioridad || prop.prioridad === filtroPrioridad;
+
+                let coincideFecha = true;
+                if (filtroFecha) {
+                    const fechaProp = new Date(prop.fechaRadicacion);
+                    const hoy = new Date();
+                    
+                    switch (filtroFecha) {
+                        case 'hoy':
+                            coincideFecha = fechaProp.toDateString() === hoy.toDateString();
+                            break;
+                        case 'semana':
+                            const semanaAtras = new Date(hoy.getTime() - 7 * 24 * 60 * 60 * 1000);
+                            coincideFecha = fechaProp >= semanaAtras;
+                            break;
+                        case 'mes':
+                            const mesAtras = new Date(hoy.getTime() - 30 * 24 * 60 * 60 * 1000);
+                            coincideFecha = fechaProp >= mesAtras;
+                            break;
+                    }
+                }
+
+                return coincideBusqueda && coincideEstado && coincideConvocatoria && 
+                       coincidePrioridad && coincideFecha;
+            });
+
+            actualizarEstadisticas();
+            renderizarPropuestas();
+        }
+
+        // Actualizar estadísticas
+        function actualizarEstadisticas() {
+            const pendientes = propuestasFiltradas.filter(p => p.estado === 'pendiente').length;
+            const total = propuestasFiltradas.length;
+            const aprobadas = propuestasFiltradas.filter(p => p.estado === 'aprobada').length;
+            const rechazadas = propuestasFiltradas.filter(p => p.estado === 'rechazada').length;
+
+            document.getElementById('propuestasPendientes').textContent = pendientes;
+            document.getElementById('propuestasTotal').textContent = total;
+            document.getElementById('propuestasAprobadas').textContent = aprobadas;
+            document.getElementById('propuestasRechazadas').textContent = rechazadas;
+        }
+
+        // Evaluar propuesta
+        function evaluarPropuesta(propuestaId) {
+            const propuesta = propuestasFicticias.find(p => p.id === propuestaId);
+            if (!propuesta) return;
+
+            // Llenar modal con información
+            document.getElementById('modalTitle').textContent = `Evaluación: ${propuesta.titulo}`;
+            document.getElementById('modalSubtitle').textContent = `${propuesta.id} - ${propuesta.proponentePrincipal}`;
+            
+            // Información general
+            document.getElementById('modalGeneralInfo').innerHTML = `
+                <div class="detail-item">
+                    <div class="meta-label">ID Radicado</div>
+                    <div class="meta-value">${propuesta.id}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="meta-label">Convocatoria</div>
+                    <div class="meta-value">${propuesta.convocatoriaNombre}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="meta-label">Fecha de Radicación</div>
+                    <div class="meta-value">${formatDate(propuesta.fechaRadicacion)}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="meta-label">Duración</div>
+                    <div class="meta-value">${propuesta.duracion} meses</div>
+                </div>
+                <div class="detail-item">
+                    <div class="meta-label">Presupuesto Solicitado</div>
+                    <div class="meta-value presupuesto">${formatCurrency(propuesta.presupuestoSolicitado)}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="meta-label">Estado Actual</div>
+                    <div class="meta-value">
+                        <span class="status-badge ${getEstadoClass(propuesta.estado)}">
+                            ${getEstadoTexto(propuesta.estado)}
+                        </span>
+                    </div>
+                </div>
+            `;
+
+            // Descripción
+            document.getElementById('modalDescripcion').textContent = propuesta.descripcion;
+
+            // Participantes
+            document.getElementById('modalParticipantes').innerHTML = propuesta.participantes.map(part => `
+                <div class="participants-list">
+                    <div class="participant-item">
+                        <div>
+                            <strong>${part.nombre}</strong> - ${part.tipo}<br>
+                            <small>${part.rol}</small><br>
+                            <small style="color: #7f8c8d;">${part.contacto}</small>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            // Presupuesto
+            const totalPresupuesto = Object.values(propuesta.presupuesto).reduce((sum, val) => sum + val, 0);
+            document.getElementById('modalPresupuesto').innerHTML = `
+                <div class="participants-list">
+                    ${Object.entries(propuesta.presupuesto).map(([categoria, monto]) => `
+                        <div class="participant-item">
+                            <div style="text-transform: capitalize;">${categoria}</div>
+                            <div class="presupuesto">${formatCurrency(monto)}</div>
+                        </div>
+                    `).join('')}
+                    <div class="participant-item" style="border-top: 2px solid #3498db; font-weight: bold;">
+                        <div>TOTAL</div>
+                        <div class="presupuesto">${formatCurrency(totalPresupuesto)}</div>
+                    </div>
+                </div>
+            `;
+
+            // Documentos
+            document.getElementById('modalDocumentos').innerHTML = propuesta.documentos.map(doc => `
+                <div class="file-item">
+                    <div class="file-icon">📄</div>
+                    <div class="file-info">
+                        <div class="file-name">${doc.nombre}</div>
+                        <div class="file-size">${doc.tamaño}</div>
+                    </div>
+                    <button class="btn btn-outline btn-sm" onclick="descargarDocumento('${doc.nombre}')">
+                        ⬇️ Descargar
+                    </button>
+                </div>
+            `).join('');
+
+            // Cargar evaluación existente si la hay
+            if (propuesta.evaluacion) {
+                document.getElementById('criterio1').value = propuesta.evaluacion.criterio1;
+                document.getElementById('criterio2').value = propuesta.evaluacion.criterio2;
+                document.getElementById('criterio3').value = propuesta.evaluacion.criterio3;
+                document.getElementById('criterio4').value = propuesta.evaluacion.criterio4;
+                document.getElementById('comentariosGenerales').value = propuesta.evaluacion.comentarios;
+                
+                actualizarPuntaje(1);
+                actualizarPuntaje(2);
+                actualizarPuntaje(3);
+                actualizarPuntaje(4);
+            } else {
+                // Resetear formulario
+                document.getElementById('criterio1').value = 0;
+                document.getElementById('criterio2').value = 0;
+                document.getElementById('criterio3').value = 0;
+                document.getElementById('criterio4').value = 0;
+                document.getElementById('comentariosGenerales').value = '';
+                
+                for (let i = 1; i <= 4; i++) {
+                    document.getElementById(`score${i}`).textContent = '0';
+                }
+                document.getElementById('puntajeTotal').textContent = '0';
+            }
+
+            // Mostrar modal
+            document.getElementById('evaluacionModal').style.display = 'block';
+        }
+
+        // Actualizar puntaje individual
+        function actualizarPuntaje(criterio) {
+            const valor = document.getElementById(`criterio${criterio}`).value;
+            document.getElementById(`score${criterio}`).textContent = valor;
+            
+            // Calcular puntaje total
+            const pesos = [0.30, 0.25, 0.25, 0.20]; // Pesos de cada criterio
+            let total = 0;
+            
+            for (let i = 1; i <= 4; i++) {
+                const punt = parseInt(document.getElementById(`criterio${i}`).value);
+                total += punt * pesos[i-1];
+            }
+            
+            document.getElementById('puntajeTotal').textContent = Math.round(total);
+        }
+
+        // Aprobar propuesta
+        function aprobarPropuesta() {
+            const puntajeTotal = parseInt(document.getElementById('puntajeTotal').textContent);
+            
+            if (puntajeTotal < 70) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Puntaje Bajo',
+                    text: 'El puntaje total es menor a 70. ¿Estás seguro de aprobar esta propuesta?',
+                    showCancelButton: true,
+                    confirmButtonText: 'Sí, aprobar',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        ejecutarAprobacion();
+                    }
+                });
+            } else {
+                ejecutarAprobacion();
+            }
+        }
+
+        function ejecutarAprobacion() {
+            Swal.fire({
+                icon: 'success',
+                title: '✅ Propuesta Aprobada',
+                text: 'La propuesta ha sido aprobada exitosamente. Se notificará al proponente.',
+                timer: 2000
+            }).then(() => {
+                cerrarModal();
+                // Actualizar estado en los datos
+                const propuesta = propuestasFicticias.find(p => p.id === document.getElementById('modalTitle').textContent.split(': ')[1]);
+                if (propuesta) {
+                    propuesta.estado = 'aprobada';
+                    guardarEvaluacion(propuesta);
+                }
+                filtrarPropuestas();
+            });
+        }
+
+        // Rechazar propuesta
+        function rechazarPropuesta() {
+            Swal.fire({
+                title: '❌ Rechazar Propuesta',
+                text: '¿Estás seguro de rechazar esta propuesta? Esta acción es definitiva.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, rechazar',
+                cancelButtonText: 'Cancelar',
+                confirmButtonColor: '#e74c3c'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Propuesta Rechazada',
+                        text: 'La propuesta ha sido rechazada. Se notificará al proponente.',
+                        timer: 2000
+                    }).then(() => {
+                        cerrarModal();
+                        // Actualizar estado en los datos
+                        const propuesta = propuestasFicticias.find(p => p.id === document.getElementById('modalTitle').textContent.split(': ')[1]);
+                        if (propuesta) {
+                            propuesta.estado = 'rechazada';
+                            guardarEvaluacion(propuesta);
+                        }
+                        filtrarPropuestas();
+                    });
+                }
+            });
+        }
+
+        // Solicitar ajustes
+        function solicitarAjustes() {
+            Swal.fire({
+                title: '🔄 Solicitar Ajustes',
+                html: `
+                    <textarea id="ajustesComentarios" class="swal2-textarea" 
+                              placeholder="Describe los ajustes requeridos..."></textarea>
+                `,
+                showCancelButton: true,
+                confirmButtonText: 'Enviar Solicitud',
+                cancelButtonText: 'Cancelar',
+                preConfirm: () => {
+                    const comentarios = document.getElementById('ajustesComentarios').value;
+                    if (!comentarios.trim()) {
+                        Swal.showValidationMessage('Debes especificar los ajustes requeridos');
+                        return false;
+                    }
+                    return comentarios;
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Solicitud Enviada',
+                        text: 'Se ha enviado la solicitud de ajustes al proponente.',
+                        timer: 2000
+                    }).then(() => {
+                        cerrarModal();
+                        filtrarPropuestas();
+                    });
+                }
+            });
+        }
+
+        // Guardar evaluación
+        function guardarEvaluacion(propuesta) {
+            propuesta.evaluacion = {
+                criterio1: parseInt(document.getElementById('criterio1').value),
+                criterio2: parseInt(document.getElementById('criterio2').value),
+                criterio3: parseInt(document.getElementById('criterio3').value),
+                criterio4: parseInt(document.getElementById('criterio4').value),
+                comentarios: document.getElementById('comentariosGenerales').value
+            };
+        }
+
+        // Ver historial
+        function verHistorial(propuestaId) {
+            Swal.fire({
+                title: '📊 Historial de la Propuesta',
+                html: `
+                    <div style="text-align: left;">
+                        <div style="margin-bottom: 15px;">
+                            <strong>28/07/2025 14:30</strong> - Propuesta radicada<br>
+                            <small style="color: #7f8c8d;">Sistema automático</small>
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <strong>29/07/2025 09:15</strong> - Asignada para evaluación<br>
+                            <small style="color: #7f8c8d;">Admin: Carlos Mendoza</small>
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <strong>30/07/2025 16:20</strong> - Iniciada evaluación técnica<br>
+                            <small style="color: #7f8c8d;">Evaluador: María García</small>
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <strong>31/07/2025 11:45</strong> - Evaluación en progreso<br>
+                            <small style="color: #7f8c8d;">Estado actual</small>
+                        </div>
+                    </div>
+                `,
+                width: 600,
+                confirmButtonText: 'Cerrar'
+            });
+        }
+
+        // Descargar documento
+        function descargarDocumento(nombreArchivo) {
+            Swal.fire({
+                icon: 'info',
+                title: 'Descarga Simulada',
+                text: `Descargando: ${nombreArchivo}`,
+                timer: 1500,
+                showConfirmButton: false
+            });
+        }
+
+        // Exportar datos
+        function exportarDatos() {
+            Swal.fire({
+                title: '📊 Exportar Datos',
+                html: `
+                    <div style="text-align: left;">
+                        <p>Selecciona el formato de exportación:</p>
+                        <div style="margin: 15px 0;">
+                            <label><input type="radio" name="formato" value="excel" checked> Excel (.xlsx)</label><br>
+                            <label><input type="radio" name="formato" value="pdf"> PDF (.pdf)</label><br>
+                            <label><input type="radio" name="formato" value="csv"> CSV (.csv)</label>
+                        </div>
+                    </div>
+                `,
+                showCancelButton: true,
+                confirmButtonText: 'Exportar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Exportación Iniciada',
+                        text: 'El archivo se descargará en unos momentos.',
+                        timer: 2000
+                    });
+                }
+            });
+        }
+
+        // Actualizar datos
+        function actualizarDatos() {
+            Swal.fire({
+                title: 'Actualizando datos...',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                    setTimeout(() => {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Datos Actualizados',
+                            text: 'La información ha sido actualizada correctamente.',
+                            timer: 1500
+                        });
+                        filtrarPropuestas();
+                    }, 2000);
+                }
+            });
+        }
+
+        // Cerrar modal
+        function cerrarModal() {
+            document.getElementById('evaluacionModal').style.display = 'none';
+        }
+
+        // Cerrar modal al hacer clic fuera
+        window.onclick = function(event) {
+            const modal = document.getElementById('evaluacionModal');
+            if (event.target === modal) {
+                cerrarModal();
+            }
+        }
+
+        // Inicializar página
+        document.addEventListener('DOMContentLoaded', function() {
+            actualizarEstadisticas();
+            renderizarPropuestas();
+        });
+    </script>
+</body>
+</html>

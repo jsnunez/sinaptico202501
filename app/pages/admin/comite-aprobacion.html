@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comité de Aprobación - SinAptico</title>
+    <link rel="stylesheet" href="../../public/styles/styles.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 6px 25px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #8e44ad;
+        }
+        
+        .header h1 {
+            color: #2c3e50;
+            margin: 0;
+            font-size: 2.8em;
+        }
+        
+        .header .subtitle {
+            color: #7f8c8d;
+            margin: 10px 0;
+            font-size: 1.2em;
+        }
+        
+        .comite-info {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .comite-members {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .member {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .member-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .member-role {
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+        
+        .proyecto-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            border-left: 5px solid #8e44ad;
+        }
+        
+        .proyecto-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .proyecto-title {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .proyecto-title h2 {
+            margin: 0;
+            color: #2c3e50;
+            font-size: 1.8em;
+        }
+        
+        .proyecto-id {
+            color: #7f8c8d;
+            font-weight: bold;
+        }
+        
+        .estado-evaluacion {
+            background: #f39c12;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .evaluation-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .summary-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border-top: 4px solid #3498db;
+        }
+        
+        .summary-card.score {
+            border-top-color: #e74c3c;
+        }
+        
+        .summary-card.budget {
+            border-top-color: #f39c12;
+        }
+        
+        .summary-card.duration {
+            border-top-color: #27ae60;
+        }
+        
+        .summary-card.evaluator {
+            border-top-color: #9b59b6;
+        }
+        
+        .card-label {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .card-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .detailed-evaluation {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+        
+        .criteria-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .criteria-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .criteria-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .criteria-name {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .criteria-score {
+            background: #e74c3c;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-weight: bold;
+        }
+        
+        .criteria-comment {
+            color: #7f8c8d;
+            font-style: italic;
+            font-size: 0.95em;
+            margin-top: 8px;
+        }
+        
+        .evaluator-notes {
+            background: #e8f4fd;
+            border: 1px solid #b3d8f2;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .evaluator-notes h4 {
+            color: #2980b9;
+            margin-top: 0;
+        }
+        
+        .decision-section {
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            border: 2px solid #ecf0f1;
+        }
+        
+        .decision-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .decision-card {
+            border: 2px solid #ecf0f1;
+            border-radius: 10px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        
+        .decision-card.approve {
+            border-color: #27ae60;
+            background: #d5f4e6;
+        }
+        
+        .decision-card.reject {
+            border-color: #e74c3c;
+            background: #fadbd8;
+        }
+        
+        .decision-card.review {
+            border-color: #f39c12;
+            background: #fdf2e9;
+        }
+        
+        .decision-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .decision-card.selected {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+        
+        .decision-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+        
+        .decision-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        
+        .decision-description {
+            color: #7f8c8d;
+            font-size: 0.95em;
+        }
+        
+        .comments-section {
+            margin-top: 25px;
+        }
+        
+        .comments-section textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 15px;
+            border: 2px solid #ecf0f1;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            resize: vertical;
+            box-sizing: border-box;
+        }
+        
+        .comments-section textarea:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+        
+        .voting-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .vote-summary {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+        
+        .vote-item {
+            text-align: center;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            min-width: 100px;
+        }
+        
+        .vote-count {
+            font-size: 2em;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .vote-label {
+            color: #7f8c8d;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+        
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            margin-right: 15px;
+            font-weight: bold;
+        }
+        
+        .btn-success {
+            background-color: #27ae60;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background-color: #219a52;
+        }
+        
+        .btn-danger {
+            background-color: #e74c3c;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+        
+        .btn-warning {
+            background-color: #f39c12;
+            color: white;
+        }
+        
+        .btn-warning:hover {
+            background-color: #d68910;
+        }
+        
+        .btn-secondary {
+            background-color: #95a5a6;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #7f8c8d;
+        }
+        
+        .form-actions {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 25px;
+            border-top: 2px solid #ecf0f1;
+        }
+        
+        .timeline {
+            margin: 20px 0;
+        }
+        
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .timeline-icon {
+            width: 40px;
+            height: 40px;
+            background: #3498db;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin-right: 15px;
+        }
+        
+        .timeline-content {
+            flex: 1;
+        }
+        
+        .timeline-date {
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>👥 Comité de Aprobación de Proyectos</h1>
+            <div class="subtitle">Sesión del 31 de Julio, 2025 - 14:30 hrs</div>
+        </div>
+        
+        <!-- Información del Comité -->
+        <div class="comite-info">
+            <h3>🏛️ Miembros del Comité Evaluador</h3>
+            <div class="comite-members">
+                <div class="member">
+                    <div class="member-name">Dr. Carlos Mendoza</div>
+                    <div class="member-role">Presidente del Comité</div>
+                </div>
+                <div class="member">
+                    <div class="member-name">Ing. Ana Rodríguez</div>
+                    <div class="member-role">Directora Técnica</div>
+                </div>
+                <div class="member">
+                    <div class="member-name">Dr. María González</div>
+                    <div class="member-role">Evaluadora Principal</div>
+                </div>
+                <div class="member">
+                    <div class="member-name">Lic. Roberto Silva</div>
+                    <div class="member-role">Especialista Financiero</div>
+                </div>
+                <div class="member">
+                    <div class="member-name">Dra. Laura Pérez</div>
+                    <div class="member-role">Especialista en Innovación</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Proyecto en Evaluación -->
+        <div class="proyecto-section">
+            <div class="proyecto-header">
+                <div class="proyecto-title">
+                    <h2>Plataforma Digital de Innovación Empresarial</h2>
+                    <div class="proyecto-id">ID: PROJ-2025-001 | Solicitante: TechInnovate S.A.S</div>
+                </div>
+                <div class="estado-evaluacion">
+                    <span>⏳</span>
+                    EN COMITÉ
+                </div>
+            </div>
+            
+            <!-- Resumen de Evaluación -->
+            <div class="evaluation-summary">
+                <div class="summary-card score">
+                    <div class="card-label">Puntuación del Evaluador</div>
+                    <div class="card-value">4.08 / 5.0</div>
+                </div>
+                
+                <div class="summary-card budget">
+                    <div class="card-label">Presupuesto Solicitado</div>
+                    <div class="card-value">$85,000,000</div>
+                </div>
+                
+                <div class="summary-card duration">
+                    <div class="card-label">Duración del Proyecto</div>
+                    <div class="card-value">8 meses</div>
+                </div>
+                
+                <div class="summary-card evaluator">
+                    <div class="card-label">Evaluador Principal</div>
+                    <div class="card-value">Dra. M. González</div>
+                </div>
+            </div>
+            
+            <!-- Timeline del Proyecto -->
+            <div class="timeline">
+                <h4>📅 Cronología de Evaluación</h4>
+                
+                <div class="timeline-item">
+                    <div class="timeline-icon">📝</div>
+                    <div class="timeline-content">
+                        <strong>Proyecto Presentado</strong>
+                        <div class="timeline-date">25 de Julio, 2025 - 09:15</div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-icon">🔍</div>
+                    <div class="timeline-content">
+                        <strong>Asignado para Evaluación</strong>
+                        <div class="timeline-date">26 de Julio, 2025 - 14:30</div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-icon">✅</div>
+                    <div class="timeline-content">
+                        <strong>Evaluación Completada</strong>
+                        <div class="timeline-date">30 de Julio, 2025 - 16:45</div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-icon">👥</div>
+                    <div class="timeline-content">
+                        <strong>Enviado al Comité</strong>
+                        <div class="timeline-date">31 de Julio, 2025 - 08:00</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Evaluación Detallada -->
+        <div class="detailed-evaluation">
+            <h3>📊 Evaluación Detallada por Criterios</h3>
+            
+            <div class="criteria-grid">
+                <div class="criteria-item">
+                    <div class="criteria-header">
+                        <div class="criteria-name">🚀 Innovación (25%)</div>
+                        <div class="criteria-score">4.2</div>
+                    </div>
+                    <div class="criteria-comment">
+                        "Propuesta innovadora con integración de IA para matchmaking empresarial. Tecnologías actuales y relevantes."
+                    </div>
+                </div>
+                
+                <div class="criteria-item">
+                    <div class="criteria-header">
+                        <div class="criteria-name">⚙️ Viabilidad Técnica (20%)</div>
+                        <div class="criteria-score">3.8</div>
+                    </div>
+                    <div class="criteria-comment">
+                        "Metodología SCRUM apropiada. Falta detalle en arquitectura de seguridad. Stack tecnológico sólido."
+                    </div>
+                </div>
+                
+                <div class="criteria-item">
+                    <div class="criteria-header">
+                        <div class="criteria-name">🌍 Impacto Social (20%)</div>
+                        <div class="criteria-score">4.5</div>
+                    </div>
+                    <div class="criteria-comment">
+                        "Excelente potencial para conectar empresas con innovadores. Beneficia especialmente a PyMEs."
+                    </div>
+                </div>
+                
+                <div class="criteria-item">
+                    <div class="criteria-header">
+                        <div class="criteria-name">👥 Equipo (15%)</div>
+                        <div class="criteria-score">3.9</div>
+                    </div>
+                    <div class="criteria-comment">
+                        "Equipo con experiencia relevante. Se sugiere incluir especialista en seguridad."
+                    </div>
+                </div>
+                
+                <div class="criteria-item">
+                    <div class="criteria-header">
+                        <div class="criteria-name">💰 Presupuesto (20%)</div>
+                        <div class="criteria-score">4.0</div>
+                    </div>
+                    <div class="criteria-comment">
+                        "Presupuesto bien distribuido y realista. Se recomienda fondo de contingencia del 10%."
+                    </div>
+                </div>
+            </div>
+            
+            <div class="evaluator-notes">
+                <h4>📋 Observaciones del Evaluador Principal</h4>
+                <p>El proyecto presenta una propuesta sólida con gran potencial de impacto. Se destaca la integración de tecnologías modernas y el enfoque en conectar empresas con innovadores.</p>
+                
+                <p><strong>Sugerencias de mejora:</strong></p>
+                <ul>
+                    <li>Incluir un plan más detallado de seguridad de datos</li>
+                    <li>Agregar métricas específicas de éxito</li>
+                    <li>Considerar escalabilidad internacional</li>
+                </ul>
+                
+                <p>El equipo muestra competencia técnica adecuada y el presupuesto es realista para el alcance propuesto.</p>
+            </div>
+        </div>
+        
+        <!-- Votación del Comité -->
+        <div class="voting-section">
+            <h3>🗳️ Estado de la Votación del Comité</h3>
+            <div class="vote-summary">
+                <div class="vote-item">
+                    <div class="vote-count" style="color: #27ae60;">3</div>
+                    <div class="vote-label">A Favor</div>
+                </div>
+                <div class="vote-item">
+                    <div class="vote-count" style="color: #e74c3c;">0</div>
+                    <div class="vote-label">En Contra</div>
+                </div>
+                <div class="vote-item">
+                    <div class="vote-count" style="color: #f39c12;">1</div>
+                    <div class="vote-label">Con Observaciones</div>
+                </div>
+                <div class="vote-item">
+                    <div class="vote-count" style="color: #95a5a6;">1</div>
+                    <div class="vote-label">Pendiente</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sección de Decisión -->
+        <div class="decision-section">
+            <h3>⚖️ Decisión del Comité</h3>
+            <p>Como miembro del comité, seleccione su decisión para este proyecto:</p>
+            
+            <div class="decision-options">
+                <div class="decision-card approve" onclick="selectDecision('approve')">
+                    <div class="decision-icon">✅</div>
+                    <div class="decision-title">APROBAR</div>
+                    <div class="decision-description">
+                        El proyecto cumple con todos los criterios y puede proceder a implementación.
+                    </div>
+                </div>
+                
+                <div class="decision-card reject" onclick="selectDecision('reject')">
+                    <div class="decision-icon">❌</div>
+                    <div class="decision-title">RECHAZAR</div>
+                    <div class="decision-description">
+                        El proyecto no cumple con los estándares requeridos y debe ser rechazado.
+                    </div>
+                </div>
+                
+                <div class="decision-card review" onclick="selectDecision('review')">
+                    <div class="decision-icon">🔄</div>
+                    <div class="decision-title">SOLICITAR REVISIÓN</div>
+                    <div class="decision-description">
+                        El proyecto tiene potencial pero requiere modificaciones antes de aprobación.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="comments-section">
+                <label for="comiteComments"><strong>Comentarios del Comité:</strong></label>
+                <textarea id="comiteComments" placeholder="Incluya sus observaciones, sugerencias o justificación de la decisión...">El proyecto muestra excelente potencial de impacto y viabilidad técnica. Se aprecia el enfoque innovador en la conexión empresarial.
+
+Recomendaciones para la implementación:
+- Establecer indicadores de rendimiento claros
+- Implementar plan de seguridad robusto
+- Considerar escalamiento gradual
+
+El presupuesto y cronograma son realistas. Se recomienda aprobación con seguimiento trimestral.</textarea>
+            </div>
+            
+            <div class="form-actions">
+                <a href="proyectos-dashboard.html" class="btn btn-secondary">Volver al Dashboard</a>
+                <button type="button" class="btn btn-warning" onclick="guardarBorrador()">Guardar Borrador</button>
+                <button type="button" class="btn btn-success" onclick="enviarDecision()" id="btnDecision" disabled>
+                    Enviar Decisión
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        let selectedDecision = '';
+        
+        function selectDecision(decision) {
+            // Remover selección previa
+            document.querySelectorAll('.decision-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Seleccionar nueva opción
+            const selectedCard = document.querySelector(`.decision-card.${decision}`);
+            selectedCard.classList.add('selected');
+            
+            selectedDecision = decision;
+            
+            // Habilitar botón de envío
+            const btnDecision = document.getElementById('btnDecision');
+            btnDecision.disabled = false;
+            
+            // Actualizar texto del botón según la decisión
+            switch(decision) {
+                case 'approve':
+                    btnDecision.textContent = '✅ Aprobar Proyecto';
+                    btnDecision.className = 'btn btn-success';
+                    break;
+                case 'reject':
+                    btnDecision.textContent = '❌ Rechazar Proyecto';
+                    btnDecision.className = 'btn btn-danger';
+                    break;
+                case 'review':
+                    btnDecision.textContent = '🔄 Solicitar Revisión';
+                    btnDecision.className = 'btn btn-warning';
+                    break;
+            }
+        }
+        
+        function guardarBorrador() {
+            Swal.fire({
+                icon: 'info',
+                title: 'Borrador Guardado',
+                text: 'Su decisión ha sido guardada como borrador',
+                timer: 1500,
+                showConfirmButton: false
+            });
+        }
+        
+        function enviarDecision() {
+            if (!selectedDecision) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Seleccione una decisión',
+                    text: 'Debe seleccionar una opción antes de continuar'
+                });
+                return;
+            }
+            
+            const comments = document.getElementById('comiteComments').value;
+            
+            let confirmText = '';
+            let successText = '';
+            let nextAction = '';
+            
+            switch(selectedDecision) {
+                case 'approve':
+                    confirmText = 'aprobar este proyecto';
+                    successText = 'El proyecto ha sido APROBADO y procederá a implementación';
+                    nextAction = 'El solicitante será notificado y podrá comenzar la implementación.';
+                    break;
+                case 'reject':
+                    confirmText = 'rechazar este proyecto';
+                    successText = 'El proyecto ha sido RECHAZADO';
+                    nextAction = 'El solicitante será notificado con las razones del rechazo.';
+                    break;
+                case 'review':
+                    confirmText = 'solicitar revisión de este proyecto';
+                    successText = 'Se ha solicitado REVISIÓN del proyecto';
+                    nextAction = 'El solicitante recibirá las observaciones y podrá reenviar una versión corregida.';
+                    break;
+            }
+            
+            Swal.fire({
+                title: '¿Confirmar Decisión?',
+                html: `
+                    <p>Está a punto de <strong>${confirmText}</strong>.</p>
+                    <p style="margin-top: 15px; color: #7f8c8d;">${nextAction}</p>
+                `,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Confirmar Decisión',
+                cancelButtonText: 'Revisar',
+                confirmButtonColor: selectedDecision === 'approve' ? '#27ae60' : 
+                                  selectedDecision === 'reject' ? '#e74c3c' : '#f39c12'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Simular procesamiento
+                    Swal.fire({
+                        title: 'Procesando Decisión...',
+                        html: 'Guardando decisión del comité y notificando a las partes involucradas',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+                    
+                    setTimeout(() => {
+                        // Actualizar votación
+                        updateVotingDisplay();
+                        
+                        Swal.fire({
+                            icon: 'success',
+                            title: '¡Decisión Registrada!',
+                            html: `
+                                <p><strong>${successText}</strong></p>
+                                <p style="margin-top: 15px; color: #7f8c8d;">ID de Sesión: COM-2025-001</p>
+                            `,
+                            confirmButtonText: 'Ver Dashboard'
+                        }).then(() => {
+                            window.location.href = 'proyectos-dashboard.html';
+                        });
+                    }, 2500);
+                }
+            });
+        }
+        
+        function updateVotingDisplay() {
+            // Simular actualización de votos
+            const voteItems = document.querySelectorAll('.vote-item');
+            if (selectedDecision === 'approve') {
+                voteItems[0].querySelector('.vote-count').textContent = '4';
+                voteItems[3].querySelector('.vote-count').textContent = '0';
+            } else if (selectedDecision === 'review') {
+                voteItems[2].querySelector('.vote-count').textContent = '2';
+                voteItems[3].querySelector('.vote-count').textContent = '0';
+            }
+        }
+        
+        // Simular datos en tiempo real
+        document.addEventListener('DOMContentLoaded', function() {
+            // Efecto de escritura para los comentarios
+            const textarea = document.getElementById('comiteComments');
+            textarea.style.height = 'auto';
+            textarea.style.height = textarea.scrollHeight + 'px';
+            
+            // Preseleccionar aprobación como demostración
+            setTimeout(() => {
+                selectDecision('approve');
+                
+                // Mostrar tooltip
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'info',
+                    title: 'Recomendación del Sistema',
+                    text: 'Basado en la evaluación, se sugiere APROBAR este proyecto',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    toast: true
+                });
+            }, 1000);
+        });
+        
+        // Animación de las tarjetas de decisión
+        document.querySelectorAll('.decision-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                if (!this.classList.contains('selected')) {
+                    this.style.transform = 'translateY(-5px)';
+                }
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                if (!this.classList.contains('selected')) {
+                    this.style.transform = 'translateY(0)';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

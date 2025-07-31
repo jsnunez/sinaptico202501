@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ficha de Formulación - Radique su Propuesta - SinAptico</title>
+    <link rel="stylesheet" href="../../public/styles/styles.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f7fa;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 2.8em;
+        }
+        
+        .header p {
+            margin: 15px 0 0 0;
+            opacity: 0.9;
+            font-size: 1.2em;
+        }
+        
+        .convocatoria-info {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            border-left: 5px solid #3498db;
+        }
+        
+        .convocatoria-title {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        .convocatoria-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .detail-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        
+        .detail-label {
+            font-size: 0.85em;
+            color: #7f8c8d;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .detail-value {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .form-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 6px 25px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .form-header {
+            background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+        
+        .form-body {
+            padding: 40px;
+        }
+        
+        .form-section {
+            margin-bottom: 40px;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 30px;
+        }
+        
+        .form-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        
+        .section-title {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-icon {
+            background: #3498db;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+        
+        .form-label {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 0.95em;
+        }
+        
+        .required {
+            color: #e74c3c;
+        }
+        
+        .form-input, .form-select, .form-textarea {
+            padding: 12px 15px;
+            border: 2px solid #ecf0f1;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+        
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+            font-family: inherit;
+        }
+        
+        .form-help {
+            font-size: 0.85em;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+        
+        .file-upload-area {
+            border: 2px dashed #bdc3c7;
+            border-radius: 10px;
+            padding: 40px 20px;
+            text-align: center;
+            background: #f8f9fa;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .file-upload-area:hover {
+            border-color: #3498db;
+            background: #ebf3fd;
+        }
+        
+        .file-upload-area.dragover {
+            border-color: #27ae60;
+            background: #d5f4e6;
+        }
+        
+        .upload-icon {
+            font-size: 3em;
+            color: #bdc3c7;
+            margin-bottom: 15px;
+        }
+        
+        .upload-text {
+            color: #7f8c8d;
+            margin-bottom: 10px;
+        }
+        
+        .upload-formats {
+            font-size: 0.8em;
+            color: #95a5a6;
+        }
+        
+        .uploaded-files {
+            margin-top: 20px;
+        }
+        
+        .uploaded-file {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 4px solid #27ae60;
+        }
+        
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .file-icon {
+            font-size: 1.2em;
+            color: #27ae60;
+        }
+        
+        .file-details {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .file-name {
+            font-weight: 500;
+            color: #2c3e50;
+        }
+        
+        .file-size {
+            font-size: 0.8em;
+            color: #7f8c8d;
+        }
+        
+        .file-remove {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+            font-size: 0.8em;
+        }
+        
+        .proponentes-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .proponente-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ecf0f1;
+            position: relative;
+        }
+        
+        .proponente-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .proponente-title {
+            font-weight: bold;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .tipo-badge {
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+        
+        .badge-proponente {
+            background: #3498db;
+            color: white;
+        }
+        
+        .badge-aliado {
+            background: #27ae60;
+            color: white;
+        }
+        
+        .badge-beneficiario {
+            background: #f39c12;
+            color: white;
+        }
+        
+        .remove-proponente {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-size: 0.8em;
+        }
+        
+        .add-proponente-btn {
+            background: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 20px;
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .presupuesto-section {
+            background: #f0f8ff;
+            padding: 25px;
+            border-radius: 10px;
+            border: 1px solid #3498db;
+        }
+        
+        .presupuesto-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 15px;
+            align-items: end;
+        }
+        
+        .presupuesto-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 15px;
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .presupuesto-total {
+            background: #2c3e50;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .total-label {
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+        
+        .total-amount {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+        
+        .cronograma-section {
+            background: #f8fffe;
+            padding: 25px;
+            border-radius: 10px;
+            border: 1px solid #27ae60;
+        }
+        
+        .cronograma-item {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 15px;
+            align-items: center;
+            padding: 12px 15px;
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 4px solid #27ae60;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #ecf0f1;
+        }
+        
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(52, 152, 219, 0.3);
+        }
+        
+        .btn-secondary {
+            background: #95a5a6;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #7f8c8d;
+        }
+        
+        .btn-save {
+            background: #27ae60;
+            color: white;
+        }
+        
+        .btn-save:hover {
+            background: #219a52;
+        }
+        
+        .progress-steps {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0 20px;
+            position: relative;
+        }
+        
+        .step:not(:last-child)::after {
+            content: '→';
+            position: absolute;
+            right: -15px;
+            color: #bdc3c7;
+            font-weight: bold;
+        }
+        
+        .step-number {
+            background: #bdc3c7;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        
+        .step.active .step-number {
+            background: #3498db;
+        }
+        
+        .step.completed .step-number {
+            background: #27ae60;
+        }
+        
+        .step-label {
+            font-weight: 500;
+            color: #7f8c8d;
+        }
+        
+        .step.active .step-label {
+            color: #3498db;
+        }
+        
+        .step.completed .step-label {
+            color: #27ae60;
+        }
+        
+        .validation-message {
+            background: #fff5f5;
+            border: 1px solid #fed7d7;
+            color: #e53e3e;
+            padding: 10px 15px;
+            border-radius: 6px;
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
+        
+        .success-message {
+            background: #f0fff4;
+            border: 1px solid #c6f6d5;
+            color: #38a169;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .presupuesto-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .cronograma-item {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>📋 Ficha de Formulación de Convocatoria</h1>
+            <p>Complete y radique su propuesta de proyecto</p>
+        </div>
+        
+        <!-- Información de la Convocatoria -->
+        <div class="convocatoria-info">
+            <div class="convocatoria-title" id="convocatoriaTitle">
+                Convocatoria 1
+
+            </div>
+            <div class="convocatoria-details">
+                <div class="detail-item">
+                    <div class="detail-label">Entidad Convocante</div>
+                    <div class="detail-value">(CCB)</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Presupuesto Disponible</div>
+                    <div class="detail-value">$500.000.000</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Fecha de Cierre</div>
+                    <div class="detail-value">15 de Octubre, 2025</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Días Restantes</div>
+                    <div class="detail-value" style="color: #e74c3c;">76 días</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pasos del Proceso -->
+        <div class="progress-steps">
+            <div class="step active">
+                <div class="step-number">1</div>
+                <div class="step-label">Información Básica</div>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-label">Proponentes</div>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-label">Documentos</div>
+            </div>
+            <div class="step">
+                <div class="step-number">4</div>
+                <div class="step-label">Revisión</div>
+            </div>
+        </div>
+        
+        <!-- Formulario Principal -->
+        <div class="form-container">
+            <div class="form-header">
+                <h2>Formulario de Radicación de Propuesta</h2>
+                <p>Complete todos los campos requeridos para radicar su propuesta</p>
+            </div>
+            
+            <form class="form-body" id="formularioRadicacion">
+                <!-- Sección 1: Información del Proyecto -->
+                <div class="form-section">
+                    <div class="section-title">
+                        <div class="section-icon">📊</div>
+                        Información del Proyecto
+                    </div>
+                    
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label class="form-label">
+                                Título del Proyecto <span class="required">*</span>
+                            </label>
+                            <input type="text" class="form-input" id="tituloProyecto" 
+                                   placeholder="Ingrese el título completo del proyecto" required>
+                            <div class="form-help">Máximo 200 caracteres</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">
+                                Área Temática <span class="required">*</span>
+                            </label>
+                            <select class="form-select" id="areaTematica" required>
+                                <option value="">Seleccione un área</option>
+                                <option value="transformacion-digital">Transformación Digital</option>
+                                <option value="ecommerce">E-commerce</option>
+                                <option value="automatizacion">Automatización de Procesos</option>
+                                <option value="analisis-datos">Análisis de Datos</option>
+                                <option value="inteligencia-artificial">Inteligencia Artificial</option>
+                                <option value="otros">Otros</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">
+                                Sector Económico <span class="required">*</span>
+                            </label>
+                            <select class="form-select" id="sectorEconomico" required>
+                                <option value="">Seleccione un sector</option>
+                                <option value="comercio">Comercio</option>
+                                <option value="servicios">Servicios</option>
+                                <option value="manufactura">Manufactura</option>
+                                <option value="turismo">Turismo</option>
+                                <option value="agricultura">Agricultura</option>
+                                <option value="tecnologia">Tecnología</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">
+                                Duración del Proyecto (meses) <span class="required">*</span>
+                            </label>
+                            <input type="number" class="form-input" id="duracionProyecto" 
+                                   min="6" max="18" placeholder="12" required>
+                            <div class="form-help">Máximo 18 meses</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">
+                                Ubicación del Proyecto <span class="required">*</span>
+                            </label>
+                            <select class="form-select" id="ubicacionProyecto" required>
+                                <option value="">Seleccione ubicación</option>
+                                <option value="bogota">Bogotá D.C.</option>
+                                <option value="cundinamarca">Cundinamarca</option>
+                                <option value="nacional">Nacional</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group full-width">
+                            <label class="form-label">
+                                Resumen Ejecutivo <span class="required">*</span>
+                            </label>
+                            <textarea class="form-textarea" id="resumenEjecutivo" 
+                                      placeholder="Describa brevemente el proyecto, sus objetivos y resultados esperados..." required></textarea>
+                            <div class="form-help">Máximo 500 palabras</div>
+                        </div>
+                        
+                        <div class="form-group full-width">
+                            <label class="form-label">
+                                Problemática a Resolver <span class="required">*</span>
+                            </label>
+                            <textarea class="form-textarea" id="problematica" 
+                                      placeholder="Describa la problemática o necesidad que busca resolver el proyecto..." required></textarea>
+                        </div>
+                        
+                        <div class="form-group full-width">
+                            <label class="form-label">
+                                Objetivos del Proyecto <span class="required">*</span>
+                            </label>
+                            <textarea class="form-textarea" id="objetivos" 
+                                      placeholder="Liste los objetivos generales y específicos del proyecto..." required></textarea>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sección 2: Proponentes, Aliados y Beneficiarios -->
+                <div class="form-section">
+                    <div class="section-title">
+                        <div class="section-icon">👥</div>
+                        Proponentes, Aliados y Beneficiarios
+                    </div>
+                    
+                    <div class="proponentes-section">
+                        <button type="button" class="add-proponente-btn" onclick="agregarProponente()">
+                            ➕ Agregar Participante
+                        </button>
+                        
+                        <div id="proponentesContainer">
+                            <!-- Los proponentes se agregan dinámicamente -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sección 3: Presupuesto -->
+                <div class="form-section">
+                    <div class="section-title">
+                        <div class="section-icon">💰</div>
+                        Presupuesto del Proyecto
+                    </div>
+                    
+                    <div class="presupuesto-section">
+                        <div class="form-group">
+                            <label class="form-label">
+                                Monto Solicitado a la Convocatoria <span class="required">*</span>
+                            </label>
+                            <input type="number" class="form-input" id="montoSolicitado" 
+                                   placeholder="0" min="0" max="50000000" required>
+                            <div class="form-help">Máximo $50.000.000</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">
+                                Contrapartida de la Empresa
+                            </label>
+                            <input type="number" class="form-input" id="contrapartida" 
+                                   placeholder="0" min="0">
+                            <div class="form-help">Monto que aportará la empresa</div>
+                        </div>
+                        
+                        <h4>Distribución del Presupuesto:</h4>
+                        <div id="presupuestoItems">
+                            <div class="presupuesto-item">
+                                <span>Personal</span>
+                                <input type="number" class="form-input" placeholder="0" style="width: 150px;">
+                                <span>%</span>
+                                <input type="range" min="0" max="100" value="0" style="width: 100px;">
+                            </div>
+                        </div>
+                        
+                        <button type="button" class="add-proponente-btn" onclick="agregarRubroPresupuestal()">
+                            ➕ Agregar Rubro
+                        </button>
+                        
+                        <div class="presupuesto-total">
+                            <div class="total-label">Presupuesto Total del Proyecto</div>
+                            <div class="total-amount" id="presupuestoTotal">$0</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sección 4: Cronograma -->
+                <div class="form-section">
+                    <div class="section-title">
+                        <div class="section-icon">📅</div>
+                        Cronograma de Actividades
+                    </div>
+                    
+                    <div class="cronograma-section">
+                        <div id="cronogramaItems">
+                            <div class="cronograma-item">
+                                <input type="text" class="form-input" placeholder="Descripción de la actividad">
+                                <input type="date" class="form-input">
+                                <input type="date" class="form-input">
+                                <select class="form-select">
+                                    <option value="planificacion">Planificación</option>
+                                    <option value="ejecucion">Ejecución</option>
+                                    <option value="seguimiento">Seguimiento</option>
+                                    <option value="cierre">Cierre</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <button type="button" class="add-proponente-btn" onclick="agregarActividadCronograma()">
+                            ➕ Agregar Actividad
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Sección 5: Documentos Requeridos -->
+                <div class="form-section">
+                    <div class="section-title">
+                        <div class="section-icon">📎</div>
+                        Documentos Requeridos
+                    </div>
+                    
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label class="form-label">
+                                Propuesta Técnica <span class="required">*</span>
+                            </label>
+                            <div class="file-upload-area" onclick="document.getElementById('propuestaTecnica').click()">
+                                <div class="upload-icon">📄</div>
+                                <div class="upload-text">Haga clic para cargar la propuesta técnica</div>
+                                <div class="upload-formats">PDF, DOC, DOCX (Máximo 10MB)</div>
+                            </div>
+                            <input type="file" id="propuestaTecnica" style="display: none;" 
+                                   accept=".pdf,.doc,.docx" onchange="handleFileUpload(this, 'propuestaTecnicaFiles')">
+                            <div id="propuestaTecnicaFiles" class="uploaded-files"></div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">
+                                Certificado de Existencia y Representación Legal <span class="required">*</span>
+                            </label>
+                            <div class="file-upload-area" onclick="document.getElementById('certificadoExistencia').click()">
+                                <div class="upload-icon">🏢</div>
+                                <div class="upload-text">Cargar certificado</div>
+                            </div>
+                            <input type="file" id="certificadoExistencia" style="display: none;" 
+                                   accept=".pdf" onchange="handleFileUpload(this, 'certificadoFiles')">
+                            <div id="certificadoFiles" class="uploaded-files"></div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">
+                                Estados Financieros <span class="required">*</span>
+                            </label>
+                            <div class="file-upload-area" onclick="document.getElementById('estadosFinancieros').click()">
+                                <div class="upload-icon">📊</div>
+                                <div class="upload-text">Cargar estados financieros</div>
+                            </div>
+                            <input type="file" id="estadosFinancieros" style="display: none;" 
+                                   accept=".pdf,.xlsx,.xls" onchange="handleFileUpload(this, 'financierosFiles')">
+                            <div id="financierosFiles" class="uploaded-files"></div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">
+                                Hojas de Vida del Equipo de Trabajo <span class="required">*</span>
+                            </label>
+                            <div class="file-upload-area" onclick="document.getElementById('hojasVida').click()">
+                                <div class="upload-icon">👤</div>
+                                <div class="upload-text">Cargar hojas de vida</div>
+                            </div>
+                            <input type="file" id="hojasVida" style="display: none;" 
+                                   accept=".pdf,.doc,.docx" multiple onchange="handleFileUpload(this, 'hojasVidaFiles')">
+                            <div id="hojasVidaFiles" class="uploaded-files"></div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">
+                                Cartas de Apoyo de Aliados
+                            </label>
+                            <div class="file-upload-area" onclick="document.getElementById('cartasApoyo').click()">
+                                <div class="upload-icon">🤝</div>
+                                <div class="upload-text">Cargar cartas de apoyo</div>
+                            </div>
+                            <input type="file" id="cartasApoyo" style="display: none;" 
+                                   accept=".pdf" multiple onchange="handleFileUpload(this, 'cartasApoyoFiles')">
+                            <div id="cartasApoyoFiles" class="uploaded-files"></div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">
+                                Otros Documentos Complementarios
+                            </label>
+                            <div class="file-upload-area" onclick="document.getElementById('otrosDocumentos').click()">
+                                <div class="upload-icon">📋</div>
+                                <div class="upload-text">Cargar documentos adicionales</div>
+                            </div>
+                            <input type="file" id="otrosDocumentos" style="display: none;" 
+                                   multiple onchange="handleFileUpload(this, 'otrosDocumentosFiles')">
+                            <div id="otrosDocumentosFiles" class="uploaded-files"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sección 6: Declaraciones y Compromisos -->
+                <div class="form-section">
+                    <div class="section-title">
+                        <div class="section-icon">✅</div>
+                        Declaraciones y Compromisos
+                    </div>
+                    
+                    <div class="form-group">
+                        <label style="display: flex; align-items: flex-start; gap: 10px; cursor: pointer;">
+                            <input type="checkbox" id="declaracionVeracidad" required style="margin-top: 3px;">
+                            <span>
+                                Declaro que toda la información suministrada es veraz y completa. 
+                                Entiendo que cualquier información falsa o incompleta puede resultar 
+                                en la descalificación de mi propuesta. <span class="required">*</span>
+                            </span>
+                        </label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label style="display: flex; align-items: flex-start; gap: 10px; cursor: pointer;">
+                            <input type="checkbox" id="aceptacionTerminos" required style="margin-top: 3px;">
+                            <span>
+                                Acepto los términos y condiciones de la convocatoria, así como 
+                                las obligaciones que se deriven de la eventual adjudicación del proyecto. 
+                                <span class="required">*</span>
+                            </span>
+                        </label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label style="display: flex; align-items: flex-start; gap: 10px; cursor: pointer;">
+                            <input type="checkbox" id="autorizacionDatos" required style="margin-top: 3px;">
+                            <span>
+                                Autorizo el tratamiento de mis datos personales conforme a la 
+                                Ley 1581 de 2012 y demás normatividad aplicable. <span class="required">*</span>
+                            </span>
+                        </label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label style="display: flex; align-items: flex-start; gap: 10px; cursor: pointer;">
+                            <input type="checkbox" id="compromisoCumplimiento" required style="margin-top: 3px;">
+                            <span>
+                                Me comprometo a cumplir con los cronogramas, presupuestos y objetivos 
+                                establecidos en caso de ser seleccionado. <span class="required">*</span>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+                
+                <!-- Acciones del Formulario -->
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary">
+                        💾 Guardar Borrador
+                    </button>
+                    <button type="button" class="btn btn-save" onclick="validarFormulario()">
+                        👁️ Vista Previa
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        📨 Radicar Propuesta
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        let proponenteCounter = 0;
+        let presupuestoCounter = 1;
+        let cronogramaCounter = 1;
+
+        // Agregar proponente/aliado/beneficiario
+        function agregarProponente() {
+            proponenteCounter++;
+            const container = document.getElementById('proponentesContainer');
+            
+            const proponenteHTML = `
+                <div class="proponente-card" id="proponente-${proponenteCounter}">
+                    <div class="proponente-header">
+                        <div class="proponente-title">
+                            🏢 Participante ${proponenteCounter}
+                            <select class="tipo-badge" id="tipoParticipante-${proponenteCounter}" onchange="updateBadgeColor(${proponenteCounter})">
+                                <option value="proponente" class="badge-proponente">Proponente Principal</option>
+                                <option value="aliado" class="badge-aliado">Aliado Estratégico</option>
+                                <option value="beneficiario" class="badge-beneficiario">Beneficiario</option>
+                            </select>
+                        </div>
+                        <button type="button" class="remove-proponente" onclick="removerProponente(${proponenteCounter})">
+                            Eliminar
+                        </button>
+                    </div>
+                    
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Tipo de Organización <span class="required">*</span></label>
+                            <select class="form-select" required>
+                                <option value="">Seleccione tipo</option>
+                                <option value="empresa-privada">Empresa Privada</option>
+                                <option value="universidad">Universidad</option>
+                                <option value="centro-investigacion">Centro de Investigación</option>
+                                <option value="ong">ONG</option>
+                                <option value="entidad-publica">Entidad Pública</option>
+                                <option value="fundacion">Fundación</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Razón Social <span class="required">*</span></label>
+                            <input type="text" class="form-input" placeholder="Nombre de la organización" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">NIT <span class="required">*</span></label>
+                            <input type="text" class="form-input" placeholder="123456789-0" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Representante Legal <span class="required">*</span></label>
+                            <input type="text" class="form-input" placeholder="Nombre completo" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Email de Contacto <span class="required">*</span></label>
+                            <input type="email" class="form-input" placeholder="correo@empresa.com" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Teléfono <span class="required">*</span></label>
+                            <input type="tel" class="form-input" placeholder="(57) 301 234 5678" required>
+                        </div>
+                        
+                        <div class="form-group full-width">
+                            <label class="form-label">Dirección <span class="required">*</span></label>
+                            <input type="text" class="form-input" placeholder="Dirección completa" required>
+                        </div>
+                        
+                        <div class="form-group full-width">
+                            <label class="form-label">Rol en el Proyecto</label>
+                            <textarea class="form-textarea" placeholder="Describa el rol y responsabilidades de esta organización en el proyecto..." style="min-height: 80px;"></textarea>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            container.insertAdjacentHTML('beforeend', proponenteHTML);
+        }
+
+        // Remover proponente
+        function removerProponente(id) {
+            document.getElementById(`proponente-${id}`).remove();
+        }
+
+        // Actualizar color del badge según el tipo
+        function updateBadgeColor(id) {
+            const select = document.getElementById(`tipoParticipante-${id}`);
+            const valor = select.value;
+            select.className = `tipo-badge badge-${valor}`;
+        }
+
+        // Agregar rubro presupuestal
+        function agregarRubroPresupuestal() {
+            presupuestoCounter++;
+            const container = document.getElementById('presupuestoItems');
+            
+            const rubroHTML = `
+                <div class="presupuesto-item">
+                    <input type="text" class="form-input" placeholder="Nombre del rubro" style="width: 200px;">
+                    <input type="number" class="form-input" placeholder="0" style="width: 150px;" onchange="calcularPresupuestoTotal()">
+                    <span>%</span>
+                    <input type="range" min="0" max="100" value="0" style="width: 100px;" onchange="calcularPresupuestoTotal()">
+                </div>
+            `;
+            
+            container.insertAdjacentHTML('beforeend', rubroHTML);
+        }
+
+        // Agregar actividad al cronograma
+        function agregarActividadCronograma() {
+            cronogramaCounter++;
+            const container = document.getElementById('cronogramaItems');
+            
+            const actividadHTML = `
+                <div class="cronograma-item">
+                    <input type="text" class="form-input" placeholder="Descripción de la actividad">
+                    <input type="date" class="form-input">
+                    <input type="date" class="form-input">
+                    <select class="form-select">
+                        <option value="planificacion">Planificación</option>
+                        <option value="ejecucion">Ejecución</option>
+                        <option value="seguimiento">Seguimiento</option>
+                        <option value="cierre">Cierre</option>
+                    </select>
+                </div>
+            `;
+            
+            container.insertAdjacentHTML('beforeend', actividadHTML);
+        }
+
+        // Manejar carga de archivos
+        function handleFileUpload(input, containerId) {
+            const container = document.getElementById(containerId);
+            const files = input.files;
+            
+            container.innerHTML = '';
+            
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const fileSize = (file.size / (1024 * 1024)).toFixed(2);
+                
+                const fileHTML = `
+                    <div class="uploaded-file">
+                        <div class="file-info">
+                            <div class="file-icon">📄</div>
+                            <div class="file-details">
+                                <div class="file-name">${file.name}</div>
+                                <div class="file-size">${fileSize} MB</div>
+                            </div>
+                        </div>
+                        <button type="button" class="file-remove" onclick="this.parentElement.remove()">×</button>
+                    </div>
+                `;
+                
+                container.insertAdjacentHTML('beforeend', fileHTML);
+            }
+        }
+
+        // Calcular presupuesto total
+        function calcularPresupuestoTotal() {
+            const montoSolicitado = parseFloat(document.getElementById('montoSolicitado').value) || 0;
+            const contrapartida = parseFloat(document.getElementById('contrapartida').value) || 0;
+            const total = montoSolicitado + contrapartida;
+            
+            document.getElementById('presupuestoTotal').textContent = new Intl.NumberFormat('es-CO', {
+                style: 'currency',
+                currency: 'COP',
+                minimumFractionDigits: 0
+            }).format(total);
+        }
+
+        // Validar formulario
+        function validarFormulario() {
+            const requiredFields = document.querySelectorAll('[required]');
+            let isValid = true;
+            let missingFields = [];
+
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    isValid = false;
+                    missingFields.push(field.previousElementSibling.textContent.replace(' *', ''));
+                    field.style.borderColor = '#e74c3c';
+                } else {
+                    field.style.borderColor = '#ecf0f1';
+                }
+            });
+
+            if (!isValid) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Campos Requeridos',
+                    html: `
+                        <p>Los siguientes campos son obligatorios:</p>
+                        <ul style="text-align: left; padding-left: 20px;">
+                            ${missingFields.map(field => `<li>${field}</li>`).join('')}
+                        </ul>
+                    `,
+                    confirmButtonText: 'Entendido'
+                });
+                return;
+            }
+
+            // Mostrar vista previa
+            mostrarVistaPrevia();
+        }
+
+        // Mostrar vista previa
+        function mostrarVistaPrevia() {
+            const titulo = document.getElementById('tituloProyecto').value;
+            const area = document.getElementById('areaTematica').options[document.getElementById('areaTematica').selectedIndex].text;
+            const sector = document.getElementById('sectorEconomico').options[document.getElementById('sectorEconomico').selectedIndex].text;
+            const duracion = document.getElementById('duracionProyecto').value;
+            const monto = document.getElementById('montoSolicitado').value;
+
+            Swal.fire({
+                title: 'Vista Previa de la Propuesta',
+                html: `
+                    <div style="text-align: left;">
+                        <h4>📊 Información del Proyecto</h4>
+                        <p><strong>Título:</strong> ${titulo}</p>
+                        <p><strong>Área Temática:</strong> ${area}</p>
+                        <p><strong>Sector:</strong> ${sector}</p>
+                        <p><strong>Duración:</strong> ${duracion} meses</p>
+                        <p><strong>Monto Solicitado:</strong> $${new Intl.NumberFormat('es-CO').format(monto)}</p>
+                        
+                        <hr>
+                        <p><strong>¿Está seguro de que desea radicar esta propuesta?</strong></p>
+                        <small style="color: #7f8c8d;">Una vez radicada, no podrá realizar modificaciones.</small>
+                    </div>
+                `,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, Radicar Propuesta',
+                cancelButtonText: 'Revisar Nuevamente',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    radicarPropuesta();
+                }
+            });
+        }
+
+        // Radicar propuesta
+        function radicarPropuesta() {
+            // Simular proceso de radicación
+            Swal.fire({
+                title: 'Radicando Propuesta...',
+                html: 'Por favor espere mientras procesamos su propuesta',
+                timerProgressBar: true,
+                didOpen: () => {
+                    Swal.showLoading();
+                    setTimeout(() => {
+                        Swal.close();
+                        mostrarConfirmacionRadicacion();
+                    }, 3000);
+                }
+            });
+        }
+
+        // Mostrar confirmación de radicación
+        function mostrarConfirmacionRadicacion() {
+            const numeroRadicado = 'RAD-' + new Date().getFullYear() + '-' + Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+            
+            Swal.fire({
+                icon: 'success',
+                title: '¡Propuesta Radicada Exitosamente!',
+                html: `
+                    <div style="text-align: center;">
+                        <h3 style="color: #27ae60;">📋 Número de Radicado</h3>
+                        <h2 style="color: #2c3e50; background: #f8f9fa; padding: 15px; border-radius: 8px; font-family: monospace;">
+                            ${numeroRadicado}
+                        </h2>
+                        
+                        <div style="text-align: left; margin-top: 20px;">
+                            <h4>📧 Próximos Pasos:</h4>
+                            <ul>
+                                <li>Recibirá un correo de confirmación con el número de radicado</li>
+                                <li>La evaluación comenzará en máximo 5 días hábiles</li>
+                                <li>Podrá hacer seguimiento en línea con el número de radicado</li>
+                                <li>Los resultados se publicarán según el cronograma de la convocatoria</li>
+                            </ul>
+                            
+                            <p style="margin-top: 20px;"><strong>¡Gracias por participar en nuestra convocatoria!</strong></p>
+                        </div>
+                    </div>
+                `,
+                confirmButtonText: 'Ir al Panel de Seguimiento',
+                showCancelButton: true,
+                cancelButtonText: 'Descargar Comprobante'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Redirigir al panel de seguimiento
+                    window.location.href = 'proyectos-radicados.html';
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    // Descargar comprobante
+                    descargarComprobante(numeroRadicado);
+                }
+            });
+        }
+
+        // Descargar comprobante
+        function descargarComprobante(numeroRadicado) {
+            Swal.fire({
+                icon: 'info',
+                title: 'Generando Comprobante',
+                text: 'La funcionalidad de descarga estará disponible próximamente',
+                timer: 2000
+            });
+        }
+
+        // Inicializar página
+        document.addEventListener('DOMContentLoaded', function() {
+            // Agregar primer proponente por defecto
+            agregarProponente();
+            
+            // Event listeners para el cálculo automático del presupuesto
+            document.getElementById('montoSolicitado').addEventListener('input', calcularPresupuestoTotal);
+            document.getElementById('contrapartida').addEventListener('input', calcularPresupuestoTotal);
+            
+            // Cargar datos de convocatoria desde URL (si viene de otra página)
+            const urlParams = new URLSearchParams(window.location.search);
+            const convocatoriaId = urlParams.get('convocatoria');
+            if (convocatoriaId) {
+                cargarDatosConvocatoria(convocatoriaId);
+            }
+        });
+
+        // Cargar datos de convocatoria específica
+        function cargarDatosConvocatoria(convocatoriaId) {
+            // Aquí se cargarían los datos reales de la convocatoria
+            // Por ahora usamos datos ficticios
+        }
+
+        // Manejar envío del formulario
+        document.getElementById('formularioRadicacion').addEventListener('submit', function(e) {
+            e.preventDefault();
+            validarFormulario();
+        });
+    </script>
+</body>
+</html>

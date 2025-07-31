@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Convocatoria - SinAptico</title>
+    <link rel="stylesheet" href="../../public/styles/styles.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f7fa;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 6px 25px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #2980b9;
+        }
+        
+        .header h1 {
+            color: #2c3e50;
+            margin: 0;
+            font-size: 2.8em;
+        }
+        
+        .header .subtitle {
+            color: #7f8c8d;
+            margin: 15px 0;
+            font-size: 1.2em;
+        }
+        
+        .entity-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        
+        .form-section {
+            margin-bottom: 35px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border-left: 5px solid #3498db;
+        }
+        
+        .section-title {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #bdc3c7;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+            box-sizing: border-box;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+        
+        .required {
+            color: #e74c3c;
+        }
+        
+        .help-text {
+            font-size: 12px;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+        
+        .file-upload-area {
+            border: 2px dashed #bdc3c7;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            background: #fafbfc;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .file-upload-area:hover {
+            border-color: #3498db;
+            background: #ebf3fd;
+        }
+        
+        .file-upload-area.dragover {
+            border-color: #27ae60;
+            background: #d5f4e6;
+        }
+        
+        .upload-icon {
+            font-size: 3em;
+            color: #bdc3c7;
+            margin-bottom: 15px;
+        }
+        
+        .date-range {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            align-items: end;
+        }
+        
+        .colaborators-section {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #ecf0f1;
+            margin-top: 15px;
+        }
+        
+        .colaborator-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .colaborator-info {
+            flex: 1;
+        }
+        
+        .colaborator-name {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .colaborator-entity {
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+        
+        .remove-colaborator {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .add-colaborator {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .add-colaborator input {
+            flex: 2;
+        }
+        
+        .add-colaborator select {
+            flex: 1;
+        }
+        
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: bold;
+        }
+        
+        .btn-primary {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+        
+        .btn-success {
+            background-color: #27ae60;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background-color: #219a52;
+        }
+        
+        .btn-secondary {
+            background-color: #95a5a6;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #7f8c8d;
+        }
+        
+        .btn-sm {
+            padding: 8px 15px;
+            font-size: 14px;
+        }
+        
+        .form-actions {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #ecf0f1;
+        }
+        
+        .preview-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-top: 30px;
+        }
+        
+        .preview-title {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .preview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .preview-item {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 8px;
+        }
+        
+        .preview-label {
+            font-size: 0.9em;
+            opacity: 0.8;
+            margin-bottom: 5px;
+        }
+        
+        .preview-value {
+            font-weight: bold;
+        }
+        
+        .articulation-alert {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+        
+        .articulation-alert strong {
+            color: #533f03;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏛️ Crear Nueva Convocatoria</h1>
+            <div class="subtitle">Panel de Administración para Entidades Convocantes</div>
+            <div class="entity-badge" id="entityBadge">CCB - Cámara de Comercio de Bucaramanga</div>
+                 <div class="entity-badge" id="entityBadge">CRCI - Comisiones Regionales de Competitividad e Innovación</div>
+        </div>
+        
+        <form id="convocatoriaForm">
+            <!-- Información Básica -->
+            <div class="form-section">
+                <h3 class="section-title">
+                    📋 Información Básica de la Convocatoria
+                </h3>
+                
+                <div class="form-group">
+                    <label for="nombre">Nombre de la Convocatoria <span class="required">*</span></label>
+                    <input type="text" id="nombre" name="nombre" required 
+                           placeholder="Ej: Convocatoria de Innovación Tecnológica 2025">
+                    <div class="help-text">Nombre descriptivo y atractivo para los participantes</div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="entidadConvocante">Entidad Convocante <span class="required">*</span></label>
+                        <select id="entidadConvocante" name="entidadConvocante" required>
+                            <option value="">Seleccione una entidad</option>
+                            <option value="CCB">CCB - Cámara de Comercio de Bogotá</option>
+                            <option value="CRCI">CRCI - Cámara Regional de Comercio e Industria</option>
+                            <option value="CCCS">CCCS - Cámara de Comercio de Cartagena</option>
+                            <option value="CCMED">CCMED - Cámara de Comercio de Medellín</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="tipoConvocatoria">Tipo de Convocatoria <span class="required">*</span></label>
+                        <select id="tipoConvocatoria" name="tipoConvocatoria" required>
+                            <option value="">Seleccione el tipo</option>
+                            <option value="innovacion">Innovación Tecnológica</option>
+                            <option value="emprendimiento">Emprendimiento</option>
+                            <option value="sostenibilidad">Sostenibilidad</option>
+                            <option value="digital">Transformación Digital</option>
+                            <option value="social">Impacto Social</option>
+                            <option value="rural">Desarrollo Rural</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="objetivo">Objetivo Principal <span class="required">*</span></label>
+                    <textarea id="objetivo" name="objetivo" required 
+                              placeholder="Describa el objetivo principal de esta convocatoria..."></textarea>
+                    <div class="help-text">Explique claramente qué busca lograr con esta convocatoria</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="descripcion">Descripción Detallada <span class="required">*</span></label>
+                    <textarea id="descripcion" name="descripcion" required 
+                              placeholder="Proporcione una descripción completa de la convocatoria, requisitos, proceso de selección, etc."></textarea>
+                </div>
+            </div>
+            
+            <!-- Fechas y Presupuesto -->
+            <div class="form-section">
+                <h3 class="section-title">
+                    📅 Cronograma y Presupuesto
+                </h3>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="fechaApertura">Fecha de Apertura <span class="required">*</span></label>
+                        <input type="datetime-local" id="fechaApertura" name="fechaApertura" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="fechaCierre">Fecha de Cierre <span class="required">*</span></label>
+                        <input type="datetime-local" id="fechaCierre" name="fechaCierre" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="presupuestoTotal">Presupuesto Total Disponible <span class="required">*</span></label>
+                        <input type="number" id="presupuestoTotal" name="presupuestoTotal" required 
+                               step="1000000" min="0" placeholder="0">
+                        <div class="help-text">Monto total en pesos colombianos para todos los proyectos</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="montoMaximo">Monto Máximo por Proyecto</label>
+                        <input type="number" id="montoMaximo" name="montoMaximo" 
+                               step="1000000" min="0" placeholder="0">
+                        <div class="help-text">Monto máximo que puede solicitar cada proyecto</div>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="numeroProyectos">Número de Proyectos a Financiar</label>
+                        <input type="number" id="numeroProyectos" name="numeroProyectos" 
+                               min="1" placeholder="1">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="duracionMaxima">Duración Máxima (meses)</label>
+                        <input type="number" id="duracionMaxima" name="duracionMaxima" 
+                               min="1" max="60" placeholder="12">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Requisitos y Criterios -->
+            <div class="form-section">
+                <h3 class="section-title">
+                    📝 Requisitos y Criterios de Evaluación
+                </h3>
+                
+                <div class="form-group">
+                    <label for="requisitos">Requisitos de Participación <span class="required">*</span></label>
+                    <textarea id="requisitos" name="requisitos" required 
+                              placeholder="Liste los requisitos que deben cumplir los participantes..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="criteriosEvaluacion">Criterios de Evaluación <span class="required">*</span></label>
+                    <textarea id="criteriosEvaluacion" name="criteriosEvaluacion" required 
+                              placeholder="Describa los criterios que se utilizarán para evaluar las propuestas..."></textarea>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="sectoresObjetivo">Sectores Objetivo</label>
+                        <input type="text" id="sectoresObjetivo" name="sectoresObjetivo" 
+                               placeholder="Ej: Tecnología, Agricultura, Salud, Educación...">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="ubicacionGeografica">Cobertura Geográfica</label>
+                        <select id="ubicacionGeografica" name="ubicacionGeografica">
+                            <option value="">Seleccione cobertura</option>
+                            <option value="nacional">Nacional</option>
+                            <option value="regional">Regional</option>
+                            <option value="bogota">Bogotá</option>
+                            <option value="antioquia">Antioquia</option>
+                            <option value="valle">Valle del Cauca</option>
+                            <option value="atlantico">Atlántico</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Documentos y Enlaces -->
+            <div class="form-section">
+                <h3 class="section-title">
+                    📎 Documentos y Enlaces
+                </h3>
+                
+                <div class="form-group">
+                    <label for="linkConvocatoria">Enlace Oficial de la Convocatoria</label>
+                    <input type="url" id="linkConvocatoria" name="linkConvocatoria" 
+                           placeholder="https://ejemplo.com/convocatoria">
+                    <div class="help-text">URL donde se encuentra la información completa</div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Documentos Adjuntos</label>
+                    <div class="file-upload-area" onclick="document.getElementById('documentos').click()">
+                        <input type="file" id="documentos" name="documentos" multiple accept=".pdf,.doc,.docx" style="display: none;">
+                        <div class="upload-icon">📁</div>
+                        <div>Arrastra archivos aquí o haz clic para seleccionar</div>
+                        <div style="font-size: 12px; color: #7f8c8d; margin-top: 10px;">
+                            Formatos permitidos: PDF, DOC, DOCX
+                        </div>
+                    </div>
+                    <div id="fileList" style="margin-top: 10px;"></div>
+                </div>
+            </div>
+            
+            <!-- Articulación con Otros Actores -->
+            <div class="form-section">
+                <h3 class="section-title">
+                    🤝 Articulación con Otros Actores
+                </h3>
+                
+                <div class="articulation-alert">
+                    <strong>💡 Colaboración Estratégica:</strong> 
+                    Invite a otras entidades a participar como co-convocantes para ampliar el alcance y recursos disponibles.
+                </div>
+                
+                <div class="colaborators-section">
+                    <h4>Actores Colaboradores</h4>
+                    
+                    <div class="add-colaborator">
+                        <input type="text" id="colaboratorName" placeholder="Nombre del colaborador">
+                        <select id="colaboratorEntity">
+                            <option value="">Seleccione entidad</option>
+                            <option value="CCB">CCB</option>
+                            <option value="CRCI">CRCI</option>
+                            <option value="Universidad">Universidad</option>
+                            <option value="Gobierno">Entidad Gubernamental</option>
+                            <option value="Empresa">Empresa Privada</option>
+                        </select>
+                        <button type="button" class="btn btn-primary btn-sm" onclick="addColaborator()">
+                            Agregar
+                        </button>
+                    </div>
+                    
+                    <div id="colaboratorsList">
+                        <!-- Lista de colaboradores se genera dinámicamente -->
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="beneficiosColaboracion">Beneficios de la Colaboración</label>
+                    <textarea id="beneficiosColaboracion" name="beneficiosColaboracion" 
+                              placeholder="Describa los beneficios que ofrecerá a los actores colaboradores..."></textarea>
+                </div>
+            </div>
+            
+            <!-- Vista Previa -->
+            <div class="preview-section">
+                <div class="preview-title">📋 Vista Previa de la Convocatoria</div>
+                <div class="preview-grid" id="previewGrid">
+                    <!-- Vista previa se genera dinámicamente -->
+                </div>
+            </div>
+            
+            <div class="form-actions">
+                <a href="convocatorias-dashboard.html" class="btn btn-secondary">Cancelar</a>
+                <button type="button" class="btn btn-secondary" onclick="guardarBorrador()">Guardar Borrador</button>
+                <button type="submit" class="btn btn-success">Publicar Convocatoria</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        let colaborators = [];
+        
+        // Datos de demostración
+        const datosDemo = {
+            nombre: "Convocatoria de Innovación Digital para PyMEs 2025",
+            entidadConvocante: "CCB",
+            tipoConvocatoria: "digital",
+            objetivo: "Impulsar la transformación digital de las pequeñas y medianas empresas a través de proyectos innovadores que mejoren su competitividad y sostenibilidad en el mercado.",
+            descripcion: "Esta convocatoria busca financiar proyectos de innovación digital que permitan a las PyMEs adoptar nuevas tecnologías, mejorar sus procesos y expandir su presencia en mercados digitales. Se priorizarán proyectos con enfoque en e-commerce, automatización de procesos y análisis de datos.",
+            fechaApertura: "2025-08-15T09:00",
+            fechaCierre: "2025-10-15T17:00",
+            presupuestoTotal: 500000000,
+            montoMaximo: 50000000,
+            numeroProyectos: 10,
+            duracionMaxima: 18,
+            requisitos: "1. Ser una PyME legalmente constituida en Colombia\n2. Tener mínimo 2 años de operación\n3. Demostrar viabilidad del proyecto\n4. Comprometerse con la implementación en el plazo establecido",
+            criteriosEvaluacion: "1. Innovación y originalidad (30%)\n2. Viabilidad técnica y financiera (25%)\n3. Impacto en la empresa (20%)\n4. Sostenibilidad del proyecto (15%)\n5. Equipo ejecutor (10%)",
+            sectoresObjetivo: "Comercio, Servicios, Manufactura, Turismo",
+            ubicacionGeografica: "bogota",
+            linkConvocatoria: "https://ccb.org.co/convocatoria-innovacion-digital-2025",
+            beneficiosColaboracion: "Los actores colaboradores tendrán acceso a la base de datos de proyectos postulados, podrán participar en el proceso de evaluación y tendrán oportunidades de networking con los emprendedores seleccionados."
+        };
+
+        // Llenar datos de demostración
+        function llenarDatosDemo() {
+            Object.keys(datosDemo).forEach(key => {
+                const element = document.getElementById(key);
+                if (element) {
+                    element.value = datosDemo[key];
+                }
+            });
+            
+            // Agregar colaboradores de ejemplo
+            colaborators = [
+                { name: "Universidad Nacional", entity: "Universidad" },
+                { name: "MinTIC", entity: "Gobierno" },
+                { name: "Microsoft Colombia", entity: "Empresa" }
+            ];
+            
+            updateColaboratorsList();
+            updatePreview();
+            
+            Swal.fire({
+                icon: 'success',
+                title: 'Datos de demostración cargados',
+                text: 'Los campos han sido llenados con datos ficticios',
+                timer: 1500,
+                showConfirmButton: false
+            });
+        }
+
+        // Agregar colaborador
+        function addColaborator() {
+            const name = document.getElementById('colaboratorName').value.trim();
+            const entity = document.getElementById('colaboratorEntity').value;
+            
+            if (name && entity) {
+                colaborators.push({ name, entity });
+                updateColaboratorsList();
+                
+                // Limpiar campos
+                document.getElementById('colaboratorName').value = '';
+                document.getElementById('colaboratorEntity').value = '';
+            } else {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Campos requeridos',
+                    text: 'Complete el nombre y seleccione la entidad'
+                });
+            }
+        }
+
+        // Actualizar lista de colaboradores
+        function updateColaboratorsList() {
+            const container = document.getElementById('colaboratorsList');
+            
+            if (colaborators.length === 0) {
+                container.innerHTML = '<p style="color: #7f8c8d; text-align: center; padding: 20px;">No hay colaboradores agregados</p>';
+                return;
+            }
+            
+            const html = colaborators.map((colaborator, index) => `
+                <div class="colaborator-item">
+                    <div class="colaborator-info">
+                        <div class="colaborator-name">${colaborator.name}</div>
+                        <div class="colaborator-entity">${colaborator.entity}</div>
+                    </div>
+                    <button type="button" class="remove-colaborator" onclick="removeColaborator(${index})">
+                        Remover
+                    </button>
+                </div>
+            `).join('');
+            
+            container.innerHTML = html;
+        }
+
+        // Remover colaborador
+        function removeColaborator(index) {
+            colaborators.splice(index, 1);
+            updateColaboratorsList();
+        }
+
+        // Actualizar vista previa
+        function updatePreview() {
+            const formData = new FormData(document.getElementById('convocatoriaForm'));
+            const data = Object.fromEntries(formData);
+            
+            const previewData = [
+                { label: 'Convocatoria', value: data.nombre || 'Sin especificar' },
+                { label: 'Entidad', value: data.entidadConvocante || 'Sin especificar' },
+                { label: 'Tipo', value: data.tipoConvocatoria || 'Sin especificar' },
+                { label: 'Presupuesto', value: data.presupuestoTotal ? formatCurrency(data.presupuestoTotal) : 'Sin especificar' },
+                { label: 'Proyectos', value: data.numeroProyectos || 'Sin especificar' },
+                { label: 'Colaboradores', value: colaborators.length }
+            ];
+            
+            const html = previewData.map(item => `
+                <div class="preview-item">
+                    <div class="preview-label">${item.label}</div>
+                    <div class="preview-value">${item.value}</div>
+                </div>
+            `).join('');
+            
+            document.getElementById('previewGrid').innerHTML = html;
+        }
+
+        // Formatear moneda
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('es-CO', {
+                style: 'currency',
+                currency: 'COP',
+                minimumFractionDigits: 0
+            }).format(amount);
+        }
+
+        // Guardar borrador
+        function guardarBorrador() {
+            Swal.fire({
+                icon: 'info',
+                title: 'Borrador Guardado',
+                text: 'La convocatoria ha sido guardada como borrador',
+                timer: 1500,
+                showConfirmButton: false
+            });
+        }
+
+        // Manejar envío del formulario
+        document.getElementById('convocatoriaForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Validar fechas
+            const fechaApertura = new Date(document.getElementById('fechaApertura').value);
+            const fechaCierre = new Date(document.getElementById('fechaCierre').value);
+            
+            if (fechaCierre <= fechaApertura) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error en fechas',
+                    text: 'La fecha de cierre debe ser posterior a la fecha de apertura'
+                });
+                return;
+            }
+            
+            Swal.fire({
+                title: '¿Publicar Convocatoria?',
+                text: 'Una vez publicada, la convocatoria será visible para todos los usuarios',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, publicar',
+                cancelButtonText: 'Revisar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Simular publicación
+                    Swal.fire({
+                        title: 'Publicando...',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+                    
+                    setTimeout(() => {
+                        Swal.fire({
+                            icon: 'success',
+                            title: '¡Convocatoria Publicada!',
+                            text: 'La convocatoria está ahora disponible para participantes. ID: CONV-2025-001',
+                            confirmButtonText: 'Ver Convocatorias'
+                        }).then(() => {
+                            window.location.href = 'convocatorias-disponibles.html';
+                        });
+                    }, 2000);
+                }
+            });
+        });
+
+        // Manejar carga de archivos
+        document.getElementById('documentos').addEventListener('change', function(e) {
+            const fileList = document.getElementById('fileList');
+            const files = Array.from(e.target.files);
+            
+            if (files.length > 0) {
+                const html = files.map(file => `
+                    <div style="padding: 8px; background: #f8f9fa; border-radius: 4px; margin-bottom: 5px;">
+                        📄 ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)
+                    </div>
+                `).join('');
+                fileList.innerHTML = html;
+            }
+        });
+
+        // Actualizar vista previa en tiempo real
+        document.addEventListener('input', updatePreview);
+        document.addEventListener('change', updatePreview);
+
+        // Inicializar página
+        document.addEventListener('DOMContentLoaded', function() {
+            // Configurar fecha mínima como hoy
+            const now = new Date();
+            now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+            const dateTimeString = now.toISOString().slice(0, 16);
+            
+            document.getElementById('fechaApertura').min = dateTimeString;
+            document.getElementById('fechaCierre').min = dateTimeString;
+            
+            // Agregar botón de datos demo
+            const formActions = document.querySelector('.form-actions');
+            const demoBtn = document.createElement('button');
+            demoBtn.type = 'button';
+            demoBtn.className = 'btn btn-secondary';
+            demoBtn.textContent = '🎭 Llenar Datos Demo';
+            demoBtn.onclick = llenarDatosDemo;
+            formActions.insertBefore(demoBtn, formActions.firstChild);
+            
+            updatePreview();
+        });
+    </script>
+</body>
+</html>

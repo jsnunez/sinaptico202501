@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convocatorias Disponibles - SinAptico</title>
+    <link rel="stylesheet" href="../../public/styles/styles.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f7fa;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 3em;
+        }
+        
+        .header p {
+            margin: 15px 0 0 0;
+            opacity: 0.9;
+            font-size: 1.3em;
+        }
+        
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            border-top: 4px solid #3498db;
+        }
+        
+        .stat-card.active {
+            border-top-color: #27ae60;
+        }
+        
+        .stat-card.closing {
+            border-top-color: #f39c12;
+        }
+        
+        .stat-card.total {
+            border-top-color: #9b59b6;
+        }
+        
+        .stat-icon {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .stat-label {
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+        
+        .filters-section {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .filters-row {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .filter-group label {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            font-weight: 500;
+        }
+        
+        .filter-group select, .filter-group input {
+            padding: 10px 12px;
+            border: 2px solid #ecf0f1;
+            border-radius: 6px;
+            font-size: 14px;
+            min-width: 150px;
+        }
+        
+        .search-box {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ecf0f1;
+            border-radius: 25px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        
+        .search-box input:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+        
+        .convocatorias-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .convocatoria-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .convocatoria-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.15);
+        }
+        
+        .card-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            position: relative;
+        }
+        
+        .card-header.ccb {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+        }
+        
+        .card-header.crci {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+        }
+        
+        .card-header.cccs {
+            background: linear-gradient(135deg, #f39c12 0%, #d68910 100%);
+        }
+        
+        .card-header.ccmed {
+            background: linear-gradient(135deg, #27ae60 0%, #219a52 100%);
+        }
+        
+        .entity-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255,255,255,0.2);
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+        
+        .convocatoria-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin: 0 0 10px 0;
+            line-height: 1.3;
+            padding-right: 80px;
+        }
+        
+        .convocatoria-type {
+            background: rgba(255,255,255,0.2);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            display: inline-block;
+        }
+        
+        .card-body {
+            padding: 25px;
+        }
+        
+        .objetivo-preview {
+            color: #7f8c8d;
+            line-height: 1.5;
+            margin-bottom: 20px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .card-meta {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .meta-label {
+            font-size: 0.85em;
+            color: #95a5a6;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .meta-value {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .presupuesto {
+            color: #27ae60;
+            font-size: 1.1em;
+        }
+        
+        .fecha-cierre {
+            color: #e74c3c;
+        }
+        
+        .fecha-cierre.warning {
+            color: #f39c12;
+        }
+        
+        .fecha-cierre.safe {
+            color: #27ae60;
+        }
+        
+        .status-indicator {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: #27ae60;
+        }
+        
+        .status-indicator.closing-soon {
+            background: linear-gradient(90deg, #f39c12 0%, #e74c3c 100%);
+        }
+        
+        .card-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: 500;
+        }
+        
+        .btn-primary {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+        
+        .btn-success {
+            background-color: #27ae60;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background-color: #219a52;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #3498db;
+            color: #3498db;
+        }
+        
+        .btn-outline:hover {
+            background: #3498db;
+            color: white;
+        }
+        
+        .interest-count {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .modal-content {
+            background-color: white;
+            margin: 2% auto;
+            padding: 0;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        
+        .modal-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px 15px 0 0;
+        }
+        
+        .modal-body {
+            padding: 30px;
+        }
+        
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .close:hover {
+            opacity: 0.7;
+        }
+        
+        .detail-section {
+            margin-bottom: 25px;
+        }
+        
+        .detail-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 8px;
+        }
+        
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .detail-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .comments-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 25px;
+        }
+        
+        .comment-form {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .comment-form input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+        }
+        
+        .comment {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 3px solid #3498db;
+        }
+        
+        .comment-author {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        .comment-text {
+            color: #7f8c8d;
+            line-height: 1.4;
+        }
+        
+        .comment-date {
+            font-size: 0.8em;
+            color: #95a5a6;
+            margin-top: 8px;
+        }
+        
+        .articulation-section {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        
+        .articulation-title {
+            color: #856404;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .actor-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .actor-badge {
+            background: #f39c12;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.9em;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #7f8c8d;
+        }
+        
+        .empty-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🎯 Convocatorias Disponibles</h1>
+            <p>Encuentra oportunidades de financiamiento para tus proyectos de innovación</p>
+        </div>
+        
+        <!-- Estadísticas -->
+        <div class="stats-row">
+            <div class="stat-card active">
+                <div class="stat-icon">🟢</div>
+                <div class="stat-number" id="convocatoriasAbiertas">8</div>
+                <div class="stat-label">Convocatorias Activas</div>
+            </div>
+            
+            <div class="stat-card closing">
+                <div class="stat-icon">⏰</div>
+                <div class="stat-number" id="convocatoriasPorCerrar">3</div>
+                <div class="stat-label">Cierran Pronto</div>
+            </div>
+            
+            <div class="stat-card total">
+                <div class="stat-icon">💰</div>
+                <div class="stat-number" id="presupuestoTotal">$2.1B</div>
+                <div class="stat-label">Presupuesto Total</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">📊</div>
+                <div class="stat-number" id="proyectosFinanciar">45</div>
+                <div class="stat-label">Proyectos a Financiar</div>
+            </div>
+        </div>
+        
+        <!-- Filtros -->
+        <div class="filters-section">
+            <div class="filters-row">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="🔍 Buscar convocatorias por nombre, entidad o tipo..." onkeyup="filtrarConvocatorias()">
+                </div>
+                
+                <div class="filter-group">
+                    <label>Entidad:</label>
+                    <select id="filtroEntidad" onchange="filtrarConvocatorias()">
+                        <option value="">Todas las entidades</option>
+                        <option value="CCB">CCB</option>
+                        <option value="CRCI">CRCI</option>
+                        <option value="CCCS">CCCS</option>
+                        <option value="CCMED">CCMED</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label>Tipo:</label>
+                    <select id="filtroTipo" onchange="filtrarConvocatorias()">
+                        <option value="">Todos los tipos</option>
+                        <option value="innovacion">Innovación</option>
+                        <option value="emprendimiento">Emprendimiento</option>
+                        <option value="digital">Transformación Digital</option>
+                        <option value="sostenibilidad">Sostenibilidad</option>
+                        <option value="social">Impacto Social</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label>Estado:</label>
+                    <select id="filtroEstado" onchange="filtrarConvocatorias()">
+                        <option value="">Todos</option>
+                        <option value="abierta">Abiertas</option>
+                        <option value="cierre-proximo">Cierre Próximo</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Grid de Convocatorias -->
+        <div class="convocatorias-grid" id="convocatoriasContainer">
+            <!-- Las convocatorias se cargan dinámicamente -->
+        </div>
+    </div>
+
+    <!-- Modal de Detalles -->
+    <div id="convocatoriaModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header" id="modalHeader">
+                <span class="close" onclick="cerrarModal()">&times;</span>
+                <h2 id="modalTitle">Título de la Convocatoria</h2>
+                <div id="modalEntity">Entidad Convocante</div>
+            </div>
+            <div class="modal-body">
+                <div class="detail-section">
+                    <div class="detail-title">📋 Información General</div>
+                    <div class="detail-grid" id="modalGeneralInfo">
+                        <!-- Información general -->
+                    </div>
+                </div>
+                
+                <div class="detail-section">
+                    <div class="detail-title">🎯 Objetivo</div>
+                    <p id="modalObjetivo"></p>
+                </div>
+                
+                <div class="detail-section">
+                    <div class="detail-title">📝 Descripción</div>
+                    <p id="modalDescripcion"></p>
+                </div>
+                
+                <div class="detail-section">
+                    <div class="detail-title">✅ Requisitos</div>
+                    <div id="modalRequisitos"></div>
+                </div>
+                
+                <div class="detail-section">
+                    <div class="detail-title">⚖️ Criterios de Evaluación</div>
+                    <div id="modalCriterios"></div>
+                </div>
+                
+                <!-- Articulación de Actores -->
+                <div class="articulation-section">
+                    <div class="articulation-title">🤝 Actores Articulados para esta Convocatoria</div>
+                    <div class="actor-list" id="modalActores">
+                        <!-- Lista de actores -->
+                    </div>
+                </div>
+                
+                <div class="detail-section">
+                    <div class="detail-title">🔗 Enlaces</div>
+                    <a id="modalLink" href="#" target="_blank" class="btn btn-primary">Ver Convocatoria Oficial</a>
+                </div>
+                
+                <div class="detail-section">
+                    <div style="display: flex; gap: 15px; justify-content: center; margin: 20px 0;">
+                        <button class="btn btn-success" onclick="mostrarInteres()">⭐ Manifestar Interés</button>
+                        <button class="btn btn-primary" onclick="formularPropuesta()">📝 Formular Propuesta</button>
+                        <button class="btn btn-outline" onclick="compartirConvocatoria()">📤 Compartir</button>
+                    </div>
+                </div>
+                
+                <!-- Sección de Comentarios -->
+                <div class="comments-section">
+                    <div class="detail-title">💬 Comentarios y Consultas</div>
+                    
+                    <div class="comment-form">
+                        <input type="text" id="commentInput" placeholder="Escribe tu comentario o pregunta...">
+                        <button class="btn btn-primary" onclick="agregarComentario()">Comentar</button>
+                    </div>
+                    
+                    <div id="commentsList">
+                        <!-- Comentarios existentes -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        // Datos ficticios de convocatorias
+        const convocatoriasFicticias = [
+            {
+                id: 'CONV-2025-001',
+                nombre: 'Convocatoria 1',
+                entidad: 'CCB',
+                entidadCompleta: 'Cámara de Comercio de Bogotá',
+                tipo: 'digital',
+                objetivo: 'Impulsar la transformación digital de las pequeñas y medianas empresas a través de proyectos innovadores que mejoren su competitividad y sostenibilidad en el mercado.',
+                descripcion: 'Esta convocatoria busca financiar proyectos de innovación digital que permitan a las PyMEs adoptar nuevas tecnologías, mejorar sus procesos y expandir su presencia en mercados digitales. Se priorizarán proyectos con enfoque en e-commerce, automatización de procesos y análisis de datos.',
+                fechaApertura: '2025-08-15T09:00',
+                fechaCierre: '2025-10-15T17:00',
+                presupuestoTotal: 500000000,
+                montoMaximo: 50000000,
+                numeroProyectos: 10,
+                duracionMaxima: 18,
+                requisitos: '1. Ser una PyME legalmente constituida en Colombia\n2. Tener mínimo 2 años de operación\n3. Demostrar viabilidad del proyecto\n4. Comprometerse con la implementación en el plazo establecido',
+                criteriosEvaluacion: '1. Innovación y originalidad (30%)\n2. Viabilidad técnica y financiera (25%)\n3. Impacto en la empresa (20%)\n4. Sostenibilidad del proyecto (15%)\n5. Equipo ejecutor (10%)',
+                sectoresObjetivo: 'Comercio, Servicios, Manufactura, Turismo',
+                ubicacionGeografica: 'Bogotá',
+                linkConvocatoria: 'https://ccb.org.co/convocatoria-innovacion-digital-2025',
+                actoresArticulados: ['Universidad Nacional', 'MinTIC', 'Microsoft Colombia'],
+                interesados: 45,
+                comentarios: [
+                    {
+                        autor: 'María González',
+                        texto: '¿Es posible postular proyectos que ya estén en desarrollo?',
+                        fecha: '2025-07-30T10:30:00'
+                    },
+                    {
+                        autor: 'Carlos Mendoza',
+                        texto: 'Excelente iniciativa, ya estamos preparando nuestra propuesta.',
+                        fecha: '2025-07-30T14:15:00'
+                    }
+                ]
+            },
+            {
+                id: 'CONV-2025-002',
+                nombre: 'Fondo 1',
+                entidad: 'CRCI',
+                entidadCompleta: 'CCB',
+                tipo: 'social',
+                objetivo: 'Apoyar emprendimientos que generen impacto social positivo en comunidades vulnerables, promoviendo la inclusión y el desarrollo sostenible.',
+                descripcion: 'Convocatoria dirigida a emprendedores que desarrollen soluciones innovadoras para problemáticas sociales, con especial énfasis en educación, salud, seguridad alimentaria y generación de empleo en comunidades vulnerables.',
+                fechaApertura: '2025-08-01T08:00',
+                fechaCierre: '2025-09-30T18:00',
+                presupuestoTotal: 300000000,
+                montoMaximo: 30000000,
+                numeroProyectos: 15,
+                duracionMaxima: 12,
+                requisitos: '1. Proyecto con impacto social demostrable\n2. Beneficiar a población vulnerable\n3. Modelo de negocio sostenible\n4. Equipo multidisciplinario',
+                criteriosEvaluacion: '1. Impacto social (40%)\n2. Sostenibilidad (25%)\n3. Innovación (20%)\n4. Viabilidad financiera (15%)',
+                sectoresObjetivo: 'Educación, Salud, Alimentación, Empleo',
+                ubicacionGeografica: 'Nacional',
+                linkConvocatoria: 'https://crci.org.co/emprendimiento-social-2025',
+                actoresArticulados: ['Fundación Compartir', 'ONU Mujeres', 'PNUD'],
+                interesados: 32,
+                comentarios: []
+            },
+            {
+                id: 'CONV-2025-003',
+                nombre: 'Programa 1',
+                entidad: 'CCCS',
+                entidadCompleta: 'Cámara de Comercio de Cartagena',
+                tipo: 'sostenibilidad',
+                objetivo: 'Financiar proyectos que promuevan la sostenibilidad ambiental y la economía circular en el sector empresarial del Caribe colombiano.',
+                descripcion: 'Esta convocatoria apoya proyectos de innovación enfocados en sostenibilidad ambiental, eficiencia energética, gestión de residuos y economía circular. Se busca fortalecer la competitividad empresarial mientras se protege el medio ambiente.',
+                fechaApertura: '2025-07-20T09:00',
+                fechaCierre: '2025-09-20T17:00',
+                presupuestoTotal: 400000000,
+                montoMaximo: 40000000,
+                numeroProyectos: 12,
+                duracionMaxima: 24,
+                requisitos: '1. Proyecto con componente ambiental\n2. Ubicación en región Caribe\n3. Medición de impacto ambiental\n4. Compromiso de sostenibilidad',
+                criteriosEvaluacion: '1. Impacto ambiental (35%)\n2. Viabilidad técnica (25%)\n3. Sostenibilidad económica (25%)\n4. Innovación (15%)',
+                sectoresObjetivo: 'Industria, Turismo, Agroindustria, Energía',
+                ubicacionGeografica: 'Región Caribe',
+                linkConvocatoria: 'https://cccartagena.org.co/sostenibilidad-2025',
+                actoresArticulados: ['SINCHI', 'WWF Colombia', 'Ecopetrol'],
+                interesados: 28,
+                comentarios: [
+                    {
+                        autor: 'Laura Pérez',
+                        texto: '¿Se acepta el co-financiamiento para los proyectos?',
+                        fecha: '2025-07-28T16:20:00'
+                    }
+                ]
+            }
+        ];
+
+        // Generar más convocatorias ficticias
+        const tiposConvocatoria = ['innovacion', 'emprendimiento', 'digital', 'sostenibilidad', 'social'];
+        const entidades = [
+            { sigla: 'CCB', nombre: 'Cámara de Comercio de Bogotá' },
+            { sigla: 'CRCI', nombre: 'Cámara Regional de Comercio e Industria' },
+            { sigla: 'CCCS', nombre: 'Cámara de Comercio de Cartagena' },
+            { sigla: 'CCMED', nombre: 'Cámara de Comercio de Medellín' }
+        ];
+
+        // Agregar más convocatorias
+        for (let i = 4; i <= 12; i++) {
+            const entidad = entidades[Math.floor(Math.random() * entidades.length)];
+            const tipo = tiposConvocatoria[Math.floor(Math.random() * tiposConvocatoria.length)];
+            
+            convocatoriasFicticias.push({
+                id: `CONV-2025-${i.toString().padStart(3, '0')}`,
+                nombre: `Convocatoria de ${tipo.charAt(0).toUpperCase() + tipo.slice(1)} ${2025}`,
+                entidad: entidad.sigla,
+                entidadCompleta: entidad.nombre,
+                tipo: tipo,
+                objetivo: `Promover el desarrollo y la innovación en ${tipo} para fortalecer el ecosistema empresarial.`,
+                descripcion: `Descripción detallada de la convocatoria de ${tipo}...`,
+                fechaApertura: `2025-08-${Math.floor(Math.random() * 15) + 1}T09:00`,
+                fechaCierre: `2025-${Math.floor(Math.random() * 2) + 10}-${Math.floor(Math.random() * 30) + 1}T17:00`,
+                presupuestoTotal: Math.floor(Math.random() * 500000000) + 200000000,
+                montoMaximo: Math.floor(Math.random() * 50000000) + 20000000,
+                numeroProyectos: Math.floor(Math.random() * 15) + 5,
+                duracionMaxima: Math.floor(Math.random() * 18) + 6,
+                requisitos: 'Requisitos específicos para la convocatoria...',
+                criteriosEvaluacion: 'Criterios de evaluación detallados...',
+                sectoresObjetivo: 'Múltiples sectores',
+                ubicacionGeografica: 'Nacional',
+                linkConvocatoria: `https://${entidad.sigla.toLowerCase()}.org.co/convocatoria-${i}`,
+                actoresArticulados: ['Actor 1', 'Actor 2', 'Actor 3'],
+                interesados: Math.floor(Math.random() * 50) + 10,
+                comentarios: []
+            });
+        }
+
+        let convocatoriasFiltradas = [...convocatoriasFicticias];
+
+        // Formatear moneda
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('es-CO', {
+                style: 'currency',
+                currency: 'COP',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(amount);
+        }
+
+        // Formatear fecha
+        function formatDate(dateString) {
+            return new Date(dateString).toLocaleDateString('es-CO', {
+                day: '2-digit',
+                month: 'long',
+                year: 'numeric'
+            });
+        }
+
+        // Calcular días restantes
+        function diasRestantes(fechaCierre) {
+            const hoy = new Date();
+            const cierre = new Date(fechaCierre);
+            const diffTime = cierre - hoy;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            return diffDays;
+        }
+
+        // Obtener clase de estado
+        function getEstadoClass(fechaCierre) {
+            const dias = diasRestantes(fechaCierre);
+            if (dias <= 7) return 'fecha-cierre warning';
+            if (dias <= 3) return 'fecha-cierre';
+            return 'fecha-cierre safe';
+        }
+
+        // Obtener texto del tipo
+        function getTipoTexto(tipo) {
+            const tipos = {
+                'innovacion': 'Innovación',
+                'emprendimiento': 'Emprendimiento',
+                'digital': 'Transformación Digital',
+                'sostenibilidad': 'Sostenibilidad',
+                'social': 'Impacto Social'
+            };
+            return tipos[tipo] || tipo;
+        }
+
+        // Renderizar convocatorias
+        function renderizarConvocatorias() {
+            const container = document.getElementById('convocatoriasContainer');
+            
+            if (convocatoriasFiltradas.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1 / -1;">
+                        <div class="empty-icon">📭</div>
+                        <h3>No se encontraron convocatorias</h3>
+                        <p>No hay convocatorias que coincidan con los filtros seleccionados.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const html = convocatoriasFiltradas.map(conv => {
+                const dias = diasRestantes(conv.fechaCierre);
+                const estadoClass = getEstadoClass(conv.fechaCierre);
+                const statusClass = dias <= 7 ? 'closing-soon' : '';
+
+                return `
+                    <div class="convocatoria-card" onclick="verDetalle('${conv.id}')">
+                        <div class="status-indicator ${statusClass}"></div>
+                        <div class="card-header ${conv.entidad.toLowerCase()}">
+                            <div class="entity-badge">${conv.entidad}</div>
+                            <h3 class="convocatoria-title">${conv.nombre}</h3>
+                            <div class="convocatoria-type">${getTipoTexto(conv.tipo)}</div>
+                        </div>
+                        <div class="card-body">
+                            <div class="objetivo-preview">${conv.objetivo}</div>
+                            
+                            <div class="card-meta">
+                                <div class="meta-item">
+                                    <div class="meta-label">Presupuesto Total</div>
+                                    <div class="meta-value presupuesto">${formatCurrency(conv.presupuestoTotal)}</div>
+                                </div>
+                                <div class="meta-item">
+                                    <div class="meta-label">Proyectos a Financiar</div>
+                                    <div class="meta-value">${conv.numeroProyectos}</div>
+                                </div>
+                                <div class="meta-item">
+                                    <div class="meta-label">Fecha de Cierre</div>
+                                    <div class="meta-value ${estadoClass}">${formatDate(conv.fechaCierre)}</div>
+                                </div>
+                                <div class="meta-item">
+                                    <div class="meta-label">Días Restantes</div>
+                                    <div class="meta-value ${estadoClass}">${dias > 0 ? dias : 'Cerrada'}</div>
+                                </div>
+                            </div>
+                            
+                            <div class="card-actions">
+                                <div class="interest-count">
+                                    <span>⭐</span>
+                                    <span>${conv.interesados} interesados</span>
+                                </div>
+                                <button class="btn btn-primary" onclick="event.stopPropagation(); verDetalle('${conv.id}')">
+                                    Ver Detalles
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            container.innerHTML = html;
+        }
+
+        // Filtrar convocatorias
+        function filtrarConvocatorias() {
+            const busqueda = document.getElementById('searchInput').value.toLowerCase();
+            const filtroEntidad = document.getElementById('filtroEntidad').value;
+            const filtroTipo = document.getElementById('filtroTipo').value;
+            const filtroEstado = document.getElementById('filtroEstado').value;
+
+            convocatoriasFiltradas = convocatoriasFicticias.filter(conv => {
+                const coincideBusqueda = !busqueda || 
+                    conv.nombre.toLowerCase().includes(busqueda) ||
+                    conv.entidadCompleta.toLowerCase().includes(busqueda) ||
+                    conv.objetivo.toLowerCase().includes(busqueda);
+
+                const coincideEntidad = !filtroEntidad || conv.entidad === filtroEntidad;
+                const coincideTipo = !filtroTipo || conv.tipo === filtroTipo;
+
+                let coincideEstado = true;
+                if (filtroEstado === 'abierta') {
+                    coincideEstado = diasRestantes(conv.fechaCierre) > 0;
+                } else if (filtroEstado === 'cierre-proximo') {
+                    const dias = diasRestantes(conv.fechaCierre);
+                    coincideEstado = dias > 0 && dias <= 7;
+                }
+
+                return coincideBusqueda && coincideEntidad && coincideTipo && coincideEstado;
+            });
+
+            actualizarEstadisticas();
+            renderizarConvocatorias();
+        }
+
+        // Actualizar estadísticas
+        function actualizarEstadisticas() {
+            const abiertas = convocatoriasFiltradas.filter(c => diasRestantes(c.fechaCierre) > 0).length;
+            const porCerrar = convocatoriasFiltradas.filter(c => {
+                const dias = diasRestantes(c.fechaCierre);
+                return dias > 0 && dias <= 7;
+            }).length;
+            const presupuestoTotal = convocatoriasFiltradas.reduce((sum, c) => sum + c.presupuestoTotal, 0);
+            const proyectosTotal = convocatoriasFiltradas.reduce((sum, c) => sum + c.numeroProyectos, 0);
+
+            document.getElementById('convocatoriasAbiertas').textContent = abiertas;
+            document.getElementById('convocatoriasPorCerrar').textContent = porCerrar;
+            document.getElementById('presupuestoTotal').textContent = formatCurrency(presupuestoTotal);
+            document.getElementById('proyectosFinanciar').textContent = proyectosTotal;
+        }
+
+        // Ver detalle de convocatoria
+        function verDetalle(convocatoriaId) {
+            const conv = convocatoriasFicticias.find(c => c.id === convocatoriaId);
+            if (!conv) return;
+
+            // Llenar modal con información
+            document.getElementById('modalTitle').textContent = conv.nombre;
+            document.getElementById('modalEntity').textContent = conv.entidadCompleta;
+            document.getElementById('modalObjetivo').textContent = conv.objetivo;
+            document.getElementById('modalDescripcion').textContent = conv.descripcion;
+            
+            // Información general
+            document.getElementById('modalGeneralInfo').innerHTML = `
+                <div class="detail-item">
+                    <div class="meta-label">Tipo de Convocatoria</div>
+                    <div class="meta-value">${getTipoTexto(conv.tipo)}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="meta-label">Presupuesto Total</div>
+                    <div class="meta-value presupuesto">${formatCurrency(conv.presupuestoTotal)}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="meta-label">Monto Máximo por Proyecto</div>
+                    <div class="meta-value">${formatCurrency(conv.montoMaximo)}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="meta-label">Proyectos a Financiar</div>
+                    <div class="meta-value">${conv.numeroProyectos}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="meta-label">Fecha de Apertura</div>
+                    <div class="meta-value">${formatDate(conv.fechaApertura)}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="meta-label">Fecha de Cierre</div>
+                    <div class="meta-value ${getEstadoClass(conv.fechaCierre)}">${formatDate(conv.fechaCierre)}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="meta-label">Duración Máxima</div>
+                    <div class="meta-value">${conv.duracionMaxima} meses</div>
+                </div>
+                <div class="detail-item">
+                    <div class="meta-label">Cobertura Geográfica</div>
+                    <div class="meta-value">${conv.ubicacionGeografica}</div>
+                </div>
+            `;
+
+            // Requisitos y criterios
+            document.getElementById('modalRequisitos').innerHTML = `<pre style="white-space: pre-line; font-family: inherit;">${conv.requisitos}</pre>`;
+            document.getElementById('modalCriterios').innerHTML = `<pre style="white-space: pre-line; font-family: inherit;">${conv.criteriosEvaluacion}</pre>`;
+
+            // Actores articulados
+            document.getElementById('modalActores').innerHTML = conv.actoresArticulados.map(actor => 
+                `<span class="actor-badge">${actor}</span>`
+            ).join('');
+
+            // Enlace
+            document.getElementById('modalLink').href = conv.linkConvocatoria;
+
+            // Comentarios
+            renderizarComentarios(conv.comentarios);
+
+            // Mostrar modal
+            document.getElementById('convocatoriaModal').style.display = 'block';
+        }
+
+        // Renderizar comentarios
+        function renderizarComentarios(comentarios) {
+            const container = document.getElementById('commentsList');
+            
+            if (comentarios.length === 0) {
+                container.innerHTML = '<p style="color: #7f8c8d; text-align: center;">No hay comentarios aún. ¡Sé el primero en comentar!</p>';
+                return;
+            }
+
+            const html = comentarios.map(comentario => `
+                <div class="comment">
+                    <div class="comment-author">${comentario.autor}</div>
+                    <div class="comment-text">${comentario.texto}</div>
+                    <div class="comment-date">${formatDate(comentario.fecha)}</div>
+                </div>
+            `).join('');
+
+            container.innerHTML = html;
+        }
+
+        // Cerrar modal
+        function cerrarModal() {
+            document.getElementById('convocatoriaModal').style.display = 'none';
+        }
+
+        // Manifestar interés
+        function mostrarInteres() {
+            Swal.fire({
+                title: '⭐ Manifestar Interés',
+                html: `
+                    <div style="text-align: left;">
+                        <p>Al manifestar interés en esta convocatoria:</p>
+                        <ul>
+                            <li>Recibirás notificaciones sobre actualizaciones</li>
+                            <li>Podrás participar en sesiones informativas</li>
+                            <li>Tendrás acceso a recursos adicionales</li>
+                        </ul>
+                        <p><strong>¿Deseas continuar?</strong></p>
+                    </div>
+                `,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, manifestar interés',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: '¡Interés Registrado!',
+                        text: 'Has manifestado tu interés en esta convocatoria. Te mantendremos informado.',
+                        timer: 2000
+                    });
+                }
+            });
+        }
+
+        // Compartir convocatoria
+        function compartirConvocatoria() {
+            if (navigator.share) {
+                navigator.share({
+                    title: document.getElementById('modalTitle').textContent,
+                    text: 'Mira esta convocatoria que puede interesarte',
+                    url: window.location.href
+                });
+            } else {
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Compartir Convocatoria',
+                    text: 'Funcionalidad de compartir disponible próximamente'
+                });
+            }
+        }
+
+        // Formular propuesta
+        function formularPropuesta() {
+            const convocatoriaId = document.getElementById('modalTitle').textContent;
+            Swal.fire({
+                title: '📝 Formular Propuesta',
+                html: `
+                    <div style="text-align: left;">
+                        <p>Estás a punto de acceder a la ficha de formulación para:</p>
+                        <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 15px 0;">
+                            <strong>${convocatoriaId}</strong>
+                        </div>
+                        <p>Una vez completada la propuesta, podrás radiccarla en el sistema.</p>
+                    </div>
+                `,
+                icon: 'info',
+                showCancelButton: true,
+                confirmButtonText: 'Continuar a Formulación',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Redirigir a la ficha de formulación con parámetros de la convocatoria
+                    window.open('ficha-formulacion.html?convocatoria=' + encodeURIComponent(convocatoriaId), '_blank');
+                }
+            });
+        }
+
+        // Agregar comentario
+        function agregarComentario() {
+            const comentario = document.getElementById('commentInput').value.trim();
+            
+            if (comentario) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Comentario Agregado',
+                    text: 'Tu comentario ha sido publicado',
+                    timer: 1500
+                });
+                
+                document.getElementById('commentInput').value = '';
+            } else {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Campo requerido',
+                    text: 'Escribe un comentario antes de enviarlo'
+                });
+            }
+        }
+
+        // Cerrar modal al hacer clic fuera
+        window.onclick = function(event) {
+            const modal = document.getElementById('convocatoriaModal');
+            if (event.target === modal) {
+                cerrarModal();
+            }
+        }
+
+        // Inicializar página
+        document.addEventListener('DOMContentLoaded', function() {
+            actualizarEstadisticas();
+            renderizarConvocatorias();
+        });
+    </script>
+</body>
+</html>

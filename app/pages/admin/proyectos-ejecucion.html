@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proyectos en Ejecución - SinAptico</title>
+    <link rel="stylesheet" href="../../public/styles/styles.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f7fa;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #27ae60 0%, #2c3e50 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 3em;
+        }
+        
+        .header p {
+            margin: 15px 0 0 0;
+            opacity: 0.9;
+            font-size: 1.3em;
+        }
+        
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            border-top: 4px solid #27ae60;
+        }
+        
+        .stat-card.iniciando {
+            border-top-color: #3498db;
+        }
+        
+        .stat-card.desarrollo {
+            border-top-color: #f39c12;
+        }
+        
+        .stat-card.finalizando {
+            border-top-color: #9b59b6;
+        }
+        
+        .stat-icon {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .stat-label {
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+        
+        .filters-section {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .filters-row {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .filter-group label {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            font-weight: 500;
+        }
+        
+        .filter-group select, .filter-group input {
+            padding: 10px 12px;
+            border: 2px solid #ecf0f1;
+            border-radius: 6px;
+            font-size: 14px;
+            min-width: 150px;
+        }
+        
+        .search-box {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ecf0f1;
+            border-radius: 25px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        
+        .search-box input:focus {
+            outline: none;
+            border-color: #27ae60;
+        }
+        
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .project-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.15);
+        }
+        
+        .card-header {
+            background: linear-gradient(135deg, #27ae60 0%, #2c3e50 100%);
+            color: white;
+            padding: 20px;
+            position: relative;
+        }
+        
+        .card-header.fase-inicio {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+        }
+        
+        .card-header.fase-desarrollo {
+            background: linear-gradient(135deg, #f39c12 0%, #d68910 100%);
+        }
+        
+        .card-header.fase-cierre {
+            background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+        }
+        
+        .project-id {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255,255,255,0.2);
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+        
+        .project-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin: 0 0 10px 0;
+            line-height: 1.3;
+            padding-right: 100px;
+        }
+        
+        .project-leader {
+            opacity: 0.9;
+            font-size: 0.95em;
+        }
+        
+        .card-body {
+            padding: 25px;
+        }
+        
+        .project-meta {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .meta-label {
+            font-size: 0.85em;
+            color: #95a5a6;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .meta-value {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .meta-value.budget {
+            color: #27ae60;
+            font-size: 1.1em;
+        }
+        
+        .meta-value.duration {
+            color: #3498db;
+        }
+        
+        .progress-section {
+            margin-bottom: 20px;
+        }
+        
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .progress-label {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            font-weight: 500;
+        }
+        
+        .progress-percentage {
+            font-weight: bold;
+            color: #27ae60;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background: #ecf0f1;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #27ae60 0%, #2ecc71 100%);
+            transition: width 0.5s ease;
+            border-radius: 6px;
+        }
+        
+        .progress-fill.warning {
+            background: linear-gradient(90deg, #f39c12 0%, #e67e22 100%);
+        }
+        
+        .progress-fill.danger {
+            background: linear-gradient(90deg, #e74c3c 0%, #c0392b 100%);
+        }
+        
+        .milestones {
+            margin-bottom: 20px;
+        }
+        
+        .milestone {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+        }
+        
+        .milestone-icon {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7em;
+            color: white;
+        }
+        
+        .milestone-icon.completed {
+            background: #27ae60;
+        }
+        
+        .milestone-icon.current {
+            background: #f39c12;
+        }
+        
+        .milestone-icon.pending {
+            background: #95a5a6;
+        }
+        
+        .milestone-text {
+            flex: 1;
+        }
+        
+        .milestone-date {
+            color: #7f8c8d;
+            font-size: 0.8em;
+        }
+        
+        .card-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: 500;
+        }
+        
+        .btn-primary {
+            background-color: #27ae60;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #219a52;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #27ae60;
+            color: #27ae60;
+        }
+        
+        .btn-outline:hover {
+            background: #27ae60;
+            color: white;
+        }
+        
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9em;
+            color: #7f8c8d;
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #27ae60;
+        }
+        
+        .status-dot.warning {
+            background: #f39c12;
+        }
+        
+        .status-dot.danger {
+            background: #e74c3c;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .modal-content {
+            background-color: white;
+            margin: 2% auto;
+            padding: 0;
+            border-radius: 15px;
+            width: 95%;
+            max-width: 1000px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            background: linear-gradient(135deg, #27ae60 0%, #2c3e50 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px 15px 0 0;
+            position: relative;
+        }
+        
+        .modal-body {
+            padding: 30px;
+        }
+        
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .close:hover {
+            opacity: 0.7;
+        }
+        
+        .detail-section {
+            margin-bottom: 30px;
+        }
+        
+        .detail-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .detail-item {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #27ae60;
+        }
+        
+        .detail-label {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .detail-value {
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: 1.1em;
+        }
+        
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #ecf0f1;
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 25px;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -8px;
+            top: 5px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #95a5a6;
+        }
+        
+        .timeline-item.completed::before {
+            background: #27ae60;
+        }
+        
+        .timeline-item.current::before {
+            background: #f39c12;
+        }
+        
+        .timeline-content {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #ecf0f1;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .timeline-date {
+            font-size: 0.85em;
+            color: #7f8c8d;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .timeline-title {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+        
+        .timeline-description {
+            color: #7f8c8d;
+            line-height: 1.4;
+        }
+        
+        .deliverables-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .deliverable-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            border-bottom: 1px solid #ecf0f1;
+            transition: background 0.3s;
+        }
+        
+        .deliverable-item:hover {
+            background: #f8f9fa;
+        }
+        
+        .deliverable-item:last-child {
+            border-bottom: none;
+        }
+        
+        .deliverable-status {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8em;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .deliverable-status.completed {
+            background: #27ae60;
+        }
+        
+        .deliverable-status.pending {
+            background: #95a5a6;
+        }
+        
+        .deliverable-status.overdue {
+            background: #e74c3c;
+        }
+        
+        .deliverable-info {
+            flex: 1;
+        }
+        
+        .deliverable-name {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        .deliverable-date {
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #7f8c8d;
+            grid-column: 1 / -1;
+        }
+        
+        .empty-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🚀 Proyectos en Ejecución</h1>
+            <p>Seguimiento y monitoreo de proyectos aprobados en desarrollo</p>
+        </div>
+        
+        <!-- Estadísticas -->
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-icon">🔄</div>
+                <div class="stat-number" id="totalEjecucion">24</div>
+                <div class="stat-label">Total en Ejecución</div>
+            </div>
+            
+            <div class="stat-card iniciando">
+                <div class="stat-icon">🚀</div>
+                <div class="stat-number" id="faseInicio">6</div>
+                <div class="stat-label">Fase de Inicio</div>
+            </div>
+            
+            <div class="stat-card desarrollo">
+                <div class="stat-icon">⚙️</div>
+                <div class="stat-number" id="faseDesarrollo">12</div>
+                <div class="stat-label">En Desarrollo</div>
+            </div>
+            
+            <div class="stat-card finalizando">
+                <div class="stat-icon">🏁</div>
+                <div class="stat-number" id="faseCierre">6</div>
+                <div class="stat-label">Finalizando</div>
+            </div>
+        </div>
+        
+        <!-- Filtros -->
+        <div class="filters-section">
+            <div class="filters-row">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="🔍 Buscar por título, líder o empresa..." onkeyup="filtrarProyectos()">
+                </div>
+                
+                <div class="filter-group">
+                    <label>Fase:</label>
+                    <select id="filtroFase" onchange="filtrarProyectos()">
+                        <option value="">Todas las fases</option>
+                        <option value="inicio">Fase de Inicio</option>
+                        <option value="desarrollo">En Desarrollo</option>
+                        <option value="cierre">Finalizando</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label>Entidad:</label>
+                    <select id="filtroEntidad" onchange="filtrarProyectos()">
+                        <option value="">Todas las entidades</option>
+                        <option value="CCB">CCB</option>
+                        <option value="CRCI">CRCI</option>
+                        <option value="CCCS">CCCS</option>
+                        <option value="CCMED">CCMED</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label>Estado:</label>
+                    <select id="filtroEstado" onchange="filtrarProyectos()">
+                        <option value="">Todos</option>
+                        <option value="normal">En Tiempo</option>
+                        <option value="warning">Con Retraso</option>
+                        <option value="danger">Crítico</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Grid de Proyectos -->
+        <div class="projects-grid" id="projectsContainer">
+            <!-- Los proyectos se cargan dinámicamente -->
+        </div>
+    </div>
+
+    <!-- Modal de Detalles -->
+    <div id="projectModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close" onclick="cerrarModal()">&times;</span>
+                <h2 id="modalTitle">Detalles del Proyecto</h2>
+                <div id="modalSubtitle">Seguimiento detallado del proyecto en ejecución</div>
+            </div>
+            <div class="modal-body">
+                <!-- Información del Proyecto -->
+                <div class="detail-section">
+                    <div class="detail-title">
+                        📊 Información General
+                    </div>
+                    <div class="detail-grid" id="modalInfoGeneral">
+                        <!-- Información general -->
+                    </div>
+                </div>
+                
+                <!-- Progreso General -->
+                <div class="detail-section">
+                    <div class="detail-title">
+                        📈 Progreso General
+                    </div>
+                    <div id="modalProgreso">
+                        <!-- Barras de progreso detalladas -->
+                    </div>
+                </div>
+                
+                <!-- Cronograma de Actividades -->
+                <div class="detail-section">
+                    <div class="detail-title">
+                        📅 Cronograma de Actividades
+                    </div>
+                    <div class="timeline" id="modalCronograma">
+                        <!-- Timeline de actividades -->
+                    </div>
+                </div>
+                
+                <!-- Entregables -->
+                <div class="detail-section">
+                    <div class="detail-title">
+                        📦 Entregables
+                    </div>
+                    <ul class="deliverables-list" id="modalEntregables">
+                        <!-- Lista de entregables -->
+                    </ul>
+                </div>
+                
+                <!-- Equipo de Trabajo -->
+                <div class="detail-section">
+                    <div class="detail-title">
+                        👥 Equipo de Trabajo
+                    </div>
+                    <div class="detail-grid" id="modalEquipo">
+                        <!-- Información del equipo -->
+                    </div>
+                </div>
+                
+                <!-- Observaciones -->
+                <div class="detail-section">
+                    <div class="detail-title">
+                        💬 Observaciones Recientes
+                    </div>
+                    <div id="modalObservaciones">
+                        <!-- Observaciones y comentarios -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        // Datos ficticios de proyectos en ejecución
+        const proyectosEjecucion = [
+            {
+                id: 'EXEC-2025-001',
+                titulo: 'Sistema de Gestión Inteligente para PyMEs',
+                lider: 'Ana María González',
+                empresa: 'TechSolutions SAS',
+                entidad: 'CCB',
+                convocatoria: 'Innovación Digital PyMEs 2025',
+                presupuesto: 45000000,
+                duracion: 18,
+                fechaInicio: '2024-11-01',
+                fechaFin: '2026-04-30',
+                fase: 'desarrollo',
+                progresoGeneral: 65,
+                progresoTecnico: 70,
+                progresoFinanciero: 60,
+                estado: 'normal',
+                hitos: [
+                    { nombre: 'Análisis de Requisitos', completado: true, fecha: '2024-12-15' },
+                    { nombre: 'Diseño del Sistema', completado: true, fecha: '2025-01-30' },
+                    { nombre: 'Desarrollo Módulo 1', completado: true, fecha: '2025-03-15' },
+                    { nombre: 'Pruebas Módulo 1', completado: false, fecha: '2025-04-30', actual: true },
+                    { nombre: 'Desarrollo Módulo 2', completado: false, fecha: '2025-06-15' },
+                    { nombre: 'Implementación Final', completado: false, fecha: '2025-08-30' }
+                ],
+                entregables: [
+                    { nombre: 'Documento de Requisitos', estado: 'completed', fecha: '2024-12-15' },
+                    { nombre: 'Arquitectura del Sistema', estado: 'completed', fecha: '2025-01-30' },
+                    { nombre: 'Prototipo Funcional', estado: 'completed', fecha: '2025-03-15' },
+                    { nombre: 'Manual de Usuario', estado: 'pending', fecha: '2025-05-30' },
+                    { nombre: 'Sistema Implementado', estado: 'pending', fecha: '2025-08-30' }
+                ],
+                equipo: [
+                    { nombre: 'Ana María González', rol: 'Directora de Proyecto', dedicacion: '100%' },
+                    { nombre: 'Carlos Mendoza', rol: 'Arquitecto de Software', dedicacion: '80%' },
+                    { nombre: 'Laura Pérez', rol: 'Especialista en IA', dedicacion: '60%' },
+                    { nombre: 'Roberto Silva', rol: 'Desarrollador Senior', dedicacion: '100%' }
+                ],
+                observaciones: 'Proyecto avanzando según cronograma. Se completó exitosamente el desarrollo del primer módulo.',
+                actividades: [
+                    { fecha: '2024-11-01', titulo: 'Inicio del Proyecto', descripcion: 'Kick-off oficial del proyecto', estado: 'completed' },
+                    { fecha: '2024-12-15', titulo: 'Entrega de Análisis', descripcion: 'Documento de requisitos aprobado', estado: 'completed' },
+                    { fecha: '2025-01-30', titulo: 'Diseño Completado', descripcion: 'Arquitectura del sistema finalizada', estado: 'completed' },
+                    { fecha: '2025-03-15', titulo: 'Módulo 1 Desarrollado', descripcion: 'Primer módulo funcional entregado', estado: 'completed' },
+                    { fecha: '2025-04-30', titulo: 'Pruebas Módulo 1', descripcion: 'Testing y validación del primer módulo', estado: 'current' },
+                    { fecha: '2025-06-15', titulo: 'Desarrollo Módulo 2', descripcion: 'Segundo módulo del sistema', estado: 'pending' }
+                ]
+            },
+            {
+                id: 'EXEC-2025-002',
+                titulo: 'Plataforma de Economía Circular',
+                lider: 'Roberto Silva',
+                empresa: 'EcoInnovate Ltda',
+                entidad: 'CCCS',
+                convocatoria: 'Sostenibilidad 2025',
+                presupuesto: 38000000,
+                duracion: 24,
+                fechaInicio: '2024-10-15',
+                fechaFin: '2026-10-14',
+                fase: 'inicio',
+                progresoGeneral: 25,
+                progresoTecnico: 30,
+                progresoFinanciero: 20,
+                estado: 'normal',
+                hitos: [
+                    { nombre: 'Estudio de Mercado', completado: true, fecha: '2024-12-01' },
+                    { nombre: 'Análisis de Stakeholders', completado: false, fecha: '2025-01-15', actual: true },
+                    { nombre: 'Prototipo Inicial', completado: false, fecha: '2025-03-30' },
+                    { nombre: 'Pruebas Piloto', completado: false, fecha: '2025-06-30' }
+                ],
+                entregables: [
+                    { nombre: 'Estudio de Viabilidad', estado: 'completed', fecha: '2024-12-01' },
+                    { nombre: 'Plan de Desarrollo', estado: 'pending', fecha: '2025-02-28' },
+                    { nombre: 'Prototipo Beta', estado: 'pending', fecha: '2025-05-30' }
+                ],
+                equipo: [
+                    { nombre: 'Roberto Silva', rol: 'Director de Proyecto', dedicacion: '100%' },
+                    { nombre: 'Patricia López', rol: 'Especialista Ambiental', dedicacion: '80%' }
+                ],
+                observaciones: 'Proyecto en fase inicial. Estudio de mercado completado satisfactoriamente.',
+                actividades: [
+                    { fecha: '2024-10-15', titulo: 'Inicio del Proyecto', descripcion: 'Kick-off y conformación del equipo', estado: 'completed' },
+                    { fecha: '2024-12-01', titulo: 'Estudio Completado', descripcion: 'Análisis de mercado y viabilidad', estado: 'completed' },
+                    { fecha: '2025-01-15', titulo: 'Análisis Stakeholders', descripcion: 'Identificación de actores clave', estado: 'current' }
+                ]
+            }
+        ];
+
+        // Generar más proyectos ficticios
+        const fases = ['inicio', 'desarrollo', 'cierre'];
+        const estados = ['normal', 'warning', 'danger'];
+        const entidades = ['CCB', 'CRCI', 'CCCS', 'CCMED'];
+
+        for (let i = 3; i <= 24; i++) {
+            const fase = fases[Math.floor(Math.random() * fases.length)];
+            const estado = estados[Math.floor(Math.random() * estados.length)];
+            const entidad = entidades[Math.floor(Math.random() * entidades.length)];
+            
+            let progreso;
+            switch(fase) {
+                case 'inicio': progreso = Math.floor(Math.random() * 30) + 10; break;
+                case 'desarrollo': progreso = Math.floor(Math.random() * 40) + 30; break;
+                case 'cierre': progreso = Math.floor(Math.random() * 30) + 70; break;
+            }
+
+            proyectosEjecucion.push({
+                id: `EXEC-2025-${i.toString().padStart(3, '0')}`,
+                titulo: `Proyecto de Innovación ${i}`,
+                lider: `Líder ${i}`,
+                empresa: `Empresa ${i} SAS`,
+                entidad: entidad,
+                convocatoria: `Convocatoria ${i}`,
+                presupuesto: Math.floor(Math.random() * 50000000) + 20000000,
+                duracion: Math.floor(Math.random() * 18) + 6,
+                fechaInicio: '2024-10-01',
+                fechaFin: '2026-04-30',
+                fase: fase,
+                progresoGeneral: progreso,
+                progresoTecnico: progreso + Math.floor(Math.random() * 10) - 5,
+                progresoFinanciero: progreso + Math.floor(Math.random() * 10) - 5,
+                estado: estado,
+                hitos: [],
+                entregables: [],
+                equipo: [{ nombre: `Líder ${i}`, rol: 'Director', dedicacion: '100%' }],
+                observaciones: `Observaciones del proyecto ${i}`,
+                actividades: []
+            });
+        }
+
+        let proyectosFiltrados = [...proyectosEjecucion];
+
+        // Formatear moneda
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('es-CO', {
+                style: 'currency',
+                currency: 'COP',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(amount);
+        }
+
+        // Formatear fecha
+        function formatDate(dateString) {
+            return new Date(dateString).toLocaleDateString('es-CO', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric'
+            });
+        }
+
+        // Obtener texto de la fase
+        function getFaseTexto(fase) {
+            const fases = {
+                'inicio': 'Fase de Inicio',
+                'desarrollo': 'En Desarrollo',
+                'cierre': 'Finalizando'
+            };
+            return fases[fase] || fase;
+        }
+
+        // Obtener clase de la fase
+        function getFaseClass(fase) {
+            return `fase-${fase}`;
+        }
+
+        // Obtener clase del estado
+        function getEstadoClass(estado) {
+            return estado;
+        }
+
+        // Obtener meses transcurridos
+        function getMesesTranscurridos(fechaInicio) {
+            const inicio = new Date(fechaInicio);
+            const hoy = new Date();
+            const diffTime = Math.abs(hoy - inicio);
+            const diffMonths = Math.ceil(diffTime / (1000 * 60 * 60 * 24 * 30));
+            return diffMonths;
+        }
+
+        // Renderizar proyectos
+        function renderizarProyectos() {
+            const container = document.getElementById('projectsContainer');
+            
+            if (proyectosFiltrados.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">📭</div>
+                        <h3>No se encontraron proyectos</h3>
+                        <p>No hay proyectos en ejecución que coincidan con los filtros seleccionados.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const html = proyectosFiltrados.map(proyecto => {
+                const mesesTranscurridos = getMesesTranscurridos(proyecto.fechaInicio);
+                const progressClass = proyecto.progresoGeneral < 30 ? '' : 
+                                    proyecto.progresoGeneral < 70 ? 'warning' : '';
+
+                return `
+                    <div class="project-card" onclick="verDetalle('${proyecto.id}')">
+                        <div class="card-header ${getFaseClass(proyecto.fase)}">
+                            <div class="project-id">${proyecto.id}</div>
+                            <h3 class="project-title">${proyecto.titulo}</h3>
+                            <div class="project-leader">${proyecto.lider} - ${proyecto.empresa}</div>
+                        </div>
+                        <div class="card-body">
+                            <div class="project-meta">
+                                <div class="meta-item">
+                                    <div class="meta-label">Presupuesto</div>
+                                    <div class="meta-value budget">${formatCurrency(proyecto.presupuesto)}</div>
+                                </div>
+                                <div class="meta-item">
+                                    <div class="meta-label">Duración</div>
+                                    <div class="meta-value duration">${proyecto.duracion} meses</div>
+                                </div>
+                                <div class="meta-item">
+                                    <div class="meta-label">Tiempo Transcurrido</div>
+                                    <div class="meta-value">${mesesTranscurridos} meses</div>
+                                </div>
+                                <div class="meta-item">
+                                    <div class="meta-label">Entidad</div>
+                                    <div class="meta-value">${proyecto.entidad}</div>
+                                </div>
+                            </div>
+                            
+                            <div class="progress-section">
+                                <div class="progress-header">
+                                    <span class="progress-label">Progreso General</span>
+                                    <span class="progress-percentage">${proyecto.progresoGeneral}%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill ${progressClass}" style="width: ${proyecto.progresoGeneral}%"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="milestones">
+                                ${proyecto.hitos.slice(0, 3).map(hito => `
+                                    <div class="milestone">
+                                        <div class="milestone-icon ${hito.completado ? 'completed' : hito.actual ? 'current' : 'pending'}">
+                                            ${hito.completado ? '✓' : hito.actual ? '⏳' : '○'}
+                                        </div>
+                                        <div class="milestone-text">${hito.nombre}</div>
+                                        <div class="milestone-date">${formatDate(hito.fecha)}</div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                            
+                            <div class="card-actions">
+                                <div class="status-indicator">
+                                    <div class="status-dot ${getEstadoClass(proyecto.estado)}"></div>
+                                    <span>${getFaseTexto(proyecto.fase)}</span>
+                                </div>
+                                <button class="btn btn-primary" onclick="event.stopPropagation(); verDetalle('${proyecto.id}')">
+                                    Ver Detalles
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            container.innerHTML = html;
+        }
+
+        // Filtrar proyectos
+        function filtrarProyectos() {
+            const busqueda = document.getElementById('searchInput').value.toLowerCase();
+            const filtroFase = document.getElementById('filtroFase').value;
+            const filtroEntidad = document.getElementById('filtroEntidad').value;
+            const filtroEstado = document.getElementById('filtroEstado').value;
+
+            proyectosFiltrados = proyectosEjecucion.filter(proyecto => {
+                const coincideBusqueda = !busqueda || 
+                    proyecto.titulo.toLowerCase().includes(busqueda) ||
+                    proyecto.lider.toLowerCase().includes(busqueda) ||
+                    proyecto.empresa.toLowerCase().includes(busqueda);
+
+                const coincideFase = !filtroFase || proyecto.fase === filtroFase;
+                const coincideEntidad = !filtroEntidad || proyecto.entidad === filtroEntidad;
+                const coincideEstado = !filtroEstado || proyecto.estado === filtroEstado;
+
+                return coincideBusqueda && coincideFase && coincideEntidad && coincideEstado;
+            });
+
+            actualizarEstadisticas();
+            renderizarProyectos();
+        }
+
+        // Actualizar estadísticas
+        function actualizarEstadisticas() {
+            const total = proyectosFiltrados.length;
+            const inicio = proyectosFiltrados.filter(p => p.fase === 'inicio').length;
+            const desarrollo = proyectosFiltrados.filter(p => p.fase === 'desarrollo').length;
+            const cierre = proyectosFiltrados.filter(p => p.fase === 'cierre').length;
+
+            document.getElementById('totalEjecucion').textContent = total;
+            document.getElementById('faseInicio').textContent = inicio;
+            document.getElementById('faseDesarrollo').textContent = desarrollo;
+            document.getElementById('faseCierre').textContent = cierre;
+        }
+
+        // Ver detalle del proyecto
+        function verDetalle(proyectoId) {
+            const proyecto = proyectosEjecucion.find(p => p.id === proyectoId);
+            if (!proyecto) return;
+
+            // Llenar modal con información
+            document.getElementById('modalTitle').textContent = proyecto.titulo;
+            
+            // Información general
+            const mesesTranscurridos = getMesesTranscurridos(proyecto.fechaInicio);
+            document.getElementById('modalInfoGeneral').innerHTML = `
+                <div class="detail-item">
+                    <div class="detail-label">ID del Proyecto</div>
+                    <div class="detail-value">${proyecto.id}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Líder del Proyecto</div>
+                    <div class="detail-value">${proyecto.lider}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Empresa</div>
+                    <div class="detail-value">${proyecto.empresa}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Convocatoria</div>
+                    <div class="detail-value">${proyecto.convocatoria}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Fase Actual</div>
+                    <div class="detail-value">${getFaseTexto(proyecto.fase)}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Fecha de Inicio</div>
+                    <div class="detail-value">${formatDate(proyecto.fechaInicio)}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Fecha de Finalización</div>
+                    <div class="detail-value">${formatDate(proyecto.fechaFin)}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Tiempo Transcurrido</div>
+                    <div class="detail-value">${mesesTranscurridos} de ${proyecto.duracion} meses</div>
+                </div>
+            `;
+
+            // Progreso detallado
+            document.getElementById('modalProgreso').innerHTML = `
+                <div class="progress-section" style="margin-bottom: 20px;">
+                    <div class="progress-header">
+                        <span class="progress-label">Progreso General</span>
+                        <span class="progress-percentage">${proyecto.progresoGeneral}%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${proyecto.progresoGeneral}%"></div>
+                    </div>
+                </div>
+                <div class="progress-section" style="margin-bottom: 20px;">
+                    <div class="progress-header">
+                        <span class="progress-label">Progreso Técnico</span>
+                        <span class="progress-percentage">${proyecto.progresoTecnico}%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${proyecto.progresoTecnico}%"></div>
+                    </div>
+                </div>
+                <div class="progress-section">
+                    <div class="progress-header">
+                        <span class="progress-label">Progreso Financiero</span>
+                        <span class="progress-percentage">${proyecto.progresoFinanciero}%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${proyecto.progresoFinanciero}%"></div>
+                    </div>
+                </div>
+            `;
+
+            // Cronograma de actividades
+            const actividadesHTML = proyecto.actividades.map(actividad => `
+                <div class="timeline-item ${actividad.estado}">
+                    <div class="timeline-content">
+                        <div class="timeline-date">${formatDate(actividad.fecha)}</div>
+                        <div class="timeline-title">${actividad.titulo}</div>
+                        <div class="timeline-description">${actividad.descripcion}</div>
+                    </div>
+                </div>
+            `).join('');
+            document.getElementById('modalCronograma').innerHTML = actividadesHTML || '<p>Cronograma detallado no disponible</p>';
+
+            // Entregables
+            const entregablesHTML = proyecto.entregables.map(entregable => `
+                <li class="deliverable-item">
+                    <div class="deliverable-status ${entregable.estado}">
+                        ${entregable.estado === 'completed' ? '✓' : 
+                          entregable.estado === 'overdue' ? '!' : '○'}
+                    </div>
+                    <div class="deliverable-info">
+                        <div class="deliverable-name">${entregable.nombre}</div>
+                        <div class="deliverable-date">Fecha límite: ${formatDate(entregable.fecha)}</div>
+                    </div>
+                </li>
+            `).join('');
+            document.getElementById('modalEntregables').innerHTML = entregablesHTML || '<li>No hay entregables definidos</li>';
+
+            // Equipo de trabajo
+            const equipoHTML = proyecto.equipo.map(miembro => `
+                <div class="detail-item">
+                    <div class="detail-label">${miembro.rol}</div>
+                    <div class="detail-value">${miembro.nombre}</div>
+                    <div style="color: #7f8c8d; font-size: 0.9em; margin-top: 5px;">Dedicación: ${miembro.dedicacion}</div>
+                </div>
+            `).join('');
+            document.getElementById('modalEquipo').innerHTML = equipoHTML;
+
+            // Observaciones
+            document.getElementById('modalObservaciones').innerHTML = proyecto.observaciones ? 
+                `<p>${proyecto.observaciones}</p>` : 
+                '<p>No hay observaciones registradas.</p>';
+
+            // Mostrar modal
+            document.getElementById('projectModal').style.display = 'block';
+        }
+
+        // Cerrar modal
+        function cerrarModal() {
+            document.getElementById('projectModal').style.display = 'none';
+        }
+
+        // Cerrar modal al hacer clic fuera
+        window.onclick = function(event) {
+            const modal = document.getElementById('projectModal');
+            if (event.target === modal) {
+                cerrarModal();
+            }
+        }
+
+        // Inicializar página
+        document.addEventListener('DOMContentLoaded', function() {
+            actualizarEstadisticas();
+            renderizarProyectos();
+        });
+    </script>
+</body>
+</html>

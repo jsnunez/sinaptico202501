@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluar Proyecto - SinAptico</title>
+    <link rel="stylesheet" href="../../public/styles/styles.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #f39c12;
+        }
+        
+        .header h1 {
+            color: #2c3e50;
+            margin: 0;
+            font-size: 2.5em;
+        }
+        
+        .proyecto-info {
+            background: #ecf0f1;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        
+        .proyecto-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .estado-badge {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            color: white;
+            background-color: #f39c12;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .info-item {
+            background: white;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .info-label {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        .info-value {
+            color: #7f8c8d;
+        }
+        
+        .evaluation-section {
+            margin-bottom: 30px;
+        }
+        
+        .section-title {
+            color: #2c3e50;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+        }
+        
+        .criteria-card {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .criteria-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .criteria-title {
+            font-weight: bold;
+            color: #495057;
+        }
+        
+        .score-input {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .score-slider {
+            width: 150px;
+        }
+        
+        .score-display {
+            font-weight: bold;
+            color: #e74c3c;
+            min-width: 40px;
+        }
+        
+        .criteria-description {
+            color: #6c757d;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+        
+        .rating-scale {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-size: 12px;
+            color: #6c757d;
+        }
+        
+        .comments-area {
+            margin-top: 15px;
+        }
+        
+        .comments-area textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            resize: vertical;
+            min-height: 80px;
+            box-sizing: border-box;
+        }
+        
+        .total-score {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .total-score h3 {
+            margin: 0 0 10px 0;
+        }
+        
+        .score-value {
+            font-size: 2em;
+            font-weight: bold;
+        }
+        
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            margin-right: 10px;
+        }
+        
+        .btn-success {
+            background-color: #27ae60;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background-color: #219a52;
+        }
+        
+        .btn-warning {
+            background-color: #f39c12;
+            color: white;
+        }
+        
+        .btn-warning:hover {
+            background-color: #d68910;
+        }
+        
+        .btn-secondary {
+            background-color: #95a5a6;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #7f8c8d;
+        }
+        
+        .form-actions {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #ecf0f1;
+        }
+        
+        .documents-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .document-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            padding: 10px;
+            background: white;
+            border-radius: 4px;
+        }
+        
+        .recommendation {
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        
+        .recommendation.approve {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        
+        .recommendation.reject {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        
+        .recommendation.review {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 Evaluación de Proyecto</h1>
+            <p>Evaluador: <strong>Dr. María González</strong> | Fecha: <strong>31 de Julio, 2025</strong></p>
+        </div>
+        
+        <!-- Información del Proyecto -->
+        <div class="proyecto-info">
+            <div class="proyecto-header">
+                <h2>Plataforma Digital de Innovación Empresarial</h2>
+                <span class="estado-badge">EN EVALUACIÓN</span>
+            </div>
+            
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">ID del Proyecto</div>
+                    <div class="info-value">PROJ-2025-001</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Solicitante</div>
+                    <div class="info-value">TechInnovate S.A.S</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Presupuesto</div>
+                    <div class="info-value">$85,000,000 COP</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Duración</div>
+                    <div class="info-value">8 meses</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Fecha de Inicio</div>
+                    <div class="info-value">01/03/2025</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Fecha de Fin</div>
+                    <div class="info-value">31/10/2025</div>
+                </div>
+            </div>
+            
+            <div class="info-item" style="grid-column: 1 / -1;">
+                <div class="info-label">Descripción</div>
+                <div class="info-value">Desarrollo de una plataforma web integral que permita a las empresas gestionar sus procesos de innovación, conectar con startups y acceder a recursos de financiamiento para proyectos tecnológicos.</div>
+            </div>
+        </div>
+
+        <!-- Documentos Adjuntos -->
+        <div class="documents-section">
+            <h3>📎 Documentos para Revisión</h3>
+            <div class="document-item">
+                <span>📄</span>
+                <span>Documento Técnico - PropuestaTecnica_v1.2.pdf</span>
+                <button class="btn btn-secondary" style="margin-left: auto; padding: 5px 15px; font-size: 14px;">Descargar</button>
+            </div>
+            <div class="document-item">
+                <span>📊</span>
+                <span>Presentación - PresentacionProyecto.pptx</span>
+                <button class="btn btn-secondary" style="margin-left: auto; padding: 5px 15px; font-size: 14px;">Descargar</button>
+            </div>
+            <div class="document-item">
+                <span>📁</span>
+                <span>Anexos - Presupuesto_Detallado.xlsx</span>
+                <button class="btn btn-secondary" style="margin-left: auto; padding: 5px 15px; font-size: 14px;">Descargar</button>
+            </div>
+        </div>
+        
+        <!-- Formulario de Evaluación -->
+        <form id="evaluationForm">
+            <div class="evaluation-section">
+                <h3 class="section-title">📊 Criterios de Evaluación</h3>
+                
+                <!-- Criterio 1: Innovación -->
+                <div class="criteria-card">
+                    <div class="criteria-header">
+                        <div class="criteria-title">🚀 Innovación y Originalidad (25%)</div>
+                        <div class="score-input">
+                            <input type="range" class="score-slider" min="0" max="5" step="0.1" value="4.2" 
+                                   data-criterion="innovacion" onchange="updateScore(this)">
+                            <span class="score-display" id="score-innovacion">4.2</span>
+                        </div>
+                    </div>
+                    <div class="criteria-description">
+                        Evalúa la originalidad de la propuesta, el uso de tecnologías innovadoras y el potencial disruptivo del proyecto.
+                    </div>
+                    <div class="rating-scale">
+                        <span>0 - Sin innovación</span>
+                        <span>2.5 - Moderadamente innovador</span>
+                        <span>5 - Altamente innovador</span>
+                    </div>
+                    <div class="comments-area">
+                        <label>Comentarios sobre Innovación:</label>
+                        <textarea data-criterion="innovacion-comments" placeholder="La propuesta presenta elementos innovadores especialmente en la integración de IA para matchmaking empresarial..."></textarea>
+                    </div>
+                </div>
+                
+                <!-- Criterio 2: Viabilidad Técnica -->
+                <div class="criteria-card">
+                    <div class="criteria-header">
+                        <div class="criteria-title">⚙️ Viabilidad Técnica (20%)</div>
+                        <div class="score-input">
+                            <input type="range" class="score-slider" min="0" max="5" step="0.1" value="3.8" 
+                                   data-criterion="viabilidad" onchange="updateScore(this)">
+                            <span class="score-display" id="score-viabilidad">3.8</span>
+                        </div>
+                    </div>
+                    <div class="criteria-description">
+                        Evalúa la factibilidad técnica, la metodología propuesta y la solidez del plan de desarrollo.
+                    </div>
+                    <div class="rating-scale">
+                        <span>0 - No viable</span>
+                        <span>2.5 - Moderadamente viable</span>
+                        <span>5 - Completamente viable</span>
+                    </div>
+                    <div class="comments-area">
+                        <label>Comentarios sobre Viabilidad:</label>
+                        <textarea data-criterion="viabilidad-comments" placeholder="La metodología SCRUM es apropiada. Falta detalle en la arquitectura de seguridad..."></textarea>
+                    </div>
+                </div>
+                
+                <!-- Criterio 3: Impacto Social/Económico -->
+                <div class="criteria-card">
+                    <div class="criteria-header">
+                        <div class="criteria-title">🌍 Impacto Social y Económico (20%)</div>
+                        <div class="score-input">
+                            <input type="range" class="score-slider" min="0" max="5" step="0.1" value="4.5" 
+                                   data-criterion="impacto" onchange="updateScore(this)">
+                            <span class="score-display" id="score-impacto">4.5</span>
+                        </div>
+                    </div>
+                    <div class="criteria-description">
+                        Evalúa el potencial de impacto positivo en la sociedad y la economía, así como la sostenibilidad del proyecto.
+                    </div>
+                    <div class="rating-scale">
+                        <span>0 - Sin impacto</span>
+                        <span>2.5 - Impacto moderado</span>
+                        <span>5 - Alto impacto</span>
+                    </div>
+                    <div class="comments-area">
+                        <label>Comentarios sobre Impacto:</label>
+                        <textarea data-criterion="impacto-comments" placeholder="Excelente potencial para conectar empresas con innovadores y facilitar el crecimiento económico..."></textarea>
+                    </div>
+                </div>
+                
+                <!-- Criterio 4: Equipo y Recursos -->
+                <div class="criteria-card">
+                    <div class="criteria-header">
+                        <div class="criteria-title">👥 Equipo y Recursos (15%)</div>
+                        <div class="score-input">
+                            <input type="range" class="score-slider" min="0" max="5" step="0.1" value="3.9" 
+                                   data-criterion="equipo" onchange="updateScore(this)">
+                            <span class="score-display" id="score-equipo">3.9</span>
+                        </div>
+                    </div>
+                    <div class="criteria-description">
+                        Evalúa la capacidad del equipo, la disponibilidad de recursos y la organización del proyecto.
+                    </div>
+                    <div class="rating-scale">
+                        <span>0 - Equipo inadecuado</span>
+                        <span>2.5 - Equipo competente</span>
+                        <span>5 - Equipo excepcional</span>
+                    </div>
+                    <div class="comments-area">
+                        <label>Comentarios sobre Equipo:</label>
+                        <textarea data-criterion="equipo-comments" placeholder="El equipo tiene experiencia relevante. Se sugiere incluir un especialista en seguridad..."></textarea>
+                    </div>
+                </div>
+                
+                <!-- Criterio 5: Presupuesto -->
+                <div class="criteria-card">
+                    <div class="criteria-header">
+                        <div class="criteria-title">💰 Presupuesto y Financiamiento (20%)</div>
+                        <div class="score-input">
+                            <input type="range" class="score-slider" min="0" max="5" step="0.1" value="4.0" 
+                                   data-criterion="presupuesto" onchange="updateScore(this)">
+                            <span class="score-display" id="score-presupuesto">4.0</span>
+                        </div>
+                    </div>
+                    <div class="criteria-description">
+                        Evalúa la razonabilidad del presupuesto, la distribución de costos y la sostenibilidad financiera.
+                    </div>
+                    <div class="rating-scale">
+                        <span>0 - Presupuesto inadecuado</span>
+                        <span>2.5 - Presupuesto razonable</span>
+                        <span>5 - Presupuesto óptimo</span>
+                    </div>
+                    <div class="comments-area">
+                        <label>Comentarios sobre Presupuesto:</label>
+                        <textarea data-criterion="presupuesto-comments" placeholder="El presupuesto está bien distribuido. Los costos de desarrollo son realistas..."></textarea>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Puntuación Total -->
+            <div class="total-score">
+                <h3>Puntuación Total</h3>
+                <div class="score-value" id="totalScore">4.08</div>
+                <div>sobre 5.0 puntos</div>
+            </div>
+            
+            <!-- Recomendación -->
+            <div class="recommendation approve" id="recommendation">
+                <strong>🎯 Recomendación: APROBADO PARA COMITÉ</strong>
+                <p>El proyecto muestra alta calidad e innovación. Se recomienda pasar a evaluación por el comité con algunas observaciones menores.</p>
+            </div>
+            
+            <!-- Observaciones Generales -->
+            <div class="evaluation-section">
+                <h3 class="section-title">📝 Observaciones Generales</h3>
+                <textarea id="observacionesGenerales" style="width: 100%; min-height: 120px; padding: 15px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box;"
+                placeholder="Incluya aquí observaciones generales, sugerencias de mejora y cualquier consideración adicional para el proyecto...">El proyecto presenta una propuesta sólida con gran potencial de impacto. Se destaca la integración de tecnologías modernas y el enfoque en conectar empresas con innovadores. 
+
+Sugerencias de mejora:
+- Incluir un plan más detallado de seguridad de datos
+- Agregar métricas específicas de éxito
+- Considerar escalabilidad internacional
+
+El equipo muestra competencia técnica adecuada y el presupuesto es realista para el alcance propuesto.</textarea>
+            </div>
+            
+            <div class="form-actions">
+                <a href="proyectos-dashboard.html" class="btn btn-secondary">Volver al Dashboard</a>
+                <button type="button" class="btn btn-warning" onclick="guardarBorrador()">Guardar Borrador</button>
+                <button type="submit" class="btn btn-success">Enviar Evaluación</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        // Pesos de los criterios
+        const pesos = {
+            innovacion: 0.25,
+            viabilidad: 0.20,
+            impacto: 0.20,
+            equipo: 0.15,
+            presupuesto: 0.20
+        };
+
+        function updateScore(slider) {
+            const criterion = slider.dataset.criterion;
+            const value = parseFloat(slider.value);
+            
+            // Actualizar display del criterio
+            document.getElementById(`score-${criterion}`).textContent = value.toFixed(1);
+            
+            // Calcular puntuación total
+            calculateTotalScore();
+            
+            // Actualizar recomendación
+            updateRecommendation();
+        }
+
+        function calculateTotalScore() {
+            let totalScore = 0;
+            
+            Object.keys(pesos).forEach(criterion => {
+                const slider = document.querySelector(`[data-criterion="${criterion}"]`);
+                const score = parseFloat(slider.value);
+                totalScore += score * pesos[criterion];
+            });
+            
+            document.getElementById('totalScore').textContent = totalScore.toFixed(2);
+            return totalScore;
+        }
+
+        function updateRecommendation() {
+            const totalScore = calculateTotalScore();
+            const recommendationDiv = document.getElementById('recommendation');
+            
+            recommendationDiv.className = 'recommendation';
+            
+            if (totalScore >= 4.0) {
+                recommendationDiv.classList.add('approve');
+                recommendationDiv.innerHTML = `
+                    <strong>🎯 Recomendación: APROBADO PARA COMITÉ</strong>
+                    <p>El proyecto muestra alta calidad e innovación. Se recomienda pasar a evaluación por el comité.</p>
+                `;
+            } else if (totalScore >= 3.0) {
+                recommendationDiv.classList.add('review');
+                recommendationDiv.innerHTML = `
+                    <strong>⚠️ Recomendación: REQUIERE REVISIÓN</strong>
+                    <p>El proyecto tiene potencial pero necesita mejoras antes de pasar al comité. Se sugiere solicitar aclaraciones.</p>
+                `;
+            } else {
+                recommendationDiv.classList.add('reject');
+                recommendationDiv.innerHTML = `
+                    <strong>❌ Recomendación: NO APROBADO</strong>
+                    <p>El proyecto no cumple con los estándares mínimos requeridos. Se recomienda rechazar la propuesta.</p>
+                `;
+            }
+        }
+
+        function guardarBorrador() {
+            Swal.fire({
+                icon: 'info',
+                title: 'Borrador Guardado',
+                text: 'La evaluación ha sido guardada como borrador',
+                timer: 1500,
+                showConfirmButton: false
+            });
+        }
+
+        // Manejar envío del formulario
+        document.getElementById('evaluationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const totalScore = calculateTotalScore();
+            let accion = '';
+            
+            if (totalScore >= 4.0) {
+                accion = 'enviar al comité para aprobación';
+            } else if (totalScore >= 3.0) {
+                accion = 'solicitar revisión al solicitante';
+            } else {
+                accion = 'rechazar el proyecto';
+            }
+            
+            Swal.fire({
+                title: '¿Confirmar Evaluación?',
+                text: `Puntuación final: ${totalScore.toFixed(2)}/5.0. Se procederá a ${accion}.`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Confirmar',
+                cancelButtonText: 'Revisar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Simular envío
+                    Swal.fire({
+                        title: 'Procesando...',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+                    
+                    setTimeout(() => {
+                        Swal.fire({
+                            icon: 'success',
+                            title: '¡Evaluación Completada!',
+                            text: `El proyecto ha sido evaluado con ${totalScore.toFixed(2)}/5.0 puntos`,
+                            confirmButtonText: 'Ver Dashboard'
+                        }).then(() => {
+                            window.location.href = 'proyectos-dashboard.html';
+                        });
+                    }, 2000);
+                }
+            });
+        });
+
+        // Inicializar al cargar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            calculateTotalScore();
+            updateRecommendation();
+            
+            // Llenar comentarios de demostración
+            document.querySelector('[data-criterion="innovacion-comments"]').value = 
+                "La propuesta presenta elementos innovadores especialmente en la integración de IA para matchmaking empresarial. La combinación de tecnologías es actual y relevante.";
+            
+            document.querySelector('[data-criterion="viabilidad-comments"]').value = 
+                "La metodología SCRUM es apropiada. Falta detalle en la arquitectura de seguridad y plan de contingencia. El stack tecnológico es sólido.";
+            
+            document.querySelector('[data-criterion="impacto-comments"]').value = 
+                "Excelente potencial para conectar empresas con innovadores y facilitar el crecimiento económico. Podría beneficiar especialmente a PyMEs.";
+            
+            document.querySelector('[data-criterion="equipo-comments"]').value = 
+                "El equipo tiene experiencia relevante. Se sugiere incluir un especialista en seguridad y definir mejor los roles de cada miembro.";
+            
+            document.querySelector('[data-criterion="presupuesto-comments"]').value = 
+                "El presupuesto está bien distribuido. Los costos de desarrollo son realistas. Se recomienda incluir un fondo de contingencia del 10%.";
+        });
+    </script>
+</body>
+</html>

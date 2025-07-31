@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banco de Proyectos - SinAptico</title>
+    <link rel="stylesheet" href="../../public/styles/styles.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f7fa;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+        
+        .header p {
+            margin: 10px 0 0 0;
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            border-top: 4px solid #3498db;
+            transition: transform 0.3s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-card.presentados {
+            border-top-color: #3498db;
+        }
+        
+        .stat-card.evaluacion {
+            border-top-color: #f39c12;
+        }
+        
+        .stat-card.comite {
+            border-top-color: #9b59b6;
+        }
+        
+        .stat-card.aprobados {
+            border-top-color: #27ae60;
+        }
+        
+        .stat-card.rechazados {
+            border-top-color: #e74c3c;
+        }
+        
+        .stat-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+        
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            color: #7f8c8d;
+            font-size: 1.1em;
+            font-weight: 500;
+        }
+        
+        .controls-section {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .controls-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .filters {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .filter-group label {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            font-weight: 500;
+        }
+        
+        .filter-group select, .filter-group input {
+            padding: 8px 12px;
+            border: 2px solid #ecf0f1;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        
+        .filter-group select:focus, .filter-group input:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: 500;
+        }
+        
+        .btn-primary {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+        
+        .btn-success {
+            background-color: #27ae60;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background-color: #219a52;
+        }
+        
+        .btn-warning {
+            background-color: #f39c12;
+            color: white;
+        }
+        
+        .btn-warning:hover {
+            background-color: #d68910;
+        }
+        
+        .btn-danger {
+            background-color: #e74c3c;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+        
+        .btn-secondary {
+            background-color: #95a5a6;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #7f8c8d;
+        }
+        
+        .projects-grid {
+            display: grid;
+            gap: 20px;
+        }
+        
+        .project-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        .project-header {
+            padding: 20px 25px 15px 25px;
+            border-bottom: 2px solid #ecf0f1;
+        }
+        
+        .project-title-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+            gap: 15px;
+        }
+        
+        .project-title {
+            flex: 1;
+            margin: 0;
+            color: #2c3e50;
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+        
+        .project-id {
+            color: #7f8c8d;
+            font-size: 0.9em;
+            font-weight: normal;
+        }
+        
+        .status-badge {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+            color: white;
+            white-space: nowrap;
+        }
+        
+        .status-presentado {
+            background-color: #3498db;
+        }
+        
+        .status-en_evaluacion {
+            background-color: #f39c12;
+        }
+        
+        .status-en_comite {
+            background-color: #9b59b6;
+        }
+        
+        .status-aprobado {
+            background-color: #27ae60;
+        }
+        
+        .status-rechazado {
+            background-color: #e74c3c;
+        }
+        
+        .project-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+        
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .meta-label {
+            font-weight: 500;
+            margin-bottom: 3px;
+        }
+        
+        .meta-value {
+            color: #2c3e50;
+            font-weight: bold;
+        }
+        
+        .project-body {
+            padding: 20px 25px;
+        }
+        
+        .project-description {
+            color: #7f8c8d;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        
+        .project-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+        
+        .timeline-indicator {
+            margin: 15px 25px 0 25px;
+            padding: 15px 0;
+            border-top: 1px solid #ecf0f1;
+        }
+        
+        .timeline-steps {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+        
+        .timeline-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            position: relative;
+        }
+        
+        .step-circle {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            z-index: 2;
+            position: relative;
+        }
+        
+        .step-circle.completed {
+            background-color: #27ae60;
+            color: white;
+        }
+        
+        .step-circle.current {
+            background-color: #f39c12;
+            color: white;
+        }
+        
+        .step-circle.pending {
+            background-color: #ecf0f1;
+            color: #7f8c8d;
+        }
+        
+        .step-label {
+            font-size: 0.8em;
+            color: #7f8c8d;
+            text-align: center;
+            line-height: 1.2;
+        }
+        
+        .timeline-line {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            right: 15px;
+            height: 2px;
+            background-color: #ecf0f1;
+            z-index: 1;
+        }
+        
+        .timeline-progress {
+            height: 100%;
+            background-color: #27ae60;
+            transition: width 0.3s;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #7f8c8d;
+        }
+        
+        .empty-state-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 30px;
+        }
+        
+        .pagination button {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .pagination button:hover:not(:disabled) {
+            background-color: #f8f9fa;
+        }
+        
+        .pagination button.active {
+            background-color: #3498db;
+            color: white;
+            border-color: #3498db;
+        }
+        
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>📊 Banco de Proyectos Priorizados</h1>
+            <p>Sistema de Gestión y Evaluación de Proyectos de Innovación</p>
+        </div>
+        
+        <!-- Estadísticas -->
+        <div class="stats-grid">
+            <div class="stat-card presentados">
+                <div class="stat-icon">📝</div>
+                <div class="stat-number">24</div>
+                <div class="stat-label">Presentados</div>
+            </div>
+            
+            <div class="stat-card evaluacion">
+                <div class="stat-icon">🔍</div>
+                <div class="stat-number">8</div>
+                <div class="stat-label">En Evaluación</div>
+            </div>
+            
+            <div class="stat-card comite">
+                <div class="stat-icon">👥</div>
+                <div class="stat-number">3</div>
+                <div class="stat-label">En Comité</div>
+            </div>
+            
+            <div class="stat-card aprobados">
+                <div class="stat-icon">✅</div>
+                <div class="stat-number">15</div>
+                <div class="stat-label">Aprobados</div>
+            </div>
+            
+            <div class="stat-card rechazados">
+                <div class="stat-icon">❌</div>
+                <div class="stat-number">7</div>
+                <div class="stat-label">Rechazados</div>
+            </div>
+        </div>
+        
+        <!-- Controles -->
+        <div class="controls-section">
+            <div class="controls-header">
+                <h3>🔧 Gestión de Proyectos</h3>
+                <a href="presentar-proyecto.html" class="btn btn-success">+ Nuevo Proyecto</a>
+            </div>
+            
+            <div class="filters">
+                <div class="filter-group">
+                    <label>Estado:</label>
+                    <select id="filtroEstado" onchange="filtrarProyectos()">
+                        <option value="">Todos los estados</option>
+                        <option value="presentado">Presentado</option>
+                        <option value="en_evaluacion">En Evaluación</option>
+                        <option value="en_comite">En Comité</option>
+                        <option value="aprobado">Aprobado</option>
+                        <option value="rechazado">Rechazado</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label>Buscar:</label>
+                    <input type="text" id="buscarProyecto" placeholder="Título, ID o solicitante..." 
+                           onkeyup="filtrarProyectos()">
+                </div>
+                
+                <div class="filter-group">
+                    <label>Ordenar por:</label>
+                    <select id="ordenarPor" onchange="ordenarProyectos()">
+                        <option value="fecha_desc">Más recientes</option>
+                        <option value="fecha_asc">Más antiguos</option>
+                        <option value="presupuesto_desc">Mayor presupuesto</option>
+                        <option value="presupuesto_asc">Menor presupuesto</option>
+                        <option value="titulo_asc">Título A-Z</option>
+                        <option value="titulo_desc">Título Z-A</option>
+                    </select>
+                </div>
+                
+                <button class="btn btn-secondary" onclick="limpiarFiltros()">Limpiar Filtros</button>
+            </div>
+        </div>
+        
+        <!-- Lista de Proyectos -->
+        <div class="projects-grid" id="projectsContainer">
+            <!-- Los proyectos se cargarán aquí dinámicamente -->
+        </div>
+        
+        <!-- Paginación -->
+        <div class="pagination" id="pagination">
+            <!-- La paginación se generará dinámicamente -->
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        // Datos ficticios de proyectos
+        const proyectosFicticios = [
+            {
+                id: 'PROJ-2025-001',
+                titulo: 'Plataforma Digital de Innovación Empresarial',
+                descripcion: 'Desarrollo de una plataforma web integral que permita a las empresas gestionar sus procesos de innovación, conectar con startups y acceder a recursos de financiamiento.',
+                solicitante: 'TechInnovate S.A.S',
+                estado: 'en_comite',
+                presupuesto: 85000000,
+                duracion: 8,
+                fechaPresentacion: '2025-07-25',
+                evaluador: 'Dra. María González',
+                puntuacion: 4.08
+            },
+            {
+                id: 'PROJ-2025-002',
+                titulo: 'Sistema de Monitoreo Ambiental con IoT',
+                descripcion: 'Implementación de una red de sensores IoT para el monitoreo en tiempo real de la calidad del aire y agua en zonas industriales.',
+                solicitante: 'EcoTech Solutions',
+                estado: 'en_evaluacion',
+                presupuesto: 120000000,
+                duracion: 12,
+                fechaPresentacion: '2025-07-28',
+                evaluador: 'Dr. Carlos Mendoza',
+                puntuacion: null
+            },
+            {
+                id: 'PROJ-2025-003',
+                titulo: 'Aplicación de Telemedicina Rural',
+                descripcion: 'Desarrollo de una aplicación móvil para facilitar consultas médicas remotas en zonas rurales con conectividad limitada.',
+                solicitante: 'MedConnect Rural',
+                estado: 'aprobado',
+                presupuesto: 65000000,
+                duracion: 6,
+                fechaPresentacion: '2025-07-15',
+                evaluador: 'Dra. Ana Rodríguez',
+                puntuacion: 4.5
+            },
+            {
+                id: 'PROJ-2025-004',
+                titulo: 'Blockchain para Cadena de Suministro Agrícola',
+                descripcion: 'Implementación de tecnología blockchain para mejorar la trazabilidad y transparencia en la cadena de suministro agrícola.',
+                solicitante: 'AgroChain Technologies',
+                estado: 'presentado',
+                presupuesto: 95000000,
+                duracion: 10,
+                fechaPresentacion: '2025-07-30',
+                evaluador: null,
+                puntuacion: null
+            },
+            {
+                id: 'PROJ-2025-005',
+                titulo: 'Plataforma de Educación Virtual Adaptativa',
+                descripcion: 'Sistema de aprendizaje virtual que se adapta automáticamente al ritmo y estilo de aprendizaje de cada estudiante usando IA.',
+                solicitante: 'EduTech Innovations',
+                estado: 'rechazado',
+                presupuesto: 75000000,
+                duracion: 8,
+                fechaPresentacion: '2025-07-20',
+                evaluador: 'Dr. Roberto Silva',
+                puntuacion: 2.8
+            },
+            {
+                id: 'PROJ-2025-006',
+                titulo: 'Marketplace de Energías Renovables',
+                descripcion: 'Plataforma digital para la compra y venta de energía renovable entre productores independientes y consumidores.',
+                solicitante: 'GreenEnergy Market',
+                estado: 'en_evaluacion',
+                presupuesto: 110000000,
+                duracion: 9,
+                fechaPresentacion: '2025-07-26',
+                evaluador: 'Dra. Laura Pérez',
+                puntuacion: null
+            }
+        ];
+
+        let proyectosFiltrados = [...proyectosFicticios];
+        let paginaActual = 1;
+        const proyectosPorPagina = 10;
+
+        // Formatear número como moneda
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('es-CO', {
+                style: 'currency',
+                currency: 'COP',
+                minimumFractionDigits: 0
+            }).format(amount);
+        }
+
+        // Formatear fecha
+        function formatDate(dateString) {
+            return new Date(dateString).toLocaleDateString('es-CO', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+
+        // Obtener texto del estado
+        function getEstadoText(estado) {
+            const estados = {
+                'presentado': 'Presentado',
+                'en_evaluacion': 'En Evaluación',
+                'en_comite': 'En Comité',
+                'aprobado': 'Aprobado',
+                'rechazado': 'Rechazado'
+            };
+            return estados[estado] || estado;
+        }
+
+        // Generar timeline del proyecto
+        function generateTimeline(estado) {
+            const steps = [
+                { key: 'presentado', label: 'Presentado' },
+                { key: 'en_evaluacion', label: 'Evaluación' },
+                { key: 'en_comite', label: 'Comité' },
+                { key: 'aprobado', label: 'Aprobado' }
+            ];
+
+            const currentIndex = steps.findIndex(step => step.key === estado);
+            let progressWidth = 0;
+
+            if (estado === 'rechazado') {
+                // Para proyectos rechazados, mostrar progreso hasta donde llegó
+                progressWidth = 25; // Asumimos que llegó hasta evaluación
+            } else {
+                progressWidth = currentIndex >= 0 ? (currentIndex / (steps.length - 1)) * 100 : 0;
+            }
+
+            const stepsHtml = steps.map((step, index) => {
+                let stepClass = 'pending';
+                
+                if (estado === 'rechazado' && index <= 1) {
+                    stepClass = index === 1 ? 'current' : 'completed';
+                } else if (index < currentIndex) {
+                    stepClass = 'completed';
+                } else if (index === currentIndex) {
+                    stepClass = 'current';
+                }
+
+                return `
+                    <div class="timeline-step">
+                        <div class="step-circle ${stepClass}">
+                            ${stepClass === 'completed' ? '✓' : index + 1}
+                        </div>
+                        <div class="step-label">${step.label}</div>
+                    </div>
+                `;
+            }).join('');
+
+            return `
+                <div class="timeline-steps">
+                    <div class="timeline-line">
+                        <div class="timeline-progress" style="width: ${progressWidth}%"></div>
+                    </div>
+                    ${stepsHtml}
+                </div>
+            `;
+        }
+
+        // Generar acciones según el estado
+        function generateActions(proyecto) {
+            const actions = [];
+
+            switch (proyecto.estado) {
+                case 'presentado':
+                    actions.push(`<a href="evaluar-proyecto.html" class="btn btn-warning">🔍 Evaluar</a>`);
+                    break;
+                case 'en_evaluacion':
+                    actions.push(`<a href="evaluar-proyecto.html" class="btn btn-warning">📝 Ver Evaluación</a>`);
+                    break;
+                case 'en_comite':
+                    actions.push(`<a href="comite-aprobacion.html" class="btn btn-primary">👥 Ver en Comité</a>`);
+                    break;
+                case 'aprobado':
+                    actions.push(`<button class="btn btn-success" onclick="verDetalles('${proyecto.id}')">✅ Ver Aprobación</button>`);
+                    break;
+                case 'rechazado':
+                    actions.push(`<button class="btn btn-danger" onclick="verRechazo('${proyecto.id}')">❌ Ver Motivo</button>`);
+                    break;
+            }
+
+            actions.push(`<button class="btn btn-secondary" onclick="verDetalles('${proyecto.id}')">👁️ Detalles</button>`);
+            
+            return actions.join('');
+        }
+
+        // Renderizar proyectos
+        function renderProyectos() {
+            const container = document.getElementById('projectsContainer');
+            const startIndex = (paginaActual - 1) * proyectosPorPagina;
+            const endIndex = startIndex + proyectosPorPagina;
+            const proyectosPagina = proyectosFiltrados.slice(startIndex, endIndex);
+
+            if (proyectosPagina.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📭</div>
+                        <h3>No se encontraron proyectos</h3>
+                        <p>No hay proyectos que coincidan con los filtros seleccionados.</p>
+                        <a href="presentar-proyecto.html" class="btn btn-primary">Presentar Nuevo Proyecto</a>
+                    </div>
+                `;
+                return;
+            }
+
+            const proyectosHtml = proyectosPagina.map(proyecto => `
+                <div class="project-card">
+                    <div class="project-header">
+                        <div class="project-title-row">
+                            <div>
+                                <h3 class="project-title">
+                                    ${proyecto.titulo}
+                                    <div class="project-id">${proyecto.id}</div>
+                                </h3>
+                            </div>
+                            <span class="status-badge status-${proyecto.estado}">
+                                ${getEstadoText(proyecto.estado)}
+                            </span>
+                        </div>
+                        
+                        <div class="project-meta">
+                            <div class="meta-item">
+                                <div class="meta-label">Solicitante</div>
+                                <div class="meta-value">${proyecto.solicitante}</div>
+                            </div>
+                            <div class="meta-item">
+                                <div class="meta-label">Presupuesto</div>
+                                <div class="meta-value">${formatCurrency(proyecto.presupuesto)}</div>
+                            </div>
+                            <div class="meta-item">
+                                <div class="meta-label">Duración</div>
+                                <div class="meta-value">${proyecto.duracion} meses</div>
+                            </div>
+                            <div class="meta-item">
+                                <div class="meta-label">Fecha Presentación</div>
+                                <div class="meta-value">${formatDate(proyecto.fechaPresentacion)}</div>
+                            </div>
+                            ${proyecto.evaluador ? `
+                            <div class="meta-item">
+                                <div class="meta-label">Evaluador</div>
+                                <div class="meta-value">${proyecto.evaluador}</div>
+                            </div>
+                            ` : ''}
+                            ${proyecto.puntuacion ? `
+                            <div class="meta-item">
+                                <div class="meta-label">Puntuación</div>
+                                <div class="meta-value">${proyecto.puntuacion}/5.0</div>
+                            </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                    
+                    <div class="project-body">
+                        <div class="project-description">
+                            ${proyecto.descripcion}
+                        </div>
+                        
+                        <div class="project-actions">
+                            ${generateActions(proyecto)}
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-indicator">
+                        ${generateTimeline(proyecto.estado)}
+                    </div>
+                </div>
+            `).join('');
+
+            container.innerHTML = proyectosHtml;
+            renderPaginacion();
+        }
+
+        // Renderizar paginación
+        function renderPaginacion() {
+            const totalPaginas = Math.ceil(proyectosFiltrados.length / proyectosPorPagina);
+            const pagination = document.getElementById('pagination');
+
+            if (totalPaginas <= 1) {
+                pagination.innerHTML = '';
+                return;
+            }
+
+            let paginacionHtml = `
+                <button onclick="cambiarPagina(${paginaActual - 1})" ${paginaActual === 1 ? 'disabled' : ''}>
+                    ← Anterior
+                </button>
+            `;
+
+            for (let i = 1; i <= totalPaginas; i++) {
+                paginacionHtml += `
+                    <button onclick="cambiarPagina(${i})" class="${i === paginaActual ? 'active' : ''}">
+                        ${i}
+                    </button>
+                `;
+            }
+
+            paginacionHtml += `
+                <button onclick="cambiarPagina(${paginaActual + 1})" ${paginaActual === totalPaginas ? 'disabled' : ''}>
+                    Siguiente →
+                </button>
+            `;
+
+            pagination.innerHTML = paginacionHtml;
+        }
+
+        // Cambiar página
+        function cambiarPagina(nuevaPagina) {
+            const totalPaginas = Math.ceil(proyectosFiltrados.length / proyectosPorPagina);
+            if (nuevaPagina >= 1 && nuevaPagina <= totalPaginas) {
+                paginaActual = nuevaPagina;
+                renderProyectos();
+            }
+        }
+
+        // Filtrar proyectos
+        function filtrarProyectos() {
+            const filtroEstado = document.getElementById('filtroEstado').value;
+            const busqueda = document.getElementById('buscarProyecto').value.toLowerCase();
+
+            proyectosFiltrados = proyectosFicticios.filter(proyecto => {
+                const coincideEstado = !filtroEstado || proyecto.estado === filtroEstado;
+                const coincideBusqueda = !busqueda || 
+                    proyecto.titulo.toLowerCase().includes(busqueda) ||
+                    proyecto.id.toLowerCase().includes(busqueda) ||
+                    proyecto.solicitante.toLowerCase().includes(busqueda);
+
+                return coincideEstado && coincideBusqueda;
+            });
+
+            paginaActual = 1;
+            renderProyectos();
+        }
+
+        // Ordenar proyectos
+        function ordenarProyectos() {
+            const criterio = document.getElementById('ordenarPor').value;
+
+            proyectosFiltrados.sort((a, b) => {
+                switch (criterio) {
+                    case 'fecha_desc':
+                        return new Date(b.fechaPresentacion) - new Date(a.fechaPresentacion);
+                    case 'fecha_asc':
+                        return new Date(a.fechaPresentacion) - new Date(b.fechaPresentacion);
+                    case 'presupuesto_desc':
+                        return b.presupuesto - a.presupuesto;
+                    case 'presupuesto_asc':
+                        return a.presupuesto - b.presupuesto;
+                    case 'titulo_asc':
+                        return a.titulo.localeCompare(b.titulo);
+                    case 'titulo_desc':
+                        return b.titulo.localeCompare(a.titulo);
+                    default:
+                        return 0;
+                }
+            });
+
+            renderProyectos();
+        }
+
+        // Limpiar filtros
+        function limpiarFiltros() {
+            document.getElementById('filtroEstado').value = '';
+            document.getElementById('buscarProyecto').value = '';
+            document.getElementById('ordenarPor').value = 'fecha_desc';
+            
+            proyectosFiltrados = [...proyectosFicticios];
+            paginaActual = 1;
+            renderProyectos();
+        }
+
+        // Ver detalles del proyecto
+        function verDetalles(proyectoId) {
+            const proyecto = proyectosFicticios.find(p => p.id === proyectoId);
+            
+            Swal.fire({
+                title: proyecto.titulo,
+                html: `
+                    <div style="text-align: left;">
+                        <p><strong>ID:</strong> ${proyecto.id}</p>
+                        <p><strong>Solicitante:</strong> ${proyecto.solicitante}</p>
+                        <p><strong>Estado:</strong> ${getEstadoText(proyecto.estado)}</p>
+                        <p><strong>Presupuesto:</strong> ${formatCurrency(proyecto.presupuesto)}</p>
+                        <p><strong>Duración:</strong> ${proyecto.duracion} meses</p>
+                        <p><strong>Fecha de Presentación:</strong> ${formatDate(proyecto.fechaPresentacion)}</p>
+                        ${proyecto.evaluador ? `<p><strong>Evaluador:</strong> ${proyecto.evaluador}</p>` : ''}
+                        ${proyecto.puntuacion ? `<p><strong>Puntuación:</strong> ${proyecto.puntuacion}/5.0</p>` : ''}
+                        <hr>
+                        <p><strong>Descripción:</strong></p>
+                        <p style="color: #666;">${proyecto.descripcion}</p>
+                    </div>
+                `,
+                width: 600,
+                confirmButtonText: 'Cerrar'
+            });
+        }
+
+        // Ver motivo de rechazo
+        function verRechazo(proyectoId) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Proyecto Rechazado',
+                html: `
+                    <div style="text-align: left;">
+                        <p><strong>Motivos del rechazo:</strong></p>
+                        <ul style="color: #666;">
+                            <li>La propuesta técnica no presenta suficiente innovación</li>
+                            <li>El presupuesto no está adecuadamente justificado</li>
+                            <li>Falta claridad en los objetivos específicos</li>
+                            <li>El equipo propuesto no tiene la experiencia necesaria</li>
+                        </ul>
+                        <p><strong>Recomendación:</strong> Revisar la propuesta considerando las observaciones y volver a presentar.</p>
+                    </div>
+                `,
+                width: 600,
+                confirmButtonText: 'Entendido'
+            });
+        }
+
+        // Inicializar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            renderProyectos();
+            
+            // Simulación de actualización en tiempo real
+            setInterval(() => {
+                // Simular cambios ocasionales en los estados
+                if (Math.random() < 0.1) { // 10% de probabilidad cada 5 segundos
+                    console.log('Simulando actualización de estados...');
+                    // Aquí podrías actualizar los datos desde el servidor
+                }
+            }, 5000);
+        });
+    </script>
+</body>
+</html>

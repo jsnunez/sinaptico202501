@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presentar Proyecto - SinAptico</title>
+    <link rel="stylesheet" href="../../public/styles/styles.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f7fa;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #3498db;
+        }
+        
+        .header h1 {
+            color: #2c3e50;
+            margin: 0;
+            font-size: 2.5em;
+        }
+        
+        .header p {
+            color: #7f8c8d;
+            margin: 10px 0 0 0;
+            font-size: 1.1em;
+        }
+        
+        .form-section {
+            margin-bottom: 30px;
+        }
+        
+        .form-section h3 {
+            color: #34495e;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #bdc3c7;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+            box-sizing: border-box;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .file-upload {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            width: 100%;
+        }
+        
+        .file-upload input[type=file] {
+            position: absolute;
+            left: -9999px;
+        }
+        
+        .file-upload-label {
+            display: block;
+            padding: 12px;
+            border: 2px dashed #bdc3c7;
+            border-radius: 6px;
+            text-align: center;
+            color: #7f8c8d;
+            transition: all 0.3s;
+        }
+        
+        .file-upload-label:hover {
+            border-color: #3498db;
+            color: #3498db;
+        }
+        
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+        
+        .btn-secondary {
+            background-color: #95a5a6;
+            color: white;
+            margin-right: 10px;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #7f8c8d;
+        }
+        
+        .form-actions {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #ecf0f1;
+        }
+        
+        .required {
+            color: #e74c3c;
+        }
+        
+        .help-text {
+            font-size: 12px;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📋 Presentar Nuevo Proyecto</h1>
+            <p>Complete todos los campos para presentar su propuesta de proyecto</p>
+        </div>
+        
+        <form id="proyectoForm">
+            <!-- Información Básica -->
+            <div class="form-section">
+                <h3>📝 Información Básica del Proyecto</h3>
+                
+                <div class="form-group">
+                    <label for="titulo">Título del Proyecto <span class="required">*</span></label>
+                    <input type="text" id="titulo" name="titulo" required 
+                           placeholder="Ej: Sistema de Gestión Inteligente para PYMES">
+                </div>
+                
+                <div class="form-group">
+                    <label for="descripcion">Descripción General <span class="required">*</span></label>
+                    <textarea id="descripcion" name="descripcion" required 
+                              placeholder="Describa brevemente el proyecto, su propósito y alcance..."></textarea>
+                    <div class="help-text">Mínimo 100 caracteres</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="objetivos">Objetivos del Proyecto <span class="required">*</span></label>
+                    <textarea id="objetivos" name="objetivos" required 
+                              placeholder="Liste los objetivos específicos que busca alcanzar con este proyecto..."></textarea>
+                </div>
+            </div>
+            
+            <!-- Detalles Técnicos -->
+            <div class="form-section">
+                <h3>🔧 Detalles Técnicos y Metodología</h3>
+                
+                <div class="form-group">
+                    <label for="metodologia">Metodología <span class="required">*</span></label>
+                    <textarea id="metodologia" name="metodologia" required 
+                              placeholder="Describa la metodología que utilizará para desarrollar el proyecto..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="resultadosEsperados">Resultados Esperados <span class="required">*</span></label>
+                    <textarea id="resultadosEsperados" name="resultadosEsperados" required 
+                              placeholder="Describa los resultados y entregables esperados..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="equipoTrabajo">Equipo de Trabajo <span class="required">*</span></label>
+                    <textarea id="equipoTrabajo" name="equipoTrabajo" required 
+                              placeholder="Describa los perfiles profesionales y roles del equipo..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="recursos">Recursos Necesarios</label>
+                    <textarea id="recursos" name="recursos" 
+                              placeholder="Liste los recursos técnicos, humanos y materiales necesarios..."></textarea>
+                </div>
+            </div>
+            
+            <!-- Información Financiera y Temporal -->
+            <div class="form-section">
+                <h3>💰 Información Financiera y Temporal</h3>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="presupuesto">Presupuesto Total <span class="required">*</span></label>
+                        <input type="number" id="presupuesto" name="presupuesto" required 
+                               step="0.01" min="0" placeholder="0.00">
+                        <div class="help-text">Monto en pesos colombianos</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="duracionMeses">Duración (meses) <span class="required">*</span></label>
+                        <input type="number" id="duracionMeses" name="duracionMeses" required 
+                               min="1" max="60" placeholder="12">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="fechaInicio">Fecha de Inicio Propuesta <span class="required">*</span></label>
+                        <input type="date" id="fechaInicio" name="fechaInicio" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="fechaFin">Fecha de Finalización Propuesta <span class="required">*</span></label>
+                        <input type="date" id="fechaFin" name="fechaFin" required>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Documentos Adjuntos -->
+            <div class="form-section">
+                <h3>📎 Documentos Adjuntos</h3>
+                
+                <div class="form-group">
+                    <label for="documentoTecnico">Documento Técnico</label>
+                    <div class="file-upload">
+                        <input type="file" id="documentoTecnico" name="documentoTecnico" accept=".pdf,.doc,.docx">
+                        <label for="documentoTecnico" class="file-upload-label">
+                            📄 Seleccionar documento técnico (PDF, DOC, DOCX)
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="presentacion">Presentación</label>
+                    <div class="file-upload">
+                        <input type="file" id="presentacion" name="presentacion" accept=".pdf,.ppt,.pptx">
+                        <label for="presentacion" class="file-upload-label">
+                            📊 Seleccionar presentación (PDF, PPT, PPTX)
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="anexos">Anexos Adicionales</label>
+                    <div class="file-upload">
+                        <input type="file" id="anexos" name="anexos" multiple>
+                        <label for="anexos" class="file-upload-label">
+                            📁 Seleccionar anexos (múltiples archivos permitidos)
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-actions">
+                <a href="proyectos-dashboard.html" class="btn btn-secondary">Cancelar</a>
+                <button type="submit" class="btn btn-primary">Presentar Proyecto</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        // Datos ficticios para demostración
+        const datosDemo = {
+            titulo: "Plataforma Digital de Innovación Empresarial",
+            descripcion: "Desarrollo de una plataforma web integral que permita a las empresas gestionar sus procesos de innovación, conectar con startups y acceder a recursos de financiamiento para proyectos tecnológicos.",
+            objetivos: "1. Crear una plataforma digital intuitiva y escalable\n2. Facilitar la conexión entre empresas e innovadores\n3. Implementar herramientas de gestión de proyectos\n4. Desarrollar un sistema de matchmaking empresarial",
+            metodologia: "Metodología ágil SCRUM con sprints de 2 semanas, desarrollo full-stack con tecnologías modernas, pruebas automatizadas y despliegue continuo.",
+            resultadosEsperados: "- Plataforma web funcional con 5 módulos principales\n- Base de datos de 1000+ empresas registradas\n- Sistema de recomendaciones basado en IA\n- Aplicación móvil complementaria",
+            equipoTrabajo: "- 1 Project Manager\n- 2 Desarrolladores Full-Stack\n- 1 Diseñador UX/UI\n- 1 Especialista en Base de Datos\n- 1 Especialista en DevOps",
+            recursos: "Servidores cloud, licencias de software, equipos de desarrollo, acceso a APIs de terceros",
+            presupuesto: 85000000,
+            duracionMeses: 8,
+            fechaInicio: "2025-03-01",
+            fechaFin: "2025-10-31"
+        };
+
+        // Llenar campos con datos de demostración
+        document.addEventListener('DOMContentLoaded', function() {
+            // Agregar botón para llenar datos demo
+            const formActions = document.querySelector('.form-actions');
+            const demoBtn = document.createElement('button');
+            demoBtn.type = 'button';
+            demoBtn.className = 'btn btn-secondary';
+            demoBtn.textContent = '🎭 Llenar Datos Demo';
+            demoBtn.style.marginRight = '10px';
+            demoBtn.onclick = llenarDatosDemo;
+            formActions.insertBefore(demoBtn, formActions.firstChild);
+
+            // Configurar fechas mínimas
+            const hoy = new Date().toISOString().split('T')[0];
+            document.getElementById('fechaInicio').min = hoy;
+            document.getElementById('fechaFin').min = hoy;
+
+            // Calcular fecha fin automáticamente
+            document.getElementById('fechaInicio').addEventListener('change', calcularFechaFin);
+            document.getElementById('duracionMeses').addEventListener('change', calcularFechaFin);
+        });
+
+        function llenarDatosDemo() {
+            Object.keys(datosDemo).forEach(key => {
+                const element = document.getElementById(key);
+                if (element) {
+                    element.value = datosDemo[key];
+                }
+            });
+            
+            Swal.fire({
+                icon: 'success',
+                title: 'Datos de demostración cargados',
+                text: 'Los campos han sido llenados con datos ficticios',
+                timer: 1500,
+                showConfirmButton: false
+            });
+        }
+
+        function calcularFechaFin() {
+            const fechaInicio = document.getElementById('fechaInicio').value;
+            const duracion = document.getElementById('duracionMeses').value;
+            
+            if (fechaInicio && duracion) {
+                const inicio = new Date(fechaInicio);
+                inicio.setMonth(inicio.getMonth() + parseInt(duracion));
+                document.getElementById('fechaFin').value = inicio.toISOString().split('T')[0];
+            }
+        }
+
+        // Manejar envío del formulario
+        document.getElementById('proyectoForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            Swal.fire({
+                title: '¿Confirmar presentación?',
+                text: 'Una vez presentado, el proyecto pasará a evaluación',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, presentar',
+                cancelButtonText: 'Revisar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Simular envío
+                    Swal.fire({
+                        title: 'Procesando...',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+                    
+                    setTimeout(() => {
+                        Swal.fire({
+                            icon: 'success',
+                            title: '¡Proyecto Presentado!',
+                            text: 'Su proyecto ha sido enviado para evaluación. ID: PROJ-2025-001',
+                            confirmButtonText: 'Ver Dashboard'
+                        }).then(() => {
+                            window.location.href = 'proyectos-dashboard.html';
+                        });
+                    }, 2000);
+                }
+            });
+        });
+
+        // Manejar subida de archivos
+        document.querySelectorAll('input[type="file"]').forEach(input => {
+            input.addEventListener('change', function() {
+                const label = this.nextElementSibling;
+                const fileName = this.files.length > 1 ? 
+                    `${this.files.length} archivos seleccionados` : 
+                    this.files[0]?.name || label.textContent;
+                
+                if (this.files.length > 0) {
+                    label.style.color = '#27ae60';
+                    label.style.borderColor = '#27ae60';
+                    label.textContent = `✅ ${fileName}`;
+                }
+            });
+        });
+    </script>
+</body>
+</html>

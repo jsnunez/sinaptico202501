@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proyectos Radicados - SinAptico</title>
+    <link rel="stylesheet" href="../../public/styles/styles.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f7fa;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 3em;
+        }
+        
+        .header p {
+            margin: 15px 0 0 0;
+            opacity: 0.9;
+            font-size: 1.3em;
+        }
+        
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            border-top: 4px solid #3498db;
+        }
+        
+        .stat-card.revision {
+            border-top-color: #f39c12;
+        }
+        
+        .stat-card.evaluacion {
+            border-top-color: #9b59b6;
+        }
+        
+        .stat-card.aprobados {
+            border-top-color: #27ae60;
+        }
+        
+        .stat-icon {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .stat-label {
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+        
+        .filters-section {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .filters-row {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .filter-group label {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            font-weight: 500;
+        }
+        
+        .filter-group select, .filter-group input {
+            padding: 10px 12px;
+            border: 2px solid #ecf0f1;
+            border-radius: 6px;
+            font-size: 14px;
+            min-width: 150px;
+        }
+        
+        .search-box {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ecf0f1;
+            border-radius: 25px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        
+        .search-box input:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+        
+        .table-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .table-header {
+            background: #f8f9fa;
+            padding: 20px 25px;
+            border-bottom: 1px solid #ecf0f1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .table-title {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .table-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: 500;
+        }
+        
+        .btn-primary {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+        
+        .btn-success {
+            background-color: #27ae60;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background-color: #219a52;
+        }
+        
+        .btn-warning {
+            background-color: #f39c12;
+            color: white;
+        }
+        
+        .btn-warning:hover {
+            background-color: #d68910;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #3498db;
+            color: #3498db;
+        }
+        
+        .btn-outline:hover {
+            background: #3498db;
+            color: white;
+        }
+        
+        .projects-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .projects-table th,
+        .projects-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        
+        .projects-table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: #2c3e50;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        .projects-table tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        
+        .status-radicado {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .status-revision {
+            background-color: #f39c12;
+            color: white;
+        }
+        
+        .status-evaluacion {
+            background-color: #9b59b6;
+            color: white;
+        }
+        
+        .status-aprobado {
+            background-color: #27ae60;
+            color: white;
+        }
+        
+        .status-rechazado {
+            background-color: #e74c3c;
+            color: white;
+        }
+        
+        .priority-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+        }
+        
+        .priority-alta {
+            background-color: #e74c3c;
+        }
+        
+        .priority-media {
+            background-color: #f39c12;
+        }
+        
+        .priority-baja {
+            background-color: #27ae60;
+        }
+        
+        .convocatoria-tag {
+            background: #ecf0f1;
+            color: #7f8c8d;
+            padding: 4px 8px;
+            border-radius: 8px;
+            font-size: 0.8em;
+            display: inline-block;
+            margin-bottom: 5px;
+        }
+        
+        .project-title {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        .project-lead {
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #ecf0f1;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3498db 0%, #2980b9 100%);
+            transition: width 0.3s;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .modal-content {
+            background-color: white;
+            margin: 2% auto;
+            padding: 0;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px 15px 0 0;
+            position: relative;
+        }
+        
+        .modal-body {
+            padding: 30px;
+        }
+        
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .close:hover {
+            opacity: 0.7;
+        }
+        
+        .detail-section {
+            margin-bottom: 25px;
+        }
+        
+        .detail-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 8px;
+        }
+        
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .detail-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .detail-label {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .detail-value {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #ecf0f1;
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -8px;
+            top: 5px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #3498db;
+        }
+        
+        .timeline-item.completed::before {
+            background: #27ae60;
+        }
+        
+        .timeline-item.current::before {
+            background: #f39c12;
+        }
+        
+        .timeline-content {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #ecf0f1;
+        }
+        
+        .timeline-date {
+            font-size: 0.8em;
+            color: #7f8c8d;
+            margin-bottom: 5px;
+        }
+        
+        .timeline-title {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        .timeline-description {
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+        
+        .documents-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .documents-list li {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        
+        .documents-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .document-icon {
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+        
+        .document-name {
+            flex: 1;
+            font-weight: 500;
+        }
+        
+        .document-size {
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #7f8c8d;
+        }
+        
+        .empty-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        .table-scroll {
+            max-height: 600px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>📋 Proyectos Radicados</h1>
+            <p>Seguimiento de proyectos presentados en las convocatorias</p>
+        </div>
+        
+        <!-- Estadísticas -->
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-icon">📊</div>
+                <div class="stat-number" id="totalRadicados">45</div>
+                <div class="stat-label">Total Radicados</div>
+            </div>
+            
+            <div class="stat-card revision">
+                <div class="stat-icon">👀</div>
+                <div class="stat-number" id="enRevision">12</div>
+                <div class="stat-label">En Revisión</div>
+            </div>
+            
+            <div class="stat-card evaluacion">
+                <div class="stat-icon">⚖️</div>
+                <div class="stat-number" id="enEvaluacion">18</div>
+                <div class="stat-label">En Evaluación</div>
+            </div>
+            
+            <div class="stat-card aprobados">
+                <div class="stat-icon">✅</div>
+                <div class="stat-number" id="aprobados">15</div>
+                <div class="stat-label">Pre-Aprobados</div>
+            </div>
+        </div>
+        
+        <!-- Filtros -->
+        <div class="filters-section">
+            <div class="filters-row">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="🔍 Buscar por título, líder o convocatoria..." onkeyup="filtrarProyectos()">
+                </div>
+                
+                <div class="filter-group">
+                    <label>Convocatoria:</label>
+                    <select id="filtroConvocatoria" onchange="filtrarProyectos()">
+                        <option value="">Todas las convocatorias</option>
+                        <option value="CONV-2025-001">Innovación Digital PyMEs</option>
+                        <option value="CONV-2025-002">Emprendimiento Social</option>
+                        <option value="CONV-2025-003">Sostenibilidad</option>
+                        <option value="CONV-2025-004">Innovación Agropecuaria</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label>Estado:</label>
+                    <select id="filtroEstado" onchange="filtrarProyectos()">
+                        <option value="">Todos los estados</option>
+                        <option value="radicado">Radicado</option>
+                        <option value="revision">En Revisión</option>
+                        <option value="evaluacion">En Evaluación</option>
+                        <option value="aprobado">Pre-Aprobado</option>
+                        <option value="rechazado">Rechazado</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label>Entidad:</label>
+                    <select id="filtroEntidad" onchange="filtrarProyectos()">
+                        <option value="">Todas las entidades</option>
+                        <option value="CCB">CCB</option>
+                        <option value="CRCI">CRCI</option>
+                        <option value="CCCS">CCCS</option>
+                        <option value="CCMED">CCMED</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tabla de Proyectos -->
+        <div class="table-container">
+            <div class="table-header">
+                <div class="table-title">Proyectos Radicados</div>
+                <div class="table-actions">
+                    <button class="btn btn-outline" onclick="exportarDatos()">📊 Exportar</button>
+                    <button class="btn btn-primary" onclick="actualizarDatos()">🔄 Actualizar</button>
+                </div>
+            </div>
+            
+            <div class="table-scroll">
+                <table class="projects-table">
+                    <thead>
+                        <tr>
+                            <th>ID Proyecto</th>
+                            <th>Proyecto / Líder</th>
+                            <th>Convocatoria</th>
+                            <th>Estado</th>
+                            <th>Fecha Radicación</th>
+                            <th>Presupuesto</th>
+                            <th>Progreso</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="proyectosTableBody">
+                        <!-- Los proyectos se cargan dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Detalles -->
+    <div id="proyectoModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close" onclick="cerrarModal()">&times;</span>
+                <h2 id="modalTitle">Detalles del Proyecto</h2>
+                <div id="modalSubtitle">Información completa del proyecto radicado</div>
+            </div>
+            <div class="modal-body">
+                <!-- Información Básica -->
+                <div class="detail-section">
+                    <div class="detail-title">📋 Información General</div>
+                    <div class="detail-grid" id="modalInfoGeneral">
+                        <!-- Información general del proyecto -->
+                    </div>
+                </div>
+                
+                <!-- Resumen Ejecutivo -->
+                <div class="detail-section">
+                    <div class="detail-title">📄 Resumen Ejecutivo</div>
+                    <p id="modalResumen"></p>
+                </div>
+                
+                <!-- Equipo de Trabajo -->
+                <div class="detail-section">
+                    <div class="detail-title">👥 Equipo de Trabajo</div>
+                    <div id="modalEquipo"></div>
+                </div>
+                
+                <!-- Cronograma -->
+                <div class="detail-section">
+                    <div class="detail-title">⏱️ Cronograma de Evaluación</div>
+                    <div class="timeline" id="modalCronograma">
+                        <!-- Timeline de evaluación -->
+                    </div>
+                </div>
+                
+                <!-- Documentos -->
+                <div class="detail-section">
+                    <div class="detail-title">📎 Documentos Adjuntos</div>
+                    <ul class="documents-list" id="modalDocumentos">
+                        <!-- Lista de documentos -->
+                    </ul>
+                </div>
+                
+                <!-- Observaciones -->
+                <div class="detail-section">
+                    <div class="detail-title">💬 Observaciones del Evaluador</div>
+                    <div id="modalObservaciones">
+                        <p>No hay observaciones registradas hasta el momento.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        // Datos ficticios de proyectos radicados
+        const proyectosFicticios = [
+            {
+                id: 'PROY-2025-001',
+                titulo: 'Sistema de Gestión Inteligente para PyMEs',
+                lider: 'Ana María González',
+                empresa: 'TechSolutions SAS',
+                convocatoria: 'CONV-2025-001',
+                convocatoriaNombre: 'Innovación Digital PyMEs',
+                entidad: 'CCB',
+                estado: 'evaluacion',
+                fechaRadicacion: '2025-08-20T14:30:00',
+                presupuesto: 45000000,
+                duracion: 18,
+                sector: 'Tecnología',
+                resumenEjecutivo: 'Desarrollo de un sistema integral de gestión empresarial basado en inteligencia artificial que permita a las PyMEs automatizar procesos administrativos, mejorar la toma de decisiones y optimizar recursos.',
+                equipo: [
+                    { nombre: 'Ana María González', rol: 'Directora de Proyecto', experiencia: '10 años en desarrollo de software' },
+                    { nombre: 'Carlos Mendoza', rol: 'Arquitecto de Software', experiencia: '8 años en sistemas empresariales' },
+                    { nombre: 'Laura Pérez', rol: 'Especialista en IA', experiencia: '6 años en machine learning' }
+                ],
+                documentos: [
+                    { nombre: 'Propuesta Técnica.pdf', tamaño: '2.4 MB', tipo: 'application/pdf' },
+                    { nombre: 'Presupuesto Detallado.xlsx', tamaño: '856 KB', tipo: 'application/vnd.ms-excel' },
+                    { nombre: 'Cronograma de Actividades.pdf', tamaño: '1.2 MB', tipo: 'application/pdf' },
+                    { nombre: 'Hojas de Vida Equipo.pdf', tamaño: '3.1 MB', tipo: 'application/pdf' }
+                ],
+                progreso: 65,
+                observaciones: 'Proyecto bien estructurado. Se requiere mayor detalle en la metodología de implementación de IA.',
+                cronograma: [
+                    { fecha: '2025-08-20', titulo: 'Radicación del Proyecto', descripcion: 'Proyecto radicado exitosamente', estado: 'completed' },
+                    { fecha: '2025-08-25', titulo: 'Revisión Documental', descripcion: 'Verificación de requisitos mínimos', estado: 'completed' },
+                    { fecha: '2025-09-05', titulo: 'Evaluación Técnica', descripcion: 'Evaluación por expertos técnicos', estado: 'current' },
+                    { fecha: '2025-09-20', titulo: 'Evaluación Financiera', descripcion: 'Análisis de viabilidad financiera', estado: 'pending' },
+                    { fecha: '2025-10-05', titulo: 'Comité de Aprobación', descripcion: 'Decisión final del comité', estado: 'pending' }
+                ]
+            },
+            {
+                id: 'PROY-2025-002',
+                titulo: 'Plataforma de Economía Circular para Residuos',
+                lider: 'Roberto Silva',
+                empresa: 'EcoInnovate Ltda',
+                convocatoria: 'CONV-2025-003',
+                convocatoriaNombre: 'Sostenibilidad',
+                entidad: 'CCCS',
+                estado: 'revision',
+                fechaRadicacion: '2025-08-18T10:15:00',
+                presupuesto: 38000000,
+                duracion: 24,
+                sector: 'Medio Ambiente',
+                resumenEjecutivo: 'Desarrollo de una plataforma digital que conecte generadores de residuos con empresas recicladoras, promoviendo la economía circular y reduciendo el impacto ambiental.',
+                equipo: [
+                    { nombre: 'Roberto Silva', rol: 'Director de Proyecto', experiencia: '12 años en proyectos ambientales' },
+                    { nombre: 'Patricia López', rol: 'Especialista en Sostenibilidad', experiencia: '9 años en gestión ambiental' }
+                ],
+                documentos: [
+                    { nombre: 'Propuesta Técnica.pdf', tamaño: '3.2 MB', tipo: 'application/pdf' },
+                    { nombre: 'Estudio de Impacto Ambiental.pdf', tamaño: '4.5 MB', tipo: 'application/pdf' },
+                    { nombre: 'Presupuesto.xlsx', tamaño: '750 KB', tipo: 'application/vnd.ms-excel' }
+                ],
+                progreso: 25,
+                observaciones: '',
+                cronograma: [
+                    { fecha: '2025-08-18', titulo: 'Radicación del Proyecto', descripcion: 'Proyecto radicado exitosamente', estado: 'completed' },
+                    { fecha: '2025-08-25', titulo: 'Revisión Documental', descripcion: 'En proceso de verificación', estado: 'current' },
+                    { fecha: '2025-09-10', titulo: 'Evaluación Técnica', descripcion: 'Pendiente de asignación de evaluadores', estado: 'pending' }
+                ]
+            }
+        ];
+
+        // Generar más proyectos ficticios
+        const estados = ['radicado', 'revision', 'evaluacion', 'aprobado', 'rechazado'];
+        const convocatorias = [
+            { id: 'CONV-2025-001', nombre: 'Innovación Digital PyMEs', entidad: 'CCB' },
+            { id: 'CONV-2025-002', nombre: 'Emprendimiento Social', entidad: 'CRCI' },
+            { id: 'CONV-2025-003', nombre: 'Sostenibilidad', entidad: 'CCCS' },
+            { id: 'CONV-2025-004', nombre: 'Innovación Agropecuaria', entidad: 'CCMED' }
+        ];
+
+        // Agregar más proyectos ficticios
+        for (let i = 3; i <= 45; i++) {
+            const conv = convocatorias[Math.floor(Math.random() * convocatorias.length)];
+            const estado = estados[Math.floor(Math.random() * estados.length)];
+            
+            proyectosFicticios.push({
+                id: `PROY-2025-${i.toString().padStart(3, '0')}`,
+                titulo: `Proyecto de Innovación ${i}`,
+                lider: `Líder ${i}`,
+                empresa: `Empresa ${i} SAS`,
+                convocatoria: conv.id,
+                convocatoriaNombre: conv.nombre,
+                entidad: conv.entidad,
+                estado: estado,
+                fechaRadicacion: `2025-08-${Math.floor(Math.random() * 30) + 1}T${Math.floor(Math.random() * 12) + 8}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}:00`,
+                presupuesto: Math.floor(Math.random() * 50000000) + 20000000,
+                duracion: Math.floor(Math.random() * 18) + 6,
+                sector: 'Varios',
+                resumenEjecutivo: `Resumen ejecutivo del proyecto ${i}...`,
+                equipo: [
+                    { nombre: `Líder ${i}`, rol: 'Director de Proyecto', experiencia: '5+ años' }
+                ],
+                documentos: [
+                    { nombre: 'Propuesta Técnica.pdf', tamaño: '2.0 MB', tipo: 'application/pdf' }
+                ],
+                progreso: Math.floor(Math.random() * 100),
+                observaciones: '',
+                cronograma: []
+            });
+        }
+
+        let proyectosFiltrados = [...proyectosFicticios];
+
+        // Formatear moneda
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('es-CO', {
+                style: 'currency',
+                currency: 'COP',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(amount);
+        }
+
+        // Formatear fecha
+        function formatDate(dateString) {
+            return new Date(dateString).toLocaleDateString('es-CO', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric'
+            });
+        }
+
+        // Obtener texto del estado
+        function getEstadoTexto(estado) {
+            const estados = {
+                'radicado': 'Radicado',
+                'revision': 'En Revisión',
+                'evaluacion': 'En Evaluación',
+                'aprobado': 'Pre-Aprobado',
+                'rechazado': 'Rechazado'
+            };
+            return estados[estado] || estado;
+        }
+
+        // Obtener clase del estado
+        function getEstadoClass(estado) {
+            return `status-${estado}`;
+        }
+
+        // Renderizar tabla de proyectos
+        function renderizarProyectos() {
+            const tbody = document.getElementById('proyectosTableBody');
+            
+            if (proyectosFiltrados.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="8" class="empty-state">
+                            <div class="empty-icon">📭</div>
+                            <h3>No se encontraron proyectos</h3>
+                            <p>No hay proyectos que coincidan con los filtros seleccionados.</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            const html = proyectosFiltrados.map(proyecto => `
+                <tr onclick="verDetalle('${proyecto.id}')" style="cursor: pointer;">
+                    <td>
+                        <strong>${proyecto.id}</strong>
+                    </td>
+                    <td>
+                        <div class="convocatoria-tag">${proyecto.convocatoriaNombre}</div>
+                        <div class="project-title">${proyecto.titulo}</div>
+                        <div class="project-lead">${proyecto.lider} - ${proyecto.empresa}</div>
+                    </td>
+                    <td>
+                        <span class="convocatoria-tag">${proyecto.entidad}</span><br>
+                        ${proyecto.convocatoriaNombre}
+                    </td>
+                    <td>
+                        <span class="status-badge ${getEstadoClass(proyecto.estado)}">
+                            ${getEstadoTexto(proyecto.estado)}
+                        </span>
+                    </td>
+                    <td>${formatDate(proyecto.fechaRadicacion)}</td>
+                    <td>${formatCurrency(proyecto.presupuesto)}</td>
+                    <td>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${proyecto.progreso}%"></div>
+                        </div>
+                        <small>${proyecto.progreso}%</small>
+                    </td>
+                    <td>
+                        <button class="btn btn-primary" onclick="event.stopPropagation(); verDetalle('${proyecto.id}')">
+                            Ver
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+
+            tbody.innerHTML = html;
+        }
+
+        // Filtrar proyectos
+        function filtrarProyectos() {
+            const busqueda = document.getElementById('searchInput').value.toLowerCase();
+            const filtroConvocatoria = document.getElementById('filtroConvocatoria').value;
+            const filtroEstado = document.getElementById('filtroEstado').value;
+            const filtroEntidad = document.getElementById('filtroEntidad').value;
+
+            proyectosFiltrados = proyectosFicticios.filter(proyecto => {
+                const coincideBusqueda = !busqueda || 
+                    proyecto.titulo.toLowerCase().includes(busqueda) ||
+                    proyecto.lider.toLowerCase().includes(busqueda) ||
+                    proyecto.empresa.toLowerCase().includes(busqueda) ||
+                    proyecto.convocatoriaNombre.toLowerCase().includes(busqueda);
+
+                const coincideConvocatoria = !filtroConvocatoria || proyecto.convocatoria === filtroConvocatoria;
+                const coincideEstado = !filtroEstado || proyecto.estado === filtroEstado;
+                const coincideEntidad = !filtroEntidad || proyecto.entidad === filtroEntidad;
+
+                return coincideBusqueda && coincideConvocatoria && coincideEstado && coincideEntidad;
+            });
+
+            actualizarEstadisticas();
+            renderizarProyectos();
+        }
+
+        // Actualizar estadísticas
+        function actualizarEstadisticas() {
+            const total = proyectosFiltrados.length;
+            const revision = proyectosFiltrados.filter(p => p.estado === 'revision').length;
+            const evaluacion = proyectosFiltrados.filter(p => p.estado === 'evaluacion').length;
+            const aprobados = proyectosFiltrados.filter(p => p.estado === 'aprobado').length;
+
+            document.getElementById('totalRadicados').textContent = total;
+            document.getElementById('enRevision').textContent = revision;
+            document.getElementById('enEvaluacion').textContent = evaluacion;
+            document.getElementById('aprobados').textContent = aprobados;
+        }
+
+        // Ver detalle del proyecto
+        function verDetalle(proyectoId) {
+            const proyecto = proyectosFicticios.find(p => p.id === proyectoId);
+            if (!proyecto) return;
+
+            // Llenar modal con información
+            document.getElementById('modalTitle').textContent = proyecto.titulo;
+            
+            // Información general
+            document.getElementById('modalInfoGeneral').innerHTML = `
+                <div class="detail-item">
+                    <div class="detail-label">ID del Proyecto</div>
+                    <div class="detail-value">${proyecto.id}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Líder del Proyecto</div>
+                    <div class="detail-value">${proyecto.lider}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Empresa</div>
+                    <div class="detail-value">${proyecto.empresa}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Convocatoria</div>
+                    <div class="detail-value">${proyecto.convocatoriaNombre}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Estado Actual</div>
+                    <div class="detail-value">
+                        <span class="status-badge ${getEstadoClass(proyecto.estado)}">
+                            ${getEstadoTexto(proyecto.estado)}
+                        </span>
+                    </div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Fecha de Radicación</div>
+                    <div class="detail-value">${formatDate(proyecto.fechaRadicacion)}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Presupuesto Solicitado</div>
+                    <div class="detail-value">${formatCurrency(proyecto.presupuesto)}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Duración</div>
+                    <div class="detail-value">${proyecto.duracion} meses</div>
+                </div>
+            `;
+
+            // Resumen ejecutivo
+            document.getElementById('modalResumen').textContent = proyecto.resumenEjecutivo;
+
+            // Equipo de trabajo
+            const equipoHTML = proyecto.equipo.map(miembro => `
+                <div class="detail-item">
+                    <div class="detail-label">${miembro.rol}</div>
+                    <div class="detail-value">${miembro.nombre}</div>
+                    <div style="color: #7f8c8d; font-size: 0.9em; margin-top: 5px;">${miembro.experiencia}</div>
+                </div>
+            `).join('');
+            document.getElementById('modalEquipo').innerHTML = equipoHTML;
+
+            // Cronograma
+            const cronogramaHTML = proyecto.cronograma.map(item => `
+                <div class="timeline-item ${item.estado}">
+                    <div class="timeline-content">
+                        <div class="timeline-date">${formatDate(item.fecha)}</div>
+                        <div class="timeline-title">${item.titulo}</div>
+                        <div class="timeline-description">${item.descripcion}</div>
+                    </div>
+                </div>
+            `).join('');
+            document.getElementById('modalCronograma').innerHTML = cronogramaHTML || '<p>Cronograma no disponible</p>';
+
+            // Documentos
+            const documentosHTML = proyecto.documentos.map(doc => `
+                <li>
+                    <span class="document-icon">📄</span>
+                    <span class="document-name">${doc.nombre}</span>
+                    <span class="document-size">${doc.tamaño}</span>
+                </li>
+            `).join('');
+            document.getElementById('modalDocumentos').innerHTML = documentosHTML;
+
+            // Observaciones
+            document.getElementById('modalObservaciones').innerHTML = proyecto.observaciones ? 
+                `<p>${proyecto.observaciones}</p>` : 
+                '<p>No hay observaciones registradas hasta el momento.</p>';
+
+            // Mostrar modal
+            document.getElementById('proyectoModal').style.display = 'block';
+        }
+
+        // Cerrar modal
+        function cerrarModal() {
+            document.getElementById('proyectoModal').style.display = 'none';
+        }
+
+        // Exportar datos
+        function exportarDatos() {
+            Swal.fire({
+                icon: 'info',
+                title: 'Exportar Datos',
+                text: 'La funcionalidad de exportación estará disponible próximamente',
+                timer: 2000
+            });
+        }
+
+        // Actualizar datos
+        function actualizarDatos() {
+            Swal.fire({
+                icon: 'success',
+                title: 'Datos Actualizados',
+                text: 'La información ha sido actualizada correctamente',
+                timer: 1500
+            });
+        }
+
+        // Cerrar modal al hacer clic fuera
+        window.onclick = function(event) {
+            const modal = document.getElementById('proyectoModal');
+            if (event.target === modal) {
+                cerrarModal();
+            }
+        }
+
+        // Inicializar página
+        document.addEventListener('DOMContentLoaded', function() {
+            actualizarEstadisticas();
+            renderizarProyectos();
+        });
+    </script>
+</body>
+</html>
