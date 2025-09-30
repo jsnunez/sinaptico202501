@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SinAptico - Mapa de Usuarios</title>
+    <link rel="stylesheet" href="styles/colores.css">
+    <link rel="stylesheet" href="styles/stylehelice2.css">
+    <link rel="stylesheet" href="styles/mapa-usuarios.css">
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <style>
+        /* Reset y base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+
+        /* Container principal */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header del mapa */
+        .map-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .map-header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .map-header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        /* Estadísticas */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-left: 4px solid #3498db;
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+
+        /* Controles del mapa */
+        .map-controls {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .control-label {
+            font-size: 0.9em;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .control-input, .control-select {
+            padding: 10px;
+            border: 2px solid #ecf0f1;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .control-input:focus, .control-select:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 20px;
+            background: #ecf0f1;
+            color: #2c3e50;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .filter-btn.active {
+            background: #3498db;
+            color: white;
+        }
+
+        .filter-btn:hover {
+            background: #3498db;
+            color: white;
+        }
+
+        /* Contenedor del mapa */
+        .map-container {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .map-wrapper {
+            position: relative;
+            height: 600px;
+        }
+
+        #mapid {
+            height: 100%;
+            width: 100%;
+        }
+
+        /* Lista de usuarios */
+        .users-list {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .users-list h3 {
+            margin-bottom: 15px;
+            color: #2c3e50;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 10px;
+        }
+
+        .user-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #ecf0f1;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .user-item:hover {
+            background-color: #f8f9fa;
+            border-radius: 6px;
+            margin: 0 -10px;
+            padding-left: 22px;
+            padding-right: 22px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+
+        .user-info {
+            flex: 1;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 2px;
+        }
+
+        .user-details {
+            font-size: 0.85em;
+            color: #7f8c8d;
+        }
+
+        .user-status {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: 500;
+        }
+
+        .status-online {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-offline {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        /* Popup personalizado */
+        .custom-popup {
+            min-width: 250px;
+        }
+
+        .popup-header {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            padding: 15px;
+            margin: -10px -10px 10px -10px;
+            border-radius: 6px 6px 0 0;
+        }
+
+        .popup-name {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+
+        .popup-role {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .popup-body {
+            padding: 0 5px;
+        }
+
+        .popup-info {
+            display: flex;
+            justify-content: space-between;
+            margin: 8px 0;
+            font-size: 0.9em;
+        }
+
+        .popup-label {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .popup-value {
+            color: #7f8c8d;
+        }
+
+        .popup-actions {
+            margin-top: 15px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .popup-btn {
+            flex: 1;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.85em;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #3498db;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #95a5a6;
+            color: white;
+        }
+
+        .popup-btn:hover {
+            opacity: 0.8;
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #7f8c8d;
+        }
+
+        .loading i {
+            font-size: 2em;
+            margin-bottom: 10px;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .map-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .control-group {
+                width: 100%;
+            }
+            
+            .filter-buttons {
+                justify-content: center;
+            }
+            
+            .map-wrapper {
+                height: 400px;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+        }
+
+        /* Marcadores personalizados */
+        .marker-cluster {
+            background: rgba(52, 152, 219, 0.8);
+            border-radius: 50%;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            line-height: 40px;
+        }
+
+        .marker-admin {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
+
+        .marker-user {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+        }
+
+        .marker-empresa {
+            background: linear-gradient(135deg, #27ae60, #219a52);
+        }
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- Config JS -->
+    <script src="/js/config.js"></script>
+</head>
+
+<body>
+    <!-- Header original del sistema -->
+    <header class="header">
+        <div onclick="window.location.href='/helice'" class="logo">
+            <span class="logo-text">SINAPTICO</span>
+        </div>
+        <nav class="nav">
+            <button class="nav-button pulse" onclick="window.location.href='/helice'">Hélice</button>
+            <button class="nav-button pulse" onclick="window.location.href='/innovacion'">Innovación</button>
+            <button class="nav-button pulse" onclick="window.location.href='/Conocimiento'">Conocimiento</button>
+            <button class="nav-button pulse" onclick="window.location.href='/convocatorias'">Convocatorias</button>
+            <button class="nav-button pulse" onclick="window.location.href='/eventos'">Eventos</button>
+            <button class="nav-button pulse active" onclick="window.location.href='/mapa-usuarios'">Mapa</button>
+            <button class="nav-button pulse" id="cerrarSesion">Cerrar sesión</button>
+        </nav>
+    </header>
+
+    <!-- Bienvenida -->
+    <div class="welcome-container">
+        <div class="welcome-text">
+            <h2 id="bienvenido">Bienvenido</h2>
+        </div>
+    </div>
+
+    <!-- Contenido principal -->
+    <div class="container">
+        <!-- Header del mapa -->
+        <div class="map-header">
+            <h1>🗺️ Mapa de Entidades</h1>
+            <p>Explora la ubicación de empresas, Academiaes y organizaciones de la red SinAptico</p>
+        </div>
+
+        <!-- Estadísticas -->
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-number" id="total-users">0</div>
+                <div class="stat-label">Entidades Totales</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="online-users">0</div>
+                <div class="stat-label">Verificadas</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="total-companies">0</div>
+                <div class="stat-label">Tipos de Entidad</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="total-cities">0</div>
+                <div class="stat-label">Ciudades</div>
+            </div>
+        </div>
+
+        <!-- Controles del mapa -->
+        <div class="map-controls">
+            <div class="control-group">
+                <label class="control-label">Buscar entidad</label>
+                <input type="text" class="control-input" id="search-user" placeholder="Nombre o actividad...">
+            </div>
+            
+            <div class="control-group">
+                <label class="control-label">Filtrar por ciudad</label>
+                <select class="control-select" id="filter-city">
+                    <option value="">Todas las ciudades</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label class="control-label">Tipo de entidad</label>
+                <div class="filter-buttons">
+                    <button class="filter-btn active" data-type="all">Todas</button>
+                    <button class="filter-btn" data-type="Empresa">🏢 Empresas</button>
+                    <button class="filter-btn" data-type="Academia">🎓 Academiaes</button>
+                    <button class="filter-btn" data-type="Estado">� Estados</button>
+                    <button class="filter-btn" data-type="Sociedad">💡 Sociedads</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contenedor del mapa -->
+        <div class="map-container">
+            <div class="map-wrapper">
+                <div id="mapid"></div>
+            </div>
+        </div>
+
+        <!-- Lista de usuarios -->
+        <div class="users-list">
+            <h3><i class="fas fa-building"></i> Entidades en el Mapa</h3>
+            <div id="users-list-content">
+                <div class="loading">
+                    <i class="fas fa-spinner"></i>
+                    <p>Cargando entidades...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Variables globales
+        let map;
+        let markers = [];
+        let usersData = [];
+        let filteredUsers = [];
+        let currentFilter = 'all';
+
+        // Datos de ejemplo de usuarios con ubicaciones en Colombia
+        const mockUsers = [
+            {
+                id: 1,
+                name: "María González",
+                email: "maria.gonzalez@email.com",
+                type: "admin",
+                company: "EcoInnovación SAS",
+                city: "Bogotá",
+                lat: 4.7110,
+                lng: -74.0721,
+                status: "online",
+                lastSeen: "Hace 5 minutos",
+                role: "CEO",
+                projects: 8,
+                avatar: "MG"
+            },
+            {
+                id: 2,
+                name: "Carlos Rodríguez",
+                email: "carlos.rodriguez@techcorp.com",
+                type: "user",
+                company: "TechCorp",
+                city: "Medellín",
+                lat: 6.2442,
+                lng: -75.5812,
+                status: "online",
+                lastSeen: "Hace 1 hora",
+                role: "Desarrollador",
+                projects: 12,
+                avatar: "CR"
+            },
+            {
+                id: 3,
+                name: "Ana Martínez",
+                email: "ana.martinez@Academia.edu",
+                type: "user",
+                company: "Academia Nacional",
+                city: "Bucaramanga",
+                lat: 7.1193,
+                lng: -73.1227,
+                status: "online",
+                lastSeen: "Hace 30 minutos",
+                role: "Investigadora",
+                projects: 5,
+                avatar: "AM"
+            },
+            {
+                id: 4,
+                name: "Luis Herrera",
+                email: "luis.herrera@Estado.co",
+                type: "empresa",
+                company: "EstadoHealth",
+                city: "Cali",
+                lat: 3.4516,
+                lng: -76.5320,
+                status: "offline",
+                lastSeen: "Hace 2 horas",
+                role: "Fundador",
+                projects: 15,
+                avatar: "LH"
+            },
+            {
+                id: 5,
+                name: "Patricia López",
+                email: "patricia.lopez@innovacol.org",
+                type: "admin",
+                company: "InnovaCol",
+                city: "Cartagena",
+                lat: 10.3910,
+                lng: -75.4794,
+                status: "online",
+                lastSeen: "Hace 15 minutos",
+                role: "Directora",
+                projects: 20,
+                avatar: "PL"
+            },
+            {
+                id: 6,
+                name: "David Silva",
+                email: "david.silva@designstudio.com",
+                type: "user",
+                company: "DesignStudio",
+                city: "Barranquilla",
+                lat: 10.9685,
+                lng: -74.7813,
+                status: "online",
+                lastSeen: "Hace 10 minutos",
+                role: "Diseñador",
+                projects: 7,
+                avatar: "DS"
+            },
+            {
+                id: 7,
+                name: "Rosa Jiménez",
+                email: "rosa.jimenez@agritech.co",
+                type: "empresa",
+                company: "AgriTech Solutions",
+                city: "Manizales",
+                lat: 5.0703,
+                lng: -75.5138,
+                status: "offline",
+                lastSeen: "Hace 4 horas",
+                role: "Gerente",
+                projects: 10,
+                avatar: "RJ"
+            },
+            {
+                id: 8,
+                name: "Miguel Torres",
+                email: "miguel.torres@fintech.co",
+                type: "user",
+                company: "FinTech Colombia",
+                city: "Pereira",
+                lat: 4.8087,
+                lng: -75.6906,
+                status: "online",
+                lastSeen: "Hace 45 minutos",
+                role: "Analista",
+                projects: 6,
+                avatar: "MT"
+            }
+        ];
+
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeMap();
+            loadUsers();
+            setupEventListeners();
+            checkUserSession();
+        });
+
+        function checkUserSession() {
+            const usuario = obtenerCookie("user");
+            
+            if (usuario) {
+                let cleanedStr = decodeURIComponent(usuario.replace(/%20/g, " "));
+                let nombreUsuario = cleanedStr.split(" ")[0];
+                document.getElementById('bienvenido').textContent = `Hola, ${nombreUsuario}`;
+            } else {
+                document.getElementById('bienvenido').textContent = 'Bienvenido al Mapa';
+            }
+        }
+
+        function obtenerCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        function initializeMap() {
+            // Inicializar mapa centrado en Colombia
+            map = L.map('mapid').setView([4.5709, -74.2973], 6);
+
+            // Agregar capa de mapa
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+
+            // Personalizar controles
+            map.zoomControl.setPosition('topright');
+        }
+
+        function loadUsers() {
+            console.log('🔄 Cargando entidades desde la API...');
+            // Cargar entidades desde la API
+            fetch(`${API_BASE_URL}/api/ubicacion-entidad/mapa/entidades`)
+                .then(response => {
+                    console.log('📡 Respuesta de la API:', response.status);
+                    if (!response.ok) {
+                        throw new Error('Error al cargar entidades');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('✅ Entidades cargadas:', data);
+                    usersData = data;
+                    filteredUsers = [...usersData];
+                    updateStatistics();
+                    populateCityFilter();
+                    displayMarkersOnMap();
+                    displayUsersList();
+                })
+                .catch(error => {
+                    console.error('❌ Error:', error);
+                    // Usar datos de ejemplo en caso de error
+                    usersData = [...mockUsers];
+                    filteredUsers = [...usersData];
+                    updateStatistics();
+                    populateCityFilter();
+                    displayMarkersOnMap();
+                    displayUsersList();
+                    
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Datos de demostración',
+                        text: 'Se están mostrando datos de ejemplo. No se pudieron cargar las entidades reales.',
+                        timer: 3000,
+                        timerProgressBar: true
+                    });
+                });
+        }
+
+        function updateStatistics() {
+            document.getElementById('total-users').textContent = usersData.length;
+            document.getElementById('online-users').textContent = usersData.filter(u => u.verificada).length;
+            document.getElementById('total-companies').textContent = [...new Set(usersData.map(u => u.claseEntidad))].length;
+            document.getElementById('total-cities').textContent = [...new Set(usersData.map(u => u.city))].length;
+        }
+
+        function populateCityFilter() {
+            const cities = [...new Set(usersData.map(u => u.city))].sort();
+            const citySelect = document.getElementById('filter-city');
+            
+            cities.forEach(city => {
+                const option = document.createElement('option');
+                option.value = city;
+                option.textContent = city;
+                citySelect.appendChild(option);
+            });
+        }
+
+        function displayMarkersOnMap() {
+            // Limpiar marcadores existentes
+            markers.forEach(marker => map.removeLayer(marker));
+            markers = [];
+
+            filteredUsers.forEach(user => {
+                const marker = createUserMarker(user);
+                markers.push(marker);
+                marker.addTo(map);
+            });
+
+            // Ajustar vista si hay marcadores
+            if (markers.length > 0) {
+                const group = new L.featureGroup(markers);
+                map.fitBounds(group.getBounds().pad(0.1));
+            }
+        }
+
+        function createUserMarker(user) {
+            // Crear icono personalizado
+            const iconHtml = `
+                <div class="marker-entidad" style="
+                    width: 40px; 
+                    height: 40px; 
+                    border-radius: 50%; 
+                    display: flex; 
+                    align-items: center; 
+                    justify-content: center; 
+                    color: white; 
+                    font-weight: bold; 
+                    font-size: 14px;
+                    border: 3px solid white;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+                    background: ${getEntityColor(user.claseEntidad)};
+                ">
+                    ${user.avatar}
+                </div>
+            `;
+
+            const customIcon = L.divIcon({
+                html: iconHtml,
+                className: 'custom-marker',
+                iconSize: [40, 40],
+                iconAnchor: [20, 20],
+                popupAnchor: [0, -20]
+            });
+
+            const marker = L.marker([user.lat, user.lng], { icon: customIcon });
+
+            // Crear popup personalizado
+            const popupContent = createPopupContent(user);
+            marker.bindPopup(popupContent, {
+                maxWidth: 300,
+                className: 'custom-popup'
+            });
+
+            // Eventos del marcador
+            marker.on('click', () => {
+                highlightUser(user.id);
+            });
+
+            return marker;
+        }
+
+        function getEntityColor(claseEntidad) {
+            const colors = {
+                'Empresa': 'linear-gradient(135deg, #3498db, #2980b9)',
+                'Academia': 'linear-gradient(135deg, #e74c3c, #c0392b)',
+                'Estado': 'linear-gradient(135deg, #27ae60, #219a52)',
+                'Sociedad': 'linear-gradient(135deg, #f39c12, #e67e22)'
+            };
+            return colors[claseEntidad] || 'linear-gradient(135deg, #95a5a6, #7f8c8d)';
+        }
+
+        function createPopupContent(user) {
+            const typeLabels = {
+                'Empresa': '🏢 Empresa',
+                'Academia': '🎓 Academia',
+                'Estado': '� Estado',
+                'Sociedad': '💡 Sociedad'
+            };
+
+            const statusColor = user.verificada ? '#27ae60' : '#e74c3c';
+
+            return `
+                <div class="popup-header">
+                    <div class="popup-name">${user.name}</div>
+                    <div class="popup-role">${typeLabels[user.claseEntidad] || '🏢 Entidad'}</div>
+                </div>
+                <div class="popup-body">
+                    <div class="popup-info">
+                        <span class="popup-label">Tipo:</span>
+                        <span class="popup-value">${user.claseEntidad}</span>
+                    </div>
+                    <div class="popup-info">
+                        <span class="popup-label">Ciudad:</span>
+                        <span class="popup-value">${user.city}</span>
+                    </div>
+                    <div class="popup-info">
+                        <span class="popup-label">Dirección:</span>
+                        <span class="popup-value">${user.direccion || 'No especificada'}</span>
+                    </div>
+                    <div class="popup-info">
+                        <span class="popup-label">Estado:</span>
+                        <span class="popup-value" style="color: ${statusColor}">
+                            ● ${user.verificada ? 'Verificada' : 'Sin verificar'}
+                        </span>
+                    </div>
+                    <div class="popup-info">
+                        <span class="popup-label">Teléfono:</span>
+                        <span class="popup-value">${user.telefono || 'No disponible'}</span>
+                    </div>
+                    <div class="popup-actions">
+                        <button class="popup-btn btn-primary" onclick="contactUser('${user.email}')">
+                            <i class="fas fa-envelope"></i> Contactar
+                        </button>
+                        ${user.website ? `<button class="popup-btn btn-secondary" onclick="window.open('${user.website}', '_blank')">
+                            <i class="fas fa-globe"></i> Web
+                        </button>` : ''}
+                    </div>
+                </div>
+            `;
+        }
+
+        function displayUsersList() {
+            const listContent = document.getElementById('users-list-content');
+            
+            if (filteredUsers.length === 0) {
+                listContent.innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: #7f8c8d;">
+                        <i class="fas fa-search" style="font-size: 2em; margin-bottom: 10px;"></i>
+                        <p>No se encontraron entidades con los filtros seleccionados</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const usersHtml = filteredUsers.map(user => {
+                const typeIcons = {
+                    'Empresa': '🏢',
+                    'Academia': '🎓',
+                    'Estado': '�',
+                    'Sociedad': '💡'
+                };
+
+                return `
+                    <div class="user-item" onclick="focusOnUser(${user.id})">
+                        <div class="user-avatar">${user.avatar}</div>
+                        <div class="user-info">
+                            <div class="user-name">${typeIcons[user.claseEntidad] || '🏢'} ${user.name}</div>
+                            <div class="user-details">${user.claseEntidad} • ${user.city}</div>
+                        </div>
+                        <div class="user-status ${user.verificada ? 'status-online' : 'status-offline'}">
+                            ${user.verificada ? 'Verificada' : 'Sin verificar'}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            listContent.innerHTML = usersHtml;
+        }
+
+        function setupEventListeners() {
+            // Filtros de tipo de usuario
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    currentFilter = this.dataset.type;
+                    applyFilters();
+                });
+            });
+
+            // Búsqueda
+            document.getElementById('search-user').addEventListener('input', applyFilters);
+            
+            // Filtro de ciudad
+            document.getElementById('filter-city').addEventListener('change', applyFilters);
+
+            // Cerrar sesión
+            document.getElementById('cerrarSesion').addEventListener('click', function() {
+                Swal.fire({
+                    title: '¿Cerrar sesión?',
+                    text: "¿Estás seguro que quieres cerrar tu sesión?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Sí, cerrar',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        clearCookies();
+                        window.location.href = '/login';
+                    }
+                });
+            });
+        }
+
+        function applyFilters() {
+            const searchTerm = document.getElementById('search-user').value.toLowerCase();
+            const cityFilter = document.getElementById('filter-city').value;
+
+            filteredUsers = usersData.filter(user => {
+                // Filtro de tipo
+                const typeMatch = currentFilter === 'all' || user.claseEntidad === currentFilter;
+                
+                // Filtro de búsqueda
+                const searchMatch = !searchTerm || 
+                                  user.name.toLowerCase().includes(searchTerm) ||
+                                  user.email.toLowerCase().includes(searchTerm) ||
+                                  user.company.toLowerCase().includes(searchTerm);
+                
+                // Filtro de ciudad
+                const cityMatch = !cityFilter || user.city === cityFilter;
+
+                return typeMatch && searchMatch && cityMatch;
+            });
+
+            displayMarkersOnMap();
+            displayUsersList();
+        }
+
+        function focusOnUser(userId) {
+            const user = usersData.find(u => u.id === userId);
+            if (user) {
+                map.setView([user.lat, user.lng], 12);
+                
+                // Encontrar y abrir el popup del marcador
+                const marker = markers.find(m => 
+                    Math.abs(m.getLatLng().lat - user.lat) < 0.001 && 
+                    Math.abs(m.getLatLng().lng - user.lng) < 0.001
+                );
+                if (marker) {
+                    marker.openPopup();
+                }
+            }
+        }
+
+        function highlightUser(userId) {
+            // Resaltar usuario en la lista
+            document.querySelectorAll('.user-item').forEach(item => {
+                item.style.background = '';
+            });
+            
+            const userElement = document.querySelector(`[onclick="focusOnUser(${userId})"]`);
+            if (userElement) {
+                userElement.style.background = '#e3f2fd';
+                userElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        function contactUser(email) {
+            window.location.href = `mailto:${email}?subject=Contacto desde SinAptico&body=Hola, me gustaría ponerme en contacto contigo a través de la plataforma SinAptico.`;
+        }
+
+        function viewProfile(userId) {
+            const user = usersData.find(u => u.id === userId);
+            if (user) {
+                Swal.fire({
+                    title: `Perfil de ${user.name}`,
+                    html: `
+                        <div style="text-align: left;">
+                            <p><strong>Email:</strong> ${user.email}</p>
+                            <p><strong>Empresa:</strong> ${user.company}</p>
+                            <p><strong>Rol:</strong> ${user.role}</p>
+                            <p><strong>Ciudad:</strong> ${user.city}</p>
+                            <p><strong>Proyectos:</strong> ${user.projects}</p>
+                            <p><strong>Estado:</strong> ${user.status === 'online' ? 'En línea' : 'Desconectado'}</p>
+                        </div>
+                    `,
+                    showCancelButton: true,
+                    confirmButtonText: 'Contactar',
+                    cancelButtonText: 'Cerrar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        contactUser(user.email);
+                    }
+                });
+            }
+        }
+
+        function clearCookies() {
+            const cookies = ['user', 'userEmail', 'userId', 'userRole'];
+            cookies.forEach(cookie => {
+                document.cookie = `${cookie}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+            });
+        }
+    </script>
+</body>
+</html>

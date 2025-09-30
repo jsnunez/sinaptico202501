@@ -577,11 +577,7 @@ form {
     border-bottom: 1px solid rgba(110, 72, 170, 0.2);
 }
 
-.datos-entidad, .datos-contacto {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
-}
+
 
 .input-box {
     margin-bottom: 1rem;
@@ -824,3 +820,91 @@ border-radius: 100%;
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 0.95; transform: translateY(0); }
   }
+
+/* Estilos para el mapa en el formulario de entidad */
+.map-section {
+    margin: 15px 0;
+}
+
+.map-container {
+    border: 2px solid var(--primary-color);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.map-container:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+}
+
+.coordinates-display {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.coordinates-display > div {
+    flex: 1;
+}
+
+.coordinates-display label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.coordinates-display input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f8f9fa;
+    color: #666;
+    font-size: 0.9em;
+}
+
+.map-instructions {
+    color: #666;
+    font-size: 0.9em;
+    margin: 5px 0;
+    padding: 8px 12px;
+    background-color: #f0f8ff;
+    border-left: 4px solid var(--primary-color);
+    border-radius: 4px;
+}
+
+.map-help-text {
+    color: #666;
+    font-size: 0.8em;
+    margin-top: 8px;
+    text-align: center;
+    font-style: italic;
+}
+
+/* Estilos específicos del leaflet dentro del modal */
+.modal .leaflet-control-container {
+    font-size: 12px;
+}
+
+.modal .leaflet-popup-content {
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.modal .leaflet-popup-content strong {
+    color: var(--primary-color);
+}
+
+/* Animación para el marcador personalizado */
+@keyframes markerPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.location-marker {
+    animation: markerPulse 2s infinite;
+}

@@ -1,7 +1,7 @@
 let empresaC = 0;
-let startupC = 0;
-let emprendimientoC = 0;
-let universidadesC = 0;
+let EstadoC = 0;
+let SociedadC = 0;
+let AcademiaesC = 0;
 let todasLasEmpresas = [];
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -28,9 +28,9 @@ function cargarEmpresas(empresas) {
   const listado = document.getElementById('listado');
   listado.innerHTML = '';  // Limpiar el contenido previo
   empresaC = 0;
-  startupC = 0;
-  emprendimientoC = 0;
-  universidadesC = 0;
+  EstadoC = 0;
+  SociedadC = 0;
+  AcademiaesC = 0;
   empresas.forEach(empresa => {
     if (empresa.habilitado == 1) {
 
@@ -51,14 +51,14 @@ function cargarEmpresas(empresas) {
         case "Empresa":
           empresaC++;
           break;
-        case "Emprendimiento":
-          emprendimientoC++;
+        case "Sociedad":
+          SociedadC++;
           break;
-        case "Startup":
-          startupC++;
+        case "Estado":
+          EstadoC++;
           break;
-        case "Universidad":
-          universidadesC++;
+        case "Academia":
+          AcademiaesC++;
           break;
 
         default:
@@ -80,9 +80,9 @@ function cargarEmpresas(empresas) {
   }
 
   document.getElementById("empresaC").innerText = empresaC;
-  document.getElementById("emprendimientoC").innerText = emprendimientoC;
-  document.getElementById("startupC").innerText = startupC;
-  document.getElementById("universidadesC").innerText = universidadesC;
+  document.getElementById("SociedadC").innerText = SociedadC;
+  document.getElementById("EstadoC").innerText = EstadoC;
+  document.getElementById("AcademiaesC").innerText = AcademiaesC;
 
 }
 

@@ -4,6 +4,8 @@ import Cargo from '../models/cargo.js';
 import Ciudad from '../models/ciudad.js';
 import Departamento from '../models/departamento.js';
 import UsuarioEmpresaCargo from '../models/usuarioEmpresaCargo.js';
+import UbicacionEntidad from '../models/ubicacionEntidad.js';
+import User from '../models/user.js';
 
 // Controlador para verificar si un usuario tiene una entidad
 export const verificarEntidad = async (req, res) => {
@@ -12,7 +14,7 @@ export const verificarEntidad = async (req, res) => {
 
     // Consultar en la base de datos si el usuario tiene una entidad asociada
     const entidad = await Entidad.findOne({
-      where: { UserAdminId: userId },  // Buscar la entidad asociada al usuario
+      where: { UserAdminId: userId },  // Buscar la entichdad asociada al usuario
     });
     const usuario = await UsuarioEmpresaCargo.findOne({
       where: { UserId: userId, estado: 1 },  // Buscar el usuario asociado con estado 1
@@ -60,13 +62,48 @@ export const verificarEntidad = async (req, res) => {
 // Controlador para obtener todas las empresas
 export const obtenerEntidad = async (req, res) => {
   try {
-    // Consultar todas las empresas en la base de datos
-    const empresas = await Entidad.findAll();
+    console.log('🔍 Obteniendo entidades con relaciones...');
+    
+    // Consultar todas las empresas en la base de datos con sus relaciones
+    const empresas = await Entidad.findAll({
+      include: [
+        {
+          model: Contacto,
+          required: false, // LEFT JOIN para que no excluya entidades sin contacto
+          attributes: ['id', 'nombre', 'telefono', 'email', 'cargoId']
+        },
+        {
+          model: Ciudad,
+          as: 'ciudad',
+          required: false, // LEFT JOIN para que no excluya entidades sin ciudad
+          attributes: ['id', 'nombre', 'departamentoId'],
+          include: [
+            {
+              model: Departamento,
+              as: 'departamento',
+              required: false,
+              attributes: ['id', 'nombre']
+            }
+          ]
+        },
+        {
+          model: UbicacionEntidad,
+          as: 'ubicaciones',
+          required: false, // LEFT JOIN para que no excluya entidades sin ubicación
+          attributes: ['id', 'latitud', 'longitud', 'direccionCompleta', 'activa', 'verificada', 'esUbicacionPrincipal']
+        }
+      ]
+    });
+
+    console.log(`📊 Se encontraron ${empresas.length} entidades`);
+    if (empresas.length > 0) {
+      console.log('📋 Primera entidad con datos completos:', JSON.stringify(empresas[0], null, 2));
+    }
 
     if (empresas.length > 0) {
       return res.json({
         success: true,
-        empresas: empresas,  // Devuelves las empresas
+        empresas: empresas,  // Devuelves las empresas con sus relaciones
       });
     } else {
       return res.json({
@@ -75,10 +112,11 @@ export const obtenerEntidad = async (req, res) => {
       });
     }
   } catch (error) {
-    console.error('Error al obtener las empresas:', error);
+    console.error('❌ Error al obtener las empresas:', error);
     return res.status(500).json({
       success: false,
       mensaje: 'Hubo un error al obtener las empresas',
+      error: error.message
     });
   }
 };
@@ -120,6 +158,8 @@ export const crearEntidad = async (req, res) => {
       instagram,
       paginaweb,
       UserAdminId,
+      latitud,
+      longitud,
     } = req.body;
 
     try {
@@ -154,9 +194,42 @@ export const crearEntidad = async (req, res) => {
         UserAdminId,
       });
 
+      // Crear la ubicación si se proporcionaron coordenadas
+      console.log('Verificando coordenadas:', { latitud, longitud });
+      console.log('Tipo de latitud:', typeof latitud, 'Valor:', `"${latitud}"`);
+      console.log('Tipo de longitud:', typeof longitud, 'Valor:', `"${longitud}"`);
+      
+      // Validar que las coordenadas no sean strings vacíos
+      const latitudValida = latitud && latitud.toString().trim() !== '';
+      const longitudValida = longitud && longitud.toString().trim() !== '';
+      
+      let ubicacionCreada = false;
+      
+      if (latitudValida && longitudValida) {
+        console.log('Intentando crear ubicación para entidad:', nuevaEntidad.id);
+        try {
+          const ubicacion = await UbicacionEntidad.create({
+            entidadId: nuevaEntidad.id,
+            latitud: parseFloat(latitud),
+            longitud: parseFloat(longitud),
+            direccionCompleta: direccion,
+            activa: true,
+            verificada: false // Se puede verificar posteriormente
+          });
+          console.log('✅ Ubicación creada exitosamente:', ubicacion.id);
+          ubicacionCreada = true;
+        } catch (ubicacionError) {
+          console.error('❌ Error al crear la ubicación:', ubicacionError);
+          ubicacionCreada = false;
+        }
+      } else {
+        console.log('No se proporcionaron coordenadas válidas. Latitud válida:', latitudValida, 'Longitud válida:', longitudValida);
+      }
+
       return res.status(201).json({
         message: 'Entidad creada con éxito',
         entidad: nuevaEntidad,
+        ubicacionCreada: ubicacionCreada
       });
     } catch (error) {
       if (error.name === 'SequelizeUniqueConstraintError') {
@@ -198,6 +271,8 @@ export const editarEntidad = async (req, res) => {
       instagram,
       paginaweb,
       UserAdminId,
+      latitud,
+      longitud,
     } = req.body;
 
     try {
@@ -247,9 +322,44 @@ export const editarEntidad = async (req, res) => {
       // Actualizar la entidad
       await entidad.update(nuevosDatos);
 
+      // Manejar ubicación si se proporcionaron coordenadas
+      if (latitud && longitud) {
+        console.log(`📍 Actualizando ubicación: ${latitud}, ${longitud}`);
+        
+        // Buscar ubicación existente para esta entidad
+        const ubicacionExistente = await UbicacionEntidad.findOne({
+          where: { entidadId: entidadId }
+        });
+
+        if (ubicacionExistente) {
+          // Actualizar ubicación existente
+          await ubicacionExistente.update({
+            latitud: parseFloat(latitud),
+            longitud: parseFloat(longitud),
+            direccionCompleta: direccion || ubicacionExistente.direccionCompleta,
+            activa: true,
+            verificada: true
+          });
+          console.log('📍 Ubicación actualizada exitosamente');
+        } else {
+          // Crear nueva ubicación
+          await UbicacionEntidad.create({
+            entidadId: entidadId,
+            latitud: parseFloat(latitud),
+            longitud: parseFloat(longitud),
+            direccionCompleta: direccion,
+            activa: true,
+            verificada: true,
+            esUbicacionPrincipal: true
+          });
+          console.log('📍 Nueva ubicación creada exitosamente');
+        }
+      }
+
       return res.status(200).json({
         message: 'Entidad actualizada con éxito',
         entidad,
+        ubicacionActualizada: !!(latitud && longitud)
       });
 
     } catch (error) {
@@ -446,5 +556,91 @@ export const aumentarContadorEntidad = async (req, res) => {
   } catch (error) {
     console.error('Error al aumentar el contador:', error);
     return res.status(500).json({ message: 'Error al aumentar el contador', error });
+  }
+};
+
+export const verificarUserAdminId = async (req, res) => {
+  const entidadId = req.params.id;
+
+  try {
+    const entidad = await Entidad.findByPk(entidadId);
+
+    if (!entidad) {
+      return res.status(404).json({ success: false, mensaje: 'Entidad no encontrada' });
+    }
+
+    if (entidad.UserAdminId) {
+      return res.json({
+        success: true,
+        mensaje: 'La entidad tiene UserAdminId asignado',
+        UserAdminId: entidad.UserAdminId
+      });
+    } else {
+      return res.json({
+        success: false,
+        mensaje: 'La entidad no tiene UserAdminId asignado'
+      });
+    }
+  } catch (error) {
+    console.error('Error al verificar UserAdminId:', error);
+    return res.status(500).json({
+      success: false,
+      mensaje: 'Hubo un error al verificar UserAdminId'
+    });
+  }
+};
+export const modificarUserAdminId = async (req, res) => {
+  const entidadId = req.params.id;
+  let UserAdminId = req.body.UserAdminId || req.body.userAdminId;
+  // Validar que UserAdminId esté presente y no sea undefined o vacío
+  if (UserAdminId === undefined || UserAdminId === null || UserAdminId === '' || UserAdminId === 'undefined') {
+    return res.status(400).json({
+      success: false,
+      mensaje: 'UserAdminId no proporcionado o inválido',
+    });
+  }
+
+  try {
+    const entidad = await Entidad.findByPk(entidadId);
+
+    if (!entidad) {
+      return res.status(404).json({ success: false, mensaje: 'Entidad no encontrada' });
+    }
+
+    entidad.UserAdminId = UserAdminId;
+    console.log('Modificando UserAdminId en entidad:', entidad.UserAdminId);
+    await entidad.save();
+
+    return res.json({
+      success: true,
+      mensaje: 'UserAdminId modificado con éxito',
+      entidad,
+    });
+  } catch (error) {
+    console.error('Error al modificar UserAdminId:', error);
+    return res.status(500).json({
+      success: false,
+      mensaje: 'Hubo un error al modificar UserAdminId',
+    });
+  }
+};
+
+export const obtenerCantidadSociedad = async (req, res) => {
+  try {
+    // Contar las entidades que tienen naturalezaJuridica igual a 'sociedad'
+    const cantidad = await Entidad.count({
+      where: { naturalezaJuridica: 'sociedad' },
+    });
+
+    return res.json({
+      success: true,
+      cantidad,
+    });
+  } catch (error) {
+    console.error('Error al obtener la cantidad de sociedades:', error);
+    return res.status(500).json({
+      success: false,
+      mensaje: 'Hubo un error al obtener la cantidad de sociedades',
+    });
   }
 };

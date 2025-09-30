@@ -1,0 +1,223 @@
+/* Estilos específicos para el mapa de usuarios */
+
+/* Iconos personalizados de marcadores */
+.marker-cluster {
+    background: rgba(52, 152, 219, 0.8);
+    border-radius: 50%;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    line-height: 40px;
+}
+
+.marker-admin {
+    background: linear-gradient(135deg, #e74c3c, #c0392b) !important;
+}
+
+.marker-user {
+    background: linear-gradient(135deg, #3498db, #2980b9) !important;
+}
+
+.marker-empresa {
+    background: linear-gradient(135deg, #27ae60, #219a52) !important;
+}
+
+.marker-entidad {
+    background: linear-gradient(135deg, #3498db, #2980b9) !important;
+}
+
+/* Popup personalizado */
+.leaflet-popup-content-wrapper {
+    border-radius: 8px;
+    padding: 0;
+    overflow: hidden;
+}
+
+.leaflet-popup-content {
+    margin: 0;
+    padding: 0;
+    min-width: 250px;
+}
+
+.custom-popup .popup-header {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: white;
+    padding: 15px;
+    margin: 0;
+    border-radius: 0;
+}
+
+.custom-popup .popup-name {
+    font-weight: bold;
+    font-size: 1.1em;
+    margin-bottom: 5px;
+}
+
+.custom-popup .popup-role {
+    font-size: 0.9em;
+    opacity: 0.9;
+}
+
+.custom-popup .popup-body {
+    padding: 15px;
+}
+
+.custom-popup .popup-info {
+    display: flex;
+    justify-content: space-between;
+    margin: 8px 0;
+    font-size: 0.9em;
+}
+
+.custom-popup .popup-label {
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.custom-popup .popup-value {
+    color: #7f8c8d;
+}
+
+.custom-popup .popup-actions {
+    margin-top: 15px;
+    display: flex;
+    gap: 8px;
+}
+
+.custom-popup .popup-btn {
+    flex: 1;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.85em;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.custom-popup .btn-primary {
+    background: #3498db;
+    color: white;
+}
+
+.custom-popup .btn-secondary {
+    background: #95a5a6;
+    color: white;
+}
+
+.custom-popup .popup-btn:hover {
+    opacity: 0.8;
+}
+
+/* Marcadores personalizados */
+.custom-marker {
+    position: relative;
+}
+
+.custom-marker:before {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid white;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+}
+
+/* Animaciones para los marcadores */
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(52, 152, 219, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(52, 152, 219, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(52, 152, 219, 0);
+    }
+}
+
+.marker-user,
+.marker-admin,
+.marker-empresa {
+    animation: pulse 2s infinite;
+}
+
+/* Responsive para marcadores */
+@media (max-width: 768px) {
+    .leaflet-popup-content {
+        min-width: 200px;
+    }
+    
+    .custom-popup .popup-actions {
+        flex-direction: column;
+    }
+    
+    .custom-popup .popup-btn {
+        margin-bottom: 5px;
+    }
+}
+
+/* Controles del mapa específicos */
+.leaflet-control-container .leaflet-top.leaflet-right {
+    top: 20px;
+    right: 20px;
+}
+
+.leaflet-control-zoom a {
+    background-color: white;
+    color: #333;
+    font-size: 16px;
+    line-height: 30px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 4px;
+}
+
+.leaflet-control-zoom a:hover {
+    background-color: #f8f9fa;
+}
+
+/* Estilos para el tooltip de marcador */
+.leaflet-tooltip {
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.leaflet-tooltip:before {
+    border-top-color: rgba(0, 0, 0, 0.8);
+}
+
+/* Estado de carga */
+.map-loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    text-align: center;
+}
+
+.map-loading i {
+    font-size: 2em;
+    color: #3498db;
+    margin-bottom: 10px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}

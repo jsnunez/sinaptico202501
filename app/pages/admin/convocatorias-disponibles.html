@@ -550,7 +550,7 @@
                     <select id="filtroTipo" onchange="filtrarConvocatorias()">
                         <option value="">Todos los tipos</option>
                         <option value="innovacion">Innovación</option>
-                        <option value="emprendimiento">Emprendimiento</option>
+                        <option value="Sociedad">Sociedad</option>
                         <option value="digital">Transformación Digital</option>
                         <option value="sostenibilidad">Sostenibilidad</option>
                         <option value="social">Impacto Social</option>
@@ -671,7 +671,7 @@
                 sectoresObjetivo: 'Comercio, Servicios, Manufactura, Turismo',
                 ubicacionGeografica: 'Bogotá',
                 linkConvocatoria: 'https://ccb.org.co/convocatoria-innovacion-digital-2025',
-                actoresArticulados: ['Universidad Nacional', 'MinTIC', 'Microsoft Colombia'],
+                actoresArticulados: ['Academia Nacional', 'MinTIC', 'Microsoft Colombia'],
                 interesados: 45,
                 comentarios: [
                     {
@@ -692,7 +692,7 @@
                 entidad: 'CRCI',
                 entidadCompleta: 'CCB',
                 tipo: 'social',
-                objetivo: 'Apoyar emprendimientos que generen impacto social positivo en comunidades vulnerables, promoviendo la inclusión y el desarrollo sostenible.',
+                objetivo: 'Apoyar Sociedads que generen impacto social positivo en comunidades vulnerables, promoviendo la inclusión y el desarrollo sostenible.',
                 descripcion: 'Convocatoria dirigida a emprendedores que desarrollen soluciones innovadoras para problemáticas sociales, con especial énfasis en educación, salud, seguridad alimentaria y generación de empleo en comunidades vulnerables.',
                 fechaApertura: '2025-08-01T08:00',
                 fechaCierre: '2025-09-30T18:00',
@@ -704,7 +704,7 @@
                 criteriosEvaluacion: '1. Impacto social (40%)\n2. Sostenibilidad (25%)\n3. Innovación (20%)\n4. Viabilidad financiera (15%)',
                 sectoresObjetivo: 'Educación, Salud, Alimentación, Empleo',
                 ubicacionGeografica: 'Nacional',
-                linkConvocatoria: 'https://crci.org.co/emprendimiento-social-2025',
+                linkConvocatoria: 'https://crci.org.co/Sociedad-social-2025',
                 actoresArticulados: ['Fundación Compartir', 'ONU Mujeres', 'PNUD'],
                 interesados: 32,
                 comentarios: []
@@ -741,7 +741,7 @@
         ];
 
         // Generar más convocatorias ficticias
-        const tiposConvocatoria = ['innovacion', 'emprendimiento', 'digital', 'sostenibilidad', 'social'];
+        const tiposConvocatoria = ['innovacion', 'Sociedad', 'digital', 'sostenibilidad', 'social'];
         const entidades = [
             { sigla: 'CCB', nombre: 'Cámara de Comercio de Bogotá' },
             { sigla: 'CRCI', nombre: 'Cámara Regional de Comercio e Industria' },
@@ -821,7 +821,7 @@
         function getTipoTexto(tipo) {
             const tipos = {
                 'innovacion': 'Innovación',
-                'emprendimiento': 'Emprendimiento',
+                'Sociedad': 'Sociedad',
                 'digital': 'Transformación Digital',
                 'sostenibilidad': 'Sostenibilidad',
                 'social': 'Impacto Social'

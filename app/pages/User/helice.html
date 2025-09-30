@@ -17,6 +17,228 @@
         href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
+    <!-- Leaflet.js para mapas -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <!-- Estilos personalizados para modales -->
+    <style>
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            margin-bottom: 20px;
+        }
+        
+        .modal-header h3 {
+            margin: 0;
+            color: #333;
+            font-size: 1.5em;
+            font-weight: 600;
+        }
+        
+        .modal-header .close {
+            font-size: 28px;
+            font-weight: bold;
+            color: #999;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        
+        .modal-header .close:hover {
+            color: #333;
+        }
+        
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .modal-button-secondary {
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .modal-button-secondary:hover {
+            background-color: #5a6268;
+        }
+        
+        #modalEditar .modal-content {
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        /* Estilos para el formulario completo del dashboard */
+        .form-section {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background-color: #fafafa;
+        }
+
+        .form-section h4 {
+            margin: 0 0 15px 0;
+            color: #333;
+            font-size: 16px;
+            font-weight: 600;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 5px;
+        }
+
+        .input-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .input-box {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-box span,
+        .input-box label {
+            font-weight: 500;
+            margin-bottom: 5px;
+            color: #555;
+            font-size: 14px;
+        }
+
+        .input-box input,
+        .input-box select,
+        .input-box textarea {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        .input-box input:focus,
+        .input-box select:focus,
+        .input-box textarea:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+        }
+        
+        /* Estilo especial para campos de una sola columna */
+        .input-box.full-width {
+            grid-column: 1 / -1;
+        }
+        
+        /* Estilos para el mapa */
+        #edit-location-map {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        /* Botones de mapa */
+        .map-buttons {
+            margin-top: 10px;
+            display: flex;
+            gap: 5px;
+        }
+        
+        .map-btn {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .map-btn.primary {
+            background: #007bff;
+            color: white;
+        }
+        
+        .map-btn.primary:hover {
+            background: #0056b3;
+        }
+        
+        .map-btn.danger {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .map-btn.danger:hover {
+            background: #c82333;
+        }
+        
+        /* Coordenadas */
+        .coordinates-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .coordinate-input {
+            flex: 1;
+        }
+        
+        .coordinate-input label {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .coordinate-input input {
+            width: 100%;
+            padding: 5px;
+            font-size: 12px;
+        }
+        
+        /* Estilos para la sección de logo */
+        .logo-preview-container {
+            transition: all 0.3s ease;
+        }
+        
+        .logo-preview-container img {
+            transition: transform 0.2s ease;
+        }
+        
+        .logo-preview-container img:hover {
+            transform: scale(1.05);
+        }
+        
+        .logo-upload-container {
+            position: relative;
+        }
+        
+        #logoPreview {
+            margin-top: 10px;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+
 </head>
 
 <body>
@@ -33,6 +255,7 @@
         </div>
         <nav class="nav">
             <button class="nav-button pulse" onclick="window.location.href='/helice'">Hélice</button>
+              <button class="nav-button pulse" onclick="window.location.href='/proyectos'">Proyectos</button>
             <button class="nav-button pulse" onclick="window.location.href='/innovacion'">Innovación</button>
 
             <button class="nav-button pulse" onclick="window.location.href='/Conocimiento'">Conocimiento</button>
@@ -112,9 +335,9 @@
         <button class="filter-button" id="Todos1">Todos</button>
 
         <button class="filter-button" id="Empresas">Empresas</button>
-        <button class="filter-button" id="Emprendimientos">Emprendimientos</button>
-        <button class="filter-button" id="Startups">Startups</button>
-        <button class="filter-button" id="Universidad">Universidades</button>
+        <button class="filter-button" id="Sociedads">Sociedads</button>
+        <button class="filter-button" id="Estados">Estados</button>
+        <button class="filter-button" id="Academia">Academiaes</button>
         <!-- Filtros -->
 
     </div>
@@ -491,9 +714,13 @@
             <button id="CerrarModal" class="modal-button">Cerrar</button>
         </div>
     </div>
-    <!-- Modal Editar -->
+    <!-- Modal Editar Entidad -->
     <div id="modalEditar" class="modal">
         <div class="modal-content">
+            <div class="modal-header">
+                <h3>Editar Entidad</h3>
+                <span class="close" id="cerrarModalEditarX">&times;</span>
+            </div>
             <form id="entidad-form-editar">
                 <div class="titulo-datos" id="titulo-datos-entidad">
                     <!-- Los campos se agregarán dinámicamente -->
@@ -501,27 +728,15 @@
                 <div class="datos-entidad" id="datos-entidad">
                     <!-- Los campos se agregarán dinámicamente -->
                 </div>
-                <button type="submit" class="modal-button">Editar Entidad</button>
+                
+                <div class="modal-actions">
+                    <button type="submit" class="modal-button">Guardar Cambios</button>
+                    <button type="button" class="modal-button-secondary" id="cerrarModalEditar">Cancelar</button>
+                </div>
             </form>
-
-            <button class="modal-button" id="cerrarModalEditar">Cerrar</button>
         </div>
     </div>
-    <div id="modalEditar" class="modal">
-        <div class="modal-content">
-            <form id="entidad-form-editar">
-                <div class="titulo-datos" id="titulo-datos-entidad">
-                    <!-- Los campos se agregarán dinámicamente -->
-                </div>
-                <div class="datos-entidad" id="datos-entidad">
-                    <!-- Los campos se agregarán dinámicamente -->
-                </div>
-                <button type="submit" class="modal-button">Editar Entidad</button>
-            </form>
-
-            <button class="modal-button" id="cerrarModalEditar">Cerrar</button>
-        </div>
-    </div>
+    
     <!-- Modal Crear Entidad -->
     <div class="overlay"></div>
     <div id="myModalAsignarServicio" class="modal">
@@ -551,33 +766,23 @@
     <!-- Modal Crear Entidad -->
     <div class="overlay"></div>
     <div id="myModal" class="modal">
-        <div class="modal-content">
+        <div class="modal-content" style="max-width: 800px; max-height: 90vh; overflow-y: auto;">
+            <span class="close">&times;</span>
             <div class="modal-header">
-                <h3>Crear Actor</h3>
+                <h3>Crear Nueva Entidad</h3>
             </div>
 
-            <!-- <div class="entity-type-selector">
-                <button id="Empresa" class="entity-type-button active" onclick="changeForm('Empresa')">Empresa</button>
-                <button class="entity-type-button" onclick="changeForm('universidad')">Universidad</button>
-                <button class="entity-type-button" onclick="changeForm('emprendimiento')">Emprendimiento</button>
-                <button class="entity-type-button" onclick="changeForm('startup')">Startup</button>
-                <button class="entity-type-button" onclick="changeForm('otro')">Otro</button>
-            </div> -->
-
             <form id="entidad-form">
-
                 <div class="datos-entidad" id="datos-entidad-crear">
                     <!-- Los campos se agregarán dinámicamente -->
                 </div>
 
-                <button type="submit" class="modal-button">Crear Actor</button>
+                <div class="modal-actions">
+                    <button type="submit" class="modal-button">Crear Entidad</button>
+                    <button type="button" class="modal-button-secondary" id="cerrarModal">Cancelar</button>
+                </div>
             </form>
-
-
-
-            <button class="modal-button" id="cerrarModal">Cerrar</button>
         </div>
-
     </div>
     <!-- Scripts -->
     <script src="js/helice2.js"></script>
@@ -594,6 +799,7 @@
     <script src="js/solicitudesVincuncular.js"></script>
     <script src="js/notificaciones.js"></script>
     <script src="/js/websocket.js"></script>
+    <script src="test-api-entidad.js"></script>
 
     <script>
         function irEnConstruccion() {

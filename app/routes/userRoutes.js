@@ -8,16 +8,20 @@ import {
   countUsers,
   getAllUsers,
   getUserEmailById,
+  createUser,
   updateUser,
   deleteUser,
   deleteUserWithEntidades,
-  cambiarFoto
+  cambiarFoto,
+  getUsersWithLocations
 } from '../controllers/userController.js';
 
 const router = express.Router();
 
 router.get('/count', countUsers);
+router.get('/mapa/locations', getUsersWithLocations);
 router.get('/', getAllUsers);
+router.post('/', authorization.soloAdmin, createUser);
 router.get('/:id', async (req, res) => {
   try {
     const user = await User.findByPk(req.params.id);

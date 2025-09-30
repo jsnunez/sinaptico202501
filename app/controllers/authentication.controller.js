@@ -109,7 +109,7 @@ async function recuperarPassword(req, res) {
     const user = await User.findOne({ where: { email } });
 
     if (!user) {
-      return res.status(404).json({ message: 'Correo no encontrado' });
+      return res.json({status: "ok", message: 'Correo no encontrado' });
     }
 
 

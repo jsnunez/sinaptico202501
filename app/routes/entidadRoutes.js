@@ -1,8 +1,8 @@
 // /api/entidad
 
 import express from 'express';
-import { verificarEntidad, obtenerEntidad,crearEntidad,editarEntidad,obtenerEntidadesHabilitadas,aumentarContadorEntidad} from '../controllers/entidadController.js';  // Importar el controlador
-import { obtenerCantidadEmpresas, obtenerCantidadEmprendimientos,cambiarEstadoHabilitado ,obtenerCantidadEntidades} from '../controllers/entidadController.js';
+import { verificarEntidad, obtenerEntidad,crearEntidad,editarEntidad,obtenerEntidadesHabilitadas,aumentarContadorEntidad,verificarUserAdminId,modificarUserAdminId} from '../controllers/entidadController.js';  // Importar el controlador
+import { obtenerCantidadEmpresas, obtenerCantidadSociedad,cambiarEstadoHabilitado ,obtenerCantidadEntidades} from '../controllers/entidadController.js';
 
 
 /**
@@ -18,13 +18,15 @@ const router = express.Router();
 
 // rutas
 router.get('/verificar-entidad/:userId', verificarEntidad);
+router.get('/verificar-user-admin/:id', verificarUserAdminId);
+router.put('/modificar-user-admin/:id', modificarUserAdminId);
 router.get('/entidades', obtenerEntidad);
 router.get('/entidadHabilitadas', obtenerEntidadesHabilitadas);
 router.post('/crear', crearEntidad);
 router.post('/editar/:id',editarEntidad);
 router.get('/cantidadEntidades', obtenerCantidadEntidades);
 router.get('/cantidadEmpresas', obtenerCantidadEmpresas);
-router.get('/cantidadEmprendimientos', obtenerCantidadEmprendimientos);
+router.get('/cantidadSociedads', obtenerCantidadSociedad);
 router.post('/cambiarEstado/:id',cambiarEstadoHabilitado) 
 router.put('/aumentarContadorContacto/:id',aumentarContadorEntidad); 
    

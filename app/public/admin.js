@@ -43,16 +43,16 @@ document.getElementById("Empresas").addEventListener("click", () => {
   var listado = document.getElementById("listado");
   listado.style.display = "flex";
 })
-document.getElementById("Emprendimientos").addEventListener("click", () => {
-  const empresasFiltradas = todasLasEmpresas.filter(emp => emp.claseEntidad === "Emprendimiento");
+document.getElementById("Sociedads").addEventListener("click", () => {
+  const empresasFiltradas = todasLasEmpresas.filter(emp => emp.claseEntidad === "Sociedad");
   cargarEmpresas(empresasFiltradas);
   var entidades = document.getElementById("entidades");
   entidades.style.display = "none";
   var listado = document.getElementById("listado");
   listado.style.display = "flex";
 })
-document.getElementById("Startups").addEventListener("click", () => {
-  const empresasFiltradas = todasLasEmpresas.filter(emp => emp.claseEntidad === "Startup");
+document.getElementById("Estados").addEventListener("click", () => {
+  const empresasFiltradas = todasLasEmpresas.filter(emp => emp.claseEntidad === "Estado");
   cargarEmpresas(empresasFiltradas);
   var entidades = document.getElementById("entidades");
   entidades.style.display = "none";
@@ -60,8 +60,8 @@ document.getElementById("Startups").addEventListener("click", () => {
   listado.style.display = "flex";
 })
 
-document.getElementById("Universidad").addEventListener("click", () => {
-  const empresasFiltradas = todasLasEmpresas.filter(emp => emp.claseEntidad === "Universidad");
+document.getElementById("Academia").addEventListener("click", () => {
+  const empresasFiltradas = todasLasEmpresas.filter(emp => emp.claseEntidad === "Academia");
   cargarEmpresas(empresasFiltradas);
   var entidades = document.getElementById("entidades");
   entidades.style.display = "none";

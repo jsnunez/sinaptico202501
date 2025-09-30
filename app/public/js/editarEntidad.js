@@ -1,170 +1,302 @@
 let miEmpresaID = "";
 let miEmpresa = "";
+
+// Variables globales para el mapa de edición
+let editMap;
+let editMarker;
+let ubicacionActual = null;
+
+// Verificar que API_BASE_URL esté definida
+if (typeof API_BASE_URL === 'undefined') {
+    console.error('❌ API_BASE_URL no está definida. Asegúrese de que config.js se carga antes.');
+}
+
 document.getElementById("editarEntidad").addEventListener("click", async () => {
+    // Verificar que existen los elementos necesarios
+    const overlay = document.querySelector('.overlay') || document.getElementById('overlay');
+    const modalEditar = document.getElementById('modalEditar');
+    
+    if (!overlay) {
+        console.error('❌ Elemento overlay no encontrado');
+        return;
+    }
+    
+    if (!modalEditar) {
+        console.error('❌ Modal de edición no encontrado');
+        return;
+    }
 
     overlay.style.display = 'block'; // Mostrar overlay
-    document.getElementById('modalEditar').style.display = 'flex';
-    document.getElementById('modalEditar').style.flexWrap = 'wrap';
+    modalEditar.style.display = 'flex';
+    modalEditar.style.flexWrap = 'wrap';
     const userDetailsContainer = document.getElementById('datos-entidad');
     const usuario = obtenerCookie("userId");
     let cleanedStr = usuario.replace(/%20/g, " "); // Reemplaza '%20' por un espacio
     let idlimpia = decodeURIComponent(cleanedStr);
-    miEmpresa = buscarPorUserId(parseInt(idlimpia, 10))
+    
+    // Verificar si existe la variable global todasLasEmpresas
+    if (typeof todasLasEmpresas !== 'undefined') {
+        miEmpresa = buscarPorUserId(parseInt(idlimpia, 10));
+    } else {
+        // Si no existe la variable global, obtener datos de la API
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/entidad/verificar-entidad/${idlimpia}`);
+            const data = await response.json();
+            if (data.success && data.entidad) {
+                miEmpresa = data.entidad;
+            } else {
+                throw new Error('No se encontró la entidad del usuario');
+            }
+        } catch (error) {
+            console.error('Error al obtener datos de la entidad:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'No se pudo cargar la información de la entidad'
+            });
+            return;
+        }
+    }
+    
     console.log(miEmpresa)
 
     userDetailsContainer.innerHTML = `
-    <div class="modal-header">
-
-        <h2>Editar Entidad</h2>
-    </div>
-    <br>
-    <!-- Datos de la entidad -->
-    <div class="input-box" style="display:none;">
-          <label for="ID">ID</label>
-            <input type="text" id="ID" name="ID" placeholder="id" required>
+    <!-- Datos básicos de la entidad -->
+    <div class="form-section">
+        <h4>Información Básica</h4>
+        <input type="hidden" id="ID" name="ID">
+        
+        <div class="input-row">
+            <div class="input-box">
+                <span>Clase de Entidad</span>
+                <select id="claseEntidad" name="claseEntidad" required>
+                    <option value="Empresa">Empresa</option>
+                    <option value="Estado">Estado</option>
+                    <option value="Sociedad">Sociedad</option>
+                    <option value="Academia">Academia</option>
+                </select>
+            </div>
+            <div class="input-box">
+                <span>Razón Social</span>
+                <input type="text" id="razonSocial" name="razonSocial" placeholder="Ingrese la razón social" required>
+            </div>
         </div>
-      <div class="input-box">
-          <label for="claseEntidad">Clase de Entidad</label>
-          <select id="claseEntidad" name="claseEntidad" required>
-              <option value="Empresa">Empresa</option>
-              <option value="Startup">Startup</option>
-              <option value="Emprendimiento">Emprendimiento</option>
-              <option value="Universidad">Universidad</option>
-          </select>
-      </div>
 
-      <div class="input-box">
-          <label for="razonSocial">Razón Social</label>
-          <input type="text" id="razonSocial" name="razonSocial" placeholder="Ingrese la razón social" required>
-      </div>
-
-      <div class="input-box">
-          <label for="numIdentificacion">Número de Identificación</label>
-          <input type="text" id="numIdentificacion" name="numIdentificacion" placeholder="Ingrese el número de identificación" required>
-      </div>
-
-      <div class="input-box">
-          <label for="tipoEntidad">Tipo de Entidad</label>
-          <select id="tipoEntidad" name="tipoEntidad" required>
-              <option value="Sociedad Anónima">Sociedad Anónima</option>
-              <option value="Sociedad Limitada">Sociedad Limitada</option>
-              <option value="Persona Natural">Persona Natural</option>
-          </select>
-      </div>
-
-      <div class="input-box">
-          <label for="naturalezaJuridica">Naturaleza Jurídica</label>
-          <select id="naturalezaJuridica" name="naturalezaJuridica" required>
-              <option value="Privada">Privada</option>
-              <option value="Pública">Pública</option>
-              <option value="Mixta">Mixta</option>
-          </select>
-      </div>
-
-      <div class="input-box">
-          <label for="actividadEconomica">Actividad Económica</label>
-          <input type="text" id="actividadEconomica" name="actividadEconomica" placeholder="Ingrese la actividad económica" required>
-      </div>
-
-      <div class="input-box">
-          <label for="correo">Correo de Contacto</label>
-          <input type="email" id="correo" name="correo" placeholder="Ingrese el correo de la entidad" required>
-      </div>
-
-      <div class="input-box">
-          <label for="telefono">Teléfono de Contacto</label>
-          <input type="tel" id="telefono" name="telefono" placeholder="Ingrese el teléfono de contacto" required>
-      </div>
-
-      <div class="input-box">
-          <label for="fechaConstitucion">Fecha de Constitución</label>
-          <input type="date" id="fechaConstitucion" name="fechaConstitucion" required>
-      </div>
-   
+        <div class="input-row">
             <div class="input-box">
-                <label for="departamento">Departamento</label>
-                <select id="departamento" name="departamento" required>
-                    <option value="">Seleccione un Departamento</option>
-                    <!-- Las opciones se llenarán dinámicamente con JavaScript -->
+                <span>Número de Identificación</span>
+                <input type="text" id="numIdentificacion" name="numIdentificacion" placeholder="Ingrese el número de identificación" required>
+            </div>
+            <div class="input-box">
+                <span>Tipo de Entidad</span>
+                <select id="tipoEntidad" name="tipoEntidad" required>
+                    <option value="Sociedad Anónima">Sociedad Anónima</option>
+                    <option value="Sociedad Limitada">Sociedad Limitada</option>
+                    <option value="Persona Natural">Persona Natural</option>
+                    <option value="Corporativa">Corporativa</option>
+                    <option value="Sin fines de lucro">Sin fines de lucro</option>
+                    <option value="Educativa">Educativa</option>
+                    <option value="Gubernamental">Gubernamental</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="input-row">
+            <div class="input-box">
+                <span>Naturaleza Jurídica</span>
+                <select id="naturalezaJuridica" name="naturalezaJuridica" required>
+                    <option value="Privada">Privada</option>
+                    <option value="Pública">Pública</option>
+                    <option value="Mixta">Mixta</option>
                 </select>
             </div>
             <div class="input-box">
-                <label for="ciudadId">ciudad</label>
-                <select id="ciudadId" name="ciudadId" required>
-                    <option value="">Seleccione un ciudad</option>
-                    <!-- Las opciones se llenarán dinámicamente con JavaScript -->
-                </select>
+                <span>Actividad Económica</span>
+                <input type="text" id="actividadEconomica" name="actividadEconomica" placeholder="Ingrese la actividad económica" required>
             </div>
+        </div>
+    </div>
 
-         
-
+    <!-- Información de contacto -->
+    <div class="form-section">
+        <h4>Información de Contacto</h4>
+        <div class="input-row">
             <div class="input-box">
-                <label for="direccion">Dirección</label>
+                <span>Correo de la Entidad</span>
+                <input type="email" id="correo" name="correo" placeholder="Ingrese el correo de la entidad" required>
+            </div>
+            <div class="input-box">
+                <span>Teléfono de la Entidad</span>
+                <input type="tel" id="telefono" name="telefono" placeholder="Ingrese el teléfono de contacto" required>
+            </div>
+        </div>
+        
+        <div class="input-row">
+            <div class="input-box">
+                <span>Fecha de Constitución</span>
+                <input type="date" id="fechaConstitucion" name="fechaConstitucion" required>
+            </div>
+            <div class="input-box">
+                <span>Dirección</span>
                 <input type="text" id="direccion" name="direccion" placeholder="Ingrese la dirección" required>
             </div>
-
-           <div class="input-box">
-  <label>Cambiar logo
-    <input type="checkbox" id="activarLogo" checked> 
-  </label>
-  <br>
-      <div class="input-box">
-           <label for="logo">Selecciona un archivo (PNG, JPG, JPEG):</label><br>
-  <input type="file" id="logo" name="logo" accept="image/png, image/jpeg, image/jpg" required><br><br>
-      </div>
-      </div>
-
-           
-
+        </div>
+        
+        <div class="input-row">
             <div class="input-box">
-                <label for="facebook">Facebook</label>
-                <input type="url" id="facebook" name="facebook" placeholder="Ingrese la URL de Facebook">
-            </div>
-
-            <div class="input-box">
-                <label for="instagram">Instagram</label>
-                <input type="url" id="instagram" name="instagram" placeholder="Ingrese la URL de Instagram">
-            </div>
-
-            <div class="input-box">
-                <label for="paginaweb">Página Web</label>
-                <input type="url" id="paginaweb" name="paginaweb" placeholder="Ingrese la URL de la página web">
-            </div> 
-
-       <!-- Datos del contacto -->
-            <h2>Datos de Contacto</h2>
-  <br>
-
-            <div class="input-box">
-                <label for="nombreContacto">Nombre Completo del Contacto</label>
-                <input type="text" id="nombreContacto" name="nombreContacto" placeholder="Ingrese el nombre completo" >
-            </div>
-
-           
-            <div class="input-box">
-                <label for="cargoPersona">Cargo</label>
-                <select id="cargoPersona" name="cargoPersona" required>
-                    <option value="">Seleccione un cargo</option>
-                    <!-- Las opciones se llenarán dinámicamente con JavaScript -->
+                <span>Usuario Administrador</span>
+                <select id="UserAdminId" name="UserAdminId" required>
+                    <option value="">Seleccione un usuario administrador</option>
+                    <!-- Las opciones se llenarán dinámicamente -->
                 </select>
             </div>
             <div class="input-box">
-                <label for="correoContacto">Correo Electrónico del Contacto</label>
-                <input type="email" id="correoContacto" name="correoContacto" placeholder="Ingrese el correo del contacto" >
+                <span>Admin Actual</span>
+                <input type="text" id="adminActual" readonly 
+                       style="background-color: #f5f5f5; border: 1px solid #ddd; padding: 8px 12px; border-radius: 4px; color: #666;"
+                       placeholder="Cargando...">
             </div>
+        </div>
+    </div>
 
+    <!-- Ubicación -->
+    <div class="form-section">
+        <h4>Ubicación</h4>
+        <div class="input-row">
             <div class="input-box">
-                <label for="telefonoContacto">Teléfono de Contacto</label>
-                <input type="tel" id="telefonoContacto" name="telefonoContacto" placeholder="Ingrese el número de teléfono" >
+                <span>Departamento</span>
+                <select id="departamento" name="departamento" required>
+                    <option value="">Seleccione un Departamento</option>
+                </select>
             </div>
-  <br>
-
+            <div class="input-box">
+                <span>Ciudad</span>
+                <select id="ciudadId" name="ciudadId" required>
+                    <option value="">Seleccione una ciudad</option>
+                </select>
+            </div>
         </div>
 
-        `;
+        <!-- Sección de ubicación en mapa -->
+        <div class="input-box full-width">
+            <span>Ubicación en el Mapa</span>
+            <p style="color: #666; font-size: 0.9em; margin: 5px 0;">Haga clic en el mapa para actualizar la ubicación exacta de su entidad</p>
+            <div id="edit-map-container" style="height: 300px; margin: 10px 0;">
+                <div id="edit-location-map" style="width: 100%; height: 100%;"></div>
+            </div>
+            
+            <div class="coordinates-row">
+                <div class="coordinate-input">
+                    <label for="editLatitud">Latitud:</label>
+                    <input type="number" id="editLatitud" name="latitud" step="any" placeholder="Latitud" readonly style="background-color: #f5f5f5;">
+                </div>
+                <div class="coordinate-input">
+                    <label for="editLongitud">Longitud:</label>
+                    <input type="number" id="editLongitud" name="longitud" step="any" placeholder="Longitud" readonly style="background-color: #f5f5f5;">
+                </div>
+            </div>
+            
+            <div class="map-buttons">
+                <button type="button" class="map-btn primary" onclick="if(editMap) editMap.invalidateSize();">🔄 Reinicializar Mapa</button>
+                <button type="button" class="map-btn danger" onclick="document.getElementById('editLatitud').value=''; document.getElementById('editLongitud').value=''; if(editMarker && editMap) { editMap.removeLayer(editMarker); editMarker = null; }">🗑️ Limpiar Ubicación</button>
+            </div>
+            
+            <small style="color: #666;">Las coordenadas se actualizarán al hacer clic en el mapa</small>
+        </div>
+    </div>
+
+    <!-- Archivo de logo -->
+    <div class="form-section">
+        <h4>Logo de la Entidad</h4>
+        
+        <!-- Logo actual -->
+        <div class="input-row">
+            <div class="input-box">
+                <span>Logo Actual</span>
+                <div class="logo-preview-container" style="text-align: center; padding: 15px; border: 2px dashed #ddd; border-radius: 8px; background-color: #f9f9f9;">
+                    <img id="currentLogo" src="" alt="Logo actual" 
+                         style="max-width: 150px; max-height: 100px; object-fit: contain; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                    <div id="noLogoText" style="display: none; color: #666; font-style: italic;">Sin logo configurado</div>
+                </div>
+            </div>
+            
+            <div class="input-box">
+                <span>Nuevo Logo (Opcional)</span>
+                <div class="logo-upload-container">
+                    <input type="file" id="logo" name="logo" accept="image/png, image/jpeg, image/jpg" 
+                           style="margin-bottom: 10px;">
+                    <div id="logoPreview" style="display: none; text-align: center; padding: 10px; border: 2px solid #007bff; border-radius: 8px; background-color: #f8f9fa;">
+                        <img id="previewImage" src="" alt="Vista previa" 
+                             style="max-width: 120px; max-height: 80px; object-fit: contain; border-radius: 4px;">
+                        <p style="margin: 5px 0 0 0; font-size: 12px; color: #666;">Vista previa del nuevo logo</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="input-row">
+            <div class="input-box full-width">
+                <small style="color: #666; font-size: 12px;">
+                    • Formatos soportados: PNG, JPG, JPEG<br>
+                    • Tamaño recomendado: máximo 2MB<br>
+                    • Dimensiones recomendadas: 400x300 píxeles o proporcional
+                </small>
+            </div>
+        </div>
+    </div>
+
+    <!-- Redes sociales -->
+    <div class="form-section">
+        <h4>Redes Sociales</h4>
+        <div class="input-row">
+            <div class="input-box">
+                <span>Facebook</span>
+                <input type="url" id="facebook" name="facebook" placeholder="Ingrese la URL de Facebook">
+            </div>
+            <div class="input-box">
+                <span>Instagram</span>
+                <input type="url" id="instagram" name="instagram" placeholder="Ingrese la URL de Instagram">
+            </div>
+        </div>
+        <div class="input-box full-width">
+            <span>Página Web</span>
+            <input type="url" id="paginaweb" name="paginaweb" placeholder="Ingrese la URL de la página web">
+        </div>
+    </div>
+
+    <!-- Datos del contacto -->
+    <div class="form-section">
+        <h4>Datos de Contacto</h4>
+        <div class="input-row">
+            <div class="input-box">
+                <span>Nombre Completo del Contacto</span>
+                <input type="text" id="nombreContacto" name="nombreContacto" placeholder="Ingrese el nombre completo">
+            </div>
+            <div class="input-box">
+                <span>Cargo</span>
+                <select id="cargoPersona" name="cargoPersona" required>
+                    <option value="">Seleccione un cargo</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="input-row">
+            <div class="input-box">
+                <span>Correo Electrónico del Contacto</span>
+                <input type="email" id="correoContacto" name="correoContacto" placeholder="Ingrese el correo del contacto">
+            </div>
+            <div class="input-box">
+                <span>Teléfono de Contacto</span>
+                <input type="tel" id="telefonoContacto" name="telefonoContacto" placeholder="Ingrese el número de teléfono">
+            </div>
+        </div>
+    </div>
+    `;
 
     agregarCargos();
     agregarDepartamentos();
+    
     // Ejemplo de cómo usarlo: llamar a esta función cuando se selecciona un departamento
     document.getElementById('departamento').addEventListener('change', (event) => {
         const departmentId = event.target.value;  // Obtenemos el ID del departamento seleccionado
@@ -190,9 +322,41 @@ document.getElementById("editarEntidad").addEventListener("click", async () => {
     document.getElementById('fechaConstitucion').value = fechaFormateada;
     // document.getElementById('ciudadId').value = miEmpresa.ciudad;
     document.getElementById('direccion').value = miEmpresa.direccion;
+    document.getElementById('UserAdminId').value = miEmpresa.UserAdminId || '';
     document.getElementById('facebook').value = miEmpresa.facebook;
     document.getElementById('instagram').value = miEmpresa.instagram;
     document.getElementById('paginaweb').value = miEmpresa.paginaweb;
+    
+    // Cargar logo actual
+    if (miEmpresa.logo) {
+        const currentLogoImg = document.getElementById('currentLogo');
+        const noLogoText = document.getElementById('noLogoText');
+        currentLogoImg.src = `/logos/${miEmpresa.logo}`;
+        currentLogoImg.style.display = 'block';
+        noLogoText.style.display = 'none';
+    } else {
+        document.getElementById('currentLogo').style.display = 'none';
+        document.getElementById('noLogoText').style.display = 'block';
+    }
+    
+    // Agregar preview para nuevo logo
+    document.getElementById('logo').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        const preview = document.getElementById('logoPreview');
+        const previewImage = document.getElementById('previewImage');
+        
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                previewImage.src = e.target.result;
+                preview.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        } else {
+            preview.style.display = 'none';
+        }
+    });
+    
     cargarContacto();
     async function cargarContacto() {
 
@@ -207,6 +371,9 @@ document.getElementById("editarEntidad").addEventListener("click", async () => {
             document.getElementById('telefonoContacto').value = contacto.telefono || '';
         }
     }
+    
+    // Cargar usuarios administradores después de que todos los datos estén cargados
+    cargarUsuariosAdmin();
     // document.getElementById('nombreContacto').value = miEmpresa.contacto.nombre;
     // if (miEmpresa.contacto.cargo == null) {
     //     document.getElementById('cargoPersona').value = "Seleccione un cargo";}
@@ -217,20 +384,37 @@ document.getElementById("editarEntidad").addEventListener("click", async () => {
     // document.getElementById('correoContacto').value = miEmpresa.contacto.correo;
     // document.getElementById('telefonoContacto').value = miEmpresa.contacto.telefono;
 
-
-    document.getElementById('activarLogo').addEventListener('change', function () {
-        const inputLogo = document.getElementById('logo');
-        inputLogo.disabled = !this.checked;
-
-        // Limpia el archivo si se desactiva
-        if (!this.checked) {
-            inputLogo.value = '';
-        }
-    });
     const departamentoId = await asignarDepartamento();
     await agregarMunicipiosEditar(departamentoId);
 
     document.getElementById('ciudadId').value = miEmpresa.ciudadId;
+
+    // Inicializar el mapa después de cargar los datos
+    setTimeout(() => {
+        initEditMap();
+        cargarUbicacionActual();
+    }, 500);
+
+    // Agregar manejador de eventos para el formulario de edición
+    const formEdit = document.getElementById('entidad-form-editar');
+    if (formEdit) {
+        console.log('🔧 Formulario encontrado:', formEdit);
+        
+        // Remover manejadores previos para evitar duplicados
+        formEdit.removeEventListener('submit', actualizarEntidadConUbicacion);
+        
+        // Agregar manejador con log detallado
+        formEdit.addEventListener('submit', async function(e) {
+            console.log('🎯 Submit interceptado por editarEntidad.js');
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('🔄 Llamando a actualizarEntidadConUbicacion');
+            await actualizarEntidadConUbicacion();
+        });
+        console.log('✅ Manejador de formulario agregado correctamente');
+    } else {
+        console.warn('⚠️ No se encontró el formulario de edición con ID: entidad-form-editar');
+    }
 
 })
 
@@ -238,12 +422,45 @@ document.getElementById("editarEntidad").addEventListener("click", async () => {
 
 // Función para cerrar el modal
 document.getElementById("cerrarModalEditar").addEventListener("click", () => {
-    document.getElementById('modalEditar').style.display = 'none';
-    overlay.style.display = 'none'; // Ocultar overlay
-})
+    cerrarModalEdicion();
+});
+
+// Event listener para el botón X del modal
+document.addEventListener('click', function(e) {
+    if (e.target && e.target.id === 'cerrarModalEditarX') {
+        cerrarModalEdicion();
+    }
+});
+
+// Función centralizada para cerrar el modal
+function cerrarModalEdicion() {
+    const modalEditar = document.getElementById('modalEditar');
+    const overlay = document.querySelector('.overlay') || document.getElementById('overlay');
+    
+    if (modalEditar) {
+        modalEditar.style.display = 'none';
+    }
+    
+    if (overlay) {
+        overlay.style.display = 'none'; // Ocultar overlay
+    }
+    
+    // Limpiar mapa si existe
+    if (editMap) {
+        editMap.remove();
+        editMap = null;
+        editMarker = null;
+    }
+}
 
 const buscarPorUserId = (id) => {
-    return todasLasEmpresas.find(empresa => empresa.UserAdminId === id);
+    // Verificar si existe la variable global todasLasEmpresas
+    if (typeof todasLasEmpresas !== 'undefined' && Array.isArray(todasLasEmpresas)) {
+        return todasLasEmpresas.find(empresa => empresa.UserAdminId === id);
+    } else {
+        console.warn('Variable todasLasEmpresas no está definida');
+        return null;
+    }
 };
 
 async function asignarDepartamento() {
@@ -302,4 +519,417 @@ async function agregarDepartamentos() {
         console.warn('No se encontraron Departamentos para cargar.');
     }
 
+}
+
+// ============================================
+// FUNCIÓN PARA CARGAR USUARIOS ADMINISTRADORES
+// ============================================
+
+async function cargarUsuariosAdmin() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/api/user`);
+        if (!response.ok) {
+            throw new Error('Error al obtener usuarios');
+        }
+        
+        const usuarios = await response.json();
+        const userAdminSelect = document.getElementById('UserAdminId');
+        
+        if (userAdminSelect && usuarios && usuarios.length > 0) {
+            // Limpiar opciones existentes (excepto la primera)
+            userAdminSelect.innerHTML = '<option value="">Seleccione un usuario administrador</option>';
+            
+            usuarios.forEach(usuario => {
+                const option = document.createElement('option');
+                option.value = usuario.id;
+                option.textContent = `${usuario.name} (${usuario.email})`;
+                userAdminSelect.appendChild(option);
+            });
+            
+            // Establecer el valor actual
+            userAdminSelect.value = miEmpresa.UserAdminId || '';
+            
+            // Cargar información del admin actual
+            if (miEmpresa.UserAdminId) {
+                cargarInfoAdminActual(miEmpresa.UserAdminId);
+            }
+            
+            // Agregar event listener para cambios en el select
+            userAdminSelect.addEventListener('change', function() {
+                const selectedUserId = this.value;
+                if (selectedUserId) {
+                    const selectedOption = this.options[this.selectedIndex];
+                    document.getElementById('adminActual').value = selectedOption.textContent;
+                } else {
+                    document.getElementById('adminActual').value = 'Ningún admin seleccionado';
+                }
+            });
+        }
+    } catch (error) {
+        console.error('Error al cargar usuarios:', error);
+        Swal.fire({
+            icon: 'warning',
+            title: 'Advertencia',
+            text: 'No se pudieron cargar los usuarios disponibles'
+        });
+    }
+}
+
+async function cargarInfoAdminActual(adminId) {
+    try {
+        const response = await fetch(`${API_BASE_URL}/api/user/${adminId}`);
+        if (response.ok) {
+            const admin = await response.json();
+            document.getElementById('adminActual').value = `${admin.name} (${admin.email})`;
+        } else {
+            document.getElementById('adminActual').value = 'Admin no encontrado';
+        }
+    } catch (error) {
+        console.error('Error al cargar info del admin:', error);
+        document.getElementById('adminActual').value = 'Error al cargar admin';
+    }
+}
+
+// ============================================
+// FUNCIONES DEL MAPA PARA EDICIÓN
+// ============================================
+
+function initEditMap() {
+    const mapElement = document.getElementById('edit-location-map');
+    if (!mapElement) {
+        console.error('Elemento del mapa de edición no encontrado');
+        return;
+    }
+
+    // Coordenadas de Bucaramanga por defecto
+    const defaultLat = 7.1193;
+    const defaultLng = -73.1227;
+
+    // Inicializar el mapa
+    editMap = L.map('edit-location-map').setView([defaultLat, defaultLng], 13);
+
+    // Agregar tiles de OpenStreetMap
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors',
+        maxZoom: 19
+    }).addTo(editMap);
+
+    // Evento para capturar clics en el mapa
+    editMap.on('click', function(e) {
+        const lat = e.latlng.lat;
+        const lng = e.latlng.lng;
+
+        // Actualizar los campos de coordenadas
+        document.getElementById('editLatitud').value = lat.toFixed(6);
+        document.getElementById('editLongitud').value = lng.toFixed(6);
+
+        // Remover marcador anterior si existe
+        if (editMarker) {
+            editMap.removeLayer(editMarker);
+        }
+
+        // Agregar nuevo marcador
+        editMarker = L.marker([lat, lng], {
+            icon: L.icon({
+                iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+                shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34],
+                shadowSize: [41, 41]
+            })
+        }).addTo(editMap);
+
+        editMarker.bindPopup(`
+            <div style="text-align: center;">
+                <strong>📍 Nueva Ubicación</strong><br>
+                <small>Lat: ${lat.toFixed(6)}<br>Lng: ${lng.toFixed(6)}</small>
+            </div>
+        `).openPopup();
+
+        // Actualizar estilo de los inputs
+        const latInput = document.getElementById('editLatitud');
+        const lngInput = document.getElementById('editLongitud');
+        if (latInput && lngInput) {
+            latInput.style.backgroundColor = '#fff3cd';
+            latInput.style.border = '2px solid #ffc107';
+            lngInput.style.backgroundColor = '#fff3cd';
+            lngInput.style.border = '2px solid #ffc107';
+        }
+
+        // Mostrar notificación
+        if (typeof Swal !== 'undefined') {
+            Swal.fire({
+                icon: 'info',
+                title: 'Ubicación actualizada',
+                text: `Nuevas coordenadas: ${lat.toFixed(6)}, ${lng.toFixed(6)}`,
+                timer: 2000,
+                showConfirmButton: false,
+                toast: true,
+                position: 'top-end'
+            });
+        }
+    });
+
+    // Redimensionar el mapa
+    setTimeout(() => {
+        editMap.invalidateSize();
+    }, 100);
+}
+
+async function cargarUbicacionActual() {
+    if (!miEmpresa || !miEmpresa.id) {
+        console.warn('⚠️ No hay empresa seleccionada para cargar ubicación');
+        return;
+    }
+
+    try {
+        console.log('🔍 Buscando ubicación para entidad ID:', miEmpresa.id);
+        
+        // Verificar que API_BASE_URL esté definida
+        if (typeof API_BASE_URL === 'undefined') {
+            console.error('❌ API_BASE_URL no está definida');
+            return;
+        }
+        
+        const response = await fetch(`${API_BASE_URL}/api/ubicacion-entidad/entidad/${miEmpresa.id}`);
+        
+        if (response.ok) {
+            const ubicaciones = await response.json();
+            console.log('📍 Ubicaciones encontradas:', ubicaciones);
+            
+            if (ubicaciones && ubicaciones.length > 0) {
+                // Tomar la primera ubicación activa
+                ubicacionActual = ubicaciones.find(ub => ub.activa) || ubicaciones[0];
+                
+                if (ubicacionActual) {
+                    const lat = parseFloat(ubicacionActual.latitud);
+                    const lng = parseFloat(ubicacionActual.longitud);
+                    
+                    // Actualizar campos
+                    document.getElementById('editLatitud').value = lat.toFixed(6);
+                    document.getElementById('editLongitud').value = lng.toFixed(6);
+                    
+                    // Centrar el mapa en la ubicación actual
+                    if (editMap) {
+                        editMap.setView([lat, lng], 15);
+                        
+                        // Agregar marcador para la ubicación actual
+                        editMarker = L.marker([lat, lng], {
+                            icon: L.icon({
+                                iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png',
+                                shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                                iconSize: [25, 41],
+                                iconAnchor: [12, 41],
+                                popupAnchor: [1, -34],
+                                shadowSize: [41, 41]
+                            })
+                        }).addTo(editMap);
+
+                        editMarker.bindPopup(`
+                            <div style="text-align: center;">
+                                <strong>📍 Ubicación Actual</strong><br>
+                                <small>Lat: ${lat.toFixed(6)}<br>Lng: ${lng.toFixed(6)}</small><br>
+                                <em>Haga clic en el mapa para cambiar</em>
+                            </div>
+                        `);
+                        
+                        // Estilo para indicar ubicación actual
+                        const latInput = document.getElementById('editLatitud');
+                        const lngInput = document.getElementById('editLongitud');
+                        if (latInput && lngInput) {
+                            latInput.style.backgroundColor = '#d4edda';
+                            latInput.style.border = '2px solid #28a745';
+                            lngInput.style.backgroundColor = '#d4edda';
+                            lngInput.style.border = '2px solid #28a745';
+                        }
+                    }
+                    
+                    console.log('✅ Ubicación actual cargada:', lat, lng);
+                } else {
+                    console.log('📍 No hay ubicaciones activas');
+                }
+            } else {
+                console.log('📍 No se encontraron ubicaciones para esta entidad');
+            }
+        } else {
+            console.log('📍 No se pudo obtener ubicación:', response.status);
+        }
+    } catch (error) {
+        console.error('❌ Error al cargar ubicación actual:', error);
+    }
+}
+
+// ============================================
+// MANEJO DE ACTUALIZACIÓN DE ENTIDAD
+// ============================================
+
+async function actualizarEntidadConUbicacion() {
+    try {
+        console.log('🔄 Iniciando actualización de entidad...');
+        console.log('📊 ID de empresa:', miEmpresaID);
+        
+        // Verificar que API_BASE_URL esté definida
+        if (typeof API_BASE_URL === 'undefined') {
+            throw new Error('API_BASE_URL no está definida. Verifique la configuración.');
+        }
+        
+        console.log('📊 URL que se usará:', `${API_BASE_URL}/api/entidad/editar/${miEmpresaID}`);
+        
+        // Recopilar datos del formulario
+        const formData = new FormData();
+        
+        // Datos básicos de la entidad
+        formData.append('id', document.getElementById('ID').value);
+        formData.append('claseEntidad', document.getElementById('claseEntidad').value);
+        formData.append('razonSocial', document.getElementById('razonSocial').value);
+        formData.append('numIdentificacion', document.getElementById('numIdentificacion').value);
+        formData.append('tipoEntidad', document.getElementById('tipoEntidad').value);
+        formData.append('naturalezaJuridica', document.getElementById('naturalezaJuridica').value);
+        formData.append('actividadEconomica', document.getElementById('actividadEconomica').value);
+        formData.append('correo', document.getElementById('correo').value);
+        formData.append('telefono', document.getElementById('telefono').value);
+        formData.append('fechaConstitucion', document.getElementById('fechaConstitucion').value);
+        formData.append('ciudadId', document.getElementById('ciudadId').value);
+        formData.append('direccion', document.getElementById('direccion').value);
+        formData.append('facebook', document.getElementById('facebook').value || '');
+        formData.append('instagram', document.getElementById('instagram').value || '');
+        formData.append('paginaweb', document.getElementById('paginaweb').value || '');
+        formData.append('UserAdminId', document.getElementById('UserAdminId').value);
+        
+        // Datos de contacto
+        formData.append('nombreContacto', document.getElementById('nombreContacto').value);
+        formData.append('cargoPersona', document.getElementById('cargoPersona').value);
+        formData.append('correoContacto', document.getElementById('correoContacto').value);
+        formData.append('telefonoContacto', document.getElementById('telefonoContacto').value);
+        
+        // Manejo del logo
+        const logoFile = document.getElementById('logo').files[0];
+        if (logoFile) {
+            formData.append('logo', logoFile);
+        }
+        
+        // Mostrar mensaje de carga
+        if (typeof Swal !== 'undefined') {
+            Swal.fire({
+                title: 'Actualizando entidad...',
+                text: 'Por favor espere mientras se actualiza la información',
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                willOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+        }
+        
+        // Actualizar entidad principal
+        const response = await fetch(`${API_BASE_URL}/api/entidad/editar/${miEmpresaID}`, {
+            method: 'POST',
+            body: formData
+        });
+        
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`Error al actualizar entidad: ${response.status} - ${errorText}`);
+        }
+        
+        const result = await response.json();
+        console.log('✅ Entidad actualizada:', result);
+        
+        // Actualizar ubicación si hay coordenadas
+        const latitud = document.getElementById('editLatitud').value;
+        const longitud = document.getElementById('editLongitud').value;
+        
+        if (latitud && longitud && latitud !== '' && longitud !== '') {
+            await actualizarUbicacionEntidad(latitud, longitud);
+        }
+        
+        // Mostrar mensaje de éxito
+        if (typeof Swal !== 'undefined') {
+            await Swal.fire({
+                icon: 'success',
+                title: '¡Entidad actualizada!',
+                text: 'La información de la entidad se ha actualizado correctamente',
+                timer: 3000,
+                showConfirmButton: false
+            });
+        }
+        
+        // Cerrar modal y recargar datos
+        document.getElementById('modalEditar').style.display = 'none';
+        document.querySelector('.overlay').style.display = 'none';
+        
+        // Recargar la página o actualizar datos
+        if (typeof cargarEntidades === 'function') {
+            await cargarEntidades();
+        } else {
+            location.reload();
+        }
+        
+    } catch (error) {
+        console.error('❌ Error al actualizar entidad:', error);
+        
+        if (typeof Swal !== 'undefined') {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error al actualizar',
+                text: 'Hubo un problema al actualizar la entidad. Por favor intente de nuevo.',
+                confirmButtonText: 'OK'
+            });
+        } else {
+            alert('Error al actualizar la entidad. Por favor intente de nuevo.');
+        }
+    }
+}
+
+async function actualizarUbicacionEntidad(latitud, longitud) {
+    try {
+        console.log('🗺️ Actualizando ubicación...', latitud, longitud);
+        
+        const ubicacionData = {
+            entidadId: miEmpresaID,
+            latitud: parseFloat(latitud),
+            longitud: parseFloat(longitud),
+            activa: true
+        };
+        
+        // Si ya existe una ubicación, la actualizamos; si no, la creamos
+        if (ubicacionActual && ubicacionActual.id) {
+            // Actualizar ubicación existente
+            const response = await fetch(`${API_BASE_URL}/api/ubicacion-entidad/${ubicacionActual.id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(ubicacionData)
+            });
+            
+            if (response.ok) {
+                console.log('✅ Ubicación actualizada correctamente');
+            } else {
+                console.warn('⚠️ Error al actualizar ubicación:', response.status);
+            }
+        } else {
+            // Crear nueva ubicación
+            const response = await fetch(`${API_BASE_URL}/api/ubicacion-entidad`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(ubicacionData)
+            });
+            
+            if (response.ok) {
+                const nuevaUbicacion = await response.json();
+                ubicacionActual = nuevaUbicacion;
+                console.log('✅ Nueva ubicación creada correctamente');
+            } else {
+                console.warn('⚠️ Error al crear ubicación:', response.status);
+            }
+        }
+        
+    } catch (error) {
+        console.error('❌ Error al actualizar ubicación:', error);
+        // No bloqueamos la actualización de la entidad por un error de ubicación
+    }
 }

@@ -113,11 +113,11 @@ INSERT INTO Entidad (
  'Producción de café', 'info@cafeinnovador.com', '3101234567', '2015-06-12', 3, 'Calle 10 #20-30',
  'facebook.com/cafeinnovador', 'instagram.com/cafeinnovador', 'www.cafeinnovador.com', 0, 'logo1.png', NULL, 1,
  NOW(), NOW()),
-('Startup', 'Cacao Futuro Ltda.', 1, '901234567', 'Sociedad Limitada', 'Privada',
+('Estado', 'Cacao Futuro Ltda.', 1, '901234567', 'Sociedad Limitada', 'Privada',
  'Transformación de cacao', 'contacto@cacaofuturo.com', '3209876543', '2019-09-01', 5, 'Carrera 15 #45-67',
  'facebook.com/cacaofuturo', 'instagram.com/cacaofuturo', 'www.cacaofuturo.com', 0, 'logo2.png', NULL, 2,
  NOW(), NOW()),
-('Universidad', 'Universidad del Café', 1, '800765432', 'Persona Natural', 'Pública',
+('Academia', 'Academia del Café', 1, '800765432', 'Persona Natural', 'Pública',
  'Educación superior', 'info@unidelcafe.edu.co', '6012345678', '2000-02-20', 14, 'Av. Universitaria #100-200',
  'facebook.com/unidelcafe', 'instagram.com/unidelcafe', 'www.unidelcafe.edu.co', 0, 'logo3.png', NULL, 1,
  NOW(), NOW());

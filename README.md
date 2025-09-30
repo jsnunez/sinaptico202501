@@ -4,7 +4,7 @@
 
 ## 📋 Descripción del Proyecto
 
-**SinAptico 2025** es una plataforma integral de gestión de convocatorias de innovación y emprendimiento desarrollada para facilitar el proceso completo desde la creación de convocatorias hasta la evaluación y seguimiento de proyectos. El sistema está diseñado para ser utilizado por cámaras de comercio, entidades públicas y organizaciones que manejan fondos de financiamiento para proyectos de innovación.
+**SinAptico 2025** es una plataforma integral de gestión de convocatorias de innovación y Sociedad desarrollada para facilitar el proceso completo desde la creación de convocatorias hasta la evaluación y seguimiento de proyectos. El sistema está diseñado para ser utilizado por cámaras de comercio, entidades públicas y organizaciones que manejan fondos de financiamiento para proyectos de innovación.
 
 ## 🎯 Características Principales
 
@@ -465,7 +465,7 @@ Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) par
 
 ## 🎉 ¡Gracias por usar SinAptico 2025!
 
-Este sistema representa el futuro de la gestión de convocatorias en Colombia, facilitando la innovación y el emprendimiento a través de la tecnología.
+Este sistema representa el futuro de la gestión de convocatorias en Colombia, facilitando la innovación y el Sociedad a través de la tecnología.
 
 **¿Tienes preguntas?** No dudes en contactarnos o crear un issue en GitHub.
 

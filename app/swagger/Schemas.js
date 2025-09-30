@@ -33,7 +33,7 @@
  *           type: integer
  *         claseEntidad:
  *           type: string
- *           enum: [Empresa, Startup, Emprendimiento, Universidad]
+ *           enum: [Empresa, Estado, Sociedad, Academia]
  *         razonSocial:
  *           type: string
  *         habilitado:

@@ -6,6 +6,16 @@
     <title>Dashboard de Control</title>
     <link rel="stylesheet" href="styles/dashboard.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <!-- SweetAlert2 para notificaciones -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <!-- Leaflet.js para mapas -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 <body>
     <!-- Fondo neuronal -->
@@ -118,11 +128,21 @@
                         </div>
                         <h3 class="card-title">Gestión de Entidades</h3>
                         <p class="card-text">Administra las entidades de la aplicación</p>
+                        <div class="card-actions">
+                            <button class="quick-action-btn" id="crearEntidadBtn">
+                                <i class="fas fa-plus"></i> Nueva Entidad
+                            </button>
+                        </div>
                     </div>
                     <div class="card-back">
                         <div class="synapse-icon"></div>
                         <h3 class="card-title">Entidades</h3>
                         <p class="card-text">Crea, edita y elimina entidades. Habilita o deshabilita según sea necesario.</p>
+                        <div class="card-actions">
+                            <button class="quick-action-btn" id="crearEntidadBtn2">
+                                <i class="fas fa-plus"></i> Nueva Entidad
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -144,9 +164,219 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal para crear nueva entidad -->
+    <div id="modalCrearEntidad" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-building"></i> Crear Nueva Entidad</h2>
+                <span class="close" id="cerrarModalEntidad">&times;</span>
+            </div>
+            
+            <form id="formCrearEntidad" enctype="multipart/form-data">
+                <div class="form-sections">
+                    <!-- Información Básica -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-info-circle"></i> Información Básica</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="claseEntidad">Clase de Entidad</label>
+                                <select id="claseEntidad" name="claseEntidad" required>
+                                    <option value="">Seleccione una clase</option>
+                                    <option value="Empresa">Empresa</option>
+                                    <option value="Estado">Estado</option>
+                                    <option value="Sociedad">Sociedad</option>
+                                    <option value="Academia">Academia</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="razonSocial">Razón Social</label>
+                                <input type="text" id="razonSocial" name="razonSocial" required 
+                                       placeholder="Ingrese la razón social">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="numIdentificacion">Número de Identificación</label>
+                                <input type="text" id="numIdentificacion" name="numIdentificacion" required 
+                                       placeholder="Ingrese el número de identificación">
+                            </div>
+                            <div class="form-group">
+                                <label for="tipoEntidad">Tipo de Entidad</label>
+                                <select id="tipoEntidad" name="tipoEntidad" required>
+                                    <option value="">Seleccione un tipo</option>
+                                    <option value="Sociedad Anónima">Sociedad Anónima</option>
+                                    <option value="Sociedad Limitada">Sociedad Limitada</option>
+                                    <option value="Persona Natural">Persona Natural</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="naturalezaJuridica">Naturaleza Jurídica</label>
+                                <select id="naturalezaJuridica" name="naturalezaJuridica" required>
+                                    <option value="">Seleccione naturaleza</option>
+                                    <option value="Privada">Privada</option>
+                                    <option value="Pública">Pública</option>
+                                    <option value="Mixta">Mixta</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="actividadEconomica">Actividad Económica</label>
+                                <input type="text" id="actividadEconomica" name="actividadEconomica" required 
+                                       placeholder="Ingrese la actividad económica">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Información de Contacto -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-phone"></i> Información de Contacto</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="correo">Correo Electrónico</label>
+                                <input type="email" id="correo" name="correo" required 
+                                       placeholder="correo@ejemplo.com">
+                            </div>
+                            <div class="form-group">
+                                <label for="telefono">Teléfono</label>
+                                <input type="tel" id="telefono" name="telefono" required 
+                                       placeholder="3001234567">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="fechaConstitucion">Fecha de Constitución</label>
+                                <input type="date" id="fechaConstitucion" name="fechaConstitucion" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="logo">Logo</label>
+                                <input type="file" id="logo" name="logo" accept="image/*" required>
+                                <small>Formatos: PNG, JPG, JPEG</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ubicación -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-map-marker-alt"></i> Ubicación</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="departamento">Departamento</label>
+                                <select id="departamento" name="departamento" required>
+                                    <option value="">Seleccione un departamento</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="ciudadId">Ciudad</label>
+                                <select id="ciudadId" name="ciudadId" required>
+                                    <option value="">Seleccione una ciudad</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group full-width">
+                                <label for="direccion">Dirección</label>
+                                <input type="text" id="direccion" name="direccion" required 
+                                       placeholder="Ingrese la dirección completa">
+                            </div>
+                        </div>
+
+                        <!-- Mapa para seleccionar ubicación -->
+                        <div class="form-group full-width">
+                            <label>Ubicación en el Mapa</label>
+                            <p class="help-text">Haga clic en el mapa para seleccionar la ubicación exacta</p>
+                            <div id="mapContainer" class="map-container">
+                                <div id="entityLocationMap" style="width: 100%; height: 300px;"></div>
+                            </div>
+                            <div class="coordinates-row">
+                                <div class="coordinate-input">
+                                    <label for="latitud">Latitud:</label>
+                                    <input type="number" id="latitud" name="latitud" step="any" readonly>
+                                </div>
+                                <div class="coordinate-input">
+                                    <label for="longitud">Longitud:</label>
+                                    <input type="number" id="longitud" name="longitud" step="any" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Redes Sociales -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-share-alt"></i> Redes Sociales</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="facebook">Facebook</label>
+                                <input type="url" id="facebook" name="facebook" 
+                                       placeholder="https://facebook.com/empresa">
+                            </div>
+                            <div class="form-group">
+                                <label for="instagram">Instagram</label>
+                                <input type="url" id="instagram" name="instagram" 
+                                       placeholder="https://instagram.com/empresa">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group full-width">
+                                <label for="paginaweb">Página Web</label>
+                                <input type="url" id="paginaweb" name="paginaweb" 
+                                       placeholder="https://empresa.com">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contacto Principal -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-user"></i> Contacto Principal</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="nombreContacto">Nombre Completo</label>
+                                <input type="text" id="nombreContacto" name="nombreContacto" 
+                                       placeholder="Nombre del contacto principal">
+                            </div>
+                            <div class="form-group">
+                                <label for="cargoId">Cargo</label>
+                                <select id="cargoId" name="cargoId">
+                                    <option value="">Seleccione un cargo</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="correoContacto">Correo del Contacto</label>
+                                <input type="email" id="correoContacto" name="correoContacto" 
+                                       placeholder="contacto@empresa.com">
+                            </div>
+                            <div class="form-group">
+                                <label for="telefonoContacto">Teléfono del Contacto</label>
+                                <input type="tel" id="telefonoContacto" name="telefonoContacto" 
+                                       placeholder="3001234567">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn-cancel" id="cancelarCrearEntidad">Cancelar</button>
+                    <button type="submit" class="btn-submit">
+                        <i class="fas fa-save"></i> Crear Entidad
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script src="/js/config.js"></script>
     <script src="js/dashboard.js"></script>
     <script src="js/NavegacionDash.js"></script>
     <script src="js/estadisticas.js"></script>
+    <script src="js/dashboard-modal-entidad.js"></script>
 </body>
 </html>

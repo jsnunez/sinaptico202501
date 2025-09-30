@@ -121,15 +121,46 @@ const filasPorPagina = 10;
     }
   }
   
-  // Función para inicializar la página de usuarios
   function initUsuariosPage() {
     // Cargar tabla de usuarios
     const tablaUsuarios = document.getElementById("tablaUsuarios");
     if (!tablaUsuarios) return;
-  
-    const tbody = tablaUsuarios.querySelector("tbody");
-      const inputBuscar = document.getElementById("buscarUsuario");
 
+    const tbody = tablaUsuarios.querySelector("tbody");
+    const inputBuscar = document.getElementById("buscarUsuario");
+    const modalUsuario = document.getElementById("modalUsuario");
+    const btnNuevoUsuario = document.getElementById("btnNuevoUsuario");
+    const formUsuario = document.getElementById("formUsuario");
+    const cerrarModal = document.getElementById("cerrarModalEditar");
+
+    // Event listener para el botón Nuevo Usuario
+    if (btnNuevoUsuario) {
+      btnNuevoUsuario.addEventListener("click", () => {
+        abrirModalNuevoUsuario();
+      });
+    }
+
+    // Event listener para cerrar modal
+    if (cerrarModal) {
+      cerrarModal.addEventListener("click", () => {
+        modalUsuario.style.display = "none";
+        limpiarFormulario();
+      });
+    }
+
+    // Event listener para el formulario
+    if (formUsuario) {
+      formUsuario.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const usuarioId = document.getElementById("usuarioId").value;
+        if (usuarioId) {
+          actualizarUsuario();
+        } else {
+          crearNuevoUsuario();
+        }
+      });
+    }
+      
 inputBuscar.addEventListener("input", function () {
   const texto = this.value.toLowerCase().trim();
   paginaActual = 1;
@@ -152,26 +183,36 @@ inputBuscar.addEventListener("input", function () {
       
         if (usuariosPagina.length === 0) {
           const tr = document.createElement("tr");
-          tr.innerHTML = `<td colspan="6" style="text-align: center;">No se encontraron usuarios</td>`;
+          tr.innerHTML = `<td colspan="7" style="text-align: center;">No se encontraron usuarios</td>`;
           tbody.appendChild(tr);
           return;
         }
       
         usuariosPagina.forEach((usuario) => {
           const tr = document.createElement("tr");
-          tr.innerHTML = `
+            // Mapeo de roles para mostrar el nombre correcto
+            const rolesMap = {
+            1: "Usuario",
+            2: "Editor",
+            3: "Administrador",
+            4: "Evaluador",
+            5: "Comité"
+            };
+
+            tr.innerHTML = `
               <td>${usuario.id}</td>
               <td>${usuario.name}</td>
               <td>${usuario.email}</td>
-              <td>${usuario.rol === 1 ? "Usuario" : "Administrador"}</td>
+              <td>${usuario.telefono || 'No especificado'}</td>
+              <td>${rolesMap[usuario.rol] || "Desconocido"}</td>
               <td><span class="badge ${usuario.estado == "1" ? "badge-success" : "badge-secondary"}">${usuario.estado == "1" ? "Activo" : "Inactivo"}</span></td>
               <td>
-                <div class="action-icons">
-                  <span class="action-icon edit" data-id="${usuario.id}" title="Editar"><i class="bi bi-pencil-square"></i></span>
-                  <span class="action-icon delete" data-id="${usuario.id}" title="Eliminar"><i class="bi bi-trash3"></i></span>
-                </div>
+              <div class="action-icons">
+                <span class="action-icon edit" data-id="${usuario.id}" title="Editar"><i class="bi bi-pencil-square"></i></span>
+                <span class="action-icon delete" data-id="${usuario.id}" title="Eliminar"><i class="bi bi-trash3"></i></span>
+              </div>
               </td>
-          `;
+            `;
           tbody.appendChild(tr);
         });
       
@@ -228,7 +269,7 @@ inputBuscar.addEventListener("input", function () {
       })
       .catch((error) => {
         console.error("Error:", error);
-        tbody.innerHTML = `<td colspan="6" style="text-align: center;">Error al cargar usuarios</td>`;
+        tbody.innerHTML = `<td colspan="7" style="text-align: center;">Error al cargar usuarios</td>`;
       });
   
     // Modal de confirmación para eliminar
@@ -351,72 +392,196 @@ inputBuscar.addEventListener("input", function () {
   function editarUsuario(id) {
     console.log("Editar usuario con ID:", id);
     const usuario = datosUsuario.find((u) => u.id === id);
+    const modalUsuario = document.getElementById("modalUsuario");
   
     if (usuario) {
       document.getElementById("tituloModalUsuario").textContent = "Editar Usuario";
       document.getElementById("usuarioId").value = usuario.id;
       document.getElementById("nombreUsuario").value = usuario.name;
       document.getElementById("emailUsuario").value = usuario.email;
+      document.getElementById("telefonoUsuario").value = usuario.telefono || "";
       document.getElementById("rolUsuario").value = usuario.rol;
       document.getElementById("estadoUsuario").value = usuario.estado;
   
       // Mostrar campo de estado para edición
       document.getElementById("estadoUsuarioContainer").style.display = "block";
+      // Ocultar campo de contraseña para edición
+      document.getElementById("passwordUsuarioContainer").style.display = "none";
+      // Hacer no obligatorio el campo de contraseña
+      document.getElementById("passwordUsuario").required = false;
   
       modalUsuario.style.display = "block";
-  
-      // Configurar el evento de guardar cambios
-      const btnGuardarUsuario = document.getElementById("btnGuardarUsuario");
-      btnGuardarUsuario.onclick = () => {
-        const updatedUsuario = {
-          id: document.getElementById("usuarioId").value,
-          name: document.getElementById("nombreUsuario").value,
-          email: document.getElementById("emailUsuario").value,
-          rol: document.getElementById("rolUsuario").value,
-          estado: document.getElementById("estadoUsuario").value,
-        };
-  
-        fetch(`/api/user/${updatedUsuario.id}` , {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(updatedUsuario),
-        })
-          .then((response) => {
-            if (!response.ok) {
-              alert("Error al editar el usuario");
-
-              throw new Error("Error al editar el usuario");
-            }
-            return response.json();
-          })
-          .then((data) => {
-            console.log("Usuario actualizado:", data);
-            modalUsuario.style.display = "none";
-            // Recargar la lista de usuarios
-            alert("Usuario actualizado correctamente");
-            fetch("/api/user")
-              .then((response) => response.json())
-              .then((usuarios) => renderUsuarios(usuarios));
-          })
-          .catch((error) => console.error("Error:", error));
-      };
     }
   }
   
   window.onclick = (event) => {
+    const modalUsuario = document.getElementById("modalUsuario");
+    const modalConfirmacion = document.getElementById("modalConfirmacion");
+    
     if (event.target === modalUsuario) {
         modalUsuario.style.display = "none";
+        limpiarFormulario();
     }
-    if (event.target ===  modalConfirmacion) {
+    if (event.target === modalConfirmacion) {
         modalConfirmacion.style.display = "none";
     }
 }
-    
     ;
     document.getElementById("cerrarModalEditar").addEventListener("click", () => {
         document.getElementById("modalUsuario").style.display = "none";
+        limpiarFormulario();
     });
+
+// Función para abrir modal de nuevo usuario
+function abrirModalNuevoUsuario() {
+  const modalUsuario = document.getElementById("modalUsuario");
+  document.getElementById("tituloModalUsuario").textContent = "Nuevo Usuario";
+  limpiarFormulario();
+  
+  // Ocultar campo de estado para nuevo usuario
+  document.getElementById("estadoUsuarioContainer").style.display = "none";
+  // Mostrar campo de contraseña para nuevo usuario
+  document.getElementById("passwordUsuarioContainer").style.display = "block";
+  // Hacer obligatorio el campo de contraseña
+  document.getElementById("passwordUsuario").required = true;
+  
+  modalUsuario.style.display = "block";
+}
+
+// Función para limpiar el formulario
+function limpiarFormulario() {
+  document.getElementById("usuarioId").value = "";
+  document.getElementById("nombreUsuario").value = "";
+  document.getElementById("emailUsuario").value = "";
+  document.getElementById("telefonoUsuario").value = "";
+  document.getElementById("passwordUsuario").value = "";
+  document.getElementById("rolUsuario").value = "3";
+  document.getElementById("estadoUsuario").value = "1";
+}
+
+// Función para crear nuevo usuario
+function crearNuevoUsuario() {
+  const nuevoUsuario = {
+    name: document.getElementById("nombreUsuario").value.trim(),
+    email: document.getElementById("emailUsuario").value.trim(),
+    telefono: document.getElementById("telefonoUsuario").value.trim(),
+    password: document.getElementById("passwordUsuario").value,
+    rol: document.getElementById("rolUsuario").value,
+    estado: "1" // Nuevo usuario siempre activo
+  };
+
+  if (!nuevoUsuario.name || !nuevoUsuario.email || !nuevoUsuario.telefono || !nuevoUsuario.password) {
+    Swal.fire({
+      title: 'Error',
+      text: 'Todos los campos son obligatorios.',
+      icon: 'error',
+      confirmButtonText: 'Aceptar'
+    });
+    return;
+  }
+
+  fetch(`${API_BASE_URL}/api/user`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(nuevoUsuario),
+  })
+  .then((response) => {
+    if (!response.ok) {
+      return response.json().then((data) => {
+        throw new Error(data.error || "Error al crear el usuario");
+      });
+    }
+    return response.json();
+  })
+  .then((data) => {
+    Swal.fire({
+      title: '¡Éxito!',
+      text: 'Usuario creado correctamente.',
+      icon: 'success',
+      confirmButtonText: 'Aceptar'
+    }).then(() => {
+      document.getElementById("modalUsuario").style.display = "none";
+      limpiarFormulario();
+      // Recargar la lista de usuarios
+      cargarUsuarios();
+    });
+  })
+  .catch((error) => {
+    console.error("Error:", error);
+    Swal.fire({
+      title: 'Error',
+      text: error.message || 'Hubo un problema al crear el usuario.',
+      icon: 'error',
+      confirmButtonText: 'Aceptar'
+    });
+  });
+}
+
+// Función para actualizar usuario existente
+function actualizarUsuario() {
+  const usuarioActualizado = {
+    id: document.getElementById("usuarioId").value,
+    name: document.getElementById("nombreUsuario").value.trim(),
+    email: document.getElementById("emailUsuario").value.trim(),
+    telefono: document.getElementById("telefonoUsuario").value.trim(),
+    rol: document.getElementById("rolUsuario").value,
+    estado: document.getElementById("estadoUsuario").value,
+  };
+
+  fetch(`${API_BASE_URL}/api/user/${usuarioActualizado.id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(usuarioActualizado),
+  })
+  .then((response) => {
+    if (!response.ok) {
+      return response.json().then((data) => {
+        throw new Error(data.error || "Error al actualizar el usuario");
+      });
+    }
+    return response.json();
+  })
+  .then((data) => {
+    Swal.fire({
+      title: '¡Éxito!',
+      text: 'Usuario actualizado correctamente.',
+      icon: 'success',
+      confirmButtonText: 'Aceptar'
+    }).then(() => {
+      document.getElementById("modalUsuario").style.display = "none";
+      limpiarFormulario();
+      // Recargar la lista de usuarios
+      cargarUsuarios();
+    });
+  })
+  .catch((error) => {
+    console.error("Error:", error);
+    Swal.fire({
+      title: 'Error',
+      text: error.message || 'Hubo un problema al actualizar el usuario.',
+      icon: 'error',
+      confirmButtonText: 'Aceptar'
+    });
+  });
+}
+
+// Función auxiliar para cargar usuarios
+function cargarUsuarios() {
+  fetch(`${API_BASE_URL}/api/user`)
+    .then((response) => response.json())
+    .then((data) => {
+      datosUsuario = data;
+      usuariosFiltrados = [...datosUsuario];
+      paginaActual = 1;
+      renderUsuariosPaginados();
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+}
 
 

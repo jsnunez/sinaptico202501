@@ -164,7 +164,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Manejo de modales
     const modals = document.querySelectorAll('.modal');
     const overlay = document.querySelector('.overlay');
-    const closeButtons = document.querySelectorAll('.close, #cerrarModal, #cerrarModalEditar, #CerrarModal');
+    const closeButtons = document.querySelectorAll('.close, #cerrarModal, #cerrarModalEditar, #cerrarModalEditarX, #CerrarModal');
     
     // Función para cerrar todos los modales
     function closeAllModals() {

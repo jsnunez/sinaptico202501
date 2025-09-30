@@ -347,11 +347,16 @@ recupearPass.addEventListener("click", async () => {
       if (!value) {
         return 'Por favor ingresá un correo válido';
       }
+      // Validar formato de correo electrónico
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (typeof value === "string" && !emailRegex.test(value.trim())) {
+        return 'El correo electrónico no es válido';
+      }
+      return null;
     }
   });
 
   if (email) {
-    // Aquí podés enviar el email al servidor
     try {
       const res = await fetch("/api/recuperarPass", {
         method: "POST",

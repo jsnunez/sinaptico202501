@@ -19,17 +19,24 @@ import AplicarCurso from './aplicarCurso.js'; // Asegúrate de que la ruta sea c
 import VideosCurso from './videosCurso.js'; // Asegúrate de que la ruta sea correcta
 import UsuarioVideos from './usuarioVideos.js'; // Asegúrate de que la ruta sea correcta
 import Invitacion from './invitaciones.js';
+import UbicacionEntidad from './ubicacionEntidad.js'; // Nuevo modelo
 // Definir todas las asociaciones aquí
+
+// Asociaciones User - Entidad
+User.hasOne(Entidad, { foreignKey: 'UserAdminId', as: 'entidadAdministrada' });
+Entidad.belongsTo(User, { foreignKey: 'UserAdminId', as: 'adminUser' });
 
 User.hasMany(UsuarioEmpresaCargo, { foreignKey: 'userId' });
 Entidad.hasMany(UsuarioEmpresaCargo, { foreignKey: 'empresaId', as: 'empresa' });
 Cargo.hasMany(UsuarioEmpresaCargo, { foreignKey: 'cargoId' });
 
 Ciudad.hasMany(Entidad, { foreignKey: 'ciudadId' });
+Entidad.belongsTo(Ciudad, { foreignKey: 'ciudadId', as: 'ciudad' });
 Contacto.hasMany(Entidad, { foreignKey: 'contactoId' });
 Entidad.belongsTo(Contacto, { foreignKey: 'contactoId' });
 
 Departamento.hasMany(Ciudad, { foreignKey: 'departamentoId' });
+Ciudad.belongsTo(Departamento, { foreignKey: 'departamentoId', as: 'departamento' });
 
 Reto.hasMany(AplicarReto, { foreignKey: 'retoId' });
 Entidad.hasMany(AplicarReto, { foreignKey: 'entidadId' });
@@ -53,6 +60,25 @@ Convocatoria.belongsTo(TipoConvocatorias, {
 Invitacion.belongsTo(User, { as: 'desdeUser', foreignKey: 'desdeuserid' });
 Invitacion.belongsTo(User, { as: 'paraUser', foreignKey: 'parauserid' });
 
+// Asociaciones para UbicacionEntidad
+Entidad.hasMany(UbicacionEntidad, { 
+  foreignKey: 'entidadId', 
+  as: 'ubicaciones',
+  onDelete: 'CASCADE'
+});
+
+UbicacionEntidad.belongsTo(Entidad, { 
+  foreignKey: 'entidadId', 
+  as: 'entidad' 
+});
+
+// Relación para obtener la ubicación principal de una entidad
+Entidad.hasOne(UbicacionEntidad, { 
+  foreignKey: 'entidadId', 
+  as: 'ubicacionPrincipal',
+  scope: { esUbicacionPrincipal: true }
+});
+
 export default () => {
   // Esto asegura que las asociaciones se definan solo una vez
   User.sync();
@@ -74,4 +100,5 @@ export default () => {
   VideosCurso.sync();
   UsuarioVideos.sync();
   Invitacion.sync();
+  UbicacionEntidad.sync(); // Nuevo modelo
 };
