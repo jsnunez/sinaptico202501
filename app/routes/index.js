@@ -20,6 +20,7 @@ import VideosCurso from "./videosCursoRoute.js"; // Importar las rutas de Videos
 import UsuarioVideos from "./usuarioVideosRoutes.js"; // Importar las rutas de UsuarioVideos
 import InvitacionRoutes from "./invitacionRoutes.js"; // Importar las rutas de Invitacion
 import UbicacionEntidadRoutes from "./ubicacionEntidadRoutes.js"; // Importar las rutas de UbicacionEntidad
+import Proyectos from "./proyectosRoutes.js"; // Importar las rutas de Proyectos
 const router = express.Router();
 
 router.use('/entidad', entidadRoutes);
@@ -43,4 +44,5 @@ router.use('/videosCurso', VideosCurso); // Descomentar si se necesita la ruta d
 router.use('/usuarioVideos', UsuarioVideos); // Descomentar si se necesita la ruta de usuarioVideos
 router.use('/invitacion', InvitacionRoutes); // Descomentar si se necesita la ruta de invitacion
 router.use('/ubicacion-entidad', UbicacionEntidadRoutes); // Rutas de ubicación de entidades
+router.use('/proyectos', Proyectos); // Rutas de proyectos
 export default router;

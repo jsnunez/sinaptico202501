@@ -19,7 +19,9 @@ import AplicarCurso from './aplicarCurso.js'; // Asegúrate de que la ruta sea c
 import VideosCurso from './videosCurso.js'; // Asegúrate de que la ruta sea correcta
 import UsuarioVideos from './usuarioVideos.js'; // Asegúrate de que la ruta sea correcta
 import Invitacion from './invitaciones.js';
-import UbicacionEntidad from './ubicacionEntidad.js'; // Nuevo modelo
+import UbicacionEntidad from './ubicacionEntidad.js'; 
+import Proyectos from './proyectos.js';
+
 // Definir todas las asociaciones aquí
 
 // Asociaciones User - Entidad
@@ -78,7 +80,11 @@ Entidad.hasOne(UbicacionEntidad, {
   as: 'ubicacionPrincipal',
   scope: { esUbicacionPrincipal: true }
 });
+Entidad.hasMany(Proyectos, { foreignKey: 'entidadId', as: 'proyectos' });
+Proyectos.belongsTo(Entidad, { foreignKey: 'entidadId', as: 'entidad' });
 
+User.hasMany(Proyectos, { foreignKey: 'userId', as: 'proyectosDiligenciados' });
+Proyectos.belongsTo(User, { foreignKey: 'userId', as: 'usuarioDiligencia' });
 export default () => {
   // Esto asegura que las asociaciones se definan solo una vez
   User.sync();
@@ -100,5 +106,6 @@ export default () => {
   VideosCurso.sync();
   UsuarioVideos.sync();
   Invitacion.sync();
-  UbicacionEntidad.sync(); // Nuevo modelo
+  UbicacionEntidad.sync(); 
+  Proyectos.sync();
 };
