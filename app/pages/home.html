@@ -70,7 +70,7 @@
                 <div class="counter-number" id="usuarios">0</div>
                 <div class="counter-label">Usuarios</div>
             </div>
-                <div class="counter">
+            <div class="counter">
                 <div class="pulse-ring"></div>
                 <div class="counter-number" id="entidadesCount">0</div>
                 <div class="counter-label">Entidades</div>
@@ -85,13 +85,13 @@
                 <div class="counter-number" id="convocatoriasCount">0</div>
                 <div class="counter-label">Convocatorias</div>
             </div>
-               <div class="counter">
+            <div class="counter">
                 <div class="pulse-ring"></div>
                 <div class="counter-number" id="eventosCount">0</div>
                 <div class="counter-label">Eventos</div>
             </div>
-        
-             <div class="counter">
+
+            <div class="counter">
                 <div class="pulse-ring"></div>
                 <div class="counter-number" id="Capacitaciones">0</div>
                 <div class="counter-label">Capacitaciones</div>
@@ -265,9 +265,12 @@
                                             <input type="email" id="register-email" placeholder="name@example.com"
                                                 required>
                                         </div>
-
                                         <div class="form-group">
-                                            <label for="register-password">contraseña</label>
+                                            <label for="telefono">Telefono </label>
+                                            <input type="tel" id="telefono" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="register-password">Contraseña</label>
                                             <input type="password" id="register-password" required>
                                         </div>
 
@@ -277,8 +280,15 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="telefono">telefono </label>
-                                            <input type="tel" id="telefono" required>
+                                            <div style="display: flex; align-items: center;">
+                                                <input type="checkbox" id="politicaDatos" required
+                                                    style="width: 16px; height: 16px; margin-top: 2px;">
+                                                <div style="margin-left: 8px;">
+                                                    Autorizo el tratamiento de mis datos personales según la
+                                                    <a href="documents/politicas_cpc.pdf" target="_blank">política de tratamiento de
+                                                        datos</a>.
+                                                </div>
+                                            </div>
                                         </div>
 
                                         <button type="submit" class="btn btn-primary">Crear cuenta</button>
@@ -296,11 +306,11 @@
         <script src="/js/config.js"></script>
         <script src="/js/estadisticas.js"></script>
         <script>
-        fetchChallengeCount();
-        fetchEntidadesCount();
-        fetchUserCount();
-        fetchConvocatoriasCount();
-        fetchEventosCount();
+            fetchChallengeCount();
+            fetchEntidadesCount();
+            fetchUserCount();
+            fetchConvocatoriasCount();
+            fetchEventosCount();
 
         </script>
 
