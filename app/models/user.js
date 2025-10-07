@@ -60,6 +60,11 @@ const User = sequelize.define('User', {
     type: DataTypes.DATE,
     allowNull: true
   },
+  aceptoPoliticas: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: true
+  }
 }, {
   timestamps: true, // Esto habilita los campos `createdAt` y `updatedAt`
   

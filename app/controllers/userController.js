@@ -23,6 +23,7 @@ export const createUser = async (req, res) => {
       telefono,
       password: hashedPassword,
       rol,
+      aceptoPoliticas: true,
       estado: '1' // Usuario activo por defecto
     });
 
