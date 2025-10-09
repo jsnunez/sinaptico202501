@@ -644,3 +644,21 @@ export const obtenerCantidadSociedad = async (req, res) => {
     });
   }
 };
+
+export const verificarUserAdminIdConusuario = async (req, res) => {
+  const UserAdminId = req.params.id;
+console.log('Verificando entidades con UserAdminId:', UserAdminId);
+  try {
+    const entidad = await Entidad.findAll({
+      where: { UserAdminId }  ,
+        include: [
+                { model: User, as: 'usuario' },
+                { model: Entidad, as: 'entidad' }
+            ]   
+    });
+    if (!entidad) return res.status(404).json({ error: 'Entidad no encontrada' });
+    res.json(entidad);
+  } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}

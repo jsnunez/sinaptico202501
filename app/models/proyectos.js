@@ -63,7 +63,8 @@ const Proyectos = sequelize.define('Proyectos', {
     potencialEmpleo: { type: DataTypes.STRING, allowNull: false },
     impactoEmpleo: { type: DataTypes.STRING, allowNull: false },
     impactoEquidad: { type: DataTypes.STRING, allowNull: false },
-    politicasPPI: { type: DataTypes.STRING, allowNull: false }
+    politicasPPI: { type: DataTypes.STRING, allowNull: false },
+    
 }, {
     tableName: 'proyectos',
     timestamps: true

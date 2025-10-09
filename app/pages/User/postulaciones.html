@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SINAPTICO</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <link rel="stylesheet" href="styles/colores.css">
+    <link rel="stylesheet" href="styles/postulaciones.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+
+
+
+
+</head>
+
+<body>
+
+
+    <!-- Encabezado -->
+    <header class="header">
+        <div onclick="window.location.href='/helice'" class="logo">
+            <!-- <span class="logo-icon">⚡</span> -->
+            <span class="logo-text">SINAPTICO</span>
+        </div>
+        <nav class="nav">
+            <button class="nav-button pulse" onclick="window.location.href='/helice'">Hélice</button>
+            <button class="nav-button pulse" onclick="window.location.href='/proyectos'">Proyectos</button>
+            <button class="nav-button pulse" onclick="window.location.href='/innovacion'">Innovación</button>
+
+            <button class="nav-button pulse" onclick="window.location.href='/Conocimiento'">Conocimiento</button>
+            <button class="nav-button pulse" onclick="window.location.href='/convocatorias'">Convocatorias</button>
+
+            <button class="nav-button pulse" onclick="window.location.href='/eventos'">Eventos</button>
+
+            <button class="nav-button pulse" onclick="irEnConstruccion()">Mapa</button>
+            <div style="position:fixed;top:10px;right:20px;z-index:1000;font-size:1.5em;cursor:pointer;">
+                <span id="icono-notif">🔔 <span
+                        style='background:red;color:white;border-radius:50%;padding:2px 7px;font-size:0.9em;'>0</span></span>
+            </div>
+            <div class="notificaciones" id="notificaciones"></div>
+
+            <button class="nav-button pulse" id="cerrarSesion">Cerrar sesión</button>
+        </nav>
+    </header>
+
+    <!-- Bienvenida y botones de acción -->
+    <div class="welcome-container">
+        <div id="userPhoto">
+            <img id="imagenPerfil" src="img/sinfoto.jpg" alt="Foto de perfil"
+                onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
+        </div>
+
+        <div class="welcome-text">
+            <h2 id="bienvenido">Hola </h2>
+            <!-- <p class="subtitle">Conectando entidades para potenciar la innovación</p> -->
+        </div>
+        <div class="action-buttons">
+
+            <button class="action-button" id="postulaciones">
+                <span class="button-icon"><i class="bi bi-lightbulb-fill "
+                        style="color: rgb(255, 248, 148);"></i></span>Idea
+                de Proyecto
+            </button>
+            <button class="action-button" id="asignarServicio" style="display: none;"
+                onclick="abrirModalAgregarServicio()">
+                <span class="button-icon">🔄</span> Servicios
+            </button>
+        </div>
+
+
+    </div>
+
+
+    <!-- Modal Foto de Perfil -->
+    <div id="modalFotoPerfil" class="modal">
+        <div class="modal-content">
+            <span class="close" id="cerrarModalFotoPerfil">&times;</span>
+            <h2>Actualizar Foto de Perfil</h2>
+            <form id="formFotoPerfil">
+                <div class="form-group" style="text-align:center;">
+                    <img id="previewFotoPerfil" src="" alt="Foto actual"
+                        style="width:100px;height:100px;border-radius:50%;object-fit:cover;margin-bottom:15px;"
+                        onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
+                </div>
+                <div class="form-group">
+                    <input type="file" id="inputFotoPerfil" name="fotoPerfil" accept="image/*" required>
+                </div>
+                <button type="submit" class="modal-button">Guardar Foto</button>
+            </form>
+        </div>
+    </div>
+
+
+
+    <!-- Contacto del lider de PPI -->
+    <div id="modalPostulaciones" class="modal">
+        <div class="modal-content" style="max-width:900px;">
+            <span class="close" id="cerrarModalPostulaciones">&times;</span>
+            <h2>Ficha Técnica de PPI</h2>
+            <div class="form-section">
+                <h3 class="section-title">Contacto Líder PPI</h3>
+                <div class="input-box full-width">
+                    <label for="Entidad">Nombre de la Institución responsable </label>
+                    <input disabled type="text" id="nombreEntidad" name="nombreEntidad"
+                        placeholder="Ingrese el nombre de la entidad responsable" "
+                            required>
+                    </div>
+
+                <div class=" input-row">
+                    <div class="input-box">
+                        <label for="nombreLider">Nombre</label>
+                        <input type="text" id="nombreLider" name="nombreLider"
+                            placeholder="Ingrese el nombre del Líder PPI" required>
+                    </div>
+                    <div class="input-box">
+                        <label for="cargoLider">Cargo</label>
+                        <input type="text" id="cargoLider" name="cargoLider"
+                            placeholder="Ingrese el cargo del Líder PPI" required>
+                    </div>
+                </div>
+
+                <div class="input-row">
+                    <div class="input-box">
+                        <label for="correoLider">Correo Electrónico</label>
+                        <input type="email" id="correoLider" name="correo" placeholder="Ingrese el correo" required>
+                    </div>
+
+                    <div class="input-box">
+                        <label for="telefonoLider">Teléfono / Celular</label>
+                        <input type="text" id="telefonoLider" name="telefonoLider"
+                            placeholder="Ingrese el teléfono o celular" required>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Contacto de la persona que diligencia la ficha -->
+            <div class="form-section">
+                <h3 class="section-title">Contacto de quien diligencia la ficha</h3>
+                <div class="input-box full-width">
+                    <label for="EntidadDiligencia">Nombre de la Institución responsable </label>
+                    <input type="text" id="nombreEntidad" name="nombreEntidad"
+                        placeholder="Ingrese el nombre de la entidad responsable" required>
+                </div>
+
+                <div class=" input-row">
+                    <div class="input-box">
+                        <label for="nombreDiligenciador">Nombre</label>
+                        <input type="text" id="nombreDiligenciador" name="nombreDiligenciador"
+                            placeholder="Ingrese el nombre de quien diligencia la ficha" required>
+                    </div>
+                    <div class="input-box">
+                        <label for="cargoDiligenciador">Cargo</label>
+                        <input type="text" id="cargoDiligenciador" name="cargoDiligenciador"
+                            placeholder="Ingrese el cargo quien diligencia la ficha" required>
+                    </div>
+                </div>
+
+                <div class="input-row">
+                    <div class="input-box">
+                        <label for="correoDiligenciador">Correo Electrónico</label>
+                        <input type="email" id="correoDiligenciador" name="correo" placeholder="Ingrese el correo"
+                            required>
+                    </div>
+
+                    <div class="input-box">
+                        <label for="telefonoDiligenciador">Teléfono / Celular</label>
+                        <input type="text" id="telefonoDiligenciador" name="telefonoDiligenciador"
+                            placeholder="Ingrese el teléfono o celular" required>
+                    </div>
+
+                </div>
+
+
+
+            </div>
+
+            <!-- Información General del PPI -->
+            <div class="form-section">
+                <h3 class="section-title">Información General del PPI</h3>
+
+                <div class="input-box full-width">
+                    <label for="nombrePPI">Nombre del PPI (Programa/Proyecto/Iniciativa)</label>
+                    <input type="text" id="nombrePPI" name="nombrePPI" placeholder="Ingrese el nombre del PPI" required>
+                </div>
+                <div class="input-box full-width">
+                    <label for="determinanteProductividad">Determinante de productividad al que se encuentra asociado el
+                        PPI</label>
+                    <input type="text" id="determinanteProductividad" name="determinanteProductividad"
+                        placeholder="Ingrese el nombre del determinante de productividad al que se encuentra asociado el PPI"
+                        required>
+                </div>
+                <div class="input-box full-width">
+                    <label for="componenteProductividad">Componente de productividad al que se encuentra asociado el
+                        PPI</label>
+                    <input type="text" id="componenteProductividad" name="componenteProductividad"
+                        placeholder="Ingrese el nombre del componente de productividad al que se encuentra asociado el PPI"
+                        required>
+                </div>
+                <div class="input-box full-width">
+                    <label for="objetivo">Objetivo del PPI <br>
+                        (Sea claro para que el equipo de expertos pueda identificar si soluciona fallas de mercado,
+                        gobierno o articulación)</label>
+                    <input type="text" id="objetivo" name="objetivo" placeholder="Ingrese el Objetivo del PPI" required>
+                </div>
+                <div class="input-box">
+                    <label for="objetivo">¿Qué necesidad o problema resuelve esta Iniciativa?</label>
+                    <input type="text" id="objetivo" name="objetivo" placeholder="Sea lo más claro posible" required>
+                </div>
+                <div class="input-box full-width">
+                    <label for="impactos"> Liste los tres principales impactos a obtener con el PPI planteado</label>
+                    <input type="text" id="impactos" name="impactos" placeholder="Ingrese los impactos" required>
+                </div>
+                <div class="input-box full-width">
+                    <label for="objetivosEspecificos">Liste los objetivos específicos del proyecto </label>
+                    <input type="text" id="objetivosEspecificos" name="objetivosEspecificos"
+                        placeholder="Ingrese los objetivos específicos (Máximo 5)" required>
+
+                </div>
+
+                <div class="input-box full-width">
+                    <label for="duracionPPI">¿Cuál es la duración estimada del PPI?</label>
+                    <select id="duracionPPI" name="duracionPPI" required>
+                        <option value="">Seleccione una opción</option>
+                        <option value="Menos de un año">Menos de un año</option>
+                        <option value="Entre un año y tres años">Entre un año y tres años</option>
+                        <option value="Más de tres años">Más de tres años</option>
+                    </select>
+                </div>
+                <div class="input-box full-width">
+                    <label for="presupuestoPPI">¿Cuál es el presupuesto estimado del PPI?</label>
+                    <select id="presupuestoPPI" name="duracionPPI" required>
+                        <option value="">Seleccione una opción</option>
+                        <option value="De 0 a 100 millones de pesos">De 0 a 100 millones de pesos</option>
+                        <option value="De 101 a 500 millones de pesos">De 101 a 500 millones de pesos</option>
+                        <option value="De 501 a 1000 millones de pesos">De 501 a 1000 millones de pesos</option>
+                        <option value="De 1001 a 5000 millones de pesos">De 1001 a 5000 millones de pesos</option>
+                        <option value="Más de 5000 millones de pesos">Más de 5000 millones de pesos</option>
+                    </select>
+                </div>
+
+
+                <div class="input-box full-width">
+                    <label for="fasePPI">¿En qué fase se encuentra actualmente el PPI?</label>
+                    <select id="fasePPI" name="fasePPI" required>
+                        <option value="">Seleccione una opción</option>
+                        <option value="Fase 1: Idea">Fase 1: Idea</option>
+                        <option value="Fase 2: Formulación o Prefactibilidad">Fase 2: Formulación o Prefactibilidad
+                        </option>
+                        <option value="Fase 3: Factibilidad">Fase 3: Factibilidad</option>
+                        <option value="Contratación">Contratación</option>
+                        <option value="Ejecución">Ejecución</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <!-- Análisis de Equidad de Género y Superación de la Pobreza -->
+            <div class="form-section">
+                <h3 class="section-title">Análisis de Equidad de Género y Superación de la Pobreza </h3>
+
+                <div class="input-box full-width">
+                    <label for="Potencial">Potencial de generación de empleo por estratos cuando el proyecto esté en
+                        desarrollo:</label>
+                    <table class="PPI">
+                        <thead>
+                            <tr>
+                                <th>Rango De Empleos</th>
+                                <th>Estratos 1 y 2</th>
+                                <th>Estratos 3 y 4</th>
+                                <th>Estratos 5 y 6</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="text-align:center;">1 a 10 </td>
+                                <td style="text-align:center;"><input type="radio" name="potencialEmpleo"
+                                        value="1-10-1y2"></td>
+                                <td style="text-align:center;"><input type="radio" name="potencialEmpleo"
+                                        value="1-10-3y4"></td>
+                                <td style="text-align:center;"><input type="radio" name="potencialEmpleo"
+                                        value="1-10-5y6"></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:center;">11 a 20 </td>
+                                <td style="text-align:center;"><input type="radio" name="potencialEmpleo"
+                                        value="11-20-1y2"></td>
+                                <td style="text-align:center;"><input type="radio" name="potencialEmpleo"
+                                        value="11-20-3y4"></td>
+                                <td style="text-align:center;"><input type="radio" name="potencialEmpleo"
+                                        value="11-20-5y6"></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:center;">21 a 30 </td>
+                                <td style="text-align:center;"><input type="radio" name="potencialEmpleo"
+                                        value="21-30-1y2"></td>
+                                <td style="text-align:center;"><input type="radio" name="potencialEmpleo"
+                                        value="21-30-3y4"></td>
+                                <td style="text-align:center;"><input type="radio" name="potencialEmpleo"
+                                        value="21-30-5y6"></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:center;">31 a o más </td>
+                                <td style="text-align:center;"><input type="radio" name="potencialEmpleo"
+                                        value="31+-1y2"></td>
+                                <td style="text-align:center;"><input type="radio" name="potencialEmpleo"
+                                        value="31+-3y4"></td>
+                                <td style="text-align:center;"><input type="radio" name="potencialEmpleo"
+                                        value="31+-5y6"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <br>
+                <hr>
+                <br>
+                <div class="input-box full-width">
+                    <label for="impactoEmpleo">Impactos esperados en generación de empleo con la ejecución del programa,
+                        proyecto o iniciativa </label>
+                    <input type="text" id="impactoEmpleo" name="impactoEmpleo"
+                        placeholder="Ingrese los impactos esperados en la generación de empleo con la ejecución del PPI"
+                        required>
+                </div>
+                <div class="input-box full-width">
+                    <label for="impactoEquidad">Impactos esperados en reducción de brechas de equidad de género con la
+                        ejecución del programa, proyecto o iniciativa
+                    </label>
+                    <input type="text" id="impactoEquidad" name="impactoEquidad"
+                        placeholder="Ingrese los Impactos esperados en reducción de brechas de equidad de género con la ejecución del PPI"
+                        required>
+                </div>
+                <div class="input-box full-width">
+                    <label for="politicasPPI">Indique si el proyecto contempla políticas de equidad de género para la
+                        contratación de sus empleados. Cuáles?
+
+                    </label>
+                    <input type="text" id="politicasPPI" name="politicasPPI"
+                        placeholder="Ingrese las politicas de equidad de género para la contratación" required>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mis Proyectos -->
+
+    <div class="main-content">
+        <h2 class="title">Mis Proyectos</h2>
+
+        <!-- Estadísticas -->
+
+        <div class="stats-grid">
+            <div class="stat-card presentados">
+                <div class="stat-icon">📝</div>
+                <div class="stat-number">24</div>
+                <div class="stat-label">Presentados</div>
+            </div>
+
+            <div class="stat-card evaluacion">
+                <div class="stat-icon">🔍</div>
+                <div class="stat-number">8</div>
+                <div class="stat-label">En Evaluación</div>
+            </div>
+
+            <div class="stat-card comite">
+                <div class="stat-icon">👥</div>
+                <div class="stat-number">3</div>
+                <div class="stat-label">En Comité</div>
+            </div>
+
+            <div class="stat-card aprobados">
+                <div class="stat-icon">✅</div>
+                <div class="stat-number">15</div>
+                <div class="stat-label">Aprobados</div>
+            </div>
+
+            <div class="stat-card rechazados">
+                <div class="stat-icon">❌</div>
+                <div class="stat-number">7</div>
+                <div class="stat-label">Rechazados</div>
+            </div>
+        </div>
+
+
+
+        <!-- Filtros -->
+        <div class="filter-container">
+            <input type="text" id="buscarMisProyectos" placeholder="Buscar tus proyectos..." class="filter-input">
+        </div>
+
+        <!-- Tabla de Mis Proyectos -->
+        <table class="data-table" id="tablaPostulaciones">
+            <thead>
+                <tr>
+                    <th>Codigo</th>
+                    <th>Nombre del proyecto</th>
+                    <th>Objetivo</th>
+                    <th>Entidad</th>
+                    <th>Líder PPI</th>
+                    <th>Duración</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="cuerpoTablaPostulaciones">
+                <!-- Filas de datos se generarán dinámicamente aquí -->
+
+            </tbody>
+        </table>
+        <div id="paginacionEntidades" class="pagination"></div>
+
+
+    </div>
+
+
+
+
+    <script>
+
+        function obtenerCookie(nombre) {
+            const nombreCookie = `${nombre}=`;
+            const cookies = document.cookie.split(';');
+
+            for (let i = 0; i < cookies.length; i++) {
+                let cookie = cookies[i].trim();
+
+                if (cookie.indexOf(nombreCookie) === 0) {
+                    return cookie.substring(nombreCookie.length, cookie.length);
+                }
+            }
+
+            return null; // Retorna null si no se encuentra la cookie
+        }
+        const userId = obtenerCookie("userId");
+        fetch(`/api/user/${userId}`)
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('bienvenido').innerText = `Hola ${data.name}`;
+                if (data.fotoPerfil) {
+                    document.getElementById('imagenPerfil').src = data.fotoPerfil;
+                }
+            });
+
+            fetch(`/api/entidad/verificarUserAdminIdConusuario/${userId}`)
+            .then(res => res.json())
+            .then(data => {
+                console.log(data[0].razonSocial);
+                if (data ) {
+                    console.log(data);
+                    document.getElementById('nombreEntidad').value = data[0].razonSocial;
+                    document.getElementById('nombreLider').value = data[0].razonSocial;
+                }
+            });
+        // Cargar proyectos del usuario
+        fetch(`/api/proyectos/misproyectos/${userId}`)
+            .then(res => res.json())
+            .then(data => {
+                const tbody = document.getElementById('cuerpoTablaPostulaciones');
+                tbody.innerHTML = '';
+                // Mostrar contactos recibidos
+                if (data && Array.isArray(data) && data.length > 0) {
+                    data.forEach(proyecto => {
+
+                        console.log(proyecto.nombrePPI);
+
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td>${proyecto.id || ''}</td>
+                            <td>${proyecto.nombrePPI || ''}</td>
+                            <td>${proyecto.objetivo || ''}</td>
+                            <td>${proyecto.entidad.razonSocial || ''}</td>
+                            <td>${proyecto.usuario.name || ''}</td>
+                            <td>${proyecto.duracionPPI || ''}</td>
+                            <td>${proyecto.fasePPI || ''}</td>
+                            <td>
+                                <button class="btn-accion" onclick="editarProyecto(${proyecto.id})">Editar</button>
+                                <button class="btn-accion" onclick="eliminarProyecto(${proyecto.id})">Eliminar</button>
+                            </td>
+                        `;
+                        tbody.appendChild(tr);
+                        console.log(tr);
+
+                    });
+                }
+                // Mostrar contactos enviados
+
+            });
+        document.getElementById('postulaciones').onclick = function () {
+            document.getElementById('modalPostulaciones').style.display = 'block';
+
+        };
+        document.getElementById('cerrarModalPostulaciones').onclick = function () {
+            document.getElementById('modalPostulaciones').style.display = 'none';
+        };
+
+    </script>
+    <script>
+        // Abrir modal al hacer clic en la foto de usuario
+        document.getElementById('userPhoto').onclick = function () {
+            document.getElementById('modalFotoPerfil').style.display = 'block';
+
+            // Opcional: cargar foto actual si tienes la URL
+            // document.getElementById('previewFotoPerfil').src = 'URL_DE_LA_FOTO_ACTUAL';
+        };
+        // Cerrar modal
+        document.getElementById('cerrarModalFotoPerfil').onclick = function () {
+            document.getElementById('modalFotoPerfil').style.display = 'none';
+        };
+        // Vista previa de la imagen seleccionada
+        document.getElementById('inputFotoPerfil').onchange = function (e) {
+            const file = e.target.files[0];
+            if (file) {
+                document.getElementById('previewFotoPerfil').src = URL.createObjectURL(file);
+            }
+        };
+        // Guardar foto (debes implementar la lógica de subida en tu backend)
+        document.getElementById('formFotoPerfil').onsubmit = function (e) {
+            e.preventDefault();
+            const userId = obtenerCookie("userId");
+
+            // Ejemplo de subida con fetch y FormData
+            const formData = new FormData();
+            console.log(document.getElementById('inputFotoPerfil').files[0]);
+            formData.append('fotoPerfil', document.getElementById('inputFotoPerfil').files[0]);
+            alert('subiendo');
+            fetch(`/api/user/cambiarFoto/${userId}`, {
+                method: 'PUT',
+                body: formData
+            }).then(res => res.json())
+                .then(data => {
+                    // Actualiza la foto en la interfaz si es necesario
+                    document.getElementById('modalFotoPerfil').style.display = 'none';
+                    // document.getElementById('userPhoto').innerHTML = '<img src="URL_NUEVA_FOTO" ...>';
+                    location.reload(); // O actualiza solo la foto
+                }).catch(() => {
+                    alert('Error al subir la foto');
+                });
+        };
+
+    </script>
+
+    <!-- Scripts -->
+    <!-- 
+    <script src="js/notificaciones.js"></script>
+    <script src="/js/websocket.js"></script> -->
+    <!-- <script src="/js/cargarProyectos.js"></script> -->
+
+
+
+
+</body>
+
+</html>

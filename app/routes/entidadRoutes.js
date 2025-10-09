@@ -1,7 +1,7 @@
 // /api/entidad
 
 import express from 'express';
-import { verificarEntidad, obtenerEntidad,crearEntidad,editarEntidad,obtenerEntidadesHabilitadas,aumentarContadorEntidad,verificarUserAdminId,modificarUserAdminId} from '../controllers/entidadController.js';  // Importar el controlador
+import { verificarEntidad, obtenerEntidad,crearEntidad,editarEntidad,obtenerEntidadesHabilitadas,aumentarContadorEntidad,verificarUserAdminId,modificarUserAdminId,verificarUserAdminIdConusuario} from '../controllers/entidadController.js';  // Importar el controlador
 import { obtenerCantidadEmpresas, obtenerCantidadSociedad,cambiarEstadoHabilitado ,obtenerCantidadEntidades} from '../controllers/entidadController.js';
 
 
@@ -17,6 +17,7 @@ import { obtenerCantidadEmpresas, obtenerCantidadSociedad,cambiarEstadoHabilitad
 const router = express.Router();
 
 // rutas
+router.get('/verificarUserAdminIdConusuario/:id', verificarUserAdminIdConusuario)
 router.get('/verificar-entidad/:userId', verificarEntidad);
 router.get('/verificar-user-admin/:id', verificarUserAdminId);
 router.put('/modificar-user-admin/:id', modificarUserAdminId);
@@ -29,5 +30,6 @@ router.get('/cantidadEmpresas', obtenerCantidadEmpresas);
 router.get('/cantidadSociedads', obtenerCantidadSociedad);
 router.post('/cambiarEstado/:id',cambiarEstadoHabilitado) 
 router.put('/aumentarContadorContacto/:id',aumentarContadorEntidad); 
+
    
 export default router;

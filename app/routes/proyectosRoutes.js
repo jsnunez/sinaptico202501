@@ -4,13 +4,28 @@ import User from '../models/user.js';
 import Entidad from '../models/entidad.js';
 
 const router = express.Router();
-
+// Obtener un proyecto por ID
+router.get('/misproyectos/:userId', async (req, res) => {
+    try {
+        const proyectos = await Proyectos.findAll({
+            where: { userId: req.params.userId },
+            include: [
+                { model: User, as: 'usuario' },
+                { model: Entidad, as: 'entidad' }
+            ]
+        });
+        if (!proyectos) return res.status(404).json({ error: 'Proyectos no encontrados' });
+        res.json(proyectos);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}); 
 // Obtener todos los proyectos
 router.get('/', async (_, res) => {
     try {
         const proyectos = await Proyectos.findAll({
             include: [
-                { model: User, as: 'usuario' },
+                { model: User, as: 'usuario'},
                 { model: Entidad, as: 'entidad' }
             ]
         });
@@ -35,6 +50,9 @@ router.get('/:id', async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
+
+
+
 
 // Crear un nuevo proyecto
 router.post('/', async (req, res) => {
