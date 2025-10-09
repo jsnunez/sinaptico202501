@@ -157,47 +157,7 @@ function cargarFormulario() {
             </div>
         </div>
 
-        <!-- Datos del Contacto -->
-        <div class="form-section">
-            <h3 class="section-title">Datos de Contacto</h3>
-            
-            <div class="input-row">
-                <div class="input-box">
-                    <label for="nombreContacto">Nombre Completo del Contacto</label>
-                    <input type="text" id="nombreContacto" name="nombreContacto" placeholder="Ingrese el nombre completo">
-                </div>
-
-                <div class="input-box">
-                    <label for="correoContacto">Correo Electrónico del Contacto</label>
-                    <input type="email" id="correoContacto" name="correoContacto" placeholder="Ingrese el correo del contacto">
-                </div>
-            </div>
-
-            <div class="input-row">
-                <div class="input-box">
-                    <label for="telefonoContacto">Teléfono de Contacto</label>
-                    <input type="tel" id="telefonoContacto" name="telefonoContacto" placeholder="Ingrese el número de teléfono">
-                </div>
-
-                <div class="input-box">
-                    <label for="cargoPersona">Cargo</label>
-                    <select id="cargoPersona" name="cargoId">
-                        <option value="">Seleccione un cargo</option>
-                        <!-- Las opciones se llenarán dinámicamente con JavaScript -->
-                    </select>
-                </div>
-            </div>
-
-            <div class="input-row">
-                <div class="input-box">
-                    <label for="cargoPersonaNuevo">Nuevo Cargo</label>
-                    <input type="text" id="cargoPersonaNuevo" name="cargoPersonaNuevo" placeholder="Ingrese el nuevo cargo">
-                </div>
-                <div class="input-box" style="display: flex; align-items: end;">
-                    <button type="button" class="btn btn-secondary" id="crearCargoButton">Crear Cargo</button>
-                </div>
-            </div>
-        </div>
+        
 
          
 
@@ -215,27 +175,6 @@ function cargarFormulario() {
     // Inicializar el mapa después de cargar el formulario
     initMapAfterFormLoad();
 
-    crearCargoButton.addEventListener('click', async () => {
-        const nuevoCargo = document.getElementById('cargoPersonaNuevo').value;
-        if (!nuevoCargo) {
-            Swal.fire({
-            icon: 'warning',
-            title: 'Campo vacío',
-            text: 'Por favor ingrese el nombre del cargo antes de crearlo.',
-            });
-            return;
-        }
-        const response = await crearCargo(nuevoCargo);
-        console.log(response);
-        console.log('Respuesta del servidor:', response);
-        if (response.success) {
-            alert('Cargo creado con éxito');
-                agregarCargos();
-
-        } else {
-            alert(response.mensaje);
-        }}
-    );
 
 
 

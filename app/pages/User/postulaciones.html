@@ -451,14 +451,37 @@
                 }
             });
 
-            fetch(`/api/entidad/verificarUserAdminIdConusuario/${userId}`)
+            fetch(`/api/usuarioempresa/user/${userId}`)
             .then(res => res.json())
             .then(data => {
-                console.log(data[0].razonSocial);
+                console.log(data);
                 if (data ) {
                     console.log(data);
-                    document.getElementById('nombreEntidad').value = data[0].razonSocial;
-                    document.getElementById('nombreLider').value = data[0].razonSocial;
+                    const nombreEntidadInput = document.getElementById('nombreEntidad');
+                    // Crear un select desplegable con opción "Independiente"
+                    const selectEntidad = document.createElement('select');
+                    selectEntidad.id = 'nombreEntidad';
+                    selectEntidad.name = 'nombreEntidad';
+                    selectEntidad.required = true;
+
+                    // Opción "Independiente"
+                    const optionIndependiente = document.createElement('option');
+                    optionIndependiente.value = 'Independiente';
+                    optionIndependiente.text = 'Independiente';
+                    selectEntidad.appendChild(optionIndependiente);
+
+                    // Opción de la empresa
+                    const optionEmpresa = document.createElement('option');
+                    optionEmpresa.value = data[0].empresa.razonSocial;
+                    optionEmpresa.text = data[0].empresa.razonSocial;
+                    selectEntidad.appendChild(optionEmpresa);
+
+                    // Seleccionar la empresa por defecto
+                    selectEntidad.value = data[0].empresa.razonSocial;
+
+                    // Reemplazar el input por el select
+                    nombreEntidadInput.parentNode.replaceChild(selectEntidad, nombreEntidadInput);
+                    document.getElementById('nombreLider').value = data[0].userId;
                 }
             });
         // Cargar proyectos del usuario
@@ -550,9 +573,9 @@
     </script>
 
     <!-- Scripts -->
-    <!-- 
+    
     <script src="js/notificaciones.js"></script>
-    <script src="/js/websocket.js"></script> -->
+    <script src="/js/websocket.js"></script>
     <!-- <script src="/js/cargarProyectos.js"></script> -->
 
 

@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('descripcionEmpresa').textContent = empresa.actividadEconomica;
         document.getElementById('serviciosAsociados').textContent = empresa.razonSocial;
         document.getElementById('UbicacionEntidad').textContent = empresa.direccion + ", " + empresa.Ciudad.nombre + ", " + empresa.Ciudad.Departamento.nombre;
-        document.getElementById('contactoEntidad').textContent = empresa.Contacto.nombre;
+        // document.getElementById('contactoEntidad').textContent = empresa.User.name;
         const telefono = empresa.telefono || '';
         const telefonoMasked = telefono.length > 4
           ? telefono.slice(0, 4) + '*'.repeat(telefono.length - 4)

@@ -150,10 +150,10 @@ export const crearEntidad = async (req, res) => {
       departamento,
       ciudadId,
       direccion,
-      nombreContacto,
-      cargoId,
-      correoContacto,
-      telefonoContacto,
+      // nombreContacto,
+      // cargoId,
+      // correoContacto,
+      // telefonoContacto,
       facebook,
       instagram,
       paginaweb,
@@ -162,15 +162,16 @@ export const crearEntidad = async (req, res) => {
       longitud,
     } = req.body;
 
+   
     try {
-      // Crear un nuevo contacto
-      const contacto = await Contacto.create({
-        nombre: nombreContacto,
-        cargoId: cargoId,
-        email: correoContacto,
-        telefono: telefonoContacto,
+      // // Crear un nuevo contacto
+      // const contacto = await Contacto.create({
+      //   nombre: nombreContacto,
+      //   cargoId: cargoId,
+      //   email: correoContacto,
+      //   telefono: telefonoContacto,
 
-      });
+      // });
 
       // Crear una nueva entidad, incluyendo el logo
       const nuevaEntidad = await Entidad.create({
@@ -187,7 +188,7 @@ export const crearEntidad = async (req, res) => {
         ciudadId,
         direccion,
         logo: req.file.filename,  // Guarda el path del archivo logo
-        contactoId: contacto.id,
+        // contactoId: contacto.id,
         facebook: facebook,
         instagram: instagram,
         paginaweb: paginaweb,
@@ -225,6 +226,19 @@ export const crearEntidad = async (req, res) => {
       } else {
         console.log('No se proporcionaron coordenadas válidas. Latitud válida:', latitudValida, 'Longitud válida:', longitudValida);
       }
+      // Después de crear la entidad, crear el registro en UsuarioEmpresaCargo
+      try {
+        const usuarioEmpresaCargo = await UsuarioEmpresaCargo.create({
+          userId: UserAdminId,
+          empresaId: nuevaEntidad.id,
+          cargoId: 1,
+          estado: 1, // Asignar estado 1 (activo)
+        });
+        console.log('UsuarioEmpresaCargo creado:', usuarioEmpresaCargo.toJSON());
+      } catch (error) {
+        console.error('Error al crear UsuarioEmpresaCargo:', error);
+        return res.status(500).json({ message: 'Error al crear UsuarioEmpresaCargo', error });
+      }
 
       return res.status(201).json({
         message: 'Entidad creada con éxito',
@@ -238,7 +252,9 @@ export const crearEntidad = async (req, res) => {
       console.error('Error al crear la entidad:', error);
       return res.status(500).json({ message: 'Error al crear la entidad', error });
     }
+    
   });
+ 
 };
 
 
@@ -402,13 +418,8 @@ export const obtenerEntidadesHabilitadas = async (req, res) => {
       where: { habilitado: true },
       include: [
         {
-          model: Contacto,
-          include: [
-            {
-              model: Cargo
-            }
-          ]
-        },
+          model: User
+                      },
         {
           model: Ciudad,
           include: [
