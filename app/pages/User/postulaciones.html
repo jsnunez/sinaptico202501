@@ -529,7 +529,7 @@ console.log(data);
                                 <td>${proyecto.id || ''}</td>
                                 <td>${proyecto.nombrePPI || ''}</td>
                                 <td>${proyecto.objetivo || ''}</td>
-                                <td>${proyecto.entidad?.razonSocial || ''}</td>
+                                <td>${proyecto.entidad?.razonSocial ? proyecto.entidad.razonSocial : 'Independiente'}</td>
                                 <td>${proyecto.usuario?.name || ''}</td>
                                 <td>${proyecto.duracionPPI || ''}</td>
                                 <td>${proyecto.fasePPI || ''}</td>
