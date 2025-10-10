@@ -122,22 +122,18 @@
                         <input type="text" id="nombreLider" name="nombreLider"
                             placeholder="Ingrese el nombre del Líder PPI" required>
                     </div>
-                    <div class="input-box">
-                        <label for="cargoLider">Cargo</label>
-                        <input type="text" id="cargoLider" name="cargoLider"
-                            placeholder="Ingrese el cargo del Líder PPI" required>
-                    </div>
+                   
                 </div>
 
                 <div class="input-row">
                     <div class="input-box">
                         <label for="correoLider">Correo Electrónico</label>
-                        <input type="email" id="correoLider" name="correo" placeholder="Ingrese el correo" required>
+                        <input disabled="true" type="email" id="correoLider" name="correo" placeholder="Ingrese el correo" required>
                     </div>
 
                     <div class="input-box">
                         <label for="telefonoLider">Teléfono / Celular</label>
-                        <input type="text" id="telefonoLider" name="telefonoLider"
+                        <input disabled="true" type="text" id="telefonoLider" name="telefonoLider"
                             placeholder="Ingrese el teléfono o celular" required>
                     </div>
 
@@ -265,7 +261,9 @@
                 </div>
 
             </div>
-
+            <div style="text-align:right; margin-top:20px;">
+                <button class="modal-button" id="guardarFichaPPI">Guardar Ficha Técnica</button>
+            </div>
             <!-- Análisis de Equidad de Género y Superación de la Pobreza -->
             <!-- <div class="form-section">
                 <h3 class="section-title">Análisis de Equidad de Género y Superación de la Pobreza </h3>
@@ -422,8 +420,62 @@
 
     </div>
 
+<script>
+document.getElementById('guardarFichaPPI').onclick = async function () {
+    // Recoge los datos del formulario
+    const data = {
+        entidadId: document.getElementById('nombreEntidad').value === 'null' ? null : document.getElementById('nombreEntidad').value,
+        userId: obtenerCookie("userId"),
+        userLiderId: document.getElementById('nombreLider').value,
+        nombrePPI: document.getElementById('nombrePPI').value,
+        determinanteProductividad: document.getElementById('determinanteProductividad').value,
+        componenteProductividad: document.getElementById('componenteProductividad').value,
+        objetivo: document.getElementById('objetivo').value,
+        necesidadProblema: document.querySelectorAll('#objetivo')[1]?.value || '',
+        impactos: document.getElementById('impactos').value,
+        objetivosEspecificos: document.getElementById('objetivosEspecificos').value,
+        duracionPPI: document.getElementById('duracionPPI').value,
+        presupuestoPPI: document.getElementById('presupuestoPPI').value,
+        fasePPI: document.getElementById('fasePPI').value,
+        correoLider: document.getElementById('correoLider').value,
+        telefonoLider: document.getElementById('telefonoLider').value,
+        rangoDeEmpleos: 'sin usar',
+        estratosBeneficiarios: 'sin usar',
+        potencialEmpleo: 'sin usar',
+        impactoEmpleo: 'sin usar',
+        impactoEquidad: 'sin usar',
+        politicasPPI: 'sin usar'
+    };
+console.log(data);
+    // Validación rápida
+    // Si entidadId es null, no lo validamos como error
+    for (const key in data) {
+        if (key !== 'entidadId' && !data[key]) {
+            Swal.fire('Faltan datos', `Por favor completa el campo: ${key}.`, 'warning');
+            return;
+        }
+    }
 
-
+    try {
+        const res = await fetch('/api/proyectos', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+        const result = await res.json();
+        if (res.ok) {
+            Swal.fire('Guardado', 'Ficha técnica enviada correctamente.', 'success').then(() => {
+            document.getElementById('modalPostulaciones').style.display = 'none';
+            location.reload();
+            });
+        } else {
+            Swal.fire('Error', result.message || 'No se pudo guardar.', 'error');
+        }
+    } catch (err) {
+        Swal.fire('Error', 'No se pudo conectar con el servidor.', 'error');
+    }
+};
+</script>
 
     <script>
 
@@ -451,127 +503,291 @@
             }
             });
 
-      
-        // Cargar proyectos del usuario
-
-        fetch(`/api/proyectos/misproyectos/${userId}`)
-            .then(res => res.json())
-            .then(data => {
-                const tbody = document.getElementById('cuerpoTablaPostulaciones');
-                tbody.innerHTML = '';
-                // Mostrar contactos recibidos
-                if (data && Array.isArray(data) && data.length > 0) {
-                    data.forEach(proyecto => {
-
-                        console.log(proyecto.nombrePPI);
-
-                        const tr = document.createElement('tr');
-                        tr.innerHTML = `
-                            <td>${proyecto.id || ''}</td>
-                            <td>${proyecto.nombrePPI || ''}</td>
-                            <td>${proyecto.objetivo || ''}</td>
-                            <td>${proyecto.entidad.razonSocial || ''}</td>
-                            <td>${proyecto.usuario.name || ''}</td>
-                            <td>${proyecto.duracionPPI || ''}</td>
-                            <td>${proyecto.fasePPI || ''}</td>
-                            <td>
-                                <button class="btn-accion" onclick="editarProyecto(${proyecto.id})">Editar</button>
-                                <button class="btn-accion" onclick="eliminarProyecto(${proyecto.id})">Eliminar</button>
-                            </td>
-                        `;
-                        tbody.appendChild(tr);
-                        console.log(tr);
-
-                    });
-                }
-                // Mostrar contactos enviados
-
-            });
-        document.getElementById('postulaciones').onclick = function () {
-            document.getElementById('modalPostulaciones').style.display = 'block';
-              fetch(`/api/usuarioempresa/user/${userId}`)
-            .then(res => res.json())
-            .then(data => {
-            const nombreEntidadInput = document.getElementById('nombreEntidad');
-            // Crear un select desplegable con opción "Independiente"
-            const selectEntidad = document.createElement('select');
-            selectEntidad.id = 'nombreEntidad';
-            selectEntidad.name = 'nombreEntidad';
-            selectEntidad.required = true;
-
-            // Opción "Independiente"
-            const optionIndependiente = document.createElement('option');
-            optionIndependiente.value = null;
-            optionIndependiente.text = 'Independiente';
-            selectEntidad.appendChild(optionIndependiente);
-
-            let empresaSeleccionada = null;
-
-            if (data && Array.isArray(data) && data.length > 0 && data[0].empresa) {
-                // Opción de la empresa
-                const optionEmpresa = document.createElement('option');
-                optionEmpresa.value = data[0].empresa.id;
-                optionEmpresa.text = data[0].empresa.razonSocial;
-                selectEntidad.appendChild(optionEmpresa);
-
-                empresaSeleccionada = data[0].empresa.id;
+      let entidadId = null;
+    fetch(`/api/usuarioempresa/user/${userId}`)
+        .then(res => res.json())
+        .then(data => {
+            if (Array.isArray(data) && data.length > 0 && data[0].empresa) {
+                entidadId = data[0].empresa.id;
+                document.getElementById('nombreEntidad').value = entidadId;
+            } else {
+                entidadId = 'null';
+                document.getElementById('nombreEntidad').value = entidadId;
             }
+            console.log('Entidad ID seleccionada:', entidadId);
 
-            // Seleccionar la empresa por defecto
-            selectEntidad.value = empresaSeleccionada;
-
-            // Reemplazar el input por el select
-            nombreEntidadInput.parentNode.replaceChild(selectEntidad, nombreEntidadInput);
-            // Si hay empresa seleccionada, cargar los líderes de esa empresa en un select
-            if (empresaSeleccionada) {
-                fetch(`/api/usuarioempresa/empresa/${empresaSeleccionada}`)
-                    .then(res => res.json())
-                    .then(data => {
-                        console.log(data);
-                        const nombreLiderInput = document.getElementById('nombreLider');
-                        const selectLider = document.createElement('select');
-                        selectLider.id = 'nombreLider';
-                        selectLider.name = 'nombreLider';
-                        selectLider.required = true;
-
-                        // data es un array de objetos con User y Cargo
-                        data.forEach(item => {
-                            const option = document.createElement('option');
-                            option.value = item.User.id;
-                            option.text = `${item.User.name} (${item.Cargo.nombre})`;
-                            selectLider.appendChild(option);
+            // Ahora usa la entidad encontrada en el siguiente fetch
+            fetch(`/api/proyectos/entidadomis/${userId}/${entidadId}`)
+                .then(res => res.json())
+                .then(data => {
+                    const tbody = document.getElementById('cuerpoTablaPostulaciones');
+                    tbody.innerHTML = '';
+                    if (data && Array.isArray(data) && data.length > 0) {
+                        data.forEach(proyecto => {
+                            const tr = document.createElement('tr');
+                            tr.innerHTML = `
+                                <td>${proyecto.id || ''}</td>
+                                <td>${proyecto.nombrePPI || ''}</td>
+                                <td>${proyecto.objetivo || ''}</td>
+                                <td>${proyecto.entidad?.razonSocial || ''}</td>
+                                <td>${proyecto.usuario?.name || ''}</td>
+                                <td>${proyecto.duracionPPI || ''}</td>
+                                <td>${proyecto.fasePPI || ''}</td>
+                                <td>
+                                    <button class="btn-accion" onclick="editarProyecto(${proyecto.id})">Editar</button>
+                                    <button class="btn-accion" onclick="eliminarProyecto(${proyecto.id})">Eliminar</button>
+                                </td>
+                            `;
+                            tbody.appendChild(tr);
                         });
+                    }
+                });
+        });
 
-                        // Reemplazar el input por el select
-                        nombreLiderInput.parentNode.replaceChild(selectLider, nombreLiderInput);
+        document.getElementById('cerrarModalPostulaciones').onclick = function () {
+            document.getElementById('modalPostulaciones').style.display = 'none';
+        };
+        // Cambiar líderes al cambiar el select de entidad
+        // Cambiar líderes al cambiar el select de entidad (nombreEntidad)
+        document.addEventListener('change', function (e) {
+            if (e.target && e.target.id === 'nombreEntidad') {
+            const empresaId = e.target.value;
+            const nombreLiderInput = document.getElementById('nombreLider');
+            const correoLiderInput = document.getElementById('correoLider');
+            const telefonoLiderInput = document.getElementById('telefonoLider');
+
+            if (empresaId && empresaId !== "null") {
+                fetch(`/api/usuarioempresa/empresa/${empresaId}`)
+                .then(res => res.json())
+                .then(data => {
+                    const selectLider = document.createElement('select');
+                    selectLider.id = 'nombreLider';
+                    selectLider.name = 'nombreLider';
+                    selectLider.required = true;
+
+                    data.forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item.User.id;
+                    option.text = `${item.User.name} (${item.Cargo.nombre})`;
+                    option.dataset.email = item.User.email || '';
+                    option.dataset.telefono = item.User.telefono || '';
+                    selectLider.appendChild(option);
                     });
-            }
-            else {
-                // Si no hay empresa, dejar el input como está
-                console.log('No hay empresa asociada al usuario');
-                const nombreLiderInput = document.getElementById('nombreLider');
-                // Crear un select con el nombre del usuario actual
+
+                    // Cambiar correo y teléfono al cambiar líder
+                    selectLider.onchange = function () {
+                    const selectedOption = selectLider.options[selectLider.selectedIndex];
+                    correoLiderInput.value = selectedOption.dataset.email || '';
+                    telefonoLiderInput.value = selectedOption.dataset.telefono || '';
+                    };
+
+                    // Seleccionar el primero y actualizar campos
+                    if (selectLider.options.length > 0) {
+                    const selectedOption = selectLider.options[0];
+                    correoLiderInput.value = selectedOption.dataset.email || '';
+                    telefonoLiderInput.value = selectedOption.dataset.telefono || '';
+                    }
+
+                    nombreLiderInput.parentNode.replaceChild(selectLider, nombreLiderInput);
+                });
+            } else {
+                // Independiente: solo el usuario actual como líder
                 const selectLider = document.createElement('select');
                 selectLider.id = 'nombreLider';
                 selectLider.name = 'nombreLider';
                 selectLider.required = true;
 
+            // Traer los datos del usuario actual
+            fetch(`/api/user/${obtenerCookie("userId")}`)
+                .then(res => res.json())
+                .then(user => {
+                    const correoLiderInput = document.getElementById('correoLider');
+                    const telefonoLiderInput = document.getElementById('telefonoLider');
+                    correoLiderInput.value = user.email || '';
+                    telefonoLiderInput.value = user.telefono || '';
+                });
                 const optionUsuario = document.createElement('option');
                 optionUsuario.value = obtenerCookie("userId");
                 optionUsuario.text = document.getElementById('bienvenido').innerText.replace('Hola ', '');
+                optionUsuario.dataset.email = correoLiderInput.value;
+                optionUsuario.dataset.telefono = telefonoLiderInput.value;
                 selectLider.appendChild(optionUsuario);
 
+                // Cambiar correo y teléfono al cambiar líder
+                selectLider.onchange = function () {
+                const selectedOption = selectLider.options[selectLider.selectedIndex];
+                correoLiderInput.value = selectedOption.dataset.email || '';
+                telefonoLiderInput.value = selectedOption.dataset.telefono || '';
+                };
+
                 nombreLiderInput.parentNode.replaceChild(selectLider, nombreLiderInput);
-                nombreLiderInput.disabled = true;
             }
-            });
+            }
+        });
 
-        };
-        document.getElementById('cerrarModalPostulaciones').onclick = function () {
-            document.getElementById('modalPostulaciones').style.display = 'none';
-        };
-
+        // Cambiar correo y teléfono al cambiar líder (nombreLider) aunque no cambie la entidad
+        document.addEventListener('change', function (e) {
+            if (e.target && e.target.id === 'nombreLider') {
+            const selectedOption = e.target.options[e.target.selectedIndex];
+            const correoLiderInput = document.getElementById('correoLider');
+            const telefonoLiderInput = document.getElementById('telefonoLider');
+            correoLiderInput.value = selectedOption.dataset.email || '';
+            telefonoLiderInput.value = selectedOption.dataset.telefono || '';
+            }
+        });
     </script>
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id);
+
+  // 👉 Cache del usuario actual para usarlo en "Independiente"
+  let userSelf = { id: null, name: '', email: '', telefono: '' };
+
+  function setContacto(email = '', telefono = '') {
+    $('correoLider').value = email || '';
+    $('telefonoLider').value = telefono || '';
+  }
+
+  function renderSelectLider(options = [], preselectValue = null) {
+    const old = $('nombreLider');
+    const select = document.createElement('select');
+    select.id = 'nombreLider';
+    select.name = 'nombreLider';
+    select.required = true;
+
+    options.forEach(o => {
+      const opt = document.createElement('option');
+      opt.value = o.value;
+      opt.text  = o.label;
+      opt.dataset.email    = o.email || '';
+      opt.dataset.telefono = o.telefono || '';
+      if (preselectValue && preselectValue == o.value) opt.selected = true;
+      select.appendChild(opt);
+    });
+
+    select.addEventListener('change', () => {
+      const sel = select.options[select.selectedIndex];
+      setContacto(sel?.dataset.email, sel?.dataset.telefono);
+    });
+
+    old?.parentNode.replaceChild(select, old);
+
+    if (select.options.length > 0) {
+      const sel = select.options[select.selectedIndex];
+      setContacto(sel?.dataset.email, sel?.dataset.telefono);
+    } else {
+      setContacto('', '');
+    }
+  }
+
+  function renderSelectEntidad({ empresa } = {}) {
+    const old = $('nombreEntidad');
+    const select = document.createElement('select');
+    select.id = 'nombreEntidad';
+    select.name = 'nombreEntidad';
+    select.required = true;
+
+    const optInd = document.createElement('option');
+    optInd.value = 'null';
+    optInd.text  = 'Independiente';
+    select.appendChild(optInd);
+
+    let preselect = 'null';
+    if (empresa && empresa.id) {
+      const optEmp = document.createElement('option');
+      optEmp.value = String(empresa.id);
+      optEmp.text  = empresa.razonSocial || `Empresa ${empresa.id}`;
+      select.appendChild(optEmp);
+      preselect = String(empresa.id);
+    }
+
+    select.value = preselect;
+
+    // 💡 Al cambiar entidad: si es Independiente, seteamos contacto del usuario
+    select.addEventListener('change', async () => {
+      await onEntidadChange(select.value);
+    });
+
+    old?.parentNode.replaceChild(select, old);
+    return preselect;
+  }
+
+  async function loadLideresPorEmpresa(empresaId) {
+    const res  = await fetch(`/api/usuarioempresa/empresa/${empresaId}`);
+    const data = await res.json();
+    const opciones = (Array.isArray(data) ? data : []).map(item => ({
+      value: String(item.User.id),
+      label: `${item.User.name} (${item.Cargo?.nombre || '—'})`,
+      email: item.User.email || '',
+      telefono: item.User.telefono || ''
+    }));
+    renderSelectLider(opciones);
+  }
+
+  // ✅ Ahora recibe userSelf y actualiza contacto
+  function setIndependienteAsLider() {
+    renderSelectLider([{
+      value: String(userSelf.id || obtenerCookie("userId")),
+      label: userSelf.name || ($('bienvenido')?.innerText?.replace('Hola ', '') || 'Yo'),
+      email: userSelf.email || '',
+      telefono: userSelf.telefono || ''
+    }], String(userSelf.id || obtenerCookie("userId")));
+
+    // Fuerza contacto del usuario (por si veníamos con datos de empresa)
+    setContacto(userSelf.email || '', userSelf.telefono || '');
+  }
+
+  async function onEntidadChange(empresaValue) {
+    if (empresaValue && empresaValue !== 'null') {
+      await loadLideresPorEmpresa(empresaValue);
+    } else {
+      setIndependienteAsLider();
+    }
+  }
+
+  // 🧠 Abrir modal: cargamos user+empresa, llenamos entidad, y luego líderes/independiente
+  $('postulaciones').addEventListener('click', async () => {
+    $('modalPostulaciones').style.display = 'block';
+    try {
+      const res  = await fetch(`/api/usuarioempresa/user/${userId}`);
+      const data = await res.json();
+
+      // Intenta sacar el usuario del payload recibido (ajústalo si tu API difiere)
+      const userFromApi = Array.isArray(data) ? (data[0]?.User || data[0]?.user) : null;
+
+      userSelf = {
+        id: userFromApi?.id || obtenerCookie("userId"),
+        name: $('bienvenido')?.innerText?.replace('Hola ', '') || userFromApi?.name || '',
+        email: userFromApi?.email || ($('correoUsuario')?.value || ''),     // opcional: hidden input #correoUsuario
+        telefono: userFromApi?.telefono || ($('telefonoUsuario')?.value || '') // opcional: hidden input #telefonoUsuario
+      };
+
+      const empresa = (Array.isArray(data) && data[0]?.empresa) ? data[0].empresa : null;
+
+      const seleccionado = renderSelectEntidad({ empresa });
+      await onEntidadChange(seleccionado);
+    } catch (err) {
+      console.error('Error cargando usuario/empresa:', err);
+      // Fallback: usuario independiente
+      const nombre = $('bienvenido')?.innerText?.replace('Hola ', '') || 'Yo';
+      userSelf = {
+        id: obtenerCookie("userId"),
+        name: nombre,
+        email: $('correoUsuario')?.value || '',     // si agregas estos inputs hidden
+        telefono: $('telefonoUsuario')?.value || ''
+      };
+      renderSelectEntidad({ empresa: null });
+      setIndependienteAsLider();
+    }
+  });
+
+  $('cerrarModalPostulaciones').addEventListener('click', () => {
+    $('modalPostulaciones').style.display = 'none';
+  });
+})();
+</script>
+
+
     <script>
         // Abrir modal al hacer clic en la foto de usuario
         document.getElementById('userPhoto').onclick = function () {

@@ -89,7 +89,7 @@ export const getUserEntityCargoByEntityId = async (req, res) => {
         {
           model: User,
         
-          attributes: ['id', 'name', 'email']
+          attributes: ['id', 'name', 'email', 'telefono']
         },
 
         {

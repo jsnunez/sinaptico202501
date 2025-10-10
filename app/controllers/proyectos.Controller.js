@@ -9,7 +9,7 @@ const router = express.Router();
 export const getMisProyectos = async (req, res) => {
     try {
         const proyectos = await Proyectos.findAll({
-            where: { userId: req.params.userId },
+            where: { userLiderId: req.params.userId },
             include: [
                 { model: User, as: 'usuario' },
                 { model: Entidad, as: 'entidad' }
@@ -88,4 +88,41 @@ export const deleteProyecto = async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
+};
+// Importa Op desde sequelize
+import { Op } from 'sequelize';
+// o en CommonJS:
+// const { Op } = require('sequelize');
+
+export const getProyectosDeMiEntidadOCreadosPorMi = async (req, res) => {
+  try {
+    let { userId, entidadId } = req.params;
+
+    // Normaliza tipos
+    const userIdNum = Number(userId);
+    const entidadIdNum = Number(entidadId);
+
+    // Construye el where dinámicamente
+    const orConds = [{ userLiderId: userIdNum }];
+
+    // Solo filtra por entidad si viene un número válido
+    if (!Number.isNaN(entidadIdNum)) {
+      orConds.push({ entidadId: entidadIdNum });
+    }
+
+    const proyectos = await Proyectos.findAll({
+      where: { [Op.or]: orConds },
+      include: [
+        { model: User, as: 'usuario' },
+        { model: Entidad, as: 'entidad' }
+      ],
+      order: [['createdAt', 'DESC']]
+    });
+
+    // En vez de 404, devolvemos lista vacía
+    return res.json(proyectos || []);
+  } catch (error) {
+    console.error('getProyectosDeMiEntidadOCreadosPorMi error:', error);
+    return res.status(500).json({ error: error.message });
+  }
 };
