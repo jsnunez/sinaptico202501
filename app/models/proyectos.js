@@ -7,7 +7,7 @@ const Proyectos = sequelize.define('Proyectos', {
     // Contacto Líder PPI
     entidadId: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
             model: Entidad, 
             key: 'id'
@@ -16,6 +16,16 @@ const Proyectos = sequelize.define('Proyectos', {
 
     // Contacto quien diligencia la ficha
     userId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: User,
+            key: 'id'
+        }
+    },
+    
+    // Contacto  lider  la ficha
+    userLiderId: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {

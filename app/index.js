@@ -106,7 +106,7 @@ app.get('/cursoDashboard', authorization.soloAdmin, (req, res) => res.sendFile(p
 app.get('/eventosDashboard', authorization.soloAdmin, (req, res) => res.sendFile(path.join(__dirname, 'pages/admin/eventosDashboard.html')));
 
 // Inicializar servidor con sequelize y luego escuchar con 'server'
-sequelize.sync()
+sequelize.sync()  // Usar { force: true } para reiniciar tablas, { alter: true } para actualizar sin perder datos
   .then(() => {
     console.log('Base de datos sincronizada');
     server.listen(process.env.PORT, () => {

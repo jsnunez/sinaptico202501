@@ -145,7 +145,7 @@
 
             </div>
 
-            <!-- Contacto de la persona que diligencia la ficha -->
+            <!-- Contacto de la persona que diligencia la ficha
             <div class="form-section">
                 <h3 class="section-title">Contacto de quien diligencia la ficha</h3>
                 <div class="input-box full-width">
@@ -184,7 +184,7 @@
 
 
 
-            </div>
+            </div> -->
 
             <!-- Información General del PPI -->
             <div class="form-section">
@@ -267,7 +267,7 @@
             </div>
 
             <!-- Análisis de Equidad de Género y Superación de la Pobreza -->
-            <div class="form-section">
+            <!-- <div class="form-section">
                 <h3 class="section-title">Análisis de Equidad de Género y Superación de la Pobreza </h3>
 
                 <div class="input-box full-width">
@@ -348,7 +348,7 @@
                     <input type="text" id="politicasPPI" name="politicasPPI"
                         placeholder="Ingrese las politicas de equidad de género para la contratación" required>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 
@@ -445,46 +445,15 @@
         fetch(`/api/user/${userId}`)
             .then(res => res.json())
             .then(data => {
-                document.getElementById('bienvenido').innerText = `Hola ${data.name}`;
-                if (data.fotoPerfil) {
-                    document.getElementById('imagenPerfil').src = data.fotoPerfil;
-                }
+            document.getElementById('bienvenido').innerText = `Hola ${data.name}`;
+            if (data.fotoPerfil) {
+                document.getElementById('imagenPerfil').src = data.fotoPerfil;
+            }
             });
 
-            fetch(`/api/usuarioempresa/user/${userId}`)
-            .then(res => res.json())
-            .then(data => {
-                console.log(data);
-                if (data ) {
-                    console.log(data);
-                    const nombreEntidadInput = document.getElementById('nombreEntidad');
-                    // Crear un select desplegable con opción "Independiente"
-                    const selectEntidad = document.createElement('select');
-                    selectEntidad.id = 'nombreEntidad';
-                    selectEntidad.name = 'nombreEntidad';
-                    selectEntidad.required = true;
-
-                    // Opción "Independiente"
-                    const optionIndependiente = document.createElement('option');
-                    optionIndependiente.value = 'Independiente';
-                    optionIndependiente.text = 'Independiente';
-                    selectEntidad.appendChild(optionIndependiente);
-
-                    // Opción de la empresa
-                    const optionEmpresa = document.createElement('option');
-                    optionEmpresa.value = data[0].empresa.razonSocial;
-                    optionEmpresa.text = data[0].empresa.razonSocial;
-                    selectEntidad.appendChild(optionEmpresa);
-
-                    // Seleccionar la empresa por defecto
-                    selectEntidad.value = data[0].empresa.razonSocial;
-
-                    // Reemplazar el input por el select
-                    nombreEntidadInput.parentNode.replaceChild(selectEntidad, nombreEntidadInput);
-                    document.getElementById('nombreLider').value = data[0].userId;
-                }
-            });
+      
         // Cargar proyectos del usuario
+
         fetch(`/api/proyectos/misproyectos/${userId}`)
             .then(res => res.json())
             .then(data => {
@@ -520,6 +489,82 @@
             });
         document.getElementById('postulaciones').onclick = function () {
             document.getElementById('modalPostulaciones').style.display = 'block';
+              fetch(`/api/usuarioempresa/user/${userId}`)
+            .then(res => res.json())
+            .then(data => {
+            const nombreEntidadInput = document.getElementById('nombreEntidad');
+            // Crear un select desplegable con opción "Independiente"
+            const selectEntidad = document.createElement('select');
+            selectEntidad.id = 'nombreEntidad';
+            selectEntidad.name = 'nombreEntidad';
+            selectEntidad.required = true;
+
+            // Opción "Independiente"
+            const optionIndependiente = document.createElement('option');
+            optionIndependiente.value = null;
+            optionIndependiente.text = 'Independiente';
+            selectEntidad.appendChild(optionIndependiente);
+
+            let empresaSeleccionada = null;
+
+            if (data && Array.isArray(data) && data.length > 0 && data[0].empresa) {
+                // Opción de la empresa
+                const optionEmpresa = document.createElement('option');
+                optionEmpresa.value = data[0].empresa.id;
+                optionEmpresa.text = data[0].empresa.razonSocial;
+                selectEntidad.appendChild(optionEmpresa);
+
+                empresaSeleccionada = data[0].empresa.id;
+            }
+
+            // Seleccionar la empresa por defecto
+            selectEntidad.value = empresaSeleccionada;
+
+            // Reemplazar el input por el select
+            nombreEntidadInput.parentNode.replaceChild(selectEntidad, nombreEntidadInput);
+            // Si hay empresa seleccionada, cargar los líderes de esa empresa en un select
+            if (empresaSeleccionada) {
+                fetch(`/api/usuarioempresa/empresa/${empresaSeleccionada}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log(data);
+                        const nombreLiderInput = document.getElementById('nombreLider');
+                        const selectLider = document.createElement('select');
+                        selectLider.id = 'nombreLider';
+                        selectLider.name = 'nombreLider';
+                        selectLider.required = true;
+
+                        // data es un array de objetos con User y Cargo
+                        data.forEach(item => {
+                            const option = document.createElement('option');
+                            option.value = item.User.id;
+                            option.text = `${item.User.name} (${item.Cargo.nombre})`;
+                            selectLider.appendChild(option);
+                        });
+
+                        // Reemplazar el input por el select
+                        nombreLiderInput.parentNode.replaceChild(selectLider, nombreLiderInput);
+                    });
+            }
+            else {
+                // Si no hay empresa, dejar el input como está
+                console.log('No hay empresa asociada al usuario');
+                const nombreLiderInput = document.getElementById('nombreLider');
+                // Crear un select con el nombre del usuario actual
+                const selectLider = document.createElement('select');
+                selectLider.id = 'nombreLider';
+                selectLider.name = 'nombreLider';
+                selectLider.required = true;
+
+                const optionUsuario = document.createElement('option');
+                optionUsuario.value = obtenerCookie("userId");
+                optionUsuario.text = document.getElementById('bienvenido').innerText.replace('Hola ', '');
+                selectLider.appendChild(optionUsuario);
+
+                nombreLiderInput.parentNode.replaceChild(selectLider, nombreLiderInput);
+                nombreLiderInput.disabled = true;
+            }
+            });
 
         };
         document.getElementById('cerrarModalPostulaciones').onclick = function () {
