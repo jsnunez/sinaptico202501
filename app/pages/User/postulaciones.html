@@ -717,6 +717,7 @@ function verMasProyecto(proyectoId) {
         .then(res => res.json())
         .then(proyecto => {
             // Crea el modal si no existe
+            console.log('Proyecto cargado para ver más:', proyecto);
             let modal = document.getElementById('modalVerProyecto');
             if (!modal) {
                 modal = document.createElement('div');
@@ -725,7 +726,11 @@ function verMasProyecto(proyectoId) {
                 modal.innerHTML = `
                     <div class="modal-content" style="max-width:900px;">
                         <span class="close" id="cerrarModalVerProyecto">&times;</span>
-                        <h2 style="margin-bottom:10px; text-align:center; color:#007bff;">${proyecto.nombrePPI || 'Detalle del Proyecto'}</h2>
+                        <div style="display:flex;align-items:center;justify-content:center;">
+                            <h2 style="margin-bottom:10px; text-align:center; color:#007bff;">Proyecto: </h2>
+                            <h2 style="margin-bottom:10px; text-align:center;" id="tituloModalVerProyecto"></h2>
+                        </div>
+
                         <div id="contenidoVerProyecto"></div>
                     </div>
                 `;
@@ -735,6 +740,8 @@ function verMasProyecto(proyectoId) {
                 };
             }
             // Llena el contenido con tarjetas y estilos
+                        console.log('Proyecto cargado para ver más:', proyecto);
+
             const contenido = document.getElementById('contenidoVerProyecto');
             contenido.innerHTML = `
                 <div style="display:flex;flex-wrap:wrap;gap:24px;">
@@ -770,6 +777,7 @@ function verMasProyecto(proyectoId) {
                     </div>
                 </div>
             `;
+            document.getElementById('tituloModalVerProyecto').innerText = `${proyecto.nombrePPI || 'Detalle del Proyecto'}`;
             modal.style.display = 'block';
         })
         .catch(() => {
