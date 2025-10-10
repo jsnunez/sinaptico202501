@@ -732,9 +732,16 @@ console.log(data);
       email: userSelf.email || '',
       telefono: userSelf.telefono || ''
     }], String(userSelf.id || obtenerCookie("userId")));
-
     // Fuerza contacto del usuario (por si veníamos con datos de empresa)
-    setContacto(userSelf.email || '', userSelf.telefono || '');
+    // Trae email y teléfono del usuario actual por fetch
+    fetch(`/api/user/${userSelf.id}`)
+      .then(res => res.json())
+      .then(user => {
+        setContacto(user.email || '', user.telefono || '');
+      })
+      .catch(() => {
+        setContacto(userSelf.email || '', userSelf.telefono || '');
+      });
   }
 
   async function onEntidadChange(empresaValue) {
