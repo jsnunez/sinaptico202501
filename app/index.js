@@ -89,8 +89,8 @@ app.get('/convocatorias', authorization.soloUser, (req, res) => res.sendFile(pat
 app.get('/construccion', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/construccion.html')));
 app.get('/conocimiento', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/conocimiento.html')));
 app.get('/mapa-usuarios', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/mapa-usuarios.html')));
-app.get('/proyectos', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/proyectos.html')));
-app.get('/postulaciones', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/postulaciones.html')));
+app.get('/proyectos1', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/proyectos.html')));
+app.get('/proyectos', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/postulaciones.html')));
 
 app.get('/mapa-publico', (req, res) => res.sendFile(path.join(__dirname, 'pages/User/mapa-usuarios.html')));
 

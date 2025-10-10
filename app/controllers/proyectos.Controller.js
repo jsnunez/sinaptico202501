@@ -42,7 +42,7 @@ export const getProyectoById = async (req, res) => {
     try {
         const proyecto = await Proyectos.findByPk(req.params.id, {
             include: [
-                { model: User, as: 'usuario' },
+                { model: User, as: 'usuarioLider' },
                 { model: Entidad, as: 'entidad' }
             ]
         });
@@ -114,6 +114,8 @@ export const getProyectosDeMiEntidadOCreadosPorMi = async (req, res) => {
       where: { [Op.or]: orConds },
       include: [
         { model: User, as: 'usuario' },
+           // Usuario líder del proyecto (userLiderId)
+        { model: User, as: 'usuarioLider' },
         { model: Entidad, as: 'entidad' }
       ],
       order: [['createdAt', 'DESC']]

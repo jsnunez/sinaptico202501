@@ -532,7 +532,7 @@ console.log(data);
       // Cargar proyectos por entidad o propios
       const resProy = await fetch(`/api/proyectos/entidadomis/${userId}/${entidadId}`);
       const dataProy = await resProy.json();
-
+console.log('Proyectos cargados:', dataProy);
       const tbody = document.getElementById('cuerpoTablaPostulaciones');
       if (tbody) {
         tbody.innerHTML = '';
@@ -544,7 +544,7 @@ console.log(data);
               <td>${proyecto.nombrePPI || ''}</td>
               <td>${proyecto.objetivo || ''}</td>
               <td>${proyecto.entidad?.razonSocial ? proyecto.entidad.razonSocial : 'Independiente'}</td>
-              <td>${proyecto.usuario?.name || ''}</td>
+              <td>${proyecto.usuarioLider?.name || ''}</td>
               <td>${proyecto.duracionPPI || ''}</td>
               <td>${proyecto.fasePPI || ''}</td>
               <td>
@@ -711,7 +711,95 @@ console.log(data);
     }
   });
 </script>
-
+<script>
+function verMasProyecto(proyectoId) {
+    fetch(`/api/proyectos/${proyectoId}`)
+        .then(res => res.json())
+        .then(proyecto => {
+            // Crea el modal si no existe
+            let modal = document.getElementById('modalVerProyecto');
+            if (!modal) {
+                modal = document.createElement('div');
+                modal.id = 'modalVerProyecto';
+                modal.className = 'modal';
+                modal.innerHTML = `
+                    <div class="modal-content" style="max-width:900px;">
+                        <span class="close" id="cerrarModalVerProyecto">&times;</span>
+                        <h2 style="margin-bottom:10px; text-align:center; color:#007bff;">${proyecto.nombrePPI || 'Detalle del Proyecto'}</h2>
+                        <div id="contenidoVerProyecto"></div>
+                    </div>
+                `;
+                document.body.appendChild(modal);
+                document.getElementById('cerrarModalVerProyecto').onclick = function () {
+                    modal.style.display = 'none';
+                };
+            }
+            // Llena el contenido con tarjetas y estilos
+            const contenido = document.getElementById('contenidoVerProyecto');
+            contenido.innerHTML = `
+                <div style="display:flex;flex-wrap:wrap;gap:24px;">
+                    <div style="flex:1;min-width:280px;">
+                        <div style="background:#f8f9fa;border-radius:12px;padding:18px;box-shadow:0 2px 8px #0001;">
+                            <h3 style="margin-top:0;color:#333;">Información General</h3>
+                            <p><strong>Código:</strong> ${proyecto.id || ''}</p>
+                            <p><strong>Nombre:</strong> ${proyecto.nombrePPI || ''}</p>
+                            <p><strong>Objetivo:</strong> ${proyecto.objetivo || ''}</p>
+                            <p><strong>Necesidad/Problema:</strong> ${proyecto.necesidadProblema || ''}</p>
+                            <p><strong>Impactos:</strong> ${proyecto.impactos || ''}</p>
+                            <p><strong>Objetivos específicos:</strong> ${proyecto.objetivosEspecificos || ''}</p>
+                        </div>
+                    </div>
+                    <div style="flex:1;min-width:280px;">
+                        <div style="background:#f8f9fa;border-radius:12px;padding:18px;box-shadow:0 2px 8px #0001;">
+                            <h3 style="margin-top:0;color:#333;">Detalles Técnicos</h3>
+                            <p><strong>Entidad:</strong> ${proyecto.entidad?.razonSocial || 'Independiente'}</p>
+                            <p><strong>Duración:</strong> ${proyecto.duracionPPI || ''}</p>
+                            <p><strong>Presupuesto:</strong> ${proyecto.presupuestoPPI || ''}</p>
+                            <p><strong>Fase:</strong> ${proyecto.fasePPI || ''}</p>
+                            <p><strong>Determinante productividad:</strong> ${proyecto.determinanteProductividad || ''}</p>
+                            <p><strong>Componente productividad:</strong> ${proyecto.componenteProductividad || ''}</p>
+                        </div>
+                    </div>
+                    <div style="flex:1;min-width:280px;">
+                        <div style="background:#f8f9fa;border-radius:12px;padding:18px;box-shadow:0 2px 8px #0001;">
+                            <h3 style="margin-top:0;color:#333;">Contacto Líder</h3>
+                            <p><strong>Nombre:</strong> ${proyecto.usuarioLider?.name || ''}</p>
+                            <p><strong>Correo:</strong> <a href="mailto:${proyecto.usuarioLider?.email || ''}" style="color:#007bff;">${proyecto.usuarioLider?.email || ''}</a></p>
+                            <p><strong>Teléfono:</strong> <a href="tel:${proyecto.usuarioLider?.telefono || ''}" style="color:#007bff;">${proyecto.usuarioLider?.telefono || ''}</a></p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            modal.style.display = 'block';
+        })
+        .catch(() => {
+            Swal.fire('Error', 'No se pudo cargar el proyecto.', 'error');
+        });
+}
+</script>
+<script>
+    document.getElementById("cerrarSesion").addEventListener("click", () => {
+  Swal.fire({
+    title: '¿Estás seguro?',
+    text: '¿Querés cerrar sesión?',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Sí, cerrar sesión',
+    cancelButtonText: 'Cancelar',
+    reverseButtons: true
+  }).then((result) => {
+    if (result.isConfirmed) {
+      // Borrar cookies y redirigir
+      document.cookie = 'jwt=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+      document.cookie = 'user=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+      document.cookie = 'userId=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+      document.location.href = "/";
+      
+    }
+    // Si el usuario cancela, no pasa nada
+  });
+});
+</script>
 <script>
 (() => {
   const $ = (id) => document.getElementById(id);

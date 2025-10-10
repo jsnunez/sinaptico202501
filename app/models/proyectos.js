@@ -82,5 +82,6 @@ const Proyectos = sequelize.define('Proyectos', {
 
 // Relación con usuario (quien diligencia la ficha)
 Proyectos.belongsTo(User, { foreignKey: 'userId', as: 'usuario' });
+Proyectos.belongsTo(User, { as: 'usuarioLider', foreignKey: 'userLiderId' });
 
 export default Proyectos;
