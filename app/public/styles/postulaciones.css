@@ -853,13 +853,13 @@ td {
     flex-wrap: wrap;
 }
 
-#userPhoto {
+.userPhoto {
     height: 10vh;
     margin: 1rem;
 
 }
 
-#userPhoto img {
+.userPhoto img {
     height: 100%;
     border-radius: 100%;
 }

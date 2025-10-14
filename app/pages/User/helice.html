@@ -276,7 +276,7 @@
             <div class="dropdown">
                 <button class=" " id="userMenuBtn">
                     <div id="userPhoto ">
-                        <img class="imagenPerfil" src="img/sinfoto.jpg" alt="Foto de perfil"
+                        <img class="imagenPerfil" id="imagenPerfilSecundaria" src="img/sinfoto.jpg" alt="Foto de perfil"
                             onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
                     </div>
 
@@ -293,9 +293,13 @@
 
     <!-- Bienvenida y botones de acción -->
     <div class="welcome-container">
-        <div id="userPhoto">
+        <div id="userPhoto" style="position: relative; display: inline-block; cursor: pointer;">
             <img id="imagenPerfil" src="img/sinfoto.jpg" alt="Foto de perfil"
-                onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
+                onerror="this.onerror=null;this.src='img/sinfoto.jpg';"
+                style="border-radius:50%;object-fit:cover;">
+            <span style="position: absolute; bottom: 8px; right: 8px; background: #fff; border-radius: 50%; padding: 4px;">
+                <i class="bi bi-pencil-fill" style="font-size: 1.2em; color: #007bff;"></i>
+            </span>
         </div>
 
         <div class="welcome-text">
@@ -552,6 +556,7 @@
                             <!-- Opciones se cargarán dinámicamente -->
                         </select>
                     </div>
+                   
 
                 </div>
 
@@ -559,6 +564,11 @@
                     <div class="input-box full-width">
                         <label for="perfilProfesional">Perfil profesional:</label>
                         <textarea id="perfilProfesional" name="perfilProfesional" rows="3" required></textarea>
+                    </div>
+                     <div class="input-box full-width">
+                        <label for="cvPdf">Hoja de Vida(PDF):</label>
+                        <input type="file" id="cvPdf" name="cvPdf" accept="application/pdf">
+                        <small>Sube tu hoja de vida en formato PDF.</small>
                     </div>
                 </div>
                 <div class="modal-actions">
@@ -928,6 +938,20 @@
                 }
 
                 // 3) Cierra modal y refresca (o actualiza sólo la imagen y los textos si prefieres)
+                // Subir CV si se seleccionó archivo PDF
+                const cvFile = document.getElementById('cvPdf').files[0];
+                if (cvFile) {
+                    const cvFormData = new FormData();
+                    cvFormData.append('cvPdf', cvFile);
+                    const resCV = await fetch(`/api/user/cambiarCv/${userId}`, {
+                        method: 'PUT',
+                        body: cvFormData
+                    });
+                    if (!resCV.ok) {
+                        const err = await resCV.text().catch(() => '');
+                        throw new Error(`Error al subir la hoja de vida. ${err}`);
+                    }
+                }
                 document.getElementById('modalFotoPerfil').style.display = 'none';
                   document.cookie = `user=${encodeURIComponent(name)}; path=/;`;
                 Swal.fire({

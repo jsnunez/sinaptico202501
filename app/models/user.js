@@ -84,6 +84,10 @@ const User = sequelize.define('User', {
     type: DataTypes.BOOLEAN,
     allowNull: false,
     defaultValue: false
+  },
+  enlaceHojaDeVida: {
+    type: DataTypes.STRING,
+    allowNull: true
   }
 }, {
   timestamps: true, // Esto habilita los campos `createdAt` y `updatedAt`

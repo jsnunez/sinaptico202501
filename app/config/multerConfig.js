@@ -33,6 +33,9 @@ const storage = multer.diskStorage({
       case 'videoCursos':
         dir = 'app/public/videoCursos';
         break;
+case 'cvPdf':
+  dir = 'app/public/cv';
+  break;
       case 'fotoPerfil':
         dir = 'app/public/photo';
         console.log("Directorio de foto de perfil:", dir);

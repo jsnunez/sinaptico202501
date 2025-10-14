@@ -2,6 +2,7 @@ import User from '../models/user.js';
 import Entidad from '../models/entidad.js';
 import bcrypt from 'bcryptjs';
 
+
 // Crear nuevo usuario
 export const createUser = async (req, res) => {
   try {
@@ -283,4 +284,51 @@ export const actualizarPerfil = async (req, res) => {
     console.error('Error al actualizar perfil:', error);
     res.status(500).json({ message: error.message });
   }
+};
+
+import { promises as fsp } from 'fs';
+
+export const cambiarCv = async (req, res) => {
+  upload.single('cvPdf')(req, res, async (err) => {
+    if (err) {
+      // Distinguir MulterError por límite de tamaño, campo inesperado, etc.
+      const status = err.code === 'LIMIT_FILE_SIZE' ? 413 : 400;
+      console.error('Error al subir el archivo CV:', err);
+      return res.status(status).json({ error: 'Error al subir el archivo CV', detail: err.message, code: err.code });
+    }
+console.log('Archivo CV recibido:', req.params, req.file); // Verifica si el archivo se subió correctamente 
+    try {
+      const { id } = req.params; // <-- coincide con la ruta
+      const user = await User.findByPk(id);
+      if (!user) {
+        console.error('Usuario no encontrado al actualizar CV');
+        return res.status(404).json({ error: 'Usuario no encontrado' });
+      }
+
+      if (!req.file) {
+        return res.status(400).json({ error: 'No se recibió archivo (campo "cv")' });
+      }
+
+      // Eliminar el CV anterior si existe
+  if (user.enlaceHojaDeVida) {
+  const oldCvPath = path.join(process.cwd(), 'app/public/cv', user.enlaceHojaDeVida);
+  try {
+    await fsp.unlink(oldCvPath);        // <-- usa fsp.unlink
+    console.log(`CV anterior eliminado: ${oldCvPath}`);
+  } catch (err) {
+    // Si no existe, no es fatal
+    console.warn(`No se pudo eliminar el CV anterior: ${err.message}`);
+  }
+}
+
+      const { filename } = req.file;
+      await user.update({ enlaceHojaDeVida: filename });
+
+      const publicUrl = `/cv/${filename}`;
+      return res.status(200).json({ message: 'CV actualizado correctamente', filename, url: publicUrl });
+    } catch (error) {
+      console.error('Error al actualizar CV:', error);
+      return res.status(500).json({ error: 'Error al actualizar el CV' });
+    }
+  });
 };

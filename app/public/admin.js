@@ -212,6 +212,7 @@ async function cargarDatosUsuario(userId) {
 
   document.getElementById("imagenPerfil").src = data.fotoPerfil ? "photo/" + data.fotoPerfil : "photo/sinfoto.jpg";
 
+  document.getElementById("imagenPerfilSecundaria").src = data.fotoPerfil ? "photo/" + data.fotoPerfil : "photo/sinfoto.jpg";
 
   document.getElementById("previewFotoPerfil").src = data.fotoPerfil ? "photo/" + data.fotoPerfil : "photo/sinfoto.jpg";
   document.getElementById("nombrePerfil").value = data.name || '';
