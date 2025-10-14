@@ -31,14 +31,14 @@
             border-bottom: 1px solid #e0e0e0;
             margin-bottom: 20px;
         }
-        
+
         .modal-header h3 {
             margin: 0;
             color: #333;
             font-size: 1.5em;
             font-weight: 600;
         }
-        
+
         .modal-header .close {
             font-size: 28px;
             font-weight: bold;
@@ -46,11 +46,11 @@
             cursor: pointer;
             transition: color 0.3s ease;
         }
-        
+
         .modal-header .close:hover {
             color: #333;
         }
-        
+
         .modal-actions {
             display: flex;
             justify-content: flex-end;
@@ -59,7 +59,7 @@
             padding-top: 15px;
             border-top: 1px solid #e0e0e0;
         }
-        
+
         .modal-button-secondary {
             background-color: #6c757d;
             color: white;
@@ -70,18 +70,18 @@
             font-size: 14px;
             transition: background-color 0.3s ease;
         }
-        
+
         .modal-button-secondary:hover {
             background-color: #5a6268;
         }
-        
+
         #modalEditar .modal-content {
             max-width: 800px;
             width: 90%;
             max-height: 90vh;
             overflow-y: auto;
         }
-        
+
         /* Estilos para el formulario completo del dashboard */
         .form-section {
             margin-bottom: 20px;
@@ -137,25 +137,25 @@
             border-color: #007bff;
             box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
         }
-        
+
         /* Estilo especial para campos de una sola columna */
         .input-box.full-width {
             grid-column: 1 / -1;
         }
-        
+
         /* Estilos para el mapa */
         #edit-location-map {
             border: 1px solid #ddd;
             border-radius: 4px;
         }
-        
+
         /* Botones de mapa */
         .map-buttons {
             margin-top: 10px;
             display: flex;
             gap: 5px;
         }
-        
+
         .map-btn {
             padding: 8px 12px;
             border: none;
@@ -164,74 +164,75 @@
             font-size: 12px;
             transition: background-color 0.3s ease;
         }
-        
+
         .map-btn.primary {
             background: #007bff;
             color: white;
         }
-        
+
         .map-btn.primary:hover {
             background: #0056b3;
         }
-        
+
         .map-btn.danger {
             background: #dc3545;
             color: white;
         }
-        
+
         .map-btn.danger:hover {
             background: #c82333;
         }
-        
+
         /* Coordenadas */
         .coordinates-row {
             display: flex;
             gap: 10px;
             margin-top: 10px;
         }
-        
+
         .coordinate-input {
             flex: 1;
         }
-        
+
         .coordinate-input label {
             font-size: 12px;
             color: #666;
         }
-        
+
         .coordinate-input input {
             width: 100%;
             padding: 5px;
             font-size: 12px;
         }
-        
+
         /* Estilos para la sección de logo */
         .logo-preview-container {
             transition: all 0.3s ease;
         }
-        
+
         .logo-preview-container img {
             transition: transform 0.2s ease;
         }
-        
+
         .logo-preview-container img:hover {
             transform: scale(1.05);
         }
-        
+
         .logo-upload-container {
             position: relative;
         }
-        
+
         #logoPreview {
             margin-top: 10px;
             animation: fadeIn 0.3s ease;
         }
-        
+
         @keyframes fadeIn {
             from {
                 opacity: 0;
                 transform: translateY(-10px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -255,7 +256,7 @@
         </div>
         <nav class="nav">
             <button class="nav-button pulse" onclick="window.location.href='/helice'">Hélice</button>
-              <button class="nav-button pulse" onclick="window.location.href='/proyectos'">Proyectos</button>
+            <button class="nav-button pulse" onclick="window.location.href='/proyectos'">Proyectos</button>
             <button class="nav-button pulse" onclick="window.location.href='/innovacion'">Innovación</button>
 
             <button class="nav-button pulse" onclick="window.location.href='/Conocimiento'">Conocimiento</button>
@@ -271,6 +272,22 @@
             <div class="notificaciones" id="notificaciones"></div>
 
             <button class="nav-button pulse" id="cerrarSesion">Cerrar sesión</button>
+            <!-- Botón con menú desplegable -->
+            <div class="dropdown">
+                <button class=" " id="userMenuBtn">
+                    <div id="userPhoto ">
+                        <img class="imagenPerfil" src="img/sinfoto.jpg" alt="Foto de perfil"
+                            onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
+                    </div>
+
+                </button>
+
+                <div class="dropdown-menu" id="userMenu">
+                    <a href="/perfil">Perfil</a>
+                    <a href="/configuracion">Configuración</a>
+                    <a href="/logout" id="cerrarSesion">Cerrar sesión</a>
+                </div>
+            </div>
         </nav>
     </header>
 
@@ -283,6 +300,8 @@
 
         <div class="welcome-text">
             <h2 id="bienvenido">Hola </h2>
+            <h1 style="display: none;" id="departamentoPerfilValor"></h1>
+            <h1 style="display: none;" id="ciudadPerfilValor"></h1>
             <!-- <p class="subtitle">Conectando entidades para potenciar la innovación</p> -->
         </div>
         <div class="action-buttons">
@@ -499,17 +518,52 @@
     <div id="modalFotoPerfil" class="modal">
         <div class="modal-content">
             <span class="close" id="cerrarModalFotoPerfil">&times;</span>
-            <h2>Actualizar Foto de Perfil</h2>
-            <form id="formFotoPerfil">
-                <div class="form-group" style="text-align:center;">
+            <h2 style="text-align:center;">Actualizar Perfil</h2>
+            <form id="formFotoPerfil" style="max-width:400px;margin:auto; ">
+                <div class="form-section logo-preview-container"
+                    style="text-align:center;display: flex; flex-direction: column;align-items: center;">
+                    <label for="inputFotoPerfil" style="font-weight:500;color:#555;">Foto de perfil:</label>
+
                     <img id="previewFotoPerfil" src="" alt="Foto actual"
                         style="width:100px;height:100px;border-radius:50%;object-fit:cover;margin-bottom:15px;"
                         onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
+                    <input type="file" id="inputFotoPerfil" name="fotoPerfil" accept="image/*">
                 </div>
-                <div class="form-group">
-                    <input type="file" id="inputFotoPerfil" name="fotoPerfil" accept="image/*" required>
+                <div class="form-section input-row">
+                    <div class="input-box">
+                        <label for="nombrePerfil">Nombre:</label>
+                        <input type="text" id="nombrePerfil" name="nombrePerfil" required>
+                    </div>
+                    <div class="input-box">
+                        <label for="telefonoPerfil">Teléfono:</label>
+                        <input type="tel" id="telefonoPerfil" name="telefonoPerfil" required>
+                    </div>
+                    <div class="input-box">
+                        <label for="departamentoPerfil">Departamento:</label>
+                        <select id="departamentoPerfil" name="departamentoPerfil" required>
+                            <option value="">Seleccione departamento</option>
+                            <!-- Opciones se cargarán dinámicamente -->
+                        </select>
+                    </div>
+                    <div class="input-box">
+                        <label for="ciudadPerfil">Ciudad:</label>
+                        <select id="ciudadPerfil" name="ciudadPerfil" required>
+                            <option value="">Seleccione ciudad</option>
+                            <!-- Opciones se cargarán dinámicamente -->
+                        </select>
+                    </div>
+
                 </div>
-                <button type="submit" class="modal-button">Guardar Foto</button>
+
+                <div class="form-section input-row">
+                    <div class="input-box full-width">
+                        <label for="perfilProfesional">Perfil profesional:</label>
+                        <textarea id="perfilProfesional" name="perfilProfesional" rows="3" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="modal-button">Actualizar Perfil</button>
+                </div>
             </form>
         </div>
     </div>
@@ -728,7 +782,7 @@
                 <div class="datos-entidad" id="datos-entidad">
                     <!-- Los campos se agregarán dinámicamente -->
                 </div>
-                
+
                 <div class="modal-actions">
                     <button type="submit" class="modal-button">Guardar Cambios</button>
                     <button type="button" class="modal-button-secondary" id="cerrarModalEditar">Cancelar</button>
@@ -736,7 +790,7 @@
             </form>
         </div>
     </div>
-    
+
     <!-- Modal Crear Entidad -->
     <div class="overlay"></div>
     <div id="myModalAsignarServicio" class="modal">
@@ -810,7 +864,183 @@
         fetchUserCount();
 
     </script>
+    <script>
+        // Abrir modal al hacer clic en la foto de usuario
+        document.getElementById('userPhoto').onclick = function () {
+            document.getElementById('modalFotoPerfil').style.display = 'block';
 
+            // Opcional: cargar foto actual si tienes la URL
+            // document.getElementById('previewFotoPerfil').src = 'URL_DE_LA_FOTO_ACTUAL';
+        };
+        // Cerrar modal
+        document.getElementById('cerrarModalFotoPerfil').onclick = function () {
+            document.getElementById('modalFotoPerfil').style.display = 'none';
+        };
+        // Vista previa de la imagen seleccionada
+        document.getElementById('inputFotoPerfil').onchange = function (e) {
+            const file = e.target.files[0];
+            if (file) {
+                document.getElementById('previewFotoPerfil').src = URL.createObjectURL(file);
+            }
+        };
+        // Guardar foto (debes implementar la lógica de subida en tu backend)
+        document.getElementById('formFotoPerfil').onsubmit = async function (e) {
+            e.preventDefault();
+
+            const userId = obtenerCookie("userId");
+            const file = document.getElementById('inputFotoPerfil').files[0];
+
+            const name = document.getElementById('nombrePerfil').value.trim();
+            const telefono = document.getElementById('telefonoPerfil').value.trim();
+            const ciudadId = parseInt(document.getElementById('ciudadPerfil').value, 10) || null;
+            const perfilProfesional = document.getElementById('perfilProfesional').value.trim();
+
+            try {
+                // 1) Si hay archivo, sube la foto
+                if (file) {
+                    const formData = new FormData();
+                    formData.append('fotoPerfil', file);
+                    // opcional: puedes mostrar un loader
+                    const resFoto = await fetch(`/api/user/cambiarFoto/${userId}`, {
+                        method: 'PUT',
+                        body: formData
+                    });
+                    if (!resFoto.ok) {
+                        const err = await resFoto.text().catch(() => '');
+                        throw new Error(`Error al subir la foto. ${err}`);
+                    }
+                }
+
+                // 2) Actualiza el perfil SIEMPRE (independiente de si hubo foto o no)
+                const resPerfil = await fetch(`/api/user/actualizarPerfil/${userId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        name,
+                        telefono,
+                        ciudadId,
+                        perfilProfesional
+                    })
+                });
+                if (!resPerfil.ok) {
+                    const err = await resPerfil.text().catch(() => '');
+                    throw new Error(`Error al actualizar el perfil. ${err}`);
+                }
+
+                // 3) Cierra modal y refresca (o actualiza sólo la imagen y los textos si prefieres)
+                document.getElementById('modalFotoPerfil').style.display = 'none';
+                  document.cookie = `user=${encodeURIComponent(name)}; path=/;`;
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Perfil actualizado',
+                    text: 'Tus datos se han guardado correctamente.',
+                    timer: 1800,
+                    showConfirmButton: false
+                }).then(() => {
+                    location.reload(); // O actualiza sólo la foto y los textos
+                });
+            } catch (err) {
+                console.error(err);
+                alert(err.message || 'Ocurrió un error al actualizar el perfil.');
+            }
+        };
+
+    </script>
+
+    <script>
+        const userMenuBtn = document.getElementById("userMenuBtn");
+        const dropdown = userMenuBtn.closest(".dropdown");
+
+        // Mostrar / ocultar el menú al hacer clic
+        userMenuBtn.addEventListener("click", (event) => {
+            event.stopPropagation(); // evita que el clic cierre inmediatamente el menú
+            dropdown.classList.toggle("show");
+        });
+
+        // Cerrar el menú si haces clic fuera
+        document.addEventListener("click", () => {
+            dropdown.classList.remove("show");
+        });
+    </script>
+
+    <script>
+        // Función para obtener departamentos desde la API
+        async function obtenerDepartamentosColombia() {
+            try {
+                const res = await fetch('/api/departamentos');
+                const data = await res.json();
+                return data.departamentos || [];
+            } catch (err) {
+                console.error('Error obteniendo departamentos:', err);
+                return [];
+            }
+        }
+        
+
+        // Función para agregar departamentos al select
+        async function agregarDepartamentosPerfil() {
+            const departamentos = await obtenerDepartamentosColombia();
+            const depSelect = document.getElementById('departamentoPerfil');
+            depSelect.innerHTML = '<option value="">Seleccione departamento</option>';
+            if (depSelect && departamentos && departamentos.length > 0) {
+                departamentos.forEach(dep => {
+                    const option = document.createElement('option');
+                    option.value = dep.id;
+                    option.textContent = dep.nombre;
+                    depSelect.appendChild(option);
+                });
+            } else {
+                console.warn('No se encontraron Departamentos para cargar.');
+            }
+
+            // Si ya tienes el departamento y ciudad del usuario, puedes preseleccionarlos aquí
+        const departamentoId= document.getElementById('departamentoPerfilValor').textContent;
+        // Si departamentoId es un número diferente de 0, selecciona ese departamento en el select
+        if (departamentoId && !isNaN(departamentoId) && Number(departamentoId) !== 0) {
+            depSelect.value = departamentoId;
+            await cargarCiudadesPerfil(departamentoId);
+        }
+    }
+
+        // Función para cargar ciudades según departamento seleccionado
+        async function cargarCiudadesPerfil(departamentoId) {
+            const ciudadSelect = document.getElementById('ciudadPerfil');
+            ciudadSelect.innerHTML = '<option value="">Seleccione ciudad</option>';
+            if (!departamentoId) return;
+            try {
+                const res = await fetch(`/api/ciudades/${departamentoId}`);
+                const data = await res.json();
+                if (data.ciudades && data.ciudades.length > 0) {
+                    data.ciudades.forEach(ciudad => {
+                        const option = document.createElement('option');
+                        option.value = ciudad.id;
+                        option.textContent = ciudad.nombre;
+                        ciudadSelect.appendChild(option);
+                    });
+                }
+            } catch (err) {
+                console.error('Error obteniendo ciudades:', err);
+            }
+            // Si ya tienes la ciudad del usuario, puedes preseleccionarla aquí
+            const ciudadId= document.getElementById('ciudadPerfilValor').textContent;
+            if (ciudadId && !isNaN(ciudadId) && Number(ciudadId) !== 0) {
+                ciudadSelect.value = ciudadId;  
+            }
+
+        }
+
+        // Inicializar departamentos al mostrar el modal
+        document.getElementById('userPhoto').onclick = function () {
+            document.getElementById('modalFotoPerfil').style.display = 'block';
+            agregarDepartamentosPerfil();
+            
+        };
+
+        // Cambiar ciudades al seleccionar departamento
+        document.getElementById('departamentoPerfil').onchange = function () {
+            cargarCiudadesPerfil(this.value);
+        };
+    </script>
 
 </body>
 

@@ -13,11 +13,12 @@ import {
   deleteUser,
   deleteUserWithEntidades,
   cambiarFoto,
-  getUsersWithLocations
+  getUsersWithLocations,
+  actualizarPerfil
 } from '../controllers/userController.js';
 
 const router = express.Router();
-
+router.put('/actualizarPerfil/:id', actualizarPerfil);
 router.get('/count', countUsers);
 router.get('/mapa/locations', getUsersWithLocations);
 router.get('/', getAllUsers);

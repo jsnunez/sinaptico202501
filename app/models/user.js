@@ -2,6 +2,8 @@
 import { DataTypes, Sequelize } from 'sequelize';
 import sequelize from '../config/database.js';  // Importa la instancia de Sequelize
 import Invitacion from './invitaciones.js'; // Asegúrate de que la ruta sea correcta
+import Departamento from './departamento.js';
+import Ciudad from './ciudad.js';
 const User = sequelize.define('User', {
   id: {
     type: DataTypes.INTEGER,
@@ -64,6 +66,24 @@ const User = sequelize.define('User', {
     type: DataTypes.BOOLEAN,
     allowNull: false,
     defaultValue: true
+  },
+
+  ciudadId: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    references: {
+      model: 'ciudades',
+      key: 'id'
+    }
+  },
+  perfilProfesional: {
+    type: DataTypes.TEXT,
+    allowNull: true
+  },
+  primerActualizacionPerfil: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: false
   }
 }, {
   timestamps: true, // Esto habilita los campos `createdAt` y `updatedAt`
@@ -73,4 +93,9 @@ User.hasMany(Invitacion, { as: 'enviadas', foreignKey: 'desdeuserid' });
 User.hasMany(Invitacion, { as: 'recibidas', foreignKey: 'parauserid' });
 
 
+
+User.belongsTo(Ciudad, {
+  foreignKey: 'ciudadId',
+  as: 'ciudad',
+});
 export default User;

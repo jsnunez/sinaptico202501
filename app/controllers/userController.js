@@ -262,3 +262,25 @@ function getRandomLastSeen() {
   ];
   return options[Math.floor(Math.random() * options.length)];
 }
+
+
+export const actualizarPerfil = async (req, res) => {
+  try {
+    const { name, telefono, direccion, ciudadId, perfilProfesional } = req.body;
+    const user = await User.findByPk(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    user.name = name ?? user.name;
+    user.telefono = telefono ?? user.telefono;
+    user.direccion = direccion ?? user.direccion;
+    user.ciudadId = ciudadId ?? user.ciudadId;
+    user.perfilProfesional = perfilProfesional ?? user.perfilProfesional;
+    user.primerActualizacionPerfil = true;
+    await user.save();
+    res.json(user);
+  } catch (error) {
+    console.error('Error al actualizar perfil:', error);
+    res.status(500).json({ message: error.message });
+  }
+};
