@@ -792,13 +792,17 @@ form {
 
       #userPhoto{
         height: 10vh;
+        width: 10vh;
 margin: 1rem;
 
     }
-      #userPhoto img{
-height: 100%;
-border-radius: 100%;
-      }
+    #userPhoto img {
+        height: 100%;
+        width: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+        display: block;
+    }
 
 
   .toast {

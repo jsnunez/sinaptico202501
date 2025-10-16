@@ -271,7 +271,7 @@
             </div>
             <div class="notificaciones" id="notificaciones"></div>
 
-            <button class="nav-button pulse" id="cerrarSesion">Cerrar sesión</button>
+            <!-- <button class="nav-button pulse" id="cerrarSesion">Cerrar sesión</button> -->
             <!-- Botón con menú desplegable -->
             <div class="dropdown">
                 <button class=" " id="userMenuBtn">
@@ -285,12 +285,45 @@
                 <div class="dropdown-menu" id="userMenu">
                     <a href="/perfil">Perfil</a>
                     <a href="/configuracion">Configuración</a>
-                    <a href="/logout" id="cerrarSesion">Cerrar sesión</a>
+                    <a href="#" id="cerrarSesion">Cerrar sesión</a>
                 </div>
             </div>
         </nav>
     </header>
 
+    <!-- Contenido principal - Datos Generales -->
+  <div class="main-content" id="miPerfil" style="display:none;">
+        <h2 class="tittle">Datos Generales</h2>
+
+        <table class="table-perfil">
+            <tr>
+                <td><strong>Nombres Completos:</strong></td>
+                <td id="MiNombreCompleto"></td>
+            </tr>
+         
+         <tr>
+                <td><strong>Perfil Profesional:</strong></td>
+                <td id="MiPerfilProfesional"></td>
+            </tr>
+            <tr>
+                <td><strong>Teléfono:</strong></td>
+                <td id="MiTelefono"></td>
+            </tr>
+            <tr>
+                <td><strong>Ubicación:</strong></td>
+                <td id="MiUbicacion"></td>
+            </tr>
+            <tr>
+                <td><strong>Correo Electrónico:</strong></td>
+                <td id="MiCorreo"></td>
+            </tr>
+        </table>
+
+<iframe src="" width="50%" height="600px" style="display:none;"></iframe>
+
+
+
+    </div>
     <!-- Bienvenida y botones de acción -->
     <div class="welcome-container">
         <div id="userPhoto" style="position: relative; display: inline-block; cursor: pointer;">
@@ -563,7 +596,7 @@
                 <div class="form-section input-row">
                     <div class="input-box full-width">
                         <label for="perfilProfesional">Perfil profesional:</label>
-                        <textarea id="perfilProfesional" name="perfilProfesional" rows="3" required></textarea>
+                        <textarea id="perfilProfesional" name="perfilProfesional" required></textarea>
                     </div>
                      <div class="input-box full-width">
                         <label for="cvPdf">Hoja de Vida(PDF):</label>
@@ -903,7 +936,7 @@
             const name = document.getElementById('nombrePerfil').value.trim();
             const telefono = document.getElementById('telefonoPerfil').value.trim();
             const ciudadId = parseInt(document.getElementById('ciudadPerfil').value, 10) || null;
-            const perfilProfesional = document.getElementById('perfilProfesional').value.trim();
+            const perfilProfesional = document.getElementById('perfilProfesional').value.trim()|| null;
 
             try {
                 // 1) Si hay archivo, sube la foto
@@ -1065,6 +1098,7 @@
             cargarCiudadesPerfil(this.value);
         };
     </script>
+
 
 </body>
 

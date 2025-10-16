@@ -2,7 +2,38 @@ import User from '../models/user.js';
 import Entidad from '../models/entidad.js';
 import bcrypt from 'bcryptjs';
 
+export const getUserById = async (req, res) => {
+  try {
+    const user = await User.findByPk(req.params.id, {
+      attributes: { exclude: ['password'] }, // Excluir la contraseña
+      include: [
+      {
+        model: (await import('../models/ciudad.js')).default,
+        as: 'ciudad',
+        attributes: ['id', 'nombre', 'departamentoId'],
+        required: false,
+        include: [
+        {
+          model: (await import('../models/departamento.js')).default,
+          as: 'departamento',
+          attributes: ['id', 'nombre'],
+          required: false
+        }
+        ]
+      }
+      ]
+    });
 
+    if (!user) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+
+    res.status(200).json(user);
+  } catch (error) {
+    console.error('Error al obtener usuario por ID:', error);
+    res.status(500).json({ error: 'Error al obtener el usuario' });
+  }
+};
 // Crear nuevo usuario
 export const createUser = async (req, res) => {
   try {
@@ -272,6 +303,7 @@ export const actualizarPerfil = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
+    console.log('Datos recibidos para actualizar perfil:', req.body);
     user.name = name ?? user.name;
     user.telefono = telefono ?? user.telefono;
     user.direccion = direccion ?? user.direccion;

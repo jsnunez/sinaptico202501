@@ -1324,3 +1324,116 @@ td {
         .stat-card.rechazados {
             border-top-color: #e74c3c;
         }
+
+
+        .nav {
+    display: flex;
+    gap: 1rem;
+}
+
+.nav-button {
+    background-color: var(--text-color);
+    color: var(--light-text);
+    border: none;
+    border-radius: 10px;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.nav-button:hover {
+    background-color: var(--select-btn);
+    transform: translateY(-2px);
+}
+
+.nav-button.pulse::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.7);
+    opacity: 0;
+    border-radius: 100%;
+    transform: scale(1, 1) translate(-50%);
+    transform-origin: 50% 50%;
+}
+
+.nav-button.pulse:hover::after {
+    animation: ripple 1s ease-out;
+}
+
+.imagenPerfil {
+    border-radius: 50%;
+    object-fit: cover;
+    width: 5vh;
+    height: 5vh;
+
+    box-shadow: none;
+    outline: none;
+}
+#imagenPerfil:hover {
+    box-shadow: 0 0 0 3px var(--primary-color);
+    transform: scale(1.1);
+    transition: var(--transition);
+}
+
+
+/* Estilo del contenedor */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Menú oculto por defecto */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 110%;
+    /* debajo del botón */
+    right: 0;
+    background-color: var(--background-color, #222);
+    color: var(--text-color, #fff);
+    border-radius: 10px;
+    min-width: 180px;
+    overflow: hidden;
+    z-index: 20;
+}
+
+/* Enlaces del menú */
+.dropdown-menu a {
+    display: block;
+    padding: 0.75rem 1rem;
+    color: inherit;
+    text-decoration: none;
+    transition: background 0.3s;
+}
+
+/* Hover de los enlaces */
+.dropdown-menu a:hover {
+    background: var(--select-btn, #444);
+}
+
+/* Clase que lo muestra */
+.dropdown.show .dropdown-menu {
+    display: block;
+    animation: fadeIn 0.2s ease-in-out;
+}
+
+/* Animación de aparición */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

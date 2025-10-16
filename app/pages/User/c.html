@@ -9,7 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <link rel="stylesheet" href="styles/colores.css">
-    <link rel="stylesheet" href="styles/stylehelice2.css">
+    <link rel="stylesheet" href="styles/perfil.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
 
@@ -17,303 +17,9 @@
         href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-    <!-- Leaflet.js para mapas -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-    <!-- Estilos personalizados para modales -->
-    <style>
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #e0e0e0;
-            margin-bottom: 20px;
-        }
-
-        .modal-header h3 {
-            margin: 0;
-            color: #333;
-            font-size: 1.5em;
-            font-weight: 600;
-        }
-
-        .modal-header .close {
-            font-size: 28px;
-            font-weight: bold;
-            color: #999;
-            cursor: pointer;
-            transition: color 0.3s ease;
-        }
-
-        .modal-header .close:hover {
-            color: #333;
-        }
-
-        .modal-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-            margin-top: 20px;
-            padding-top: 15px;
-            border-top: 1px solid #e0e0e0;
-        }
-
-        .modal-button-secondary {
-            background-color: #6c757d;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: background-color 0.3s ease;
-        }
-
-        .modal-button-secondary:hover {
-            background-color: #5a6268;
-        }
-
-        #modalEditar .modal-content {
-            max-width: 800px;
-            width: 90%;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        /* Estilos para el formulario completo del dashboard */
-        .form-section {
-            margin-bottom: 20px;
-            padding: 15px;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            background-color: #fafafa;
-        }
-
-        .form-section h4 {
-            margin: 0 0 15px 0;
-            color: #333;
-            font-size: 16px;
-            font-weight: 600;
-            border-bottom: 2px solid #007bff;
-            padding-bottom: 5px;
-        }
-
-        .input-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 15px;
-        }
-
-        .input-box {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .input-box span,
-        .input-box label {
-            font-weight: 500;
-            margin-bottom: 5px;
-            color: #555;
-            font-size: 14px;
-        }
-
-        .input-box input,
-        .input-box select,
-        .input-box textarea {
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
-            transition: border-color 0.3s ease;
-        }
-
-        .input-box input:focus,
-        .input-box select:focus,
-        .input-box textarea:focus {
-            outline: none;
-            border-color: #007bff;
-            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
-        }
-
-        /* Estilo especial para campos de una sola columna */
-        .input-box.full-width {
-            grid-column: 1 / -1;
-        }
-
-        /* Estilos para el mapa */
-        #edit-location-map {
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-
-        /* Botones de mapa */
-        .map-buttons {
-            margin-top: 10px;
-            display: flex;
-            gap: 5px;
-        }
-
-        .map-btn {
-            padding: 8px 12px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 12px;
-            transition: background-color 0.3s ease;
-        }
-
-        .map-btn.primary {
-            background: #007bff;
-            color: white;
-        }
-
-        .map-btn.primary:hover {
-            background: #0056b3;
-        }
-
-        .map-btn.danger {
-            background: #dc3545;
-            color: white;
-        }
-
-        .map-btn.danger:hover {
-            background: #c82333;
-        }
-
-        /* Coordenadas */
-        .coordinates-row {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .coordinate-input {
-            flex: 1;
-        }
-
-        .coordinate-input label {
-            font-size: 12px;
-            color: #666;
-        }
-
-        .coordinate-input input {
-            width: 100%;
-            padding: 5px;
-            font-size: 12px;
-        }
-
-        /* Estilos para la sección de logo */
-        .logo-preview-container {
-            transition: all 0.3s ease;
-        }
-
-        .logo-preview-container img {
-            transition: transform 0.2s ease;
-        }
-
-        .logo-preview-container img:hover {
-            transform: scale(1.05);
-        }
-
-        .logo-upload-container {
-            position: relative;
-        }
-
-        #logoPreview {
-            margin-top: 10px;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Estilos para las estadísticas */
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .stat-card {
-            background: white;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            text-align: left;
-            border-top: 4px solid #3498db;
-            transition: transform 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 18px;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .stat-icon {
-            font-size: 3em;
-            margin-bottom: 0;
-            margin-right: 10px;
-        }
-
-        .stat-number {
-            font-size: 2.5em;
-            font-weight: bold;
-            color: #2c3e50;
-            margin-bottom: 10px;
-        }
-
-        .stat-label {
-            color: #7f8c8d;
-            font-size: 1.1em;
-            font-weight: 500;
-        }
-
-        .stat-card.presentados {
-            border-top-color: #3498db;
-        }
-
-        .stat-card.evaluacion {
-            border-top-color: #f39c12;
-        }
-
-        .stat-card.comite {
-            border-top-color: #9b59b6;
-        }
-
-        .stat-card.aprobados {
-            border-top-color: #27ae60;
-        }
-
-        .stat-card.rechazados {
-            border-top-color: #e74c3c;
-        }
-
-
-    </style>
-
 </head>
 
 <body>
-    <!-- Fondo de animación neuronal -->
-    <div class="neural-background">
-        <canvas id="neuralCanvas"></canvas>
-    </div>
 
     <!-- Encabezado -->
     <header class="header">
@@ -332,949 +38,303 @@
             <button class="nav-button pulse" onclick="window.location.href='/eventos'">Eventos</button>
 
             <button class="nav-button pulse" onclick="irEnConstruccion()">Mapa</button>
-            <div style="position:fixed;top:10px;right:20px;z-index:1000;font-size:1.5em;cursor:pointer;">
-                <span id="icono-notif">🔔 <span
+
+            <div style="position:fixed;top:70px;right:20px;z-index:1000;font-size:1.5em;cursor:pointer;">
+                <span id="icono-notif"><i class="bi bi-bell-fill"></i> <span
                         style='background:red;color:white;border-radius:50%;padding:2px 7px;font-size:0.9em;'>0</span></span>
             </div>
             <div class="notificaciones" id="notificaciones"></div>
 
-            <button class="nav-button pulse" id="cerrarSesion">Cerrar sesión</button>
+            <!-- Botón con menú desplegable -->
+            <div class="dropdown">
+                <button class=" " id="userMenuBtn">
+                    <div id="userPhoto ">
+                        <img class="imagenPerfil" src="img/sinfoto.jpg" alt="Foto de perfil"
+                            onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
+                    </div>
+
+                </button>
+
+                <div class="dropdown-menu" id="userMenu">
+                    <a href="/perfil.html">Perfil</a>
+                    <a href="/configuracion">Configuración</a>
+                    <a href="/logout" id="cerrarSesion">Cerrar sesión</a>
+                </div>
+            </div>
+
         </nav>
     </header>
 
-    <!-- Bienvenida y botones de acción -->
-    <div class="welcome-container">
-        <div id="userPhoto">
-            <img id="imagenPerfil" src="img/sinfoto.jpg" alt="Foto de perfil"
-                onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
-        </div>
 
-        <div class="welcome-text">
-            <h2 id="bienvenido">Hola </h2>
-            <!-- <p class="subtitle">Conectando entidades para potenciar la innovación</p> -->
-        </div>
-        <div class="action-buttons">
-
-            <button class="action-button" id="postulaciones">
-                <span class="button-icon"><i class="bi bi-lightbulb-fill "
-                        style="color: rgb(255, 248, 148);"></i></span>Idea
-                de Proyecto
-            </button>
-            <button class="action-button" id="asignarServicio" style="display: none;"
-                onclick="abrirModalAgregarServicio()">
-                <span class="button-icon">🔄</span> Servicios
-            </button>
-        </div>
-
-        
-    </div>
-
-
-    <!-- Modal Foto de Perfil -->
-    <div id="modalFotoPerfil" class="modal">
-        <div class="modal-content">
-            <span class="close" id="cerrarModalFotoPerfil">&times;</span>
-            <h2>Actualizar Perfil</h2>
-            <form id="formFotoPerfil">
-                <div class="form-group" style="text-align:center;">
-                    <img id="imagenPerfil" src="img/sinfoto.jpg" alt="Foto de perfil" onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
-                </div>
-                <div class="form-group">
-                    <input type="file" id="inputFotoPerfil" name="fotoPerfil" accept="image/*" required>
-                </div>
-                <button type="submit" class="modal-button">Guardar Foto</button>
-            </form>
-        </div>
-    </div>
-
-
-
-    <!-- Contacto del lider de PPI -->
-    <div id="modalPostulaciones" class="modal">
-        <div class="modal-content" style="max-width:900px;">
-            <span class="close" id="cerrarModalPostulaciones">&times;</span>
-            <h2>Ficha Técnica de PPI</h2>
-            <div class="form-section">
-                <h3 class="section-title">Contacto Líder PPI</h3>
-                <div class="input-box full-width">
-                    <label for="Entidad">Nombre de la Institución responsable </label>
-                    <input type="text" id="nombreEntidad" name="nombreEntidad"
-                        placeholder="Ingrese el nombre de la entidad responsable" "
-                            required>
-                    </div>
-
-                <div class=" input-row">
-                    <div class="input-box">
-                        <label for="nombreLider">Nombre</label>
-                        <input type="text" id="nombreLider" name="nombreLider"
-                            placeholder="Ingrese el nombre del Líder PPI" required>
-                    </div>
-                    <div class="input-box">
-                        <label for="cargoLider">Cargo</label>
-                        <input type="text" id="cargoLider" name="cargoLider"
-                            placeholder="Ingrese el cargo del Líder PPI" required>
-                    </div>
-                </div>
-
-                <div class="input-row">
-                    <div class="input-box">
-                        <label for="correoLider">Correo Electrónico</label>
-                        <input type="email" id="correoLider" name="correo" placeholder="Ingrese el correo" required>
-                    </div>
-
-                    <div class="input-box">
-                        <label for="telefonoLider">Teléfono / Celular</label>
-                        <input type="text" id="telefonoLider" name="telefonoLider"
-                            placeholder="Ingrese el teléfono o celular" required>
-                    </div>
-
-                </div>
-
-            </div>
-
-            <!-- Contacto de la persona que diligencia la ficha -->
-            <div class="form-section">
-                <h3 class="section-title">Contacto de quien diligencia la ficha</h3>
-                <div class="input-box full-width">
-                    <label for="EntidadDiligencia">Nombre de la Institución responsable </label>
-                    <input type="text" id="nombreEntidad" name="nombreEntidad"
-                        placeholder="Ingrese el nombre de la entidad responsable" required>
-                </div>
-
-                <div class=" input-row">
-                    <div class="input-box">
-                        <label for="nombreDiligenciador">Nombre</label>
-                        <input type="text" id="nombreDiligenciador" name="nombreDiligenciador"
-                            placeholder="Ingrese el nombre de quien diligencia la ficha" required>
-                    </div>
-                    <div class="input-box">
-                        <label for="cargoDiligenciador">Cargo</label>
-                        <input type="text" id="cargoDiligenciador" name="cargoDiligenciador"
-                            placeholder="Ingrese el cargo quien diligencia la ficha" required>
-                    </div>
-                </div>
-
-                <div class="input-row">
-                    <div class="input-box">
-                        <label for="correoDiligenciador">Correo Electrónico</label>
-                        <input type="email" id="correoDiligenciador" name="correo" placeholder="Ingrese el correo"
-                            required>
-                    </div>
-
-                    <div class="input-box">
-                        <label for="telefonoDiligenciador">Teléfono / Celular</label>
-                        <input type="text" id="telefonoDiligenciador" name="telefonoDiligenciador"
-                            placeholder="Ingrese el teléfono o celular" required>
-                    </div>
-
-                </div>
-
-
-
-            </div>
-
-            <!-- Información General del PPI -->
-            <div class="form-section">
-                <h3 class="section-title">Información General del PPI</h3>
-
-                <div class="input-box full-width">
-                    <label for="nombrePPI">Nombre del PPI (Programa/Proyecto/Iniciativa)</label>
-                    <input type="text" id="nombrePPI" name="nombrePPI" placeholder="Ingrese el nombre del PPI" required>
-                </div>
-                <div class="input-box full-width">
-                    <label for="determinanteProductividad">Determinante de productividad al que se encuentra asociado el
-                        PPI</label>
-                    <input type="text" id="determinanteProductividad" name="determinanteProductividad"
-                        placeholder="Ingrese el nombre del determinante de productividad al que se encuentra asociado el PPI"
-                        required>
-                </div>
-                <div class="input-box full-width">
-                    <label for="componenteProductividad">Componente de productividad al que se encuentra asociado el
-                        PPI</label>
-                    <input type="text" id="componenteProductividad" name="componenteProductividad"
-                        placeholder="Ingrese el nombre del componente de productividad al que se encuentra asociado el PPI"
-                        required>
-                </div>
-                <div class="input-box full-width">
-                    <label for="objetivo">Objetivo del PPI <br>
-                        (Sea claro para que el equipo de expertos pueda identificar si soluciona fallas de mercado,
-                        gobierno o articulación)</label>
-                    <input type="text" id="objetivo" name="objetivo" placeholder="Ingrese el Objetivo del PPI" required>
-                </div>
-                <div class="input-box">
-                    <label for="objetivo">¿Qué necesidad o problema resuelve esta Iniciativa?</label>
-                    <input type="text" id="objetivo" name="objetivo" placeholder="Sea lo más claro posible" required>
-                </div>
-                <div class="input-box full-width">
-                    <label for="impactos"> Liste los tres principales impactos a obtener con el PPI planteado</label>
-                    <input type="text" id="impactos" name="impactos" placeholder="Ingrese los impactos" required>
-                </div>
-                <div class="input-box full-width">
-                    <label for="objetivosEspecificos">Liste los objetivos específicos del proyecto </label>
-                    <input type="text" id="objetivosEspecificos" name="objetivosEspecificos"
-                        placeholder="Ingrese los objetivos específicos (Máximo 5)" required>
-
-                </div>
-
-                <div class="input-box full-width">
-                    <label for="duracionPPI">¿Cuál es la duración estimada del PPI?</label>
-                    <select id="duracionPPI" name="duracionPPI" required>
-                        <option value="">Seleccione una opción</option>
-                        <option value="Menos de un año">Menos de un año</option>
-                        <option value="Entre un año y tres años">Entre un año y tres años</option>
-                        <option value="Más de tres años">Más de tres años</option>
-                    </select>
-                </div>
-                <div class="input-box full-width">
-                    <label for="presupuestoPPI">¿Cuál es el presupuesto estimado del PPI?</label>
-                    <select id="presupuestoPPI" name="duracionPPI" required>
-                        <option value="">Seleccione una opción</option>
-                        <option value="De 0 a 100 millones de pesos">De 0 a 100 millones de pesos</option>
-                        <option value="De 101 a 500 millones de pesos">De 101 a 500 millones de pesos</option>
-                        <option value="De 501 a 1000 millones de pesos">De 501 a 1000 millones de pesos</option>
-                        <option value="De 1001 a 5000 millones de pesos">De 1001 a 5000 millones de pesos</option>
-                        <option value="Más de 5000 millones de pesos">Más de 5000 millones de pesos</option>
-                    </select>
-                </div>
-
-
-                <div class="input-box full-width">
-                    <label for="fasePPI">¿En qué fase se encuentra actualmente el PPI?</label>
-                    <select id="fasePPI" name="fasePPI" required>
-                        <option value="">Seleccione una opción</option>
-                        <option value="Fase 1: Idea">Fase 1: Idea</option>
-                        <option value="Fase 2: Formulación o Prefactibilidad">Fase 2: Formulación o Prefactibilidad
-                        </option>
-                        <option value="Fase 3: Factibilidad">Fase 3: Factibilidad</option>
-                        <option value="Contratación">Contratación</option>
-                        <option value="Ejecución">Ejecución</option>
-                    </select>
-                </div>
-
-            </div>
-
-            <!-- Análisis de Equidad de Género y Superación de la Pobreza -->
-            <div class="form-section">
-                <h3 class="section-title">Análisis de Equidad de Género y Superación de la Pobreza </h3>
-
-                <div class="input-box full-width">
-                    <label for="Potencial">Potencial de generación de empleo por estratos cuando el proyecto esté en
-                        desarrollo:</label>
-                    <table class="PPI">
-                        <thead>
-                            <tr>
-                                <th>Rango De Empleos</th>
-                                <th>Estratos 1 y 2</th>
-                                <th>Estratos 3 y 4</th>
-                                <th>Estratos 5 y 6</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td style="text-align:center;">1 a 10 </td>
-                                <td style="text-align:center;"><input type="radio" name="potencialEmpleo"
-                                        value="1-10-1y2"></td>
-                                <td style="text-align:center;"><input type="radio" name="potencialEmpleo"
-                                        value="1-10-3y4"></td>
-                                <td style="text-align:center;"><input type="radio" name="potencialEmpleo"
-                                        value="1-10-5y6"></td>
-                            </tr>
-                            <tr>
-                                <td style="text-align:center;">11 a 20 </td>
-                                <td style="text-align:center;"><input type="radio" name="potencialEmpleo"
-                                        value="11-20-1y2"></td>
-                                <td style="text-align:center;"><input type="radio" name="potencialEmpleo"
-                                        value="11-20-3y4"></td>
-                                <td style="text-align:center;"><input type="radio" name="potencialEmpleo"
-                                        value="11-20-5y6"></td>
-                            </tr>
-                            <tr>
-                                <td style="text-align:center;">21 a 30 </td>
-                                <td style="text-align:center;"><input type="radio" name="potencialEmpleo"
-                                        value="21-30-1y2"></td>
-                                <td style="text-align:center;"><input type="radio" name="potencialEmpleo"
-                                        value="21-30-3y4"></td>
-                                <td style="text-align:center;"><input type="radio" name="potencialEmpleo"
-                                        value="21-30-5y6"></td>
-                            </tr>
-                            <tr>
-                                <td style="text-align:center;">31 a o más </td>
-                                <td style="text-align:center;"><input type="radio" name="potencialEmpleo"
-                                        value="31+-1y2"></td>
-                                <td style="text-align:center;"><input type="radio" name="potencialEmpleo"
-                                        value="31+-3y4"></td>
-                                <td style="text-align:center;"><input type="radio" name="potencialEmpleo"
-                                        value="31+-5y6"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <br>
-                <hr>
-                <br>
-                <div class="input-box full-width">
-                    <label for="impactoEmpleo">Impactos esperados en generación de empleo con la ejecución del programa,
-                        proyecto o iniciativa </label>
-                    <input type="text" id="impactoEmpleo" name="impactoEmpleo"
-                        placeholder="Ingrese los impactos esperados en la generación de empleo con la ejecución del PPI"
-                        required>
-                </div>
-                <div class="input-box full-width">
-                    <label for="impactoEquidad">Impactos esperados en reducción de brechas de equidad de género con la
-                        ejecución del programa, proyecto o iniciativa
-                    </label>
-                    <input type="text" id="impactoEquidad" name="impactoEquidad"
-                        placeholder="Ingrese los Impactos esperados en reducción de brechas de equidad de género con la ejecución del PPI"
-                        required>
-                </div>
-                <div class="input-box full-width">
-                    <label for="politicasPPI">Indique si el proyecto contempla políticas de equidad de género para la
-                        contratación de sus empleados. Cuáles?
-
-                    </label>
-                    <input type="text" id="politicasPPI" name="politicasPPI"
-                        placeholder="Ingrese las politicas de equidad de género para la contratación" required>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Mis Proyectos -->
 
     <div class="main-content">
-        <h2 class="title">Mis Proyectos</h2>
 
-    <!-- Estadísticas -->
-   
-        <div class="stats-grid">
-            <div class="stat-card presentados">
-                <div class="stat-icon">📝</div>
-                <div class="stat-number">24</div>
-                <div class="stat-label">Presentados</div>
+        <div class="section">
+
+            <!-- Columna izquierda: tabla -->
+            <div class="input-box">
+
+
+                <h2 class="tittle">Datos Generales</h2>
+
+                <table class="table-perfil">
+                    <tr>
+                        <td>
+                            <div id="userPhoto">
+                                <img id="imagenPerfil" src="img/sinfoto.jpg" alt="Foto de perfil"
+                                    onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
+                            </div>
+
+                        </td>
+                        <td id="">
+                            <h2>Joan Sebastian Nuñez Serrano</h2>
+                            <div>
+                                <button class="nav-button" id="perfil">
+                                    <span><i class="bi bi-pencil-square"></i> Perfil </span>
+
+                                </button>
+
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <strong>Género:</strong>
+                        </td>
+                        <td>Masculino</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Teléfono:</strong></td>
+                        <td>+57 300 123 4567</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ubicación:</strong></td>
+                        <td>Bucaramanga - Santander</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Correo Electrónico:</strong></td>
+                        <td>sebastian79@gmail.com</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Vinculado a:</strong></td>
+                        <td>Agro Industria ltda</td>
+                    </tr>
+                </table>
+                <br>
+
             </div>
 
-            <div class="stat-card evaluacion">
-                <div class="stat-icon">🔍</div>
-                <div class="stat-number">8</div>
-                <div class="stat-label">En Evaluación</div>
+            <!-- Columna derecha: PDF -->
+            <div class="input-box">
+                <iframe src="SebastianCV.pdf" width="100%" height="600px"></iframe>
+
             </div>
 
-            <div class="stat-card comite">
-                <div class="stat-icon">👥</div>
-                <div class="stat-number">3</div>
-                <div class="stat-label">En Comité</div>
-            </div>
-
-            <div class="stat-card aprobados">
-                <div class="stat-icon">✅</div>
-                <div class="stat-number">15</div>
-                <div class="stat-label">Aprobados</div>
-            </div>
-
-            <div class="stat-card rechazados">
-                <div class="stat-icon">❌</div>
-                <div class="stat-number">7</div>
-                <div class="stat-label">Rechazados</div>
-            </div>
         </div>
 
-    
-    
-        <!-- Filtros -->
-        <div class="filter-container">
-            <input type="text" id="buscarMisProyectos" placeholder="Buscar tus proyectos..." class="filter-input">
-        </div>
+        <!--Modal Actualizar Perfil-->
 
-        <!-- Tabla de Mis Proyectos -->
-        <table class="data-table" id="tablaPostulaciones">
-            <thead>
-                <tr>
-                    <th>Codigo</th>
-                    <th>Nombre del proyecto</th>
-                    <th>Objetivo</th>
-                    <th>Entidad</th>
-                    <th>Líder PPI</th>
-                    <th>Duración</th>
-                    <th>Estado</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="codigo-proyecto">PPI-001-25</td>
-                    <td>Proyecto Innovador</td>
-                    <td>Desarrollar tecnología sostenible</td>
-                    <td>Gobernación de Santander</td>
-                    <td>Juan Pérez</td>
-                    <td>2 años</td>
-                    <td><span class="badge badge-danger">Descartado</span></td>
-                    <td>
-                        <div class="action-icons">
-                            <span class="action-icon edit-full" data-id="1" title="Editar PPI" onclick="abrirModalEditarProyecto(
-                'PPI-001-25',
-                'Proyecto Innovador',
-                'Desarrollar tecnología sostenible',
-                'Juan Pérez',
-                '2 años',
-                'Descartado',
-                'Universidad Nacional',
-                'Director de Innovación',
-                'juan.perez@unacional.edu.co',
-                '3123456789',
-                'Ana Martínez',
-                'Gestora de Proyectos',
-                'ana.martinez@unacional.edu.co',
-                '3112345678',
-                'Tecnología',
-                'Sostenibilidad',
-                'Desarrollar prototipo, Validar en campo',
-                'Impacto ambiental, Generación de empleo, Transferencia tecnológica',
-                '2 años',
-                'De 101 a 500 millones de pesos',
-                'Fase 1: Idea',
-                '1-10-1y2',
-                'Creación de 5 empleos directos',
-                'Participación equitativa de mujeres en el equipo',
-                'Política de igualdad de género en contratación'
-                )">
-                                <i class="bi bi-gear"></i>
-                            </span>
-                            <!-- Modal de edición de proyecto -->
-                            <div id="modalEditarProyecto" class="modal" style="display:none;">
-                                <div class="modal-content" style="max-width:800px;">
-                                    <div class="modal-header">
-                                        <h3>Editar Proyecto</h3>
-                                        <span class="close"
-                                            onclick="document.getElementById('modalEditarProyecto').style.display='none';">&times;</span>
-                                    </div>
-                                    <form id="formEditarProyecto">
-                                        <div class="form-section">
-                                            <h4>Datos Básicos</h4>
-                                            <div class="input-row">
-                                                <div class="input-box">
-                                                    <label for="editCodigo">Código</label>
-                                                    <input type="text" id="editCodigo" name="editCodigo" readonly>
-                                                </div>
-                                                <div class="input-box">
-                                                    <label for="editNombre">Nombre del proyecto</label>
-                                                    <input type="text" id="editNombre" name="editNombre">
-                                                </div>
-                                            </div>
-                                            <div class="input-row">
-                                                <div class="input-box">
-                                                    <label for="editObjetivo">Objetivo</label>
-                                                    <input type="text" id="editObjetivo" name="editObjetivo">
-                                                </div>
-                                                <div class="input-box">
-                                                    <label for="editLider">Líder PPI</label>
-                                                    <input type="text" id="editLider" name="editLider">
-                                                </div>
-                                            </div>
-                                            <div class="input-row">
-                                                <div class="input-box">
-                                                    <label for="editDuracion">Duración</label>
-                                                    <input type="text" id="editDuracion" name="editDuracion">
-                                                </div>
-                                                <div class="input-box">
-                                                    <label for="editEstado">Estado</label>
-                                                    <select id="editEstado" name="editEstado">
-                                                        <option value="Descartado">Descartado</option>
-                                                        <option value="En Ejecución">En Ejecución</option>
-                                                        <option value="En planeación">En planeación</option>
-                                                        <option value="Terminado">Terminado</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-section">
-                                            <h4>Contacto Líder PPI</h4>
-                                            <div class="input-row">
-                                                <div class="input-box">
-                                                    <label for="editEntidad">Entidad Responsable</label>
-                                                    <input type="text" id="editEntidad" name="editEntidad">
-                                                </div>
-                                                <div class="input-box">
-                                                    <label for="editCargoLider">Cargo Líder</label>
-                                                    <input type="text" id="editCargoLider" name="editCargoLider">
-                                                </div>
-                                            </div>
-                                            <div class="input-row">
-                                                <div class="input-box">
-                                                    <label for="editCorreoLider">Correo Líder</label>
-                                                    <input type="email" id="editCorreoLider" name="editCorreoLider">
-                                                </div>
-                                                <div class="input-box">
-                                                    <label for="editTelefonoLider">Teléfono Líder</label>
-                                                    <input type="text" id="editTelefonoLider" name="editTelefonoLider">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-section">
-                                            <h4>Contacto Diligenciador</h4>
-                                            <div class="input-row">
-                                                <div class="input-box">
-                                                    <label for="editNombreDiligenciador">Nombre</label>
-                                                    <input type="text" id="editNombreDiligenciador"
-                                                        name="editNombreDiligenciador">
-                                                </div>
-                                                <div class="input-box">
-                                                    <label for="editCargoDiligenciador">Cargo</label>
-                                                    <input type="text" id="editCargoDiligenciador"
-                                                        name="editCargoDiligenciador">
-                                                </div>
-                                            </div>
-                                            <div class="input-row">
-                                                <div class="input-box">
-                                                    <label for="editCorreoDiligenciador">Correo</label>
-                                                    <input type="email" id="editCorreoDiligenciador"
-                                                        name="editCorreoDiligenciador">
-                                                </div>
-                                                <div class="input-box">
-                                                    <label for="editTelefonoDiligenciador">Teléfono</label>
-                                                    <input type="text" id="editTelefonoDiligenciador"
-                                                        name="editTelefonoDiligenciador">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-section">
-                                            <h4>Información General</h4>
-                                            <div class="input-row">
-                                                <div class="input-box">
-                                                    <label for="editDeterminanteProductividad">Determinante
-                                                        Productividad</label>
-                                                    <input type="text" id="editDeterminanteProductividad"
-                                                        name="editDeterminanteProductividad">
-                                                </div>
-                                                <div class="input-box">
-                                                    <label for="editComponenteProductividad">Componente
-                                                        Productividad</label>
-                                                    <input type="text" id="editComponenteProductividad"
-                                                        name="editComponenteProductividad">
-                                                </div>
-                                            </div>
-                                            <div class="input-box full-width">
-                                                <label for="editObjetivosEspecificos">Objetivos Específicos</label>
-                                                <input type="text" id="editObjetivosEspecificos"
-                                                    name="editObjetivosEspecificos">
-                                            </div>
-                                            <div class="input-box full-width">
-                                                <label for="editImpactos">Impactos</label>
-                                                <input type="text" id="editImpactos" name="editImpactos">
-                                            </div>
-                                            <div class="input-row">
-                                                <div class="input-box">
-                                                    <label for="editDuracionPPI">Duración PPI</label>
-                                                    <input type="text" id="editDuracionPPI" name="editDuracionPPI">
-                                                </div>
-                                                <div class="input-box">
-                                                    <label for="editPresupuestoPPI">Presupuesto PPI</label>
-                                                    <input type="text" id="editPresupuestoPPI"
-                                                        name="editPresupuestoPPI">
-                                                </div>
-                                            </div>
-                                            <div class="input-box full-width">
-                                                <label for="editFasePPI">Fase PPI</label>
-                                                <input type="text" id="editFasePPI" name="editFasePPI">
-                                            </div>
-                                        </div>
-                                        <div class="form-section">
-                                            <h4>Equidad y Empleo</h4>
-                                            <div class="input-box full-width">
-                                                <label for="editPotencialEmpleo">Potencial Empleo</label>
-                                                <input type="text" id="editPotencialEmpleo" name="editPotencialEmpleo">
-                                            </div>
-                                            <div class="input-box full-width">
-                                                <label for="editImpactoEmpleo">Impacto Empleo</label>
-                                                <input type="text" id="editImpactoEmpleo" name="editImpactoEmpleo">
-                                            </div>
-                                            <div class="input-box full-width">
-                                                <label for="editImpactoEquidad">Impacto Equidad</label>
-                                                <input type="text" id="editImpactoEquidad" name="editImpactoEquidad">
-                                            </div>
-                                            <div class="input-box full-width">
-                                                <label for="editPoliticasPPI">Políticas de Equidad</label>
-                                                <input type="text" id="editPoliticasPPI" name="editPoliticasPPI">
-                                            </div>
-                                        </div>
-                                        <div class="modal-actions">
-                                            <button type="button" class="modal-button-secondary"
-                                                onclick="document.getElementById('modalEditarProyecto').style.display='none';">Cancelar</button>
-                                            <button type="submit" class="modal-button">Guardar Cambios</button>
-                                        </div>
-                                    </form>
+        <div id="modalPerfil" class="modal">
+            <div class="modal-content" style="max-width:900px;">
+                <span class="close" id="cerrarModalPerfil">&times;</span>
+                <h2>Mi Perfil</h2>
+                <div class="form-section">
+
+                    <!--Actualizar Datos Generales-->
+                    <h3 class="section-title">Datos Generales</h3>
+
+                    <div class=" input-row">
+                        <div class="input-box">
+                            <label for="nombre">Nombre</label>
+                            <input type="text" id="nombre" name="nombre" placeholder="Ingrese su nombre" required>
+                        </div>
+                        <div class="input-box">
+                            <label for="apellidos">Apellidos</label>
+                            <input type="text" id="apellidos" name="apellidos" placeholder="Ingrese sus apellidos"
+                                required>
+                        </div>
+
+                    </div>
+                    <div class=" input-row">
+
+                        <div class="input-box">
+                            <label for="cargo">Cargo</label>
+                            <input type="text" id="cargo" name="cargo" placeholder="Ingrese su cargo" required>
+                        </div>
+
+                        <div class="input-box">
+                            <label for="genero">Género</label>
+                            <select name="genero" id="genero" required>
+                                <option>Selecciona una opcion</option>
+                                <option value="masculino">Masculino</option>
+                                <option value="femenino">Femenino</option>
+                                <option value="otro">Otro</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="input-row">
+                        <div class="input-box">
+                            <label for="correo">Correo Electrónico</label>
+                            <input type="email" id="correo" name="correo" placeholder="Ingrese el correo" required>
+                        </div>
+
+                        <div class="input-box">
+                            <label for="telefono">Teléfono / Celular</label>
+                            <input type="text" id="telefono" name="telefono" placeholder="Ingrese el teléfono o celular"
+                                required>
+                        </div>
+
+                    </div>
+                    <div class="input-row">
+                        <div class="input-box">
+                            <label for="departamento">Departamento</label>
+                            <select name="departamento" id="departamento" required>
+
+                            </select>
+                        </div>
+
+                        <div class="input-box">
+                            <label for="ciudad">Ciudad</label>
+                            <select name="ciudad" id="ciudad" required>
+
+                            </select>
+                        </div>
+
+                    </div>
+
+
+                </div>
+                <!--Actualizar Foto de Perfil-->
+                <div class="form-section">
+                    <h3 class="section-title">Foto de Perfil</h3>
+
+                    <div class="input-row">
+
+                        <div class="logo-preview-container"
+                            style="text-align: center; padding: 15px; border: 2px dashed #ddd; border-radius: 8px; background-color: #f9f9f9;">
+                            <img id="currentLogo" src="/logos/agrofuturo_logo.png" alt="Logo actual"
+                                style="max-width: 150px; max-height: 100px; object-fit: contain; border-radius: 4px; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px; display: none;"
+                                onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                            <div id="noLogoText" style="display: block; color: rgb(102, 102, 102); font-style: italic;">
+                                Sin foto actualmente</div>
+                        </div>
+                        <div class="input-box">
+                            <span>Nueva Foto de Perfil (Opcional)</span>
+                            <div class="logo-upload-container">
+                                <input type="file" id="logo" name="logo" accept="image/png, image/jpeg, image/jpg"
+                                    style="margin-bottom: 10px;">
+
+                                <div id="logoPreview"
+                                    style="display: none; text-align: center; padding: 10px; border: 2px solid #007bff; border-radius: 8px; background-color: #f8f9fa;">
+                                    <img id="previewImage" src="" alt="Vista previa"
+                                        style="max-width: 120px; max-height: 80px; object-fit: contain; border-radius: 4px;">
+                                    <p style="margin: 5px 0 0 0; font-size: 12px; color: #666;">Vista previa del perfil
+                                    </p>
                                 </div>
                             </div>
-                            <script>
-                                function abrirModalEditarProyecto(
-                                    codigo, nombre, objetivo, lider, duracion, estado,
-                                    entidad, cargoLider, correoLider, telefonoLider,
-                                    nombreDiligenciador, cargoDiligenciador, correoDiligenciador, telefonoDiligenciador,
-                                    determinanteProductividad, componenteProductividad, objetivosEspecificos, impactos,
-                                    duracionPPI, presupuestoPPI, fasePPI, potencialEmpleo, impactoEmpleo, impactoEquidad, politicasPPI
-                                ) {
-                                    document.getElementById('editCodigo').value = codigo;
-                                    document.getElementById('editNombre').value = nombre;
-                                    document.getElementById('editObjetivo').value = objetivo;
-                                    document.getElementById('editLider').value = lider;
-                                    document.getElementById('editDuracion').value = duracion;
-                                    document.getElementById('editEstado').value = estado;
-                                    document.getElementById('editEntidad').value = entidad;
-                                    document.getElementById('editCargoLider').value = cargoLider;
-                                    document.getElementById('editCorreoLider').value = correoLider;
-                                    document.getElementById('editTelefonoLider').value = telefonoLider;
-                                    document.getElementById('editNombreDiligenciador').value = nombreDiligenciador;
-                                    document.getElementById('editCargoDiligenciador').value = cargoDiligenciador;
-                                    document.getElementById('editCorreoDiligenciador').value = correoDiligenciador;
-                                    document.getElementById('editTelefonoDiligenciador').value = telefonoDiligenciador;
-                                    document.getElementById('editDeterminanteProductividad').value = determinanteProductividad;
-                                    document.getElementById('editComponenteProductividad').value = componenteProductividad;
-                                    document.getElementById('editObjetivosEspecificos').value = objetivosEspecificos;
-                                    document.getElementById('editImpactos').value = impactos;
-                                    document.getElementById('editDuracionPPI').value = duracionPPI;
-                                    document.getElementById('editPresupuestoPPI').value = presupuestoPPI;
-                                    document.getElementById('editFasePPI').value = fasePPI;
-                                    document.getElementById('editPotencialEmpleo').value = potencialEmpleo;
-                                    document.getElementById('editImpactoEmpleo').value = impactoEmpleo;
-                                    document.getElementById('editImpactoEquidad').value = impactoEquidad;
-                                    document.getElementById('editPoliticasPPI').value = politicasPPI;
-                                    document.getElementById('modalEditarProyecto').style.display = 'block';
-                                }
-                                document.getElementById('formEditarProyecto').onsubmit = function (e) {
-                                    e.preventDefault();
-                                    // Aquí puedes agregar la lógica para guardar los cambios
-                                    document.getElementById('modalEditarProyecto').style.display = 'none';
-                                    Swal.fire('Guardado', 'Los cambios han sido guardados.', 'success');
-                                };
-                            </script>
-                            <span class="action-icon delete" data-id="1" title="Eliminar">
-                                <i class="bi bi-trash"></i>
-                            </span>
                         </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="codigo-proyecto">PPI-002-25</td>
-                    <td>Red Educativa</td>
-                    <td>Mejorar acceso a educación</td>
-                    <td>Unidades Tecnologicas de Santander</td>
-                    <td>María Gómez</td>
-                    <td>3 años</td>
-                    <td><span class="badge badge-info">En Ejecución</span></td>
-                    <td>
-                        <div class="action-icons">
-                            <span class="action-icon edit-full" data-id="2" title="Editar PPI" onclick="abrirModalEditarProyecto(
-                'PPI-002-25',
-                'Red Educativa',
-                'Mejorar acceso a educación',
-                'María Gómez',
-                '3 años',
-                'En Ejecución',
-                'Institución Educativa Central',
-                'Coordinadora Académica',
-                'maria.gomez@educentral.edu.co',
-                '3134567890',
-                'Pedro Sánchez',
-                'Asistente de Proyectos',
-                'pedro.sanchez@educentral.edu.co',
-                '3109876543',
-                'Educación',
-                'Acceso',
-                'Expandir cobertura, Mejorar infraestructura',
-                'Inclusión social, Reducción de brecha educativa, Formación docente',
-                '3 años',
-                'De 501 a 1000 millones de pesos',
-                'Fase 2: Formulación o Prefactibilidad',
-                '11-20-3y4',
-                'Creación de 10 empleos directos',
-                'Promoción de igualdad de género en acceso educativo',
-                'Política de equidad en selección de personal'
-                )">
-                                <i class="bi bi-gear"></i>
-                            </span>
-                            <span class="action-icon delete" data-id="1" title="Eliminar">
-                                <i class="bi bi-trash"></i>
-                            </span>
+                    </div>
+                </div>
+                <!--Actualizar CV-->
+                <div class="form-section">
+                    <h3 class="section-title">Curriculum Vitae</h3>
+
+                    <div class="input-row">
+
+                        <div class="input-box">
+                            <label for="CV" type="file">Curriculum Vitae CV</label>
+                            <input type="file" id="CV" name="CV" required>
                         </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="codigo-proyecto">PPI-003-25</td>
-                    <td>Salud Digital</td>
-                    <td>Implementar telemedicina</td>
-                    <td>Alcaldia de Bucaramanga</td>
-                    <td>Carlos Ruiz</td>
-                    <td>1 año</td>
-                    <td><span class="badge badge-warning">En planeación</span></td>
-                    <td>
-                        <div class="action-icons"></div>
-                        <span class="action-icon edit-full" data-id="3" title="Editar PPI" onclick="abrirModalEditarProyecto(
-                'PPI-003-25',
-                'Salud Digital',
-                'Implementar telemedicina',
-                'Carlos Ruiz',
-                '1 año',
-                'En planeación',
-                'Hospital Central',
-                'Director Médico',
-                'carlos.ruiz@hospitalcentral.com',
-                '3156789012',
-                'Sofía Castro',
-                'Coordinadora de Tecnología',
-                'sofia.castro@hospitalcentral.com',
-                '3102345678',
-                'Salud',
-                'Digitalización',
-                'Desarrollar plataforma, Capacitar personal',
-                'Mejora en acceso, Reducción de tiempos, Optimización de recursos',
-                '1 año',
-                'De 0 a 100 millones de pesos',
-                'Fase 2: Formulación o Prefactibilidad',
-                '1-10-3y4',
-                'Creación de 3 empleos directos',
-                'Promoción de equidad en acceso a servicios',
-                'Política de equidad en contratación'
-                )">
-                            <i class="bi bi-gear"></i>
-                        </span>
-                        <span class="action-icon delete" data-id="1" title="Eliminar">
-                            <i class="bi bi-trash"></i>
-                        </span>
 
-    </td>
-    </tr>
-    <tr>
-        <td class="codigo-proyecto">PPI-004-25</td>
-        <td>Agro Futuro</td>
-        <td>Optimizar procesos agrícolas</td>
-        <td>SENA</td>
-        <td>Laura Torres</td>
-        <td>4 años</td>
-        <td><span class="badge badge-info">En Ejecución</span></td>
-        <td>
-            <div class="action-icons">
-                <span class="action-icon edit-full" data-id="4" title="Editar PPI" onclick="abrirModalEditarProyecto(
-                'PPI-004-25',
-                'Agro Futuro',
-                'Optimizar procesos agrícolas',
-                'Laura Torres',
-                '4 años',
-                'En Ejecución',
-                'Agroempresa Regional',
-                'Gerente de Producción',
-                'laura.torres@agroregional.com',
-                '3145678901',
-                'Miguel Ángel',
-                'Analista Agrícola',
-                'miguel.angel@agroregional.com',
-                '3101234567',
-                'Agricultura',
-                'Procesos',
-                'Implementar riego inteligente, Capacitar agricultores',
-                'Aumento de productividad, Reducción de costos, Sostenibilidad',
-                '4 años',
-                'De 1001 a 5000 millones de pesos',
-                'Fase 3: Factibilidad',
-                '21-30-1y2',
-                'Creación de 15 empleos directos',
-                'Promoción de equidad de género en el campo',
-                'Política de inclusión y equidad en contratación'
-                )">
-                    <i class="bi bi-gear"></i>
-                </span>
-                <span class="action-icon delete" data-id="1" title="Eliminar">
-                    <i class="bi bi-trash"></i>
-                </span>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" class="modal-button-secondary" id="cancelarActualizarPerfil"> Cancelar
+                        </button>
+                        <button type="submit" class="modal-button" id="actualizarPerfil"> Guardar Cambios</button>
+
+                    </div>
+
+                </div>
             </div>
-        </td>
-    </tr>
-    <tr>
-        <td class="codigo-proyecto">PPI-005-25</td>
-        <td>Ciudad Inteligente</td>
-        <td>Digitalizar servicios urbanos</td>
-        <td>Universidad Industrial de Santander</td>
-        <td>Andrés López</td>
-        <td>2 años</td>
-        <td><span class="badge badge-success">Terminado</span></td>
-        <td>
-            <div class="action-icons"></div>
-            <span class="action-icon edit-full" data-id="5" title="Editar PPI" onclick="abrirModalEditarProyecto(
-                'PPI-005-25',
-                'Ciudad Inteligente',
-                'Digitalizar servicios urbanos',
-                'Andrés López',
-                '2 años',
-                'Terminado',
-                'Alcaldía Municipal',
-                'Jefe de Tecnología',
-                'andres.lopez@alcaldia.gov.co',
-                '3167890123',
-                'Paula Ríos',
-                'Coordinadora de Proyectos',
-                'paula.rios@alcaldia.gov.co',
-                '3103456789',
-                'Urbanismo',
-                'Digitalización',
-                'Implementar sensores, Automatizar servicios',
-                'Mejora en calidad de vida, Optimización de recursos, Reducción de tiempos',
-                '2 años',
-                'Más de 5000 millones de pesos',
-                'Fase 3: Factibilidad',
-                '31+-5y6',
-                'Creación de 20 empleos directos',
-                'Promoción de equidad en acceso a tecnología',
-                'Política de equidad en contratación'
-                )">
-                <i class="bi bi-gear"></i>
-            </span>
-            <span class="action-icon delete" data-id="1" title="Eliminar">
-                <i class="bi bi-trash"></i>
-            </span>
-            
-        </td>
-    </tr>
-    </tbody>
-    </table>
-    <div id="paginacionEntidades" class="pagination"></div>
 
-
-    </div>
-
-
-
-    <!-- Modal de confirmación para eliminar -->
-    <div id="modalConfirmacion" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Confirmar Eliminación</h3>
-            </div>
-            <p>¿Estás seguro de que deseas eliminar esta entidad?</p>
-            <div class="modal-actions">
-                <button id="btnCancelarEliminar" class="modal-button-secondary">Cancelar</button>
-                <button id="btnConfirmarEliminar" class="modal-button">Eliminar</button>
-            </div>
         </div>
-    </div>
 
-    <script>
-        document.getElementById('postulaciones').onclick = function () {
-            document.getElementById('modalPostulaciones').style.display = 'block';
-            fetch(`/api/invitacion/mis-contactos/${userId}`)
-                .then(res => res.json())
-                .then(data => {
-                    const tbody = document.getElementById('tablaContactosVerificados');
-                    tbody.innerHTML = '';
-                    // Mostrar contactos recibidos
-                    if (data.recibidos && Array.isArray(data.recibidos) && data.recibidos.length > 0) {
-                        data.recibidos.forEach(contacto => {
+        <script>
+            // Abrir modal al hacer clic en la foto de usuario
+            document.getElementById('userPhoto').onclick = function () {
+                document.getElementById('modalFotoPerfil').style.display = 'block';
 
-                            console.log(contacto.telefono);
+                // Opcional: cargar foto actual si tienes la URL
+                // document.getElementById('previewFotoPerfil').src = 'URL_DE_LA_FOTO_ACTUAL';
+            };
+            // Cerrar modal
+            document.getElementById('cerrarModalFotoPerfil').onclick = function () {
+                document.getElementById('modalFotoPerfil').style.display = 'none';
+            };
+            // Vista previa de la imagen seleccionada
+            document.getElementById('inputFotoPerfil').onchange = function (e) {
+                const file = e.target.files[0];
+                if (file) {
+                    document.getElementById('previewFotoPerfil').src = URL.createObjectURL(file);
+                }
+            };
+            // Guardar foto (debes implementar la lógica de subida en tu backend)
+            document.getElementById('formFotoPerfil').onsubmit = function (e) {
+                e.preventDefault();
+                const userId = obtenerCookie("userId");
 
-                            const tr = document.createElement('tr');
-                            tr.innerHTML = `
-                            <td>${contacto.name || ''}</td>
-                            <td>${contacto.email || ''}</td>
-                            <td>${contacto.entidad || ''}</td>
-                            <td>${contacto.telefono || ''}</td>
-                        `;
-                            tbody.appendChild(tr);
-                            console.log(tr);
+                // Ejemplo de subida con fetch y FormData
+                const formData = new FormData();
+                console.log(document.getElementById('inputFotoPerfil').files[0]);
+                formData.append('fotoPerfil', document.getElementById('inputFotoPerfil').files[0]);
+                alert('subiendo');
+                fetch(`/api/user/cambiarFoto/${userId}`, {
+                    method: 'PUT',
+                    body: formData
+                }).then(res => res.json())
+                    .then(data => {
+                        // Actualiza la foto en la interfaz si es necesario
+                        document.getElementById('modalFotoPerfil').style.display = 'none';
+                        // document.getElementById('userPhoto').innerHTML = '<img src="URL_NUEVA_FOTO" ...>';
+                        location.reload(); // O actualiza solo la foto
+                    }).catch(() => {
+                        alert('Error al subir la foto');
+                    });
+            };
 
-                        });
-                    }
-                    // Mostrar contactos enviados
-                    if (data.enviados && Array.isArray(data.enviados) && data.enviados.length > 0) {
-                        data.enviados.forEach(contacto => {
-                            const tr = document.createElement('tr');
-                            tr.innerHTML = `
-                            <td>${contacto.name || ''}</td>
-                            <td>${contacto.email || ''}</td>
-                            <td>${contacto.entidad.razonsocial || ''}</td>
-                            <td>${contacto.telefono || ''}</td>
-                        `;
-                            tbody.appendChild(tr);
-                        });
-                    }
-                    // Si no hay contactos en ninguno
-                    if (
-                        (!data.recibidos || data.recibidos.length === 0) &&
-                        (!data.enviados || data.enviados.length === 0)
-                    ) {
-                        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No hay contactos verificados</td></tr>';
-                    }
-                });
-        };
-        document.getElementById('cerrarModalPostulaciones').onclick = function () {
-            document.getElementById('modalPostulaciones').style.display = 'none';
-        };
-        document.getElementById('cerrarModalPostulacionesBtn').onclick = function () {
-            document.getElementById('modalPostulaciones').style.display = 'none';
-        };
-    </script>
-    <script>
-        // Abrir modal al hacer clic en la foto de usuario
-        document.getElementById('userPhoto').onclick = function () {
-            document.getElementById('modalFotoPerfil').style.display = 'block';
+        </script>
+        <script>
+            // Abrir formulario actualizar de perfil al hacer clic en el botón
+            document.getElementById('perfil').onclick = function () {
+                document.getElementById('modalPerfil').style.display = 'block';
+            };
 
-            // Opcional: cargar foto actual si tienes la URL
-            // document.getElementById('previewFotoPerfil').src = 'URL_DE_LA_FOTO_ACTUAL';
-        };
-        // Cerrar modal
-        document.getElementById('cerrarModalFotoPerfil').onclick = function () {
-            document.getElementById('modalFotoPerfil').style.display = 'none';
-        };
-        // Vista previa de la imagen seleccionada
-        document.getElementById('inputFotoPerfil').onchange = function (e) {
-            const file = e.target.files[0];
-            if (file) {
-                document.getElementById('previewFotoPerfil').src = URL.createObjectURL(file);
-            }
-        };
-        // Guardar foto (debes implementar la lógica de subida en tu backend)
-        document.getElementById('formFotoPerfil').onsubmit = function (e) {
-            e.preventDefault();
-            const userId = obtenerCookie("userId");
+            document.getElementById('cerrarModalPerfil').onclick = function () {
+                document.getElementById('modalPerfil').style.display = 'none';
+            };
 
-            // Ejemplo de subida con fetch y FormData
-            const formData = new FormData();
-            console.log(document.getElementById('inputFotoPerfil').files[0]);
-            formData.append('fotoPerfil', document.getElementById('inputFotoPerfil').files[0]);
-            alert('subiendo');
-            fetch(`/api/user/cambiarFoto/${userId}`, {
-                method: 'PUT',
-                body: formData
-            }).then(res => res.json())
-                .then(data => {
-                    // Actualiza la foto en la interfaz si es necesario
-                    document.getElementById('modalFotoPerfil').style.display = 'none';
-                    // document.getElementById('userPhoto').innerHTML = '<img src="URL_NUEVA_FOTO" ...>';
-                    location.reload(); // O actualiza solo la foto
-                }).catch(() => {
-                    alert('Error al subir la foto');
-                });
-        };
-    </script>
+        </script>
+        <script>
+            const userMenuBtn = document.getElementById("userMenuBtn");
+            const dropdown = userMenuBtn.closest(".dropdown");
 
-    <!-- Scripts -->
+            // Mostrar / ocultar el menú al hacer clic
+            userMenuBtn.addEventListener("click", (event) => {
+                event.stopPropagation(); // evita que el clic cierre inmediatamente el menú
+                dropdown.classList.toggle("show");
+            });
 
-    <script src="admin.js"></script>
-    <script src="js/formularios.js"></script>
-    <script src="js/cargarDatos.js"></script>
-    <script src="js/estadisticas.js"></script>
-    <script src="js/solicitudesVincuncular.js"></script>
-    <script src="js/notificaciones.js"></script>
-    <script src="/js/websocket.js"></script>
-    <script src="test-api-entidad.js"></script>
+            // Cerrar el menú si haces clic fuera
+            document.addEventListener("click", () => {
+                dropdown.classList.remove("show");
+            });
+        </script>
+        <!-- Scripts -->
 
-    <script>
-        function irEnConstruccion() {
-            window.location.href = "/construccion"; // o la ruta que tengas
-        }
-        fetchChallengeCount();
-        fetchEntidadesCount();
-        fetchUserCount();
-
-    </script>
-
+        <script src="js/notificaciones.js"></script>
+        <script src="/js/websocket.js"></script>
 
 </body>
 

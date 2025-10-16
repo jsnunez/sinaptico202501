@@ -158,16 +158,11 @@ body {
     width: 35px;
     height: 35px;
 }
-.imagenPerfil:hover {
-    box-shadow: 0 0 0 3px var(--primary-color);
-    transform: scale(1.1);
-    transition: var(--transition);
-}
 
 /* Contenedor de bienvenida */
 .welcome-container {
     max-width: 90%;
-    margin: 2rem auto 1rem;
+
     padding: 2rem;
     background-color: var(--card-bg);
     border-radius: 15px;
@@ -192,6 +187,13 @@ body {
 .subtitle {
     color: var(--text-description);
     font-size: 1rem;
+}
+
+.tittle,
+h2 {
+
+    color: var(--primary-color);
+
 }
 
 .action-buttons {
@@ -240,6 +242,12 @@ body {
 .button-icon {
     margin-right: 0.5rem;
     font-size: 1.1rem;
+
+}
+
+.bi-pencil-square{
+    font-size: 1.1rem;
+    text-align: center;
 }
 
 /* Filtros */
@@ -299,6 +307,8 @@ body {
     background-color: var(--card-bg);
     border-radius: 15px;
     box-shadow: var(--shadow);
+    margin-top: 5%;
+    ;
 }
 
 #listado {
@@ -393,7 +403,6 @@ body {
 }
 
 
-
 /* Modales */
 .modal {
     display: none;
@@ -474,6 +483,29 @@ body {
     transform: translateY(-2px);
 }
 
+.modal-button-secondary {
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.modal-button-secondary:hover {
+    background-color: #5a6268;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #e0e0e0;
+}
 
 
 /* Overlay */
@@ -631,15 +663,20 @@ body {
 }
 
 #userPhoto {
-    height: 20vh;
+    height: 10vh;
+    width: 10vh;
     margin: 1rem;
 
 }
 
-#userPhoto img {
-    height: 100%;
-    border-radius: 100%;
-}
+    #userPhoto img {
+        height: 100%;
+        width: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+        display: block;
+    }
+
 
 
 .toast {
@@ -674,7 +711,7 @@ body {
 
 /*tabla de datos perfil*/
 .table-perfil {
-
+    width: 80%;
     border-collapse: collapse;
     margin-top: 1rem;
     background-color: rgb(242, 248, 252);
@@ -690,4 +727,84 @@ body {
     padding: 0.75rem 1.5rem;
     border-bottom: 1px solid #ddd;
     color: var(--text-description);
+}
+
+.section {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.input-box {
+    flex: 1;
+}
+
+/* Estilos para el iframe de CV */
+iframe:focus {
+    outline: none;
+}
+
+iframe[seamless] {
+    display: block;
+}
+
+/* Estilos para el formulario completo del dashboard */
+.form-section {
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: #fafafa;
+}
+
+.form-section h4 {
+    margin: 0 0 15px 0;
+    color: #333;
+    font-size: 16px;
+    font-weight: 600;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 5px;
+}
+
+.input-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.input-box {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-box span,
+.input-box label {
+    font-weight: 500;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.input-box input,
+.input-box select,
+.input-box textarea {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+}
+
+.input-box input:focus,
+.input-box select:focus,
+.input-box textarea:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+/* Estilo especial para campos de una sola columna */
+.input-box.full-width {
+    grid-column: 1 / -1;
 }

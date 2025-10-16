@@ -26,7 +26,7 @@
 <body>
 
 
-    <!-- Encabezado -->
+   <!-- Encabezado -->
     <header class="header">
         <div onclick="window.location.href='/helice'" class="logo">
             <!-- <span class="logo-icon">⚡</span> -->
@@ -49,9 +49,34 @@
             </div>
             <div class="notificaciones" id="notificaciones"></div>
 
-            <button class="nav-button pulse" id="cerrarSesion">Cerrar sesión</button>
+            <!-- <button class="nav-button pulse" id="cerrarSesion">Cerrar sesión</button> -->
+            <!-- Botón con menú desplegable -->
+            <div class="dropdown">
+                <button class=" " id="userMenuBtn">
+                   <div id="userPhoto ">
+                        <img class="imagenPerfil" id="imagenPerfilSecundaria" src="img/sinfoto.jpg" alt="Foto de perfil"
+                            onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
+                    </div>
+
+                </button>
+
+                <div class="dropdown-menu" id="userMenu">
+                    <a href="perfil" onclick="
+                        document.querySelectorAll('.welcome-container, .main-content').forEach(div => div.style.display = 'none');
+                     
+                        document.getElementById('miPerfil').style.display = 'block';
+                        return false;
+                    ">Perfil</a>
+                    
+                    
+                    </script>
+                    <a href="/configuracion">Configuración</a>
+                    <a href="#" id="cerrarSesion">Cerrar sesión</a>
+                </div>
+            </div>
         </nav>
     </header>
+
 
     <!-- Bienvenida y botones de acción -->
     <div style="display: none;" class="welcome-container">
@@ -507,6 +532,7 @@ console.log(data);
       if (tituloProyectos && dataUser?.name) {
         tituloProyectos.innerText = `Proyectos de ${dataUser.name}`;
       }
+        document.getElementById("imagenPerfilSecundaria").src = dataUser.fotoPerfil ? "photo/" + dataUser.fotoPerfil : "photo/sinfoto.jpg";
 
       if (dataUser?.fotoPerfil) {
         const img = document.getElementById('imagenPerfil');
@@ -1022,6 +1048,23 @@ function verMasProyecto(proyectoId) {
 
 
 
+    <script>
+        const userMenuBtn = document.getElementById("userMenuBtn");
+        const dropdown = userMenuBtn.closest(".dropdown");
+
+        // Mostrar / ocultar el menú al hacer clic
+        userMenuBtn.addEventListener("click", (event) => {
+            event.stopPropagation(); // evita que el clic cierre inmediatamente el menú
+            dropdown.classList.toggle("show");
+        });
+
+        // Cerrar el menú si haces clic fuera
+        document.addEventListener("click", () => {
+            dropdown.classList.remove("show");
+        });
+    </script>
+
+    
 
 </body>
 
