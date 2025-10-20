@@ -1033,7 +1033,77 @@
         };
     </script>
 
+  <style>
+    /* Spinner overlay */
+    #page-spinner-overlay{
+        position:fixed;
+        inset:0;
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        justify-content:center;
+        gap:12px;
+        background:rgba(255,255,255,0.95);
+        z-index:99999;
+        transition:opacity .4s ease;
+        -webkit-backdrop-filter: blur(2px);
+        backdrop-filter: blur(2px);
+    }
 
+    /* Circular spinner */
+    #page-spinner-overlay .spinner{
+        width:64px;
+        height:64px;
+        border-radius:50%;
+        border:6px solid rgba(0,0,0,0.08);
+        border-top-color:#007bff;
+        animation:spin 1s linear infinite;
+        box-shadow:0 6px 20px rgba(0,0,0,0.06);
+    }
+    @keyframes spin{ to{transform:rotate(360deg);} }
+
+    /* Texto opcional */
+    #page-spinner-overlay .spinner-text{
+        color:#333;
+        font-family:inherit;
+        font-size:14px;
+        font-weight:500;
+    }
+    </style>
+
+    <div id="page-spinner-overlay" aria-hidden="true" role="status" aria-label="Cargando">
+        <div class="spinner" aria-hidden="true"></div>
+        <div class="spinner-text">Cargando...</div>
+    </div>
+
+    <script>
+    (function(){
+        // Garantiza que el overlay permanezca al menos 5s desde que se ejecuta este script.
+        const MIN_MS = 3000;
+        const overlay = document.getElementById('page-spinner-overlay');
+        if (!overlay) return;
+
+        // Si ya pasó más de MIN_MS desde la navegación start, aun así mostramos el overlay breve
+        const start = performance.timing ? performance.timing.navigationStart : Date.now();
+        const now = Date.now();
+        const elapsed = Math.max(0, now - start);
+        const remaining = Math.max(0, MIN_MS - elapsed);
+
+        // Evita interacción mientras existe el overlay
+        document.documentElement.style.overflow = 'hidden';
+        document.body.style.overflow = 'hidden';
+
+        setTimeout(() => {
+            overlay.style.opacity = '0';
+            // permitir scroll cuando hide completo
+            setTimeout(() => {
+                if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
+                document.documentElement.style.overflow = '';
+                document.body.style.overflow = '';
+            }, 420);
+        }, remaining);
+    })();
+    </script>
 </body>
 
 </html>

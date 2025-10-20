@@ -174,7 +174,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       document.getElementById("asignarServicio").style.display = data.entidad.habilitado == 1 ? "block" : "none";
       document.getElementById("vincularEntidad").style.display = "none";
       document.getElementById('bienvenido').innerText =
-        `Hola ${nombreUsuario}.\nAdministrador de ${data.entidad.razonSocial}.\n ${estado}.`;
+        `Hola ${nombreUsuario}.\nAdministrador de ${data.entidad.razonSocial}.\n ${estado}`;
       document.getElementById("solicitudes").style.display = "block";
       await fetchSolicitudes(idEntidad);
 
@@ -186,8 +186,8 @@ document.addEventListener("DOMContentLoaded", async function () {
 
       if (usuarioData.length > 0) {
         document.getElementById('bienvenido').innerText =
-          `Hola ${nombreUsuario},  Tu eres ${usuarioData[0].Cargo.nombre} del actor ${usuarioData[0].empresa.razonSocial} tu estado es
-           ${usuarioData[0].estado == 1 ? "Habilitado" : "Deshabilitado (contacta con el administrador de la entidad)"}`;
+          `Hola ${nombreUsuario}.\n ${usuarioData[0].Cargo.nombre} de ${usuarioData[0].empresa.razonSocial} 
+           ${usuarioData[0].estado == 1 ? "Estado:✅." : "Estamos Confirmando Tu Información ⏳"}`;
         document.getElementById("vincularEntidad").style.display = "none";
       } else {
         document.getElementById('bienvenido').innerText =
@@ -231,7 +231,17 @@ async function cargarDatosUsuario(userId) {
 
   document.getElementById("ciudadPerfilValor").innerHTML = data.ciudadId || '';
   
-
-  console.log(data);
+if (data.error) {
+  if (data.error) {
+    // Limpiar cookies de sesión y redirigir a la raíz
+    document.cookie = 'jwt=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    document.cookie = 'user=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    document.cookie = 'userId=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    window.location.href = '/';
+    return;
+  }
+  return;
+}
   return data;
 }
+
