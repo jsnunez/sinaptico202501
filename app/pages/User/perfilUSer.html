@@ -67,7 +67,12 @@
 
     <!-- Contenido principal - Datos Generales -->
 
+    <div class="welcome-text">
 
+        <h1 style="display: none;" id="departamentoPerfilValor"></h1>
+        <h1 style="display: none;" id="ciudadPerfilValor"></h1>
+        <!-- <p class="subtitle">Conectando entidades para potenciar la innovación</p> -->
+    </div>
 
     <div class="main-content" id="miPerfil">
 
@@ -138,126 +143,82 @@
                 <div class="modal-content" style="max-width:900px;">
                     <span class="close" id="cerrarModalPerfil">&times;</span>
                     <h2>Mi Perfil</h2>
-                    <div class="form-section">
+                    <form id="formFotoPerfil">
+                        <div class="form-section logo-preview-container"
+                            style="text-align:center;display: flex; flex-direction: column;align-items: center;">
+                            <label for="inputFotoPerfil" style="font-weight:500;color:#555;">Foto de perfil:</label>
 
-                        <!--Actualizar Datos Generales-->
-                        <h3 class="section-title">Datos Generales</h3>
-
-                        <div class=" input-row">
-                            <div class="input-box">
-                                <label for="nombre">Nombre</label>
-                                <input type="text" id="nombre" name="nombre" placeholder="Ingrese su nombre" required>
-                            </div>
-                            <div class="input-box">
-                                <label for="apellidos">Apellidos</label>
-                                <input type="text" id="apellidos" name="apellidos" placeholder="Ingrese sus apellidos"
-                                    required>
-                            </div>
-
+                            <img id="previewFotoPerfil" src="" alt="Foto actual"
+                                style="width:100px;height:100px;border-radius:50%;object-fit:cover;margin-bottom:15px;"
+                                onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
+                            <input type="file" id="inputFotoPerfil" name="fotoPerfil" accept="image/*">
                         </div>
-                        <div class=" input-row">
+                        <div class="form-section">
 
-                            <div class="input-box">
-                                <label for="cargo">Cargo</label>
-                                <input type="text" id="cargo" name="cargo" placeholder="Ingrese su cargo" required>
-                            </div>
+                            <!--Actualizar Datos Generales-->
+                            <h3 class="section-title">Datos Generales</h3>
 
-                            <div class="input-box">
-                                <label for="genero">Género</label>
-                                <select name="genero" id="genero" required>
-                                    <option>Selecciona una opcion</option>
-                                    <option value="masculino">Masculino</option>
-                                    <option value="femenino">Femenino</option>
-                                    <option value="otro">Otro</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="input-row">
-                            <div class="input-box">
-                                <label for="correo">Correo Electrónico</label>
-                                <input type="email" id="correo" name="correo" placeholder="Ingrese el correo" required>
-                            </div>
-
-                            <div class="input-box">
-                                <label for="telefono">Teléfono / Celular</label>
-                                <input type="text" id="telefono" name="telefono"
-                                    placeholder="Ingrese el teléfono o celular" required>
-                            </div>
-
-                        </div>
-                        <div class="input-row">
-                            <div class="input-box">
-                                <label for="departamento">Departamento</label>
-                                <select name="departamento" id="departamento" required>
-
-                                </select>
-                            </div>
-
-                            <div class="input-box">
-                                <label for="ciudad">Ciudad</label>
-                                <select name="ciudad" id="ciudad" required>
-
-                                </select>
-                            </div>
-
-                        </div>
-
-
-                    </div>
-                    <!--Actualizar Foto de Perfil-->
-                    <div class="form-section">
-                        <h3 class="section-title">Foto de Perfil</h3>
-
-                        <div class="input-row">
-
-                            <div class="logo-preview-container"
-                                style="text-align: center; padding: 15px; border: 2px dashed #ddd; border-radius: 8px; background-color: #f9f9f9;">
-                                <img id="currentLogo" src="/logos/agrofuturo_logo.png" alt="Logo actual"
-                                    style="max-width: 150px; max-height: 100px; object-fit: contain; border-radius: 4px; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px; display: none;"
-                                    onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                                <div id="noLogoText"
-                                    style="display: block; color: rgb(102, 102, 102); font-style: italic;">
-                                    Sin foto actualmente</div>
-                            </div>
-                            <div class="input-box">
-                                <span>Nueva Foto de Perfil (Opcional)</span>
-                                <div class="logo-upload-container">
-                                    <input type="file" id="logo" name="logo" accept="image/png, image/jpeg, image/jpg"
-                                        style="margin-bottom: 10px;">
-
-                                    <div id="logoPreview"
-                                        style="display: none; text-align: center; padding: 10px; border: 2px solid #007bff; border-radius: 8px; background-color: #f8f9fa;">
-                                        <img id="previewImage" src="" alt="Vista previa"
-                                            style="max-width: 120px; max-height: 80px; object-fit: contain; border-radius: 4px;">
-                                        <p style="margin: 5px 0 0 0; font-size: 12px; color: #666;">Vista previa del
-                                            perfil
-                                        </p>
-                                    </div>
+                            <div class=" input-row">
+                                <div class="input-box">
+                                    <label for="nombrePerfil">Nombre</label>
+                                    <input type="text" id="nombrePerfil" name="nombrePerfil" required>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--Actualizar CV-->
-                    <div class="form-section">
-                        <h3 class="section-title">Curriculum Vitae</h3>
+                                <div class="input-box">
+                                    <label for="telefonoPerfil">Teléfono / Celular</label>
+                                    <input type="tel" id="telefonoPerfil" name="telefonoPerfil" required>
+                                </div>
 
-                        <div class="input-row">
 
-                            <div class="input-box">
-                                <label for="CV" type="file">Curriculum Vitae CV</label>
-                                <input type="file" id="CV" name="CV" required>
                             </div>
 
-                        </div>
-                        <div class="modal-actions">
-                            <button type="button" class="modal-button-secondary" id="cancelarActualizarPerfil"> Cancelar
-                            </button>
-                            <button type="submit" class="modal-button" id="actualizarPerfil"> Guardar Cambios</button>
+                            <div class="input-row">
+                                <div class="input-box">
+                                    <label for="departamentoPerfil">Departamento:</label>
+                                    <select id="departamentoPerfil" name="departamentoPerfil" required>
+                                        <option value="">Seleccione departamento</option>
+                                        <!-- Opciones se cargarán dinámicamente -->
+                                    </select>
+                                </div>
+
+                                <div class="input-box">
+                                    <label for="ciudadPerfil">Ciudad:</label>
+                                    <select id="ciudadPerfil" name="ciudadPerfil" required>
+                                        <option value="">Seleccione ciudad</option>
+                                        <!-- Opciones se cargarán dinámicamente -->
+                                    </select>
+                                </div>
+
+                            </div>
 
                         </div>
 
-                    </div>
+                        <!--Actualizar CV-->
+                        <div class="form-section">
+                            <h3 class="section-title">Perfil profesional:</h3>
+
+                            <div class="input-row">
+                                <div class="input-box full-width">
+                                    <label for="perfilProfesional">Describe tu perfil</label>
+                                    <textarea id="perfilProfesional" name="perfilProfesional" required></textarea>
+                                </div>
+                                <div class="input-box">
+                                    <label for="cvPdf" type="file">Hoja de Vida</label>
+                                    <input type="file" id="cvPdf" name="cvPdf" accept="application/pdf">
+                                </div>
+
+                            </div>
+                            <div class="modal-actions">
+                                <button type="button" class="modal-button-secondary" id="cancelarActualizarPerfil">
+                                    Cancelar
+                                </button>
+                                <button type="submit" class="modal-button" id="actualizarPerfil"> Guardar
+                                    Cambios</button>
+
+                            </div>
+
+                        </div>
+
+                    </form>
                 </div>
 
             </div>
@@ -283,6 +244,30 @@
                         document.getElementById("imagenPerfilSecundaria").src = data.fotoPerfil ? "photo/" + data.fotoPerfil : "photo/sinfoto.jpg";
                         document.getElementById("imagenPerfil").src = data.fotoPerfil ? "photo/" + data.fotoPerfil : "photo/sinfoto.jpg";
 
+                        // Cargar Datos para actualizar Perfil
+
+                        document.getElementById("nombrePerfil").value = data.name || '';
+                        document.getElementById("telefonoPerfil").value = data.telefono || '';
+                        document.getElementById("perfilProfesional").value = data.perfilProfesional || '';
+                    document.getElementById("previewFotoPerfil").src = data.fotoPerfil ? "photo/" + data.fotoPerfil : "photo/sinfoto.jpg";
+
+                      
+                        if (data.ciudadId) {
+                            try {
+                                const resp = await fetch(`/api/ciudades/ciudad/${data.ciudadId}`);
+                                const ciudadData = await resp.json();
+                                document.getElementById("departamentoPerfilValor").innerHTML = ciudadData.ciudad.departamentoId || '';
+                            } catch (err) {
+                                document.getElementById("departamentoPerfilValor").innerHTML = '';
+                                console.error('Error al consultar el departamento:', err);
+                            }
+                        } else {
+                            document.getElementById("departamentoPerfilValor").innerHTML = '';
+                        }
+
+                        document.getElementById("ciudadPerfilValor").innerHTML = data.ciudadId || '';
+
+
 
                         // Si tienes la URL del CV PDF (usando data.enlaceHojaDeVida)
                         if (data.enlaceHojaDeVida) {
@@ -304,8 +289,8 @@
                             const entidadData = await entidadRes.json();
                             console.log('Entidad asociada:', entidadData.success);
                             // Si hay entidad asociada, muestra el nombre, si no, muestra "Sin entidad asociada"
-                       if (entidadData.success) {
-                        console.log('Entidad asociada:', entidadData.entidad.razonSocial);
+                            if (entidadData.success) {
+                                console.log('Entidad asociada:', entidadData.entidad.razonSocial);
                                 var entidadNombre = entidadData.entidad.razonSocial;
                             } else {
                                 console.log('Entidad asociada: Sin entidad asociada');
@@ -352,35 +337,210 @@
                     dropdown.classList.remove("show");
                 });
             </script>
-            <!-- Scripts -->
-<script>
-    document.getElementById("cerrarSesion").addEventListener("click", () => {
-  Swal.fire({
-    title: '¿Estás seguro?',
-    text: '¿Querés cerrar sesión?',
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonText: 'Sí, cerrar sesión',
-    cancelButtonText: 'Cancelar',
-    reverseButtons: true
-  }).then((result) => {
-    if (result.isConfirmed) {
-      // Borrar cookies y redirigir
-      document.cookie = 'jwt=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-      document.cookie = 'user=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-      document.cookie = 'userId=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-      document.location.href = "/";
-      
-    }
-    // Si el usuario cancela, no pasa nada
-  });
-});
-</script>
+
+            <script>
+                document.getElementById("cerrarSesion").addEventListener("click", () => {
+                    Swal.fire({
+                        title: '¿Estás seguro?',
+                        text: '¿Querés cerrar sesión?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Sí, cerrar sesión',
+                        cancelButtonText: 'Cancelar',
+                        reverseButtons: true
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Borrar cookies y redirigir
+                            document.cookie = 'jwt=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+                            document.cookie = 'user=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+                            document.cookie = 'userId=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+                            document.location.href = "/";
+
+                        }
+                        // Si el usuario cancela, no pasa nada
+                    });
+                });
+
+            </script>
+            <script>
+
+                // Abrir formulario actualizar de perfil al hacer clic en el botón
+                document.getElementById('perfil').onclick = function () {
+                    document.getElementById('modalPerfil').style.display = 'block';
+
+                };
+                document.getElementById('cerrarModalPerfil').onclick = function () {
+                    document.getElementById('modalPerfil').style.display = 'none';
+                };
+                // Vista previa de la imagen seleccionada
+                document.getElementById('inputFotoPerfil').onchange = function (e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        document.getElementById('previewFotoPerfil').src = URL.createObjectURL(file);
+                    }
+                };
+                // Guardar foto (debes implementar la lógica de subida en tu backend)
+                document.getElementById('formFotoPerfil').onsubmit = async function (e) {
+                    e.preventDefault();
+
+                    const userId = obtenerCookie("userId");
+                    const file = document.getElementById('inputFotoPerfil').files[0];
+                    const name = document.getElementById('nombrePerfil').value.trim();
+                    const telefono = document.getElementById('telefonoPerfil').value.trim();
+                    const ciudadId = parseInt(document.getElementById('ciudadPerfil').value, 10) || null;
+                    const perfilProfesional = document.getElementById('perfilProfesional').value.trim() || null;
+
+                    try {
+                        // 1) Si hay archivo, sube la foto
+                        if (file) {
+                            const formData = new FormData();
+                            formData.append('fotoPerfil', file);
+                            // opcional: puedes mostrar un loader
+                            const resFoto = await fetch(`/api/user/cambiarFoto/${userId}`, {
+                                method: 'PUT',
+                                body: formData
+                            });
+                            if (!resFoto.ok) {
+                                const err = await resFoto.text().catch(() => '');
+                                throw new Error(`Error al subir la foto. ${err}`);
+                            }
+                        }
+
+                        // 2) Actualiza el perfil SIEMPRE (independiente de si hubo foto o no)
+                        const resPerfil = await fetch(`/api/user/actualizarPerfil/${userId}`, {
+                            method: 'PUT',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                name,
+                                telefono,
+                                ciudadId,
+                                perfilProfesional
+                            })
+                        });
+                        if (!resPerfil.ok) {
+                            const err = await resPerfil.text().catch(() => '');
+                            throw new Error(`Error al actualizar el perfil. ${err}`);
+                        }
+
+                        // 3) Cierra modal y refresca (o actualiza sólo la imagen y los textos si prefieres)
+                        // Subir CV si se seleccionó archivo PDF
+                        const cvFile = document.getElementById('cvPdf').files[0];
+                        if (cvFile) {
+                            const cvFormData = new FormData();
+                            cvFormData.append('cvPdf', cvFile);
+                            const resCV = await fetch(`/api/user/cambiarCv/${userId}`, {
+                                method: 'PUT',
+                                body: cvFormData
+                            });
+                            if (!resCV.ok) {
+                                const err = await resCV.text().catch(() => '');
+                                throw new Error(`Error al subir la hoja de vida. ${err}`);
+                            }
+                        }
+                        document.getElementById('modalFotoPerfil').style.display = 'none';
+                        document.cookie = `user=${encodeURIComponent(name)}; path=/;`;
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Perfil actualizado',
+                            text: 'Tus datos se han guardado correctamente.',
+                            timer: 1800,
+                            showConfirmButton: false
+                        }).then(() => {
+                            location.reload(); // O actualiza sólo la foto y los textos
+                        });
+                    } catch (err) {
+                        console.error(err);
+                        alert(err.message || 'Ocurrió un error al actualizar el perfil.');
+                    }
+                };
+
+            </script>
+
+            <script>
+                // Función para obtener departamentos desde la API
+                async function obtenerDepartamentosColombia() {
+                    try {
+                        const res = await fetch('/api/departamentos');
+                        const data = await res.json();
+                        return data.departamentos || [];
+                    } catch (err) {
+                        console.error('Error obteniendo departamentos:', err);
+                        return [];
+                    }
+                }
+
+
+                // Función para agregar departamentos al select
+                async function agregarDepartamentosPerfil() {
+                    const departamentos = await obtenerDepartamentosColombia();
+                    const depSelect = document.getElementById('departamentoPerfil');
+                    depSelect.innerHTML = '<option value="">Seleccione departamento</option>';
+                    if (depSelect && departamentos && departamentos.length > 0) {
+                        departamentos.forEach(dep => {
+                            const option = document.createElement('option');
+                            option.value = dep.id;
+                            option.textContent = dep.nombre;
+                            depSelect.appendChild(option);
+                        });
+                    } else {
+                        console.warn('No se encontraron Departamentos para cargar.');
+                    }
+
+                    // Si ya tienes el departamento y ciudad del usuario, puedes preseleccionarlos aquí
+                    const departamentoId = document.getElementById('departamentoPerfilValor').textContent;
+                    // Si departamentoId es un número diferente de 0, selecciona ese departamento en el select
+                    if (departamentoId && !isNaN(departamentoId) && Number(departamentoId) !== 0) {
+                        depSelect.value = departamentoId;
+                        await cargarCiudadesPerfil(departamentoId);
+                    }
+                }
+
+                // Función para cargar ciudades según departamento seleccionado
+                async function cargarCiudadesPerfil(departamentoId) {
+                    const ciudadSelect = document.getElementById('ciudadPerfil');
+                    ciudadSelect.innerHTML = '<option value="">Seleccione ciudad</option>';
+                    if (!departamentoId) return;
+                    try {
+                        const res = await fetch(`/api/ciudades/${departamentoId}`);
+                        const data = await res.json();
+                        if (data.ciudades && data.ciudades.length > 0) {
+                            data.ciudades.forEach(ciudad => {
+                                const option = document.createElement('option');
+                                option.value = ciudad.id;
+                                option.textContent = ciudad.nombre;
+                                ciudadSelect.appendChild(option);
+                            });
+                        }
+                    } catch (err) {
+                        console.error('Error obteniendo ciudades:', err);
+                    }
+                    // Si ya tienes la ciudad del usuario, puedes preseleccionarla aquí
+                    const ciudadId = document.getElementById('ciudadPerfilValor').textContent;
+                    if (ciudadId && !isNaN(ciudadId) && Number(ciudadId) !== 0) {
+                        ciudadSelect.value = ciudadId;
+                    }
+
+                }
+
+                // Inicializar departamentos al mostrar el modal
+                document.getElementById('perfil').onclick = function () {
+                    document.getElementById('modalPerfil').style.display = 'block';
+                    agregarDepartamentosPerfil();
+
+                };
+
+                // Cambiar ciudades al seleccionar departamento
+                document.getElementById('departamentoPerfil').onchange = function () {
+                    cargarCiudadesPerfil(this.value);
+                };
+            </script>
+
+
             <script src="js/notificaciones.js"></script>
             <script src="/js/websocket.js"></script>
+
+
             <!-- <script src="/js/cargarProyectos.js"></script> -->
-
-
 
 
 </body>

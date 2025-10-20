@@ -291,38 +291,6 @@
         </nav>
     </header>
 
-    <!-- Contenido principal - Datos Generales -->
-  <div class="main-content" id="miPerfil" style="display:none;">
-        <h2 class="tittle">Datos Generales</h2>
-
-        <table class="table-perfil">
-            <tr>
-                <td><strong>Nombres Completos:</strong></td>
-                <td id="MiNombreCompleto"></td>
-            </tr>
-         
-         <tr>
-                <td><strong>Perfil Profesional:</strong></td>
-                <td id="MiPerfilProfesional"></td>
-            </tr>
-            <tr>
-                <td><strong>Teléfono:</strong></td>
-                <td id="MiTelefono"></td>
-            </tr>
-            <tr>
-                <td><strong>Ubicación:</strong></td>
-                <td id="MiUbicacion"></td>
-            </tr>
-            <tr>
-                <td><strong>Correo Electrónico:</strong></td>
-                <td id="MiCorreo"></td>
-            </tr>
-        </table>
-
-<iframe src="" width="50%" height="600px" style="display:none;"></iframe>
-
-
-
     </div>
     <!-- Bienvenida y botones de acción -->
     <div class="welcome-container">
@@ -633,104 +601,7 @@
             <button class="modal-button" id="cerrarModalMisContactosBtn">Cerrar</button>
         </div>
     </div>
-    <script>
-        document.getElementById('misContactos').onclick = function () {
-            document.getElementById('modalMisContactos').style.display = 'block';
-            fetch(`/api/invitacion/mis-contactos/${userId}`)
-                .then(res => res.json())
-                .then(data => {
-                    const tbody = document.getElementById('tablaContactosVerificados');
-                    tbody.innerHTML = '';
-                    // Mostrar contactos recibidos
-                    if (data.recibidos && Array.isArray(data.recibidos) && data.recibidos.length > 0) {
-                        data.recibidos.forEach(contacto => {
 
-                            console.log(contacto.telefono);
-
-                            const tr = document.createElement('tr');
-                            tr.innerHTML = `
-                            <td>${contacto.name || ''}</td>
-                            <td>${contacto.email || ''}</td>
-                            <td>${contacto.entidad || ''}</td>
-                            <td>${contacto.telefono || ''}</td>
-                        `;
-                            tbody.appendChild(tr);
-                            console.log(tr);
-
-                        });
-                    }
-                    // Mostrar contactos enviados
-                    if (data.enviados && Array.isArray(data.enviados) && data.enviados.length > 0) {
-                        data.enviados.forEach(contacto => {
-                            const tr = document.createElement('tr');
-                            tr.innerHTML = `
-                            <td>${contacto.name || ''}</td>
-                            <td>${contacto.email || ''}</td>
-                            <td>${contacto.entidad.razonsocial || ''}</td>
-                            <td>${contacto.telefono || ''}</td>
-                        `;
-                            tbody.appendChild(tr);
-                        });
-                    }
-                    // Si no hay contactos en ninguno
-                    if (
-                        (!data.recibidos || data.recibidos.length === 0) &&
-                        (!data.enviados || data.enviados.length === 0)
-                    ) {
-                        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No hay contactos verificados</td></tr>';
-                    }
-                });
-        };
-        document.getElementById('cerrarModalMisContactos').onclick = function () {
-            document.getElementById('modalMisContactos').style.display = 'none';
-        };
-        document.getElementById('cerrarModalMisContactosBtn').onclick = function () {
-            document.getElementById('modalMisContactos').style.display = 'none';
-        };
-    </script>
-    <script>
-        // Abrir modal al hacer clic en la foto de usuario
-        document.getElementById('userPhoto').onclick = function () {
-            document.getElementById('modalFotoPerfil').style.display = 'block';
-
-            // Opcional: cargar foto actual si tienes la URL
-            // document.getElementById('previewFotoPerfil').src = 'URL_DE_LA_FOTO_ACTUAL';
-        };
-        // Cerrar modal
-        document.getElementById('cerrarModalFotoPerfil').onclick = function () {
-            document.getElementById('modalFotoPerfil').style.display = 'none';
-        };
-        // Vista previa de la imagen seleccionada
-        document.getElementById('inputFotoPerfil').onchange = function (e) {
-            const file = e.target.files[0];
-            if (file) {
-                document.getElementById('previewFotoPerfil').src = URL.createObjectURL(file);
-            }
-        };
-        // Guardar foto (debes implementar la lógica de subida en tu backend)
-        document.getElementById('formFotoPerfil').onsubmit = function (e) {
-            e.preventDefault();
-            const userId = obtenerCookie("userId");
-
-            // Ejemplo de subida con fetch y FormData
-            const formData = new FormData();
-            console.log(document.getElementById('inputFotoPerfil').files[0]);
-            formData.append('fotoPerfil', document.getElementById('inputFotoPerfil').files[0]);
-            alert('subiendo');
-            fetch(`/api/user/cambiarFoto/${userId}`, {
-                method: 'PUT',
-                body: formData
-            }).then(res => res.json())
-                .then(data => {
-                    // Actualiza la foto en la interfaz si es necesario
-                    document.getElementById('modalFotoPerfil').style.display = 'none';
-                    // document.getElementById('userPhoto').innerHTML = '<img src="URL_NUEVA_FOTO" ...>';
-                    location.reload(); // O actualiza solo la foto
-                }).catch(() => {
-                    alert('Error al subir la foto');
-                });
-        };
-    </script>
     <!-- Modal Empresa -->
     <div id="empresaModal" class="modal">
         <div class="modal-content" id="infoEmpresas">
@@ -897,7 +768,62 @@
     <script src="js/notificaciones.js"></script>
     <script src="/js/websocket.js"></script>
     <script src="test-api-entidad.js"></script>
+    <script>
+        document.getElementById('misContactos').onclick = function () {
+            document.getElementById('modalMisContactos').style.display = 'block';
+            fetch(`/api/invitacion/mis-contactos/${userId}`)
+                .then(res => res.json())
+                .then(data => {
+                    const tbody = document.getElementById('tablaContactosVerificados');
+                    tbody.innerHTML = '';
+                    // Mostrar contactos recibidos
+                    if (data.recibidos && Array.isArray(data.recibidos) && data.recibidos.length > 0) {
+                        data.recibidos.forEach(contacto => {
 
+                            console.log(contacto.telefono);
+
+                            const tr = document.createElement('tr');
+                            tr.innerHTML = `
+                            <td>${contacto.name || ''}</td>
+                            <td>${contacto.email || ''}</td>
+                            <td>${contacto.entidad || ''}</td>
+                            <td>${contacto.telefono || ''}</td>
+                        `;
+                            tbody.appendChild(tr);
+                            console.log(tr);
+
+                        });
+                    }
+                    // Mostrar contactos enviados
+                    if (data.enviados && Array.isArray(data.enviados) && data.enviados.length > 0) {
+                        data.enviados.forEach(contacto => {
+                            const tr = document.createElement('tr');
+                            tr.innerHTML = `
+                            <td>${contacto.name || ''}</td>
+                            <td>${contacto.email || ''}</td>
+                            <td>${contacto.entidad.razonsocial || ''}</td>
+                            <td>${contacto.telefono || ''}</td>
+                        `;
+                            tbody.appendChild(tr);
+                        });
+                    }
+                    // Si no hay contactos en ninguno
+                    if (
+                        (!data.recibidos || data.recibidos.length === 0) &&
+                        (!data.enviados || data.enviados.length === 0)
+                    ) {
+                        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No hay contactos verificados</td></tr>';
+                    }
+                });
+        };
+        document.getElementById('cerrarModalMisContactos').onclick = function () {
+            document.getElementById('modalMisContactos').style.display = 'none';
+        };
+        document.getElementById('cerrarModalMisContactosBtn').onclick = function () {
+            document.getElementById('modalMisContactos').style.display = 'none';
+        };
+    </script>
+  
     <script>
         function irEnConstruccion() {
             window.location.href = "/construccion"; // o la ruta que tengas
