@@ -172,7 +172,7 @@
                             </div>
 
                             <div class="input-row">
-                                <div class="input-box">
+                                <div class="nput-boxi">
                                     <label for="departamentoPerfil">Departamento:</label>
                                     <select id="departamentoPerfil" name="departamentoPerfil" required>
                                         <option value="">Seleccione departamento</option>
@@ -437,7 +437,7 @@
                                 throw new Error(`Error al subir la hoja de vida. ${err}`);
                             }
                         }
-                        document.getElementById('modalFotoPerfil').style.display = 'none';
+                        document.getElementById('modalPerfil').style.display = 'none';
                         document.cookie = `user=${encodeURIComponent(name)}; path=/;`;
                         Swal.fire({
                             icon: 'success',

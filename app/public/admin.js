@@ -97,8 +97,6 @@ document.getElementById("cerrarModal").addEventListener("click", () => {
 })
 
 
-
-
 // Función para obtener el valor de una cookie por su nombre
 function obtenerCookie(nombre) {
   const nombreCookie = `${nombre}=`;

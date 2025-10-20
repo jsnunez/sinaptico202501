@@ -1,4 +1,3 @@
-
 /* Estilos base y reset */
 * {
     margin: 0;
@@ -68,6 +67,7 @@ body {
 .nav {
     display: flex;
     gap: 1rem;
+    align-items: center;
 }
 
 .nav-button {
@@ -82,6 +82,8 @@ body {
     transition: var(--transition);
     position: relative;
     overflow: hidden;
+    height: 40px;
+
 }
 
 .nav-button:hover {
@@ -105,6 +107,85 @@ body {
 
 .nav-button.pulse:hover::after {
     animation: ripple 1s ease-out;
+}
+.imagenPerfil {
+    border-radius: 50%;
+    object-fit: cover;
+    width: 5vh;
+    height: 5vh;
+    box-shadow: none;
+    outline: none;
+}
+
+#imagenPerfil:hover {
+    box-shadow: 0 0 0 3px var(--primary-color);
+    transform: scale(1.1);
+    transition: var(--transition);
+}
+
+#userMenuBtn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    padding: 5px;
+    border-radius: 50%;
+    transition: background 0.3s;
+}
+
+
+/* Estilo del contenedor */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Menú oculto por defecto */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 110%;
+    /* debajo del botón */
+    right: 0;
+    background-color: var(--background-color, #222);
+    color: var(--text-color, #fff);
+    border-radius: 10px;
+    min-width: 180px;
+    overflow: hidden;
+    z-index: 20;
+}
+
+/* Enlaces del menú */
+.dropdown-menu a {
+    display: block;
+    padding: 0.75rem 1rem;
+    color: inherit;
+    text-decoration: none;
+    transition: background 0.3s;
+}
+
+/* Hover de los enlaces */
+.dropdown-menu a:hover {
+    background: var(--select-btn, #444);
+}
+
+/* Clase que lo muestra */
+.dropdown.show .dropdown-menu {
+    display: block;
+    animation: fadeIn 0.2s ease-in-out;
+}
+
+/* Animación de aparición */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* Contenedor de bienvenida */
@@ -158,6 +239,7 @@ body {
     transition: var(--transition);
     box-shadow: 0 4px 10px rgba(142, 45, 226, 0.3);
 }
+
 .action-button {
     margin-bottom: 1vh;
     display: flex;
@@ -197,6 +279,7 @@ body {
     gap: 0.5rem;
     box-shadow: var(--shadow);
 }
+
 .filter-input {
     background: var(--background-color);
     color: rgb(0, 0, 0);
@@ -208,7 +291,8 @@ body {
     flex: 1;
     min-width: 250px;
     max-width: 500px;
-  }
+}
+
 .filter-button {
     background-color: rgba(255, 255, 255, 0.15);
     color: white;
@@ -225,7 +309,8 @@ body {
     text-align: center;
 }
 
-.filter-button:hover, .filter-button.active {
+.filter-button:hover,
+.filter-button.active {
     background-color: rgba(255, 255, 255, 0.3);
     transform: translateY(-2px);
 }
@@ -268,18 +353,21 @@ body {
     border-radius: 10px;
 }
 
-.helix-title, .stats-title {
+.helix-title,
+.stats-title {
     text-align: center;
     margin-bottom: 2rem;
 }
 
-.helix-title h3, .stats-title h3 {
+.helix-title h3,
+.stats-title h3 {
     color: var(--primary-color);
     font-size: 1.5rem;
     margin-bottom: 0.5rem;
 }
 
-.helix-title p, .stats-title p {
+.helix-title p,
+.stats-title p {
     color: var(--text-description);
     max-width: 600px;
     margin: 0 auto;
@@ -312,7 +400,8 @@ body {
     transform: rotateY(180deg);
 }
 
-.card-front, .card-back {
+.card-front,
+.card-back {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -362,7 +451,8 @@ body {
     margin-bottom: 1.5rem;
 }
 
-.synapse-icon::before, .synapse-icon::after {
+.synapse-icon::before,
+.synapse-icon::after {
     content: '';
     position: absolute;
     background: white;
@@ -559,7 +649,8 @@ body {
     transition: var(--transition);
 }
 
-.entity-type-button:hover, .entity-type-button.active {
+.entity-type-button:hover,
+.entity-type-button.active {
     background-color: var(--primary-color);
     color: white;
 }
@@ -590,7 +681,9 @@ form {
     color: #555;
 }
 
-.input-box input, .input-box textarea, .input-box select {
+.input-box input,
+.input-box textarea,
+.input-box select {
     width: 100%;
     padding: 0.8rem;
     border: 1px solid #ddd;
@@ -599,7 +692,9 @@ form {
     transition: var(--transition);
 }
 
-.input-box input:focus, .input-box textarea:focus, .input-box select:focus {
+.input-box input:focus,
+.input-box textarea:focus,
+.input-box select:focus {
     border-color: var(--primary-color);
     outline: none;
     box-shadow: 0 0 0 2px rgba(110, 72, 170, 0.1);
@@ -623,10 +718,12 @@ form {
         transform: scale(0.95);
         opacity: 0.7;
     }
+
     50% {
         transform: scale(1);
         opacity: 1;
     }
+
     100% {
         transform: scale(0.95);
         opacity: 0.7;
@@ -638,10 +735,12 @@ form {
         transform: scale(0.95);
         opacity: 0.7;
     }
+
     50% {
         transform: scale(1.05);
         opacity: 0.3;
     }
+
     100% {
         transform: scale(0.95);
         opacity: 0.7;
@@ -653,6 +752,7 @@ form {
         transform: scale(0);
         opacity: 1;
     }
+
     100% {
         transform: scale(20);
         opacity: 0;
@@ -664,6 +764,7 @@ form {
         opacity: 0;
         transform: translateY(-20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -676,42 +777,42 @@ form {
         flex-direction: column;
         padding: 1rem;
     }
-    
+
     .logo {
         margin-bottom: 1rem;
     }
-    
+
     .nav {
         width: 100%;
         justify-content: center;
         flex-wrap: wrap;
     }
-    
+
     .welcome-container {
         flex-direction: column;
     }
-    
+
     .welcome-text {
         margin-bottom: 1.5rem;
         text-align: center;
     }
-    
+
     .action-buttons {
         justify-content: center;
     }
-    
+
     .filter-container {
         padding: 1rem;
     }
-    
+
     .filter-button {
         min-width: 100px;
     }
-    
+
     .cards-container {
         grid-template-columns: 1fr;
     }
-    
+
     .modal-content {
         width: 95%;
         margin: 10% auto;
@@ -719,93 +820,97 @@ form {
     }
 }
 
-#serviciosAsociados, #integrantesAsociados{
+#serviciosAsociados,
+#integrantesAsociados {
     padding-left: 20px;
-    color:black
+    color: black
 }
-#serviciosAsociados, #integrantesAsociados ul li::marker {
-    color: var(--text-color); 
-  }
 
-    /* Tabla de datos */
-    .data-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 1rem;
-        background-color: white;
-        border-radius: 10px;
-        overflow: hidden;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-      }
-      
-      .data-table th,
-      .data-table td {
-        padding: 1rem;
-        text-align: left;
-        border-bottom: 1px solid #eee;
-      }
-      
-      .data-table th {
-        background-color: #f8f9fa;
-        font-weight: 500;
-        color: var(--primary-color);
-      }
+#serviciosAsociados,
+#integrantesAsociados ul li::marker {
+    color: var(--text-color);
+}
 
-      .action-icon {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
-        background-color: #f8f9fa;
-        color: #6c757d;
-        margin-right: 0.5rem;
-        cursor: pointer;
-        transition: var(--transition);
-      }
-      
-      .action-icon:hover {
-        background-color: var(--primary-color);
-        color: white;
-      }
-      
-      .action-icon.edit:hover {
-        background-color: #17a2b8;
-      }
-      
-      .action-icon.delete:hover {
-        background-color: #dc3545;
-      }
-      
-      .tabla-scroll {
-        height: 40%;
-        overflow-y: auto;
-      }
-      
+/* Tabla de datos */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    background-color: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
 
-      .contact-info{
-      display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-      }
+.data-table th,
+.data-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
 
-      #userPhoto{
-        height: 10vh;
-        width: 10vh;
-margin: 1rem;
+.data-table th {
+    background-color: #f8f9fa;
+    font-weight: 500;
+    color: var(--primary-color);
+}
 
-    }
-    #userPhoto img {
-        height: 100%;
-        width: 100%;
-        border-radius: 50%;
-        object-fit: cover;
-        display: block;
-    }
+.action-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #f8f9fa;
+    color: #6c757d;
+    margin-right: 0.5rem;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.action-icon:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.action-icon.edit:hover {
+    background-color: #17a2b8;
+}
+
+.action-icon.delete:hover {
+    background-color: #dc3545;
+}
+
+.tabla-scroll {
+    height: 40%;
+    overflow-y: auto;
+}
 
 
-  .toast {
+.contact-info {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+#userPhoto {
+    height: 10vh;
+    width: 10vh;
+    margin: 1rem;
+
+}
+
+#userPhoto img {
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+}
+
+
+.toast {
     position: fixed;
     bottom: 20px;
     right: 20px;
@@ -818,12 +923,19 @@ margin: 1rem;
     z-index: 9999;
     opacity: 0.95;
     animation: aparecer 0.3s ease;
-  }
+}
 
-  @keyframes aparecer {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 0.95; transform: translateY(0); }
-  }
+@keyframes aparecer {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 0.95;
+        transform: translateY(0);
+    }
+}
 
 /* Estilos para el mapa en el formulario de entidad */
 .map-section {
@@ -849,7 +961,7 @@ margin: 1rem;
     margin-top: 10px;
 }
 
-.coordinates-display > div {
+.coordinates-display>div {
     flex: 1;
 }
 
@@ -904,9 +1016,17 @@ margin: 1rem;
 
 /* Animación para el marcador personalizado */
 @keyframes markerPulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-    100% { transform: scale(1); }
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+    }
 }
 
 .location-marker {
@@ -914,82 +1034,3 @@ margin: 1rem;
 }
 
 
-.imagenPerfil {
-    border-radius: 50%;
-    object-fit: cover;
-    width: 5vh;
-    height: 5vh;
-
-    box-shadow: none;
-    outline: none;
-}
-#imagenPerfil:hover {
-    box-shadow: 0 0 0 3px var(--primary-color);
-    transform: scale(1.1);
-    transition: var(--transition);
-}
-
-#userMenuBtn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    position: relative;
-    padding: 5px;
-    border-radius: 50%;
-    transition: background 0.3s;
-}   
-
-
-/* Estilo del contenedor */
-.dropdown {
-    position: relative;
-    display: inline-block;
-}
-
-/* Menú oculto por defecto */
-.dropdown-menu {
-    display: none;
-    position: absolute;
-    top: 110%;
-    /* debajo del botón */
-    right: 0;
-    background-color: var(--background-color, #222);
-    color: var(--text-color, #fff);
-    border-radius: 10px;
-    min-width: 180px;
-    overflow: hidden;
-    z-index: 20;
-}
-
-/* Enlaces del menú */
-.dropdown-menu a {
-    display: block;
-    padding: 0.75rem 1rem;
-    color: inherit;
-    text-decoration: none;
-    transition: background 0.3s;
-}
-
-/* Hover de los enlaces */
-.dropdown-menu a:hover {
-    background: var(--select-btn, #444);
-}
-
-/* Clase que lo muestra */
-.dropdown.show .dropdown-menu {
-    display: block;
-    animation: fadeIn 0.2s ease-in-out;
-}
-
-/* Animación de aparición */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-5px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
