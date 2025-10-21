@@ -85,26 +85,6 @@
   </div>
 
 
-  <!-- Modal Foto de Perfil -->
-  <div id="modalFotoPerfil" class="modal">
-    <div class="modal-content">
-      <span class="close" id="cerrarModalFotoPerfil">&times;</span>
-      <h2>Actualizar Foto de Perfil</h2>
-      <form id="formFotoPerfil">
-        <div class="form-group" style="text-align:center;">
-          <img id="previewFotoPerfil" src="" alt="Foto actual"
-            style="width:100px;height:100px;border-radius:50%;object-fit:cover;margin-bottom:15px;"
-            onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
-        </div>
-        <div class="form-group">
-          <input type="file" id="inputFotoPerfil" name="fotoPerfil" accept="image/*" required>
-        </div>
-        <button type="submit" class="modal-button">Guardar Foto</button>
-      </form>
-    </div>
-  </div>
-
-
 
   <!-- Contacto del lider de PPI -->
   <div id="modalPostulaciones" class="modal">
@@ -382,7 +362,7 @@
           <th>Líder PPI</th>
           <th>Duración</th>
           <th>Estado</th>
-          <th>Acciones</th>
+          <th>Ver</th>
         </tr>
       </thead>
       <tbody id="cuerpoTablaPostulaciones">
@@ -525,8 +505,8 @@
               <td>${proyecto.duracionPPI || ''}</td>
               <td>${proyecto.fasePPI || ''}</td>
               <td>
-                <button class="action-button" onclick="verMasProyecto(${proyecto.id})">
-                  <span class="button-icon"><i class="bi bi-search" style="color:#333;"></i></span>Ver más
+                <button class="action-button" onclick="verMasProyecto(${proyecto.id})" style="justify-content:center;">
+                <i class="bi bi-clipboard-fill"></i>
                 </button>
               </td>
             `;
@@ -701,14 +681,11 @@
             modal.id = 'modalVerProyecto';
             modal.className = 'modal';
             modal.innerHTML = `
+           
                     <div class="modal-content" style="max-width:900px;">
                         <span class="close" id="cerrarModalVerProyecto">&times;</span>
-                        <div style="display:flex;align-items:center;justify-content:center;">
-                            <h2 style="margin-bottom:10px; text-align:center; color:#007bff;">Proyecto: </h2>
-                            <h2 style="margin-bottom:10px; text-align:center;" id="tituloModalVerProyecto"></h2>
-                        </div>
 
-                        <div id="contenidoVerProyecto"></div>
+                        <div id="contenidoVerProyecto" ></div>
                     </div>
                 `;
             document.body.appendChild(modal);
@@ -721,40 +698,44 @@
 
           const contenido = document.getElementById('contenidoVerProyecto');
           contenido.innerHTML = `
-                <div style="display:flex;flex-wrap:wrap;gap:24px;">
-                    <div style="flex:1;min-width:280px;">
-                        <div style="background:#f8f9fa;border-radius:12px;padding:18px;box-shadow:0 2px 8px #0001;">
-                            <h3 style="margin-top:0;color:#333;">Información General</h3>
-                            <p><strong>Código:</strong> ${proyecto.id || ''}</p>
-                            <p><strong>Nombre:</strong> ${proyecto.nombrePPI || ''}</p>
-                            <p><strong>Objetivo:</strong> ${proyecto.objetivo || ''}</p>
-                            <p><strong>Necesidad/Problema:</strong> ${proyecto.necesidadProblema || ''}</p>
-                            <p><strong>Impactos:</strong> ${proyecto.impactos || ''}</p>
-                            <p><strong>Objetivos específicos:</strong> ${proyecto.objetivosEspecificos || ''}</p>
+                                           
+                        <div style="margin-bottom:20px; display: flex; justify-content: space-between; align-items: center;">
+                         
+                            <h2>P-2025-${proyecto.id || ''} ${proyecto.nombrePPI || ''}</h2>
+                             
+                        </div>
+                     
+                        <div class="form-section">
+                            <h4 class="section-title">Información General</h4>
+                            <!-- nombres científicos -->
+
+                            <p><b>Objetivo </b> ${proyecto.objetivo || ''}</p>
+                            <p><b>Problema:</b> ${proyecto.necesidadProblema || ''}</p>
+                            <p><b>Impactos:</b> ${proyecto.impactos || ''}</p>
+                            <p><b>Objetivos específicos:</b> ${proyecto.objetivosEspecificos || ''}</p>
+                        </div>
+             
+                        <div class="form-section">
+                            <h4 class="section-title">Detalles Técnicos</h4>
+                            <p><b>Entidad:</b> ${proyecto.entidad?.razonSocial || 'Independiente'}</p>
+                            <p><b>Duración:</b> ${proyecto.duracionPPI || ''}</p>
+                            <p><b>Presupuesto:</b> ${proyecto.presupuestoPPI || ''}</p>
+                            <p><b>Fase:</b> ${proyecto.fasePPI || ''}</p>
+                            <p><b>Determinante productividad:</b> ${proyecto.determinanteProductividad || ''}</p>
+                            <p><b>Componente productividad:</b> ${proyecto.componenteProductividad || ''}</p>
                         </div>
                     </div>
-                    <div style="flex:1;min-width:280px;">
-                        <div style="background:#f8f9fa;border-radius:12px;padding:18px;box-shadow:0 2px 8px #0001;">
-                            <h3 style="margin-top:0;color:#333;">Detalles Técnicos</h3>
-                            <p><strong>Entidad:</strong> ${proyecto.entidad?.razonSocial || 'Independiente'}</p>
-                            <p><strong>Duración:</strong> ${proyecto.duracionPPI || ''}</p>
-                            <p><strong>Presupuesto:</strong> ${proyecto.presupuestoPPI || ''}</p>
-                            <p><strong>Fase:</strong> ${proyecto.fasePPI || ''}</p>
-                            <p><strong>Determinante productividad:</strong> ${proyecto.determinanteProductividad || ''}</p>
-                            <p><strong>Componente productividad:</strong> ${proyecto.componenteProductividad || ''}</p>
-                        </div>
-                    </div>
-                    <div style="flex:1;min-width:280px;">
-                        <div style="background:#f8f9fa;border-radius:12px;padding:18px;box-shadow:0 2px 8px #0001;">
-                            <h3 style="margin-top:0;color:#333;">Contacto Líder</h3>
-                            <p><strong>Nombre:</strong> ${proyecto.usuarioLider?.name || ''}</p>
-                            <p><strong>Correo:</strong> <a href="mailto:${proyecto.usuarioLider?.email || ''}" style="color:#007bff;">${proyecto.usuarioLider?.email || ''}</a></p>
-                            <p><strong>Teléfono:</strong> <a href="tel:${proyecto.usuarioLider?.telefono || ''}" style="color:#007bff;">${proyecto.usuarioLider?.telefono || ''}</a></p>
+                
+                        <div class="form-section">
+                            <h4 class="section-title" >Contacto Responsable</h4>
+                            <p><b>Nombre:</b> ${proyecto.usuarioLider?.name || ''}</p>
+                            <p><b>Correo:</b> <a href="mailto:${proyecto.usuarioLider?.email || ''}" style="color:#007bff;">${proyecto.usuarioLider?.email || ''}</a></p>
+                            <p><b>Teléfono:</b> <a href="tel:${proyecto.usuarioLider?.telefono || ''}" style="color:#007bff;">${proyecto.usuarioLider?.telefono || ''}</a></p>
                         </div>
                     </div>
                 </div>
             `;
-          document.getElementById('tituloModalVerProyecto').innerText = `${proyecto.nombrePPI || 'Detalle del Proyecto'}`;
+       
           modal.style.display = 'block';
         })
         .catch(() => {
