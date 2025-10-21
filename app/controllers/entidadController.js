@@ -673,3 +673,38 @@ console.log('Verificando entidades con UserAdminId:', UserAdminId);
         res.status(500).json({ error: error.message });
     }
 }
+
+
+export const getUserAdminId = async (req, res) => {
+  const userId = req.params.userId;
+  console.log('Obteniendo UserAdminId para usuario ID:', userId);
+  
+  try {
+    const entidad = await Entidad.findOne({
+      where: { UserAdminId: userId },
+      attributes: ['id', 'UserAdminId', 'razonSocial']
+    });
+
+    if (!entidad) {
+      return res.status(404).json({ 
+        success: false, 
+        mensaje: 'Entidad no encontrada para este usuario' 
+      });
+    }
+
+    return res.json({
+      success: true,
+      entidad: {
+        id: entidad.id,
+        UserAdminId: entidad.UserAdminId,
+        razonSocial: entidad.razonSocial
+      }
+    });
+  } catch (error) {
+    console.error('Error al obtener entidad por UserAdminId:', error);
+    return res.status(500).json({
+      success: false,
+      mensaje: 'Hubo un error al obtener la entidad'
+    });
+  }
+};

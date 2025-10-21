@@ -127,3 +127,17 @@ export const habilitarUsuario = async (req, res) => {
 };
 
 
+export const deleteUsuarioEmpresaCargo = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const assignment = await UserEntityCargo.findByPk(id);
+    if (!assignment) {
+      return res.status(404).json({ message: 'Asignación no encontrada' });
+    }
+    await assignment.destroy();
+    res.status(200).json({ message: 'Asignación eliminada correctamente' });
+  } catch (error) {
+    console.error('Error al eliminar asignación:', error);
+    res.status(500).json({ message: 'Error al eliminar asignación', error });
+  }
+};

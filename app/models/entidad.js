@@ -7,9 +7,7 @@ const Entidad = sequelize.define('Entidad', {
   claseEntidad: {
     type: DataTypes.STRING,
     allowNull: false,
-    validate: {
-      isIn: [['Empresa', 'Startup', 'Emprendimiento', 'Universidad']],
-    },
+
   },
   razonSocial: {
     type: DataTypes.STRING,
@@ -28,9 +26,7 @@ const Entidad = sequelize.define('Entidad', {
   tipoEntidad: {
     type: DataTypes.STRING,
     allowNull: false,
-    validate: {
-      isIn: [['Sociedad Anónima', 'Sociedad Limitada', 'Persona Natural']],
-    },
+   
   },
   naturalezaJuridica: {
     type: DataTypes.STRING,
