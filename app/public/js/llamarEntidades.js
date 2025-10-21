@@ -270,6 +270,10 @@ abrirModalIntegrante = async function (userId) {
   console.log("ID del integrante:", userId);
   document.getElementById('modalIntegrante').style.display = 'block';
 
+  document.getElementById('cerrarModalIntegrante').onclick = function () {
+    document.getElementById('modalIntegrante').style.display = 'none';
+  };
+
   const response = await fetch(`${API_BASE_URL}/api/user/${userId}`);
   const data = await response.json();
   console.log(data);

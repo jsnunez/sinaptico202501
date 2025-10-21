@@ -7,11 +7,10 @@
     <title>sinaptico - Innovación Abierta</title>
     <link rel="stylesheet" href="styles/colores.css">
 
-    <link rel="stylesheet" href="styles/stylehelice2.css">
     <link rel="stylesheet" href="styles/innovacion.css">
     <link rel="stylesheet" href="styles/clasificados.css">
     <link rel="stylesheet" href="styles/conocimiento.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap">
@@ -24,24 +23,47 @@
 
     <!-- Encabezado -->
     <header class="header">
-        <div  onclick="window.location.href='/helice'" class="logo">
+        <div onclick="window.location.href='/helice'" class="logo">
             <!-- <span class="logo-icon">⚡</span> -->
             <span class="logo-text">SINAPTICO</span>
         </div>
         <nav class="nav">
             <button class="nav-button pulse" onclick="window.location.href='/helice'">Hélice</button>
+            <button class="nav-button pulse" onclick="window.location.href='/proyectos'">Proyectos</button>
             <button class="nav-button pulse" onclick="window.location.href='/innovacion'">Innovación</button>
 
             <button class="nav-button pulse" onclick="window.location.href='/Conocimiento'">Conocimiento</button>
-                        <button class="nav-button pulse" onclick="window.location.href='/convocatorias'">Convocatorias</button>
+            <button class="nav-button pulse" onclick="window.location.href='/convocatorias'">Convocatorias</button>
 
-                        <button class="nav-button pulse" onclick="window.location.href='/eventos'">Eventos</button>
+            <button class="nav-button pulse" onclick="window.location.href='/eventos'">Eventos</button>
 
-            <button class="nav-button pulse" onclick="irEnConstruccion()">Mapa</button>
-            
-            <button class="nav-button pulse" id="cerrarSesion">Cerrar sesión</button>
+            <button class="nav-button pulse" onclick="window.location.href='/mapa-usuarios'">Mapa</button>
+            <div style="position:fixed;top:10px;right:20px;z-index:1000;font-size:1.5em;cursor:pointer;">
+                <span id="icono-notif">🔔 <span
+                        style='background:red;color:white;border-radius:50%;padding:2px 7px;font-size:0.9em;'>0</span></span>
+            </div>
+            <div class="notificaciones" id="notificaciones"></div>
+
+            <!-- <button class="nav-button pulse" id="cerrarSesion">Cerrar sesión</button> -->
+            <!-- Botón con menú desplegable -->
+            <div class="dropdown">
+                <button class=" " id="userMenuBtn">
+                    <div id="userPhoto ">
+                        <img class="imagenPerfil" id="imagenPerfilSecundaria" src="img/sinfoto.jpg" alt="Foto de perfil"
+                            onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
+                    </div>
+
+                </button>
+
+                <div class="dropdown-menu" id="userMenu">
+                    <a href="/perfil">Perfil</a>
+                    <a href="/configuracion">Configuración</a>
+                    <a href="#" id="cerrarSesion">Cerrar sesión</a>
+                </div>
+            </div>
         </nav>
     </header>
+
     <div class="welcome-container">
         <div class="welcome-text">
             <h2 id="bienvenido">Bienvenido </h2>
@@ -49,8 +71,6 @@
         </div>
 
     </div>
-
-
 
 
     <div class="main-content" id="conocimientoMainContent">
@@ -128,7 +148,7 @@
         <div class="container">
             <div class="section-header">
                 <i class="fas fa-rocket"></i>
-                <h2>2025 -  Cursos activos</h2>
+                <h2>2025 - Cursos activos</h2>
             </div>
 
             <div class="challenges-grid">
@@ -141,7 +161,7 @@
         <div class="container">
             <div class="section-header">
                 <i class="fas fa-rocket"></i>
-                <h2>2025 -  Cursos activos</h2>
+                <h2>2025 - Cursos activos</h2>
             </div>
 
             <div class="challenges-grid">
@@ -149,7 +169,7 @@
             </div>
 
     </section>
-    
+
     <!-- clasificados Section -->
     <section id="bibliotecaSection" class="main-content" style="display: none;">
         <div class="container" id="bibliotecaConocimiento">
@@ -167,7 +187,7 @@
                     <div class="card-recurso">
                         <h3 class="card-title">Recurso 1</h3>
                         <p class="card-subtitle">Descripción breve del Recurso 1</p>
-                        <button >Ver más</button>
+                        <button>Ver más</button>
                     </div>
                 </div>
 
@@ -423,7 +443,7 @@
         document.addEventListener("DOMContentLoaded", () => {
             const gridContainer = document.getElementById("grid-container");
             const buscarInput = document.getElementById("buscarCurso");
-        
+
             // Función para renderizar Recursos
             function renderCursos(Recursos) {
                 gridContainer.innerHTML = ""; // Limpiar contenedor
@@ -441,7 +461,7 @@
                     gridContainer.appendChild(card);
                 });
             }
-        
+
             // Obtener Recursos desde la API
             async function cargarCursos() {
                 try {
@@ -452,7 +472,7 @@
                     console.error("Error al cargar Recursos:", error);
                 }
             }
-        
+
             // Filtro de búsqueda
             buscarInput.addEventListener("input", async () => {
                 const texto = buscarInput.value.toLowerCase();
@@ -467,12 +487,45 @@
                     console.error("Error al filtrar Recursos:", error);
                 }
             });
-        
+
             // Inicializar
             cargarCursos();
         });
-        </script>
-        
+    </script>
+
+    <script>
+        // =========================
+        // Utilidades
+        // =========================
+        function obtenerCookie(nombre) {
+            const nombreCookie = `${nombre}=`;
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                let cookie = cookies[i].trim();
+                if (cookie.indexOf(nombreCookie) === 0) {
+                    return cookie.substring(nombreCookie.length, cookie.length);
+                }
+            }
+            return null;
+        }
+
+        const userId = obtenerCookie("userId");
+
+        (async () => {
+            try {
+                // Cargar usuario (para cabecera y foto)
+                const resUser = await fetch(`/api/user/${userId}`);
+                const dataUser = await resUser.json();
+
+                document.getElementById("imagenPerfilSecundaria").src = dataUser.fotoPerfil ? "photo/" + dataUser.fotoPerfil : "photo/sinfoto.jpg";
+
+            } catch (error) {
+                console.error("Error al inicializar usuario:", error);      
+            }
+        })();
+
+    </script>
+
 </body>
 
 </html>

@@ -2,164 +2,150 @@
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SINAPTICO</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SINAPTICO</title>
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <link rel="stylesheet" href="styles/colores.css">
-    <link rel="stylesheet" href="styles/postulaciones.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+  <link rel="stylesheet" href="styles/colores.css">
+  <link rel="stylesheet" href="styles/postulaciones.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
 
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-
-
-
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 </head>
 
 <body>
 
+  <!-- Encabezado -->
+  <header class="header">
+    <div onclick="window.location.href='/helice'" class="logo">
+      <!-- <span class="logo-icon">⚡</span> -->
+      <span class="logo-text">SINAPTICO</span>
+    </div>
+    <nav class="nav">
+      <button class="nav-button pulse" onclick="window.location.href='/helice'">Hélice</button>
+      <button class="nav-button pulse" onclick="window.location.href='/proyectos'">Proyectos</button>
+      <button class="nav-button pulse" onclick="window.location.href='/innovacion'">Innovación</button>
 
-   <!-- Encabezado -->
-    <header class="header">
-        <div onclick="window.location.href='/helice'" class="logo">
-            <!-- <span class="logo-icon">⚡</span> -->
-            <span class="logo-text">SINAPTICO</span>
+      <button class="nav-button pulse" onclick="window.location.href='/Conocimiento'">Conocimiento</button>
+      <button class="nav-button pulse" onclick="window.location.href='/convocatorias'">Convocatorias</button>
+
+      <button class="nav-button pulse" onclick="window.location.href='/eventos'">Eventos</button>
+
+      <button class="nav-button pulse" onclick="window.location.href='/mapa-usuarios'">Mapa</button>
+      <div style="position:fixed;top:10px;right:20px;z-index:1000;font-size:1.5em;cursor:pointer;">
+        <span id="icono-notif">🔔 <span
+            style='background:red;color:white;border-radius:50%;padding:2px 7px;font-size:0.9em;'>0</span></span>
+      </div>
+      <div class="notificaciones" id="notificaciones"></div>
+
+      <!-- <button class="nav-button pulse" id="cerrarSesion">Cerrar sesión</button> -->
+      <!-- Botón con menú desplegable -->
+      <div class="dropdown">
+        <button class=" " id="userMenuBtn">
+          <div id="userPhoto ">
+            <img class="imagenPerfil" id="imagenPerfilSecundaria" src="img/sinfoto.jpg" alt="Foto de perfil"
+              onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
+          </div>
+
+        </button>
+
+        <div class="dropdown-menu" id="userMenu">
+          <a href="/perfil">Perfil</a>
+          <a href="/configuracion">Configuración</a>
+          <a href="#" id="cerrarSesion">Cerrar sesión</a>
         </div>
-        <nav class="nav">
-            <button class="nav-button pulse" onclick="window.location.href='/helice'">Hélice</button>
-            <button class="nav-button pulse" onclick="window.location.href='/proyectos'">Proyectos</button>
-            <button class="nav-button pulse" onclick="window.location.href='/innovacion'">Innovación</button>
+      </div>
+    </nav>
+  </header>
 
-            <button class="nav-button pulse" onclick="window.location.href='/Conocimiento'">Conocimiento</button>
-            <button class="nav-button pulse" onclick="window.location.href='/convocatorias'">Convocatorias</button>
+  <!-- Bienvenida y botones de acción -->
+  <div style="display: none;" class="welcome-container">
+    <div id="userPhoto">
+      <img id="imagenPerfil" src="img/sinfoto.jpg" alt="Foto de perfil"
+        onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
+    </div>
 
-            <button class="nav-button pulse" onclick="window.location.href='/eventos'">Eventos</button>
+    <div class="welcome-text">
+      <h2 id="bienvenido">Hola </h2>
+      <!-- <p class="subtitle">Conectando entidades para potenciar la innovación</p> -->
+    </div>
+    <div class="action-buttons">
 
-            <button class="nav-button pulse" onclick="irEnConstruccion()">Mapa</button>
-            <div style="position:fixed;top:10px;right:20px;z-index:1000;font-size:1.5em;cursor:pointer;">
-                <span id="icono-notif">🔔 <span
-                        style='background:red;color:white;border-radius:50%;padding:2px 7px;font-size:0.9em;'>0</span></span>
-            </div>
-            <div class="notificaciones" id="notificaciones"></div>
-
-            <!-- <button class="nav-button pulse" id="cerrarSesion">Cerrar sesión</button> -->
-            <!-- Botón con menú desplegable -->
-            <div class="dropdown">
-                <button class=" " id="userMenuBtn">
-                   <div id="userPhoto ">
-                        <img class="imagenPerfil" id="imagenPerfilSecundaria" src="img/sinfoto.jpg" alt="Foto de perfil"
-                            onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
-                    </div>
-
-                </button>
-
-                <div class="dropdown-menu" id="userMenu">
-                    <a href="perfil" onclick="
-                        document.querySelectorAll('.welcome-container, .main-content').forEach(div => div.style.display = 'none');
-                     
-                        document.getElementById('miPerfil').style.display = 'block';
-                        return false;
-                    ">Perfil</a>
-                    
-                    
-                    </script>
-                    <a href="/configuracion">Configuración</a>
-                    <a href="#" id="cerrarSesion">Cerrar sesión</a>
-                </div>
-            </div>
-        </nav>
-    </header>
-
-
-    <!-- Bienvenida y botones de acción -->
-    <div style="display: none;" class="welcome-container">
-        <div id="userPhoto">
-            <img id="imagenPerfil" src="img/sinfoto.jpg" alt="Foto de perfil"
-                onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
-        </div>
-
-        <div class="welcome-text">
-            <h2 id="bienvenido">Hola </h2>
-            <!-- <p class="subtitle">Conectando entidades para potenciar la innovación</p> -->
-        </div>
-        <div class="action-buttons">
-
-         
-      
-        </div>
 
 
     </div>
 
 
-    <!-- Modal Foto de Perfil -->
-    <div id="modalFotoPerfil" class="modal">
-        <div class="modal-content">
-            <span class="close" id="cerrarModalFotoPerfil">&times;</span>
-            <h2>Actualizar Foto de Perfil</h2>
-            <form id="formFotoPerfil">
-                <div class="form-group" style="text-align:center;">
-                    <img id="previewFotoPerfil" src="" alt="Foto actual"
-                        style="width:100px;height:100px;border-radius:50%;object-fit:cover;margin-bottom:15px;"
-                        onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
-                </div>
-                <div class="form-group">
-                    <input type="file" id="inputFotoPerfil" name="fotoPerfil" accept="image/*" required>
-                </div>
-                <button type="submit" class="modal-button">Guardar Foto</button>
-            </form>
+  </div>
+
+
+  <!-- Modal Foto de Perfil -->
+  <div id="modalFotoPerfil" class="modal">
+    <div class="modal-content">
+      <span class="close" id="cerrarModalFotoPerfil">&times;</span>
+      <h2>Actualizar Foto de Perfil</h2>
+      <form id="formFotoPerfil">
+        <div class="form-group" style="text-align:center;">
+          <img id="previewFotoPerfil" src="" alt="Foto actual"
+            style="width:100px;height:100px;border-radius:50%;object-fit:cover;margin-bottom:15px;"
+            onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
         </div>
+        <div class="form-group">
+          <input type="file" id="inputFotoPerfil" name="fotoPerfil" accept="image/*" required>
+        </div>
+        <button type="submit" class="modal-button">Guardar Foto</button>
+      </form>
     </div>
+  </div>
 
 
 
-    <!-- Contacto del lider de PPI -->
-    <div id="modalPostulaciones" class="modal">
-        <div class="modal-content" style="max-width:900px;">
-            <span class="close" id="cerrarModalPostulaciones">&times;</span>
-            <h2>Ficha Técnica de PPI</h2>
-            <div class="form-section">
-                <h3 class="section-title">Contacto Líder PPI</h3>
-                <div class="input-box full-width">
-                    <label for="Entidad">Nombre de la Institución responsable </label>
-                    <input disabled type="text" id="nombreEntidad" name="nombreEntidad"
-                        placeholder="Ingrese el nombre de la entidad responsable" "
+  <!-- Contacto del lider de PPI -->
+  <div id="modalPostulaciones" class="modal">
+    <div class="modal-content" style="max-width:900px;">
+      <span class="close" id="cerrarModalPostulaciones">&times;</span>
+      <h2>Ficha Técnica de PPI</h2>
+      <div class="form-section">
+        <h3 class="section-title">Contacto Líder PPI</h3>
+        <div class="input-box full-width">
+          <label for="Entidad">Nombre de la Institución responsable </label>
+          <input disabled type="text" id="nombreEntidad" name="nombreEntidad"
+            placeholder="Ingrese el nombre de la entidad responsable" "
                             required>
                     </div>
 
                 <div class=" input-row">
-                    <div class="input-box">
-                        <label for="nombreLider">Nombre</label>
-                        <input type="text" id="nombreLider" name="nombreLider"
-                            placeholder="Ingrese el nombre del Líder PPI" required>
-                    </div>
-                   
-                </div>
+          <div class="input-box">
+            <label for="nombreLider">Nombre</label>
+            <input type="text" id="nombreLider" name="nombreLider" placeholder="Ingrese el nombre del Líder PPI"
+              required>
+          </div>
 
-                <div class="input-row">
-                    <div class="input-box">
-                        <label for="correoLider">Correo Electrónico</label>
-                        <input disabled="true" type="email" id="correoLider" name="correo" placeholder="Ingrese el correo" required>
-                    </div>
+        </div>
 
-                    <div class="input-box">
-                        <label for="telefonoLider">Teléfono / Celular</label>
-                        <input disabled="true" type="text" id="telefonoLider" name="telefonoLider"
-                            placeholder="Ingrese el teléfono o celular" required>
-                    </div>
+        <div class="input-row">
+          <div class="input-box">
+            <label for="correoLider">Correo Electrónico</label>
+            <input disabled="true" type="email" id="correoLider" name="correo" placeholder="Ingrese el correo" required>
+          </div>
 
-                </div>
+          <div class="input-box">
+            <label for="telefonoLider">Teléfono / Celular</label>
+            <input disabled="true" type="text" id="telefonoLider" name="telefonoLider"
+              placeholder="Ingrese el teléfono o celular" required>
+          </div>
 
-            </div>
+        </div>
 
-            <!-- Contacto de la persona que diligencia la ficha
+      </div>
+
+      <!-- Contacto de la persona que diligencia la ficha
             <div class="form-section">
                 <h3 class="section-title">Contacto de quien diligencia la ficha</h3>
                 <div class="input-box full-width">
@@ -200,90 +186,90 @@
 
             </div> -->
 
-            <!-- Información General del PPI -->
-            <div class="form-section">
-                <h3 class="section-title">Información General del PPI</h3>
+      <!-- Información General del PPI -->
+      <div class="form-section">
+        <h3 class="section-title">Información General del PPI</h3>
 
-                <div class="input-box full-width">
-                    <label for="nombrePPI">Nombre del PPI (Programa/Proyecto/Iniciativa)</label>
-                    <input type="text" id="nombrePPI" name="nombrePPI" placeholder="Ingrese el nombre del PPI" required>
-                </div>
-                <div class="input-box full-width">
-                    <label for="determinanteProductividad">Determinante de productividad al que se encuentra asociado el
-                        PPI</label>
-                    <input type="text" id="determinanteProductividad" name="determinanteProductividad"
-                        placeholder="Ingrese el nombre del determinante de productividad al que se encuentra asociado el PPI"
-                        required>
-                </div>
-                <div class="input-box full-width">
-                    <label for="componenteProductividad">Componente de productividad al que se encuentra asociado el
-                        PPI</label>
-                    <input type="text" id="componenteProductividad" name="componenteProductividad"
-                        placeholder="Ingrese el nombre del componente de productividad al que se encuentra asociado el PPI"
-                        required>
-                </div>
-                <div class="input-box full-width">
-                    <label for="objetivo">Objetivo del PPI <br>
-                        (Sea claro para que el equipo de expertos pueda identificar si soluciona fallas de mercado,
-                        gobierno o articulación)</label>
-                    <input type="text" id="objetivo" name="objetivo" placeholder="Ingrese el Objetivo del PPI" required>
-                </div>
-                <div class="input-box">
-                    <label for="objetivo">¿Qué necesidad o problema resuelve esta Iniciativa?</label>
-                    <input type="text" id="objetivo" name="objetivo" placeholder="Sea lo más claro posible" required>
-                </div>
-                <div class="input-box full-width">
-                    <label for="impactos"> Liste los tres principales impactos a obtener con el PPI planteado</label>
-                    <input type="text" id="impactos" name="impactos" placeholder="Ingrese los impactos" required>
-                </div>
-                <div class="input-box full-width">
-                    <label for="objetivosEspecificos">Liste los objetivos específicos del proyecto </label>
-                    <input type="text" id="objetivosEspecificos" name="objetivosEspecificos"
-                        placeholder="Ingrese los objetivos específicos (Máximo 5)" required>
+        <div class="input-box full-width">
+          <label for="nombrePPI">Nombre del PPI (Programa/Proyecto/Iniciativa)</label>
+          <input type="text" id="nombrePPI" name="nombrePPI" placeholder="Ingrese el nombre del PPI" required>
+        </div>
+        <div class="input-box full-width">
+          <label for="determinanteProductividad">Determinante de productividad al que se encuentra asociado el
+            PPI</label>
+          <input type="text" id="determinanteProductividad" name="determinanteProductividad"
+            placeholder="Ingrese el nombre del determinante de productividad al que se encuentra asociado el PPI"
+            required>
+        </div>
+        <div class="input-box full-width">
+          <label for="componenteProductividad">Componente de productividad al que se encuentra asociado el
+            PPI</label>
+          <input type="text" id="componenteProductividad" name="componenteProductividad"
+            placeholder="Ingrese el nombre del componente de productividad al que se encuentra asociado el PPI"
+            required>
+        </div>
+        <div class="input-box full-width">
+          <label for="objetivo">Objetivo del PPI <br>
+            (Sea claro para que el equipo de expertos pueda identificar si soluciona fallas de mercado,
+            gobierno o articulación)</label>
+          <input type="text" id="objetivo" name="objetivo" placeholder="Ingrese el Objetivo del PPI" required>
+        </div>
+        <div class="input-box">
+          <label for="objetivo">¿Qué necesidad o problema resuelve esta Iniciativa?</label>
+          <input type="text" id="objetivo" name="objetivo" placeholder="Sea lo más claro posible" required>
+        </div>
+        <div class="input-box full-width">
+          <label for="impactos"> Liste los tres principales impactos a obtener con el PPI planteado</label>
+          <input type="text" id="impactos" name="impactos" placeholder="Ingrese los impactos" required>
+        </div>
+        <div class="input-box full-width">
+          <label for="objetivosEspecificos">Liste los objetivos específicos del proyecto </label>
+          <input type="text" id="objetivosEspecificos" name="objetivosEspecificos"
+            placeholder="Ingrese los objetivos específicos (Máximo 5)" required>
 
-                </div>
+        </div>
 
-                <div class="input-box full-width">
-                    <label for="duracionPPI">¿Cuál es la duración estimada del PPI?</label>
-                    <select id="duracionPPI" name="duracionPPI" required>
-                        <option value="">Seleccione una opción</option>
-                        <option value="Menos de un año">Menos de un año</option>
-                        <option value="Entre un año y tres años">Entre un año y tres años</option>
-                        <option value="Más de tres años">Más de tres años</option>
-                    </select>
-                </div>
-                <div class="input-box full-width">
-                    <label for="presupuestoPPI">¿Cuál es el presupuesto estimado del PPI?</label>
-                    <select id="presupuestoPPI" name="duracionPPI" required>
-                        <option value="">Seleccione una opción</option>
-                        <option value="De 0 a 100 millones de pesos">De 0 a 100 millones de pesos</option>
-                        <option value="De 101 a 500 millones de pesos">De 101 a 500 millones de pesos</option>
-                        <option value="De 501 a 1000 millones de pesos">De 501 a 1000 millones de pesos</option>
-                        <option value="De 1001 a 5000 millones de pesos">De 1001 a 5000 millones de pesos</option>
-                        <option value="Más de 5000 millones de pesos">Más de 5000 millones de pesos</option>
-                    </select>
-                </div>
+        <div class="input-box full-width">
+          <label for="duracionPPI">¿Cuál es la duración estimada del PPI?</label>
+          <select id="duracionPPI" name="duracionPPI" required>
+            <option value="">Seleccione una opción</option>
+            <option value="Menos de un año">Menos de un año</option>
+            <option value="Entre un año y tres años">Entre un año y tres años</option>
+            <option value="Más de tres años">Más de tres años</option>
+          </select>
+        </div>
+        <div class="input-box full-width">
+          <label for="presupuestoPPI">¿Cuál es el presupuesto estimado del PPI?</label>
+          <select id="presupuestoPPI" name="duracionPPI" required>
+            <option value="">Seleccione una opción</option>
+            <option value="De 0 a 100 millones de pesos">De 0 a 100 millones de pesos</option>
+            <option value="De 101 a 500 millones de pesos">De 101 a 500 millones de pesos</option>
+            <option value="De 501 a 1000 millones de pesos">De 501 a 1000 millones de pesos</option>
+            <option value="De 1001 a 5000 millones de pesos">De 1001 a 5000 millones de pesos</option>
+            <option value="Más de 5000 millones de pesos">Más de 5000 millones de pesos</option>
+          </select>
+        </div>
 
 
-                <div class="input-box full-width">
-                    <label for="fasePPI">¿En qué fase se encuentra actualmente el PPI?</label>
-                    <select id="fasePPI" name="fasePPI" required>
-                        <option value="">Seleccione una opción</option>
-                        <option value="Fase 1: Idea">Fase 1: Idea</option>
-                        <option value="Fase 2: Formulación o Prefactibilidad">Fase 2: Formulación o Prefactibilidad
-                        </option>
-                        <option value="Fase 3: Factibilidad">Fase 3: Factibilidad</option>
-                        <option value="Contratación">Contratación</option>
-                        <option value="Ejecución">Ejecución</option>
-                    </select>
-                </div>
+        <div class="input-box full-width">
+          <label for="fasePPI">¿En qué fase se encuentra actualmente el PPI?</label>
+          <select id="fasePPI" name="fasePPI" required>
+            <option value="">Seleccione una opción</option>
+            <option value="Fase 1: Idea">Fase 1: Idea</option>
+            <option value="Fase 2: Formulación o Prefactibilidad">Fase 2: Formulación o Prefactibilidad
+            </option>
+            <option value="Fase 3: Factibilidad">Fase 3: Factibilidad</option>
+            <option value="Contratación">Contratación</option>
+            <option value="Ejecución">Ejecución</option>
+          </select>
+        </div>
 
-            </div>
-            <div style="text-align:right; margin-top:20px;">
-                <button class="modal-button" id="guardarFichaPPI">Guardar Ficha Técnica</button>
-            </div>
-            <!-- Análisis de Equidad de Género y Superación de la Pobreza -->
-            <!-- <div class="form-section">
+      </div>
+      <div style="text-align:right; margin-top:20px;">
+        <button class="modal-button" id="guardarFichaPPI">Guardar Ficha Técnica</button>
+      </div>
+      <!-- Análisis de Equidad de Género y Superación de la Pobreza -->
+      <!-- <div class="form-section">
                 <h3 class="section-title">Análisis de Equidad de Género y Superación de la Pobreza </h3>
 
                 <div class="input-box full-width">
@@ -365,89 +351,54 @@
                         placeholder="Ingrese las politicas de equidad de género para la contratación" required>
                 </div>
             </div> -->
-        </div>
+    </div>
+  </div>
+
+  <!-- Mis Proyectos -->
+
+  <div class="main-content">
+    <div style="display: flex;   justify-content: space-between;">
+      <h2 class="title" id="misProyectos">Proyectos de </h2>
+      </h2>
+      <button class="action-button" id="postulaciones">
+        <span class="button-icon"><i class="bi bi-lightbulb-fill " style="color: rgb(255, 248, 148);"></i></span>Nueva
+        Idea de Proyecto
+      </button>
     </div>
 
-    <!-- Mis Proyectos -->
-
-    <div class="main-content">
-        <div style="display: flex;   justify-content: space-between;">
-        <h2 class="title" id="misProyectos">Proyectos de </h2>
-        </h2>
-   <button class="action-button" id="postulaciones">
-                <span class="button-icon"><i class="bi bi-lightbulb-fill "
-                        style="color: rgb(255, 248, 148);"></i></span>Nueva Idea de Proyecto                
-            </button>
-            </div>
-        <!-- Estadísticas -->
-
-        <!-- <div class="stats-grid">
-            <div class="stat-card presentados">
-                <div class="stat-icon">📝</div>
-                <div class="stat-number">24</div>
-                <div class="stat-label">Presentados</div>
-            </div>
-
-            <div class="stat-card evaluacion">
-                <div class="stat-icon">🔍</div>
-                <div class="stat-number">8</div>
-                <div class="stat-label">En Evaluación</div>
-            </div>
-
-            <div class="stat-card comite">
-                <div class="stat-icon">👥</div>
-                <div class="stat-number">3</div>
-                <div class="stat-label">En Comité</div>
-            </div>
-
-            <div class="stat-card aprobados">
-                <div class="stat-icon">✅</div>
-                <div class="stat-number">15</div>
-                <div class="stat-label">Aprobados</div>
-            </div>
-
-            <div class="stat-card rechazados">
-                <div class="stat-icon">❌</div>
-                <div class="stat-number">7</div>
-                <div class="stat-label">Rechazados</div>
-            </div>
-        </div> -->
-
-
-
-        <!-- Filtros -->
-        <div class="filter-container">
-            <input type="text" id="buscarMisProyectos" placeholder="Buscar tus proyectos..." class="filter-input">
-        </div>
-
-        <!-- Tabla de Mis Proyectos -->
-        <table class="data-table" id="tablaPostulaciones">
-            <thead>
-                <tr>
-                    <th>Codigo</th>
-                    <th>Nombre del proyecto</th>
-                    <th>Objetivo</th>
-                    <th>Entidad</th>
-                    <th>Líder PPI</th>
-                    <th>Duración</th>
-                    <th>Estado</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody id="cuerpoTablaPostulaciones">
-                <!-- Filas de datos se generarán dinámicamente aquí -->
-
-            </tbody>
-        </table>
-        <div id="paginacionEntidades" class="pagination"></div>
-
-
+    <!-- Filtros -->
+    <div class="filter-container">
+      <input type="text" id="buscarMisProyectos" placeholder="Buscar tus proyectos..." class="filter-input">
     </div>
 
-<script>
-document.getElementById('guardarFichaPPI').onclick = async function () {
-    // Recoge los datos del formulario
-    const data = {
+    <!-- Tabla de Mis Proyectos -->
+    <table class="data-table" id="tablaPostulaciones">
+      <thead>
+        <tr>
+          <th>Codigo</th>
+          <th>Nombre del proyecto</th>
+          <th>Objetivo</th>
+          <th>Entidad</th>
+          <th>Líder PPI</th>
+          <th>Duración</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="cuerpoTablaPostulaciones">
+        <!-- Filas de datos se generarán dinámicamente aquí -->
+
+      </tbody>
+    </table>
+    <div id="paginacionEntidades" class="pagination"></div>
+
+
+  </div>
+
+  <script>
+    document.getElementById('guardarFichaPPI').onclick = async function () {
+      // Recoge los datos del formulario
+      const data = {
         entidadId: document.getElementById('nombreEntidad').value === 'null' ? null : document.getElementById('nombreEntidad').value,
         userId: obtenerCookie("userId"),
         userLiderId: document.getElementById('nombreLider').value,
@@ -469,103 +420,103 @@ document.getElementById('guardarFichaPPI').onclick = async function () {
         impactoEmpleo: 'sin usar',
         impactoEquidad: 'sin usar',
         politicasPPI: 'sin usar'
-    };
-console.log(data);
-    // Validación rápida
-    // Si entidadId es null, no lo validamos como error
-    for (const key in data) {
+      };
+      console.log(data);
+      // Validación rápida
+      // Si entidadId es null, no lo validamos como error
+      for (const key in data) {
         if (key !== 'entidadId' && !data[key]) {
-            Swal.fire('Faltan datos', `Por favor completa el campo: ${key}.`, 'warning');
-            return;
+          Swal.fire('Faltan datos', `Por favor completa el campo: ${key}.`, 'warning');
+          return;
         }
-    }
+      }
 
-    try {
+      try {
         const res = await fetch('/api/proyectos', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
         });
         const result = await res.json();
         if (res.ok) {
-            Swal.fire('Guardado', 'Ficha técnica enviada correctamente.', 'success').then(() => {
+          Swal.fire('Guardado', 'Ficha técnica enviada correctamente.', 'success').then(() => {
             document.getElementById('modalPostulaciones').style.display = 'none';
             location.reload();
-            });
+          });
         } else {
-            Swal.fire('Error', result.message || 'No se pudo guardar.', 'error');
+          Swal.fire('Error', result.message || 'No se pudo guardar.', 'error');
         }
-    } catch (err) {
+      } catch (err) {
         Swal.fire('Error', 'No se pudo conectar con el servidor.', 'error');
-    }
-};
-</script>
+      }
+    };
+  </script>
 
   <script>
-  // =========================
-  // Utilidades
-  // =========================
-  function obtenerCookie(nombre) {
-    const nombreCookie = `${nombre}=`;
-    const cookies = document.cookie.split(';');
-    for (let i = 0; i < cookies.length; i++) {
-      let cookie = cookies[i].trim();
-      if (cookie.indexOf(nombreCookie) === 0) {
-        return cookie.substring(nombreCookie.length, cookie.length);
+    // =========================
+    // Utilidades
+    // =========================
+    function obtenerCookie(nombre) {
+      const nombreCookie = `${nombre}=`;
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        let cookie = cookies[i].trim();
+        if (cookie.indexOf(nombreCookie) === 0) {
+          return cookie.substring(nombreCookie.length, cookie.length);
+        }
       }
+      return null;
     }
-    return null;
-  }
 
-  const userId = obtenerCookie("userId");
+    const userId = obtenerCookie("userId");
 
-  // =========================
-  // Inicialización de usuario (nombre, foto) y carga de proyectos
-  // =========================
-  (async () => {
-    try {
-      // Cargar usuario (para cabecera y foto)
-      const resUser = await fetch(`/api/user/${userId}`);
-      const dataUser = await resUser.json();
+    // =========================
+    // Inicialización de usuario (nombre, foto) y carga de proyectos
+    // =========================
+    (async () => {
+      try {
+        // Cargar usuario (para cabecera y foto)
+        const resUser = await fetch(`/api/user/${userId}`);
+        const dataUser = await resUser.json();
 
-      const tituloProyectos = document.getElementById('misProyectos');
-      if (tituloProyectos && dataUser?.name) {
-        tituloProyectos.innerText = `Proyectos de ${dataUser.name}`;
-      }
+        const tituloProyectos = document.getElementById('misProyectos');
+        if (tituloProyectos && dataUser?.name) {
+          tituloProyectos.innerText = `Proyectos de ${dataUser.name}`;
+        }
         document.getElementById("imagenPerfilSecundaria").src = dataUser.fotoPerfil ? "photo/" + dataUser.fotoPerfil : "photo/sinfoto.jpg";
 
-      if (dataUser?.fotoPerfil) {
-        const img = document.getElementById('imagenPerfil');
-        if (img) img.src = dataUser.fotoPerfil;
-      }
+        if (dataUser?.fotoPerfil) {
+          const img = document.getElementById('imagenPerfil');
+          if (img) img.src = dataUser.fotoPerfil;
+        }
 
-      // Determinar entidad y setear input nombreEntidad
-      let entidadId = null;
-      const resUE = await fetch(`/api/usuarioempresa/user/${userId}`);
-      const dataUE = await resUE.json();
+        // Determinar entidad y setear input nombreEntidad
+        let entidadId = null;
+        const resUE = await fetch(`/api/usuarioempresa/user/${userId}`);
+        const dataUE = await resUE.json();
 
-      if (Array.isArray(dataUE) && dataUE.length > 0 && dataUE[0].empresa) {
-        entidadId = dataUE[0].empresa.id;
-      } else {
-        entidadId = 'null';
-      }
+        if (Array.isArray(dataUE) && dataUE.length > 0 && dataUE[0].empresa) {
+          entidadId = dataUE[0].empresa.id;
+        } else {
+          entidadId = 'null';
+        }
 
-      const inputEntidad = document.getElementById('nombreEntidad');
-      if (inputEntidad) inputEntidad.value = entidadId;
+        const inputEntidad = document.getElementById('nombreEntidad');
+        if (inputEntidad) inputEntidad.value = entidadId;
 
-      console.log('Entidad ID seleccionada:', entidadId);
+        console.log('Entidad ID seleccionada:', entidadId);
 
-      // Cargar proyectos por entidad o propios
-      const resProy = await fetch(`/api/proyectos/entidadomis/${userId}/${entidadId}`);
-      const dataProy = await resProy.json();
-console.log('Proyectos cargados:', dataProy);
-      const tbody = document.getElementById('cuerpoTablaPostulaciones');
-      if (tbody) {
-        tbody.innerHTML = '';
-        if (Array.isArray(dataProy) && dataProy.length > 0) {
-          dataProy.forEach(proyecto => {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
+        // Cargar proyectos por entidad o propios
+        const resProy = await fetch(`/api/proyectos/entidadomis/${userId}/${entidadId}`);
+        const dataProy = await resProy.json();
+        console.log('Proyectos cargados:', dataProy);
+        const tbody = document.getElementById('cuerpoTablaPostulaciones');
+        if (tbody) {
+          tbody.innerHTML = '';
+          if (Array.isArray(dataProy) && dataProy.length > 0) {
+            dataProy.forEach(proyecto => {
+              const tr = document.createElement('tr');
+              tr.innerHTML = `
               <td>${proyecto.id || ''}</td>
               <td>${proyecto.nombrePPI || ''}</td>
               <td>${proyecto.objetivo || ''}</td>
@@ -579,177 +530,177 @@ console.log('Proyectos cargados:', dataProy);
                 </button>
               </td>
             `;
-            tbody.appendChild(tr);
-          });
+              tbody.appendChild(tr);
+            });
+          }
         }
+      } catch (err) {
+        console.error('Error inicializando la vista:', err);
       }
-    } catch (err) {
-      console.error('Error inicializando la vista:', err);
-    }
-  })();
+    })();
 
-  // =========================
-  // Cerrar modal de postulaciones
-  // =========================
-  const btnCerrar = document.getElementById('cerrarModalPostulaciones');
-  if (btnCerrar) {
-    btnCerrar.onclick = function () {
-      const modal = document.getElementById('modalPostulaciones');
-      if (modal) modal.style.display = 'none';
-    };
-  }
-
-  // =========================
-  // Helpers para renderizar select de Líder
-  // =========================
-  async function renderLiderEmpresa(empresaId) {
-    const nombreLiderInput = document.getElementById('nombreLider');
-    const correoLiderInput = document.getElementById('correoLider');
-    const telefonoLiderInput = document.getElementById('telefonoLider');
-
-    const selectLider = document.createElement('select');
-    selectLider.id = 'nombreLider';
-    selectLider.name = 'nombreLider';
-    selectLider.required = true;
-
-    const res = await fetch(`/api/usuarioempresa/empresa/${empresaId}`);
-    const data = await res.json();
-
-    (data || []).forEach(item => {
-      const option = document.createElement('option');
-      option.value = item.User.id;
-      option.text = `${item.User.name} (${item.Cargo?.nombre || 'Sin cargo'})`;
-      
-      option.dataset.email = item.User.email || '';
-      option.dataset.telefono = item.User.telefono || '';
-      selectLider.appendChild(option);
-    });
-
-    // Seleccionar el primero y actualizar campos
-    if (selectLider.options.length > 0) {
-      const selectedOption = selectLider.options[0];
-      if (correoLiderInput) correoLiderInput.value = selectedOption.dataset.email || '';
-      if (telefonoLiderInput) telefonoLiderInput.value = selectedOption.dataset.telefono || '';
-    } else {
-      if (correoLiderInput) correoLiderInput.value = '';
-      if (telefonoLiderInput) telefonoLiderInput.value = '';
+    // =========================
+    // Cerrar modal de postulaciones
+    // =========================
+    const btnCerrar = document.getElementById('cerrarModalPostulaciones');
+    if (btnCerrar) {
+      btnCerrar.onclick = function () {
+        const modal = document.getElementById('modalPostulaciones');
+        if (modal) modal.style.display = 'none';
+      };
     }
 
-    // Cambiar correo y teléfono al cambiar líder
-    selectLider.onchange = function () {
-      const selectedOption = selectLider.options[selectLider.selectedIndex];
-      if (correoLiderInput) correoLiderInput.value = selectedOption.dataset.email || '';
-      if (telefonoLiderInput) telefonoLiderInput.value = selectedOption.dataset.telefono || '';
-    };
-
-    if (nombreLiderInput && nombreLiderInput.parentNode) {
-      nombreLiderInput.parentNode.replaceChild(selectLider, nombreLiderInput);
-    } else {
-      // Si no existe el input a reemplazar, intenta anexar en un contenedor conocido
-      const cont = document.getElementById('contenedorLider') || document.body;
-      cont.appendChild(selectLider);
-    }
-  }
-
-  async function renderLiderIndependiente() {
-    const nombreLiderInput = document.getElementById('nombreLider');
-    const correoLiderInput = document.getElementById('correoLider');
-    const telefonoLiderInput = document.getElementById('telefonoLider');
-
-    const selectLider = document.createElement('select');
-    selectLider.id = 'nombreLider';
-    selectLider.name = 'nombreLider';
-    selectLider.required = true;
-
-    const uid = obtenerCookie("userId");
-    const resUser = await fetch(`/api/user/${uid}`);
-    const user = await resUser.json();
-
-    const optionUsuario = document.createElement('option');
-    optionUsuario.value = uid;
-
-    // Tomar nombre desde #bienvenido si existe ("Hola Nombre")
- 
-    optionUsuario.dataset.name = user.name|| '';
-    optionUsuario.dataset.email = user.email || '';
-    optionUsuario.dataset.telefono = user.telefono || '';
-    selectLider.appendChild(optionUsuario);
-    optionUsuario.text = user.name || 'Usuario Actual';
-
-    // Rellenar inputs con datos del usuario
-    if (nombreLiderInput) nombreLiderInput.value = user.name || '';
-    if (correoLiderInput) correoLiderInput.value = user.email || '';
-    if (telefonoLiderInput) telefonoLiderInput.value = user.telefono || '';
-
-    // Listener (aunque solo haya uno)
-    selectLider.onchange = function () {
-        
-      const selectedOption = selectLider.options[selectLider.selectedIndex];
-      if (correoLiderInput) correoLiderInput.value = selectedOption.dataset.email || '';
-      if (telefonoLiderInput) telefonoLiderInput.value = selectedOption.dataset.telefono || '';
-    };
-
-    if (nombreLiderInput && nombreLiderInput.parentNode) {
-      nombreLiderInput.parentNode.replaceChild(selectLider, nombreLiderInput);
-    } else {
-      const cont = document.getElementById('contenedorLider') || document.body;
-      cont.appendChild(selectLider);
-    }
-  }
-
-  // =========================
-  // Listeners de cambio
-  // =========================
-  // Cambiar líderes al cambiar el select de entidad (nombreEntidad)
-  document.addEventListener('change', async function (e) {
-    if (e.target && e.target.id === 'nombreEntidad') {
-      const empresaId = e.target.value;
-      if (empresaId && empresaId !== "null") {
-        await renderLiderEmpresa(empresaId);
-      } else {
-        await renderLiderIndependiente();
-      }
-    }
-  });
-
-  // Cambiar correo y teléfono al cambiar líder (nombreLider), incluso si no cambia la entidad
-  document.addEventListener('change', function (e) {
-    if (e.target && e.target.id === 'nombreLider') {
-      const selectedOption = e.target.options[e.target.selectedIndex];
+    // =========================
+    // Helpers para renderizar select de Líder
+    // =========================
+    async function renderLiderEmpresa(empresaId) {
+      const nombreLiderInput = document.getElementById('nombreLider');
       const correoLiderInput = document.getElementById('correoLider');
       const telefonoLiderInput = document.getElementById('telefonoLider');
-      if (correoLiderInput) correoLiderInput.value = selectedOption.dataset.email || '';
-      if (telefonoLiderInput) telefonoLiderInput.value = selectedOption.dataset.telefono || '';
-    }
-  });
 
-  // =========================
-  // (Opcional) Si deseas forzar que al inicio se renderice el líder acorde al valor cargado de nombreEntidad
-  // =========================
-  window.addEventListener('DOMContentLoaded', async () => {
-    const inputEntidad = document.getElementById('nombreEntidad');
-    if (inputEntidad) {
-      if (inputEntidad.value && inputEntidad.value !== 'null') {
-        await renderLiderEmpresa(inputEntidad.value);
+      const selectLider = document.createElement('select');
+      selectLider.id = 'nombreLider';
+      selectLider.name = 'nombreLider';
+      selectLider.required = true;
+
+      const res = await fetch(`/api/usuarioempresa/empresa/${empresaId}`);
+      const data = await res.json();
+
+      (data || []).forEach(item => {
+        const option = document.createElement('option');
+        option.value = item.User.id;
+        option.text = `${item.User.name} (${item.Cargo?.nombre || 'Sin cargo'})`;
+
+        option.dataset.email = item.User.email || '';
+        option.dataset.telefono = item.User.telefono || '';
+        selectLider.appendChild(option);
+      });
+
+      // Seleccionar el primero y actualizar campos
+      if (selectLider.options.length > 0) {
+        const selectedOption = selectLider.options[0];
+        if (correoLiderInput) correoLiderInput.value = selectedOption.dataset.email || '';
+        if (telefonoLiderInput) telefonoLiderInput.value = selectedOption.dataset.telefono || '';
       } else {
-        await renderLiderIndependiente();
+        if (correoLiderInput) correoLiderInput.value = '';
+        if (telefonoLiderInput) telefonoLiderInput.value = '';
+      }
+
+      // Cambiar correo y teléfono al cambiar líder
+      selectLider.onchange = function () {
+        const selectedOption = selectLider.options[selectLider.selectedIndex];
+        if (correoLiderInput) correoLiderInput.value = selectedOption.dataset.email || '';
+        if (telefonoLiderInput) telefonoLiderInput.value = selectedOption.dataset.telefono || '';
+      };
+
+      if (nombreLiderInput && nombreLiderInput.parentNode) {
+        nombreLiderInput.parentNode.replaceChild(selectLider, nombreLiderInput);
+      } else {
+        // Si no existe el input a reemplazar, intenta anexar en un contenedor conocido
+        const cont = document.getElementById('contenedorLider') || document.body;
+        cont.appendChild(selectLider);
       }
     }
-  });
-</script>
-<script>
-function verMasProyecto(proyectoId) {
-    fetch(`/api/proyectos/${proyectoId}`)
+
+    async function renderLiderIndependiente() {
+      const nombreLiderInput = document.getElementById('nombreLider');
+      const correoLiderInput = document.getElementById('correoLider');
+      const telefonoLiderInput = document.getElementById('telefonoLider');
+
+      const selectLider = document.createElement('select');
+      selectLider.id = 'nombreLider';
+      selectLider.name = 'nombreLider';
+      selectLider.required = true;
+
+      const uid = obtenerCookie("userId");
+      const resUser = await fetch(`/api/user/${uid}`);
+      const user = await resUser.json();
+
+      const optionUsuario = document.createElement('option');
+      optionUsuario.value = uid;
+
+      // Tomar nombre desde #bienvenido si existe ("Hola Nombre")
+
+      optionUsuario.dataset.name = user.name || '';
+      optionUsuario.dataset.email = user.email || '';
+      optionUsuario.dataset.telefono = user.telefono || '';
+      selectLider.appendChild(optionUsuario);
+      optionUsuario.text = user.name || 'Usuario Actual';
+
+      // Rellenar inputs con datos del usuario
+      if (nombreLiderInput) nombreLiderInput.value = user.name || '';
+      if (correoLiderInput) correoLiderInput.value = user.email || '';
+      if (telefonoLiderInput) telefonoLiderInput.value = user.telefono || '';
+
+      // Listener (aunque solo haya uno)
+      selectLider.onchange = function () {
+
+        const selectedOption = selectLider.options[selectLider.selectedIndex];
+        if (correoLiderInput) correoLiderInput.value = selectedOption.dataset.email || '';
+        if (telefonoLiderInput) telefonoLiderInput.value = selectedOption.dataset.telefono || '';
+      };
+
+      if (nombreLiderInput && nombreLiderInput.parentNode) {
+        nombreLiderInput.parentNode.replaceChild(selectLider, nombreLiderInput);
+      } else {
+        const cont = document.getElementById('contenedorLider') || document.body;
+        cont.appendChild(selectLider);
+      }
+    }
+
+    // =========================
+    // Listeners de cambio
+    // =========================
+    // Cambiar líderes al cambiar el select de entidad (nombreEntidad)
+    document.addEventListener('change', async function (e) {
+      if (e.target && e.target.id === 'nombreEntidad') {
+        const empresaId = e.target.value;
+        if (empresaId && empresaId !== "null") {
+          await renderLiderEmpresa(empresaId);
+        } else {
+          await renderLiderIndependiente();
+        }
+      }
+    });
+
+    // Cambiar correo y teléfono al cambiar líder (nombreLider), incluso si no cambia la entidad
+    document.addEventListener('change', function (e) {
+      if (e.target && e.target.id === 'nombreLider') {
+        const selectedOption = e.target.options[e.target.selectedIndex];
+        const correoLiderInput = document.getElementById('correoLider');
+        const telefonoLiderInput = document.getElementById('telefonoLider');
+        if (correoLiderInput) correoLiderInput.value = selectedOption.dataset.email || '';
+        if (telefonoLiderInput) telefonoLiderInput.value = selectedOption.dataset.telefono || '';
+      }
+    });
+
+    // =========================
+    // (Opcional) Si deseas forzar que al inicio se renderice el líder acorde al valor cargado de nombreEntidad
+    // =========================
+    window.addEventListener('DOMContentLoaded', async () => {
+      const inputEntidad = document.getElementById('nombreEntidad');
+      if (inputEntidad) {
+        if (inputEntidad.value && inputEntidad.value !== 'null') {
+          await renderLiderEmpresa(inputEntidad.value);
+        } else {
+          await renderLiderIndependiente();
+        }
+      }
+    });
+  </script>
+  <script>
+    function verMasProyecto(proyectoId) {
+      fetch(`/api/proyectos/${proyectoId}`)
         .then(res => res.json())
         .then(proyecto => {
-            // Crea el modal si no existe
-            console.log('Proyecto cargado para ver más:', proyecto);
-            let modal = document.getElementById('modalVerProyecto');
-            if (!modal) {
-                modal = document.createElement('div');
-                modal.id = 'modalVerProyecto';
-                modal.className = 'modal';
-                modal.innerHTML = `
+          // Crea el modal si no existe
+          console.log('Proyecto cargado para ver más:', proyecto);
+          let modal = document.getElementById('modalVerProyecto');
+          if (!modal) {
+            modal = document.createElement('div');
+            modal.id = 'modalVerProyecto';
+            modal.className = 'modal';
+            modal.innerHTML = `
                     <div class="modal-content" style="max-width:900px;">
                         <span class="close" id="cerrarModalVerProyecto">&times;</span>
                         <div style="display:flex;align-items:center;justify-content:center;">
@@ -760,16 +711,16 @@ function verMasProyecto(proyectoId) {
                         <div id="contenidoVerProyecto"></div>
                     </div>
                 `;
-                document.body.appendChild(modal);
-                document.getElementById('cerrarModalVerProyecto').onclick = function () {
-                    modal.style.display = 'none';
-                };
-            }
-            // Llena el contenido con tarjetas y estilos
-                        console.log('Proyecto cargado para ver más:', proyecto);
+            document.body.appendChild(modal);
+            document.getElementById('cerrarModalVerProyecto').onclick = function () {
+              modal.style.display = 'none';
+            };
+          }
+          // Llena el contenido con tarjetas y estilos
+          console.log('Proyecto cargado para ver más:', proyecto);
 
-            const contenido = document.getElementById('contenidoVerProyecto');
-            contenido.innerHTML = `
+          const contenido = document.getElementById('contenidoVerProyecto');
+          contenido.innerHTML = `
                 <div style="display:flex;flex-wrap:wrap;gap:24px;">
                     <div style="flex:1;min-width:280px;">
                         <div style="background:#f8f9fa;border-radius:12px;padding:18px;box-shadow:0 2px 8px #0001;">
@@ -803,268 +754,268 @@ function verMasProyecto(proyectoId) {
                     </div>
                 </div>
             `;
-            document.getElementById('tituloModalVerProyecto').innerText = `${proyecto.nombrePPI || 'Detalle del Proyecto'}`;
-            modal.style.display = 'block';
+          document.getElementById('tituloModalVerProyecto').innerText = `${proyecto.nombrePPI || 'Detalle del Proyecto'}`;
+          modal.style.display = 'block';
         })
         .catch(() => {
-            Swal.fire('Error', 'No se pudo cargar el proyecto.', 'error');
+          Swal.fire('Error', 'No se pudo cargar el proyecto.', 'error');
         });
-}
-</script>
-<script>
+    }
+  </script>
+  <script>
     document.getElementById("cerrarSesion").addEventListener("click", () => {
-  Swal.fire({
-    title: '¿Estás seguro?',
-    text: '¿Querés cerrar sesión?',
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonText: 'Sí, cerrar sesión',
-    cancelButtonText: 'Cancelar',
-    reverseButtons: true
-  }).then((result) => {
-    if (result.isConfirmed) {
-      // Borrar cookies y redirigir
-      document.cookie = 'jwt=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-      document.cookie = 'user=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-      document.cookie = 'userId=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-      document.location.href = "/";
-      
-    }
-    // Si el usuario cancela, no pasa nada
-  });
-});
-</script>
-<script>
-(() => {
-  const $ = (id) => document.getElementById(id);
+      Swal.fire({
+        title: '¿Estás seguro?',
+        text: '¿Querés cerrar sesión?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, cerrar sesión',
+        cancelButtonText: 'Cancelar',
+        reverseButtons: true
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Borrar cookies y redirigir
+          document.cookie = 'jwt=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+          document.cookie = 'user=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+          document.cookie = 'userId=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+          document.location.href = "/";
 
-  // 👉 Cache del usuario actual para usarlo en "Independiente"
-  let userSelf = { id: null, name: '', email: '', telefono: '' };
-
-  function setContacto(email = '', telefono = '') {
-    
-    $('correoLider').value = email || '';
-    $('telefonoLider').value = telefono || '';
-  }
-
-  function renderSelectLider(options = [], preselectValue = null) {
-    const old = $('nombreLider');
-    const select = document.createElement('select');
-    select.id = 'nombreLider';
-    select.name = 'nombreLider';
-    select.required = true;
-
-    options.forEach(o => {
-      const opt = document.createElement('option');
-      opt.value = o.value;
-      opt.text  = o.label;
-      opt.dataset.email    = o.email || '';
-      opt.dataset.telefono = o.telefono || '';
-      if (preselectValue && preselectValue == o.value) opt.selected = true;
-      select.appendChild(opt);
-    });
-
-    select.addEventListener('change', () => {
-      const sel = select.options[select.selectedIndex];
-      setContacto(sel?.dataset.email, sel?.dataset.telefono);
-    });
-
-    old?.parentNode.replaceChild(select, old);
-
-    if (select.options.length > 0) {
-      const sel = select.options[select.selectedIndex];
-      setContacto(sel?.dataset.email, sel?.dataset.telefono);
-    } else {
-      setContacto('', '');
-    }
-  }
-
-  function renderSelectEntidad({ empresa } = {}) {
-    const old = $('nombreEntidad');
-    const select = document.createElement('select');
-    select.id = 'nombreEntidad';
-    select.name = 'nombreEntidad';
-    select.required = true;
-
-    const optInd = document.createElement('option');
-    optInd.value = 'null';
-    optInd.text  = 'Independiente';
-    select.appendChild(optInd);
-
-    let preselect = 'null';
-    if (empresa && empresa.id) {
-      const optEmp = document.createElement('option');
-      optEmp.value = String(empresa.id);
-      optEmp.text  = empresa.razonSocial || `Empresa ${empresa.id}`;
-      select.appendChild(optEmp);
-      preselect = String(empresa.id);
-    }
-
-    select.value = preselect;
-
-    // 💡 Al cambiar entidad: si es Independiente, seteamos contacto del usuario
-    select.addEventListener('change', async () => {
-      await onEntidadChange(select.value);
-    });
-
-    old?.parentNode.replaceChild(select, old);
-    return preselect;
-  }
-
-  async function loadLideresPorEmpresa(empresaId) {
-    const res  = await fetch(`/api/usuarioempresa/empresa/${empresaId}`);
-    const data = await res.json();
-    const opciones = (Array.isArray(data) ? data : []).map(item => ({
-      value: String(item.User.id),
-      label: `${item.User.name} (${item.Cargo?.nombre || '—'})`,
-      email: item.User.email || '',
-      telefono: item.User.telefono || ''
-    }));
-    renderSelectLider(opciones);
-  }
-
-  // ✅ Ahora recibe userSelf y actualiza contacto
-  function setIndependienteAsLider() {
-    renderSelectLider([{
-      value: String(userSelf.id || obtenerCookie("userId")),
-      label: userSelf.name || 'Usuario Actual',
-      email: userSelf.email || '',
-      telefono: userSelf.telefono || ''
-    }], String(userSelf.id || obtenerCookie("userId")));
-    console
-    // Fuerza contacto del usuario (por si veníamos con datos de empresa)
-    // Trae email y teléfono del usuario actual por fetch
-    fetch(`/api/user/${userSelf.id}`)
-      .then(res => res.json())
-      .then(user => {
-        setContacto(user.email || '', user.telefono || '', user.name || '');
-      })
-      .catch(() => {
-        setContacto(userSelf.email || '', userSelf.telefono || '', userSelf.name || '');
+        }
+        // Si el usuario cancela, no pasa nada
       });
-  }
+    });
+  </script>
+  <script>
+    (() => {
+      const $ = (id) => document.getElementById(id);
 
-  async function onEntidadChange(empresaValue) {
-    if (empresaValue && empresaValue !== 'null') {
-      await loadLideresPorEmpresa(empresaValue);
-    } else {
-      setIndependienteAsLider();
-    }
-  }
+      // 👉 Cache del usuario actual para usarlo en "Independiente"
+      let userSelf = { id: null, name: '', email: '', telefono: '' };
 
-  // 🧠 Abrir modal: cargamos user+empresa, llenamos entidad, y luego líderes/independiente
-  $('postulaciones').addEventListener('click', async () => {
-    $('modalPostulaciones').style.display = 'block';
-    try {
-      const res  = await fetch(`/api/usuarioempresa/user/${userId}`);
-      const data = await res.json();
+      function setContacto(email = '', telefono = '') {
 
-      // Intenta sacar el usuario del payload recibido (ajústalo si tu API difiere)
-      const userFromApi = Array.isArray(data) ? (data[0]?.User || data[0]?.user) : null;
+        $('correoLider').value = email || '';
+        $('telefonoLider').value = telefono || '';
+      }
 
-      userSelf = {
-        id: userFromApi?.id || obtenerCookie("userId"),
-        name: $('bienvenido')?.innerText?.replace('Hola ', '') || userFromApi?.name || '',
-        email: userFromApi?.email || ($('correoUsuario')?.value || ''),     // opcional: hidden input #correoUsuario
-        telefono: userFromApi?.telefono || ($('telefonoUsuario')?.value || '') // opcional: hidden input #telefonoUsuario
-      };
+      function renderSelectLider(options = [], preselectValue = null) {
+        const old = $('nombreLider');
+        const select = document.createElement('select');
+        select.id = 'nombreLider';
+        select.name = 'nombreLider';
+        select.required = true;
 
-      const empresa = (Array.isArray(data) && data[0]?.empresa) ? data[0].empresa : null;
-
-      const seleccionado = renderSelectEntidad({ empresa });
-      await onEntidadChange(seleccionado);
-    } catch (err) {
-      console.error('Error cargando usuario/empresa:', err);
-      // Fallback: usuario independiente
-      const nombre = $('bienvenido')?.innerText?.replace('Hola ', '') || 'Yo';
-      userSelf = {
-        id: obtenerCookie("userId"),
-        name: nombre,
-        email: $('correoUsuario')?.value || '',     // si agregas estos inputs hidden
-        telefono: $('telefonoUsuario')?.value || ''
-      };
-      renderSelectEntidad({ empresa: null });
-      setIndependienteAsLider();
-    }
-  });
-
-  $('cerrarModalPostulaciones').addEventListener('click', () => {
-    $('modalPostulaciones').style.display = 'none';
-  });
-})();
-</script>
-
-
-    <script>
-        // Abrir modal al hacer clic en la foto de usuario
-        document.getElementById('userPhoto').onclick = function () {
-            document.getElementById('modalFotoPerfil').style.display = 'block';
-
-            // Opcional: cargar foto actual si tienes la URL
-            // document.getElementById('previewFotoPerfil').src = 'URL_DE_LA_FOTO_ACTUAL';
-        };
-        // Cerrar modal
-        document.getElementById('cerrarModalFotoPerfil').onclick = function () {
-            document.getElementById('modalFotoPerfil').style.display = 'none';
-        };
-        // Vista previa de la imagen seleccionada
-        document.getElementById('inputFotoPerfil').onchange = function (e) {
-            const file = e.target.files[0];
-            if (file) {
-                document.getElementById('previewFotoPerfil').src = URL.createObjectURL(file);
-            }
-        };
-        // Guardar foto (debes implementar la lógica de subida en tu backend)
-        document.getElementById('formFotoPerfil').onsubmit = function (e) {
-            e.preventDefault();
-            const userId = obtenerCookie("userId");
-
-            // Ejemplo de subida con fetch y FormData
-            const formData = new FormData();
-            console.log(document.getElementById('inputFotoPerfil').files[0]);
-            formData.append('fotoPerfil', document.getElementById('inputFotoPerfil').files[0]);
-            alert('subiendo');
-            fetch(`/api/user/cambiarFoto/${userId}`, {
-                method: 'PUT',
-                body: formData
-            }).then(res => res.json())
-                .then(data => {
-                    // Actualiza la foto en la interfaz si es necesario
-                    document.getElementById('modalFotoPerfil').style.display = 'none';
-                    // document.getElementById('userPhoto').innerHTML = '<img src="URL_NUEVA_FOTO" ...>';
-                    location.reload(); // O actualiza solo la foto
-                }).catch(() => {
-                    alert('Error al subir la foto');
-                });
-        };
-
-    </script>
-
-    <!-- Scripts -->
-    
-    <script src="js/notificaciones.js"></script>
-    <script src="/js/websocket.js"></script>
-    <!-- <script src="/js/cargarProyectos.js"></script> -->
-
-
-
-    <script>
-        const userMenuBtn = document.getElementById("userMenuBtn");
-        const dropdown = userMenuBtn.closest(".dropdown");
-
-        // Mostrar / ocultar el menú al hacer clic
-        userMenuBtn.addEventListener("click", (event) => {
-            event.stopPropagation(); // evita que el clic cierre inmediatamente el menú
-            dropdown.classList.toggle("show");
+        options.forEach(o => {
+          const opt = document.createElement('option');
+          opt.value = o.value;
+          opt.text = o.label;
+          opt.dataset.email = o.email || '';
+          opt.dataset.telefono = o.telefono || '';
+          if (preselectValue && preselectValue == o.value) opt.selected = true;
+          select.appendChild(opt);
         });
 
-        // Cerrar el menú si haces clic fuera
-        document.addEventListener("click", () => {
-            dropdown.classList.remove("show");
+        select.addEventListener('change', () => {
+          const sel = select.options[select.selectedIndex];
+          setContacto(sel?.dataset.email, sel?.dataset.telefono);
         });
-    </script>
 
-    
+        old?.parentNode.replaceChild(select, old);
+
+        if (select.options.length > 0) {
+          const sel = select.options[select.selectedIndex];
+          setContacto(sel?.dataset.email, sel?.dataset.telefono);
+        } else {
+          setContacto('', '');
+        }
+      }
+
+      function renderSelectEntidad({ empresa } = {}) {
+        const old = $('nombreEntidad');
+        const select = document.createElement('select');
+        select.id = 'nombreEntidad';
+        select.name = 'nombreEntidad';
+        select.required = true;
+
+        const optInd = document.createElement('option');
+        optInd.value = 'null';
+        optInd.text = 'Independiente';
+        select.appendChild(optInd);
+
+        let preselect = 'null';
+        if (empresa && empresa.id) {
+          const optEmp = document.createElement('option');
+          optEmp.value = String(empresa.id);
+          optEmp.text = empresa.razonSocial || `Empresa ${empresa.id}`;
+          select.appendChild(optEmp);
+          preselect = String(empresa.id);
+        }
+
+        select.value = preselect;
+
+        // 💡 Al cambiar entidad: si es Independiente, seteamos contacto del usuario
+        select.addEventListener('change', async () => {
+          await onEntidadChange(select.value);
+        });
+
+        old?.parentNode.replaceChild(select, old);
+        return preselect;
+      }
+
+      async function loadLideresPorEmpresa(empresaId) {
+        const res = await fetch(`/api/usuarioempresa/empresa/${empresaId}`);
+        const data = await res.json();
+        const opciones = (Array.isArray(data) ? data : []).map(item => ({
+          value: String(item.User.id),
+          label: `${item.User.name} (${item.Cargo?.nombre || '—'})`,
+          email: item.User.email || '',
+          telefono: item.User.telefono || ''
+        }));
+        renderSelectLider(opciones);
+      }
+
+      // ✅ Ahora recibe userSelf y actualiza contacto
+      function setIndependienteAsLider() {
+        renderSelectLider([{
+          value: String(userSelf.id || obtenerCookie("userId")),
+          label: userSelf.name || 'Usuario Actual',
+          email: userSelf.email || '',
+          telefono: userSelf.telefono || ''
+        }], String(userSelf.id || obtenerCookie("userId")));
+        console
+        // Fuerza contacto del usuario (por si veníamos con datos de empresa)
+        // Trae email y teléfono del usuario actual por fetch
+        fetch(`/api/user/${userSelf.id}`)
+          .then(res => res.json())
+          .then(user => {
+            setContacto(user.email || '', user.telefono || '', user.name || '');
+          })
+          .catch(() => {
+            setContacto(userSelf.email || '', userSelf.telefono || '', userSelf.name || '');
+          });
+      }
+
+      async function onEntidadChange(empresaValue) {
+        if (empresaValue && empresaValue !== 'null') {
+          await loadLideresPorEmpresa(empresaValue);
+        } else {
+          setIndependienteAsLider();
+        }
+      }
+
+      // 🧠 Abrir modal: cargamos user+empresa, llenamos entidad, y luego líderes/independiente
+      $('postulaciones').addEventListener('click', async () => {
+        $('modalPostulaciones').style.display = 'block';
+        try {
+          const res = await fetch(`/api/usuarioempresa/user/${userId}`);
+          const data = await res.json();
+
+          // Intenta sacar el usuario del payload recibido (ajústalo si tu API difiere)
+          const userFromApi = Array.isArray(data) ? (data[0]?.User || data[0]?.user) : null;
+
+          userSelf = {
+            id: userFromApi?.id || obtenerCookie("userId"),
+            name: $('bienvenido')?.innerText?.replace('Hola ', '') || userFromApi?.name || '',
+            email: userFromApi?.email || ($('correoUsuario')?.value || ''),     // opcional: hidden input #correoUsuario
+            telefono: userFromApi?.telefono || ($('telefonoUsuario')?.value || '') // opcional: hidden input #telefonoUsuario
+          };
+
+          const empresa = (Array.isArray(data) && data[0]?.empresa) ? data[0].empresa : null;
+
+          const seleccionado = renderSelectEntidad({ empresa });
+          await onEntidadChange(seleccionado);
+        } catch (err) {
+          console.error('Error cargando usuario/empresa:', err);
+          // Fallback: usuario independiente
+          const nombre = $('bienvenido')?.innerText?.replace('Hola ', '') || 'Yo';
+          userSelf = {
+            id: obtenerCookie("userId"),
+            name: nombre,
+            email: $('correoUsuario')?.value || '',     // si agregas estos inputs hidden
+            telefono: $('telefonoUsuario')?.value || ''
+          };
+          renderSelectEntidad({ empresa: null });
+          setIndependienteAsLider();
+        }
+      });
+
+      $('cerrarModalPostulaciones').addEventListener('click', () => {
+        $('modalPostulaciones').style.display = 'none';
+      });
+    })();
+  </script>
+
+
+  <script>
+    // Abrir modal al hacer clic en la foto de usuario
+    document.getElementById('userPhoto').onclick = function () {
+      document.getElementById('modalFotoPerfil').style.display = 'block';
+
+      // Opcional: cargar foto actual si tienes la URL
+      // document.getElementById('previewFotoPerfil').src = 'URL_DE_LA_FOTO_ACTUAL';
+    };
+    // Cerrar modal
+    document.getElementById('cerrarModalFotoPerfil').onclick = function () {
+      document.getElementById('modalFotoPerfil').style.display = 'none';
+    };
+    // Vista previa de la imagen seleccionada
+    document.getElementById('inputFotoPerfil').onchange = function (e) {
+      const file = e.target.files[0];
+      if (file) {
+        document.getElementById('previewFotoPerfil').src = URL.createObjectURL(file);
+      }
+    };
+    // Guardar foto (debes implementar la lógica de subida en tu backend)
+    document.getElementById('formFotoPerfil').onsubmit = function (e) {
+      e.preventDefault();
+      const userId = obtenerCookie("userId");
+
+      // Ejemplo de subida con fetch y FormData
+      const formData = new FormData();
+      console.log(document.getElementById('inputFotoPerfil').files[0]);
+      formData.append('fotoPerfil', document.getElementById('inputFotoPerfil').files[0]);
+      alert('subiendo');
+      fetch(`/api/user/cambiarFoto/${userId}`, {
+        method: 'PUT',
+        body: formData
+      }).then(res => res.json())
+        .then(data => {
+          // Actualiza la foto en la interfaz si es necesario
+          document.getElementById('modalFotoPerfil').style.display = 'none';
+          // document.getElementById('userPhoto').innerHTML = '<img src="URL_NUEVA_FOTO" ...>';
+          location.reload(); // O actualiza solo la foto
+        }).catch(() => {
+          alert('Error al subir la foto');
+        });
+    };
+
+  </script>
+
+  <!-- Scripts -->
+
+  <script src="js/notificaciones.js"></script>
+  <script src="/js/websocket.js"></script>
+  <!-- <script src="/js/cargarProyectos.js"></script> -->
+
+
+
+  <script>
+    const userMenuBtn = document.getElementById("userMenuBtn");
+    const dropdown = userMenuBtn.closest(".dropdown");
+
+    // Mostrar / ocultar el menú al hacer clic
+    userMenuBtn.addEventListener("click", (event) => {
+      event.stopPropagation(); // evita que el clic cierre inmediatamente el menú
+      dropdown.classList.toggle("show");
+    });
+
+    // Cerrar el menú si haces clic fuera
+    document.addEventListener("click", () => {
+      dropdown.classList.remove("show");
+    });
+  </script>
+
+
 
 </body>
 

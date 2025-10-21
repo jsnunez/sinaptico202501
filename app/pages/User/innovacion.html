@@ -6,7 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>sinaptico - Innovación Abierta</title>
   <link rel="stylesheet" href="styles/colores.css">
-
   <link rel="stylesheet" href="styles/stylehelice2.css">
   <link rel="stylesheet" href="styles/innovacion.css">
   <link rel="stylesheet" href="styles/clasificados.css">
@@ -21,25 +20,48 @@
 <body>
 
   <!-- Encabezado -->
-  <header class="header">
-    <div onclick="window.location.href='/helice'" class="logo">
-      <!-- <span class="logo-icon">⚡</span> -->
-      <span class="logo-text">SINAPTICO</span>
-    </div>
-    <nav class="nav">
-      <button class="nav-button pulse" onclick="window.location.href='/helice'">Hélice</button>
-      <button class="nav-button pulse" onclick="window.location.href='/innovacion'">Innovación</button>
+    <header class="header">
+        <div onclick="window.location.href='/helice'" class="logo">
+            <!-- <span class="logo-icon">⚡</span> -->
+            <span class="logo-text">SINAPTICO</span>
+        </div>
+        <nav class="nav">
+            <button class="nav-button pulse" onclick="window.location.href='/helice'">Hélice</button>
+            <button class="nav-button pulse" onclick="window.location.href='/proyectos'">Proyectos</button>
+            <button class="nav-button pulse" onclick="window.location.href='/innovacion'">Innovación</button>
 
-      <button class="nav-button pulse" onclick="window.location.href='/Conocimiento'">Conocimiento</button>
-      <button class="nav-button pulse" onclick="window.location.href='/convocatorias'">Convocatorias</button>
+            <button class="nav-button pulse" onclick="window.location.href='/Conocimiento'">Conocimiento</button>
+            <button class="nav-button pulse" onclick="window.location.href='/convocatorias'">Convocatorias</button>
 
-      <button class="nav-button pulse" onclick="window.location.href='/eventos'">Eventos</button>
+            <button class="nav-button pulse" onclick="window.location.href='/eventos'">Eventos</button>
 
-      <button class="nav-button pulse" onclick="window.location.href='/mapa-usuarios'">Mapa</button>
+              <button class="nav-button pulse" onclick="window.location.href='/mapa-usuarios'">Mapa</button>
+            <div style="position:fixed;top:10px;right:20px;z-index:1000;font-size:1.5em;cursor:pointer;">
+                <span id="icono-notif">🔔 <span
+                        style='background:red;color:white;border-radius:50%;padding:2px 7px;font-size:0.9em;'>0</span></span>
+            </div>
+            <div class="notificaciones" id="notificaciones"></div>
 
-      <button class="nav-button pulse" id="cerrarSesion">Cerrar sesión</button>
-    </nav>
-  </header>
+            <!-- <button class="nav-button pulse" id="cerrarSesion">Cerrar sesión</button> -->
+            <!-- Botón con menú desplegable -->
+            <div class="dropdown">
+                <button class=" " id="userMenuBtn">
+                    <div id="userPhoto ">
+                        <img class="imagenPerfil" id="imagenPerfil" src="img/sinfoto.jpg" alt="Foto de perfil"
+                            onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
+                    </div>
+
+                </button>
+
+                <div class="dropdown-menu" id="userMenu">
+                    <a href="/perfil">Perfil</a>
+                    <a href="/configuracion">Configuración</a>
+                    <a href="#" id="cerrarSesion">Cerrar sesión</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
   <div class="welcome-container">
     <div id="userPhoto">
       <img id="imagenPerfil" src="img/sinfoto.jpg" alt="Foto de perfil"
