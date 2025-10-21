@@ -51,7 +51,7 @@
   }
   
   .btn-outline {
-    background-color: var(--gray-color);
+    background-color: var( --gray-color);
     /* margin-bottom: 1vh; */
     border: 1px solid var(--border-color);
     color: var(--light-color);
@@ -64,6 +64,19 @@
   color: var(--text-description);
 }
   
+  .btn-yellow {
+    background-color: var(--yellow);
+    /* margin-bottom: 1vh; */
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+  }
+  
+.btn-yellow:hover {
+  background-color: var(--text-color);
+  border-color: var( --yellow); /* Borde del color amarillo */
+  border-width: 2px; /* Puedes ajustar el grosor del borde */
+  color: var(--text-description);
+}
   .btn-full {
     width: 100%;
   }
@@ -581,3 +594,65 @@
     background: var(--gradient-2);
     transform: translateY(-2px);
   }
+
+
+/* Estilos para el formulario completo del dashboard */
+.form-section {
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: #fafafa;
+}
+
+.form-section h4 {
+    margin: 0 0 15px 0;
+    color: #333;
+    font-size: 16px;
+    font-weight: 600;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 5px;
+}
+
+.input-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.input-box {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-box span,
+.input-box label {
+    font-weight: 500;
+    margin-bottom: 5px;
+    color: #555;
+    font-size: 14px;
+}
+
+.input-box input,
+.input-box select,
+.input-box textarea {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+}
+
+.input-box input:focus,
+.input-box select:focus,
+.input-box textarea:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+/* Estilo especial para campos de una sola columna */
+.input-box.full-width {
+    grid-column: 1 / -1;
+}
