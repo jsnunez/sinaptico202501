@@ -2,6 +2,7 @@ import UserEntityCargo from '../models/usuarioEmpresaCargo.js';
 import Entidad from '../models/entidad.js';
 import Cargo from '../models/cargo.js';
 import User from '../models/user.js';
+import Ciudad from '../models/ciudad.js';
 
 
 export const assignUserToEntityAndCargo = async (req, res) => {
@@ -89,7 +90,7 @@ export const getUserEntityCargoByEntityId = async (req, res) => {
         {
           model: User,
         
-          attributes: ['id', 'name', 'email', 'telefono']
+          attributes: ['id', 'name', 'email', 'telefono', 'fotoPerfil',"perfilProfesional" ,"enlaceHojaDeVida","ciudadId"],
         },
 
         {

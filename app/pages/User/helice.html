@@ -634,12 +634,14 @@
 
             </div>
             <div class="form-section">
-            <!-- <p><strong>Persona de contacto:</strong> </p>
+                <!-- <p><strong>Persona de contacto:</strong> </p>
                 <p><span id="contactoEntidad"></span></p> -->
 
+                <p><strong>Integrantes:</strong> </p>
 
-            <p><strong>Integrantes:</strong> </p>
-            <div id="integrantesAsociados"></div>
+                <div id="integrantesAsociados">
+
+                </div>
 
             </div>
 
@@ -760,278 +762,336 @@
             </form>
         </div>
     </div>
-    <!-- Scripts -->
-    <script src="js/helice2.js"></script>
-    <script src="/js/config.js"></script>
-    <script src="js/enviarformulario.js"></script>
-    <script src="admin.js"></script>
-    <script src="js/formularios.js"></script>
-    <script src="js/llamarEntidades.js"></script>
-    <script src="js/editarEntidad.js"></script>
-    <script src="js/cargarDatos.js"></script>
-    <script src="js/unirConEntidad.js"></script>
-    <script src="js/agregarServicioEntidad.js"></script>
-    <script src="js/estadisticas.js"></script>
-    <script src="js/solicitudesVincuncular.js"></script>
-    <script src="js/notificaciones.js"></script>
-    <script src="/js/websocket.js"></script>
-    <script src="test-api-entidad.js"></script>
-    <script>
-        document.getElementById('misContactos').onclick = function () {
-            document.getElementById('modalMisContactos').style.display = 'block';
-            fetch(`/api/invitacion/mis-contactos/${userId}`)
-                .then(res => res.json())
-                .then(data => {
-                    const tbody = document.getElementById('tablaContactosVerificados');
-                    tbody.innerHTML = '';
-                    // Mostrar contactos recibidos
-                    if (data.recibidos && Array.isArray(data.recibidos) && data.recibidos.length > 0) {
-                        data.recibidos.forEach(contacto => {
+    <!-- Modal ver Integrantes -->
 
-                            console.log(contacto.telefono);
+    <div id="modalIntegrante" class="modal">
+        <div class="modal-content" style="max-width:900px;">
+            <span class="close" id="cerrarModalIntegrante">&times;</span>
+            <h2 class="tittle" style="text-align: center;">Datos Generales del Integrante</h2>
+            <div class="form-section ">
+                <div class="input-box">
+                    <table class="table-perfil">
+                        <tr>
+                            <td>
+                                <div>
+                                    <img id="imagenPerfilIntegrante" src="img/sinfoto.jpg" alt="Foto de perfil"
+                                        style="width: 10vh; height: 10vb; border-radius: 50%; object-fit: cover;"
+                                        onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
+                                </div>
 
-                            const tr = document.createElement('tr');
-                            tr.innerHTML = `
+                            </td>
+                            <td id="">
+                                <h3 id="MiNombreCompleto" style="text-transform: capitalize;"></h3>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>Perfil Profesional:</strong></td>
+                            <td id="MiPerfilProfesional"></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Teléfono:</strong></td>
+                            <td id="MiTelefono"></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Ubicación:</strong></td>
+                            <td id="MiUbicacion"></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Correo Electrónico:</strong></td>
+                            <td id="MiCorreo"></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Vinculado a:</strong></td>
+                            <td id="MiVinculado"></td>
+                        </tr>
+                    </table>
+                </div>
+                <br>
+
+
+            </div>
+            <div class="form-section ">
+                <div class="input-box">
+                    <h2 class="tittle" style="text-align: center;">Hoja de Vida</h2>
+                    <iframe src="" width="100%" height="700px" style="display:none;"></iframe>
+
+                </div>
+            </div>
+        </div>
+        <!-- Scripts -->
+        <script src="js/helice2.js"></script>
+        <script src="/js/config.js"></script>
+        <script src="js/enviarformulario.js"></script>
+        <script src="admin.js"></script>
+        <script src="js/formularios.js"></script>
+        <script src="js/llamarEntidades.js"></script>
+        <script src="js/editarEntidad.js"></script>
+        <script src="js/cargarDatos.js"></script>
+        <script src="js/unirConEntidad.js"></script>
+        <script src="js/agregarServicioEntidad.js"></script>
+        <script src="js/estadisticas.js"></script>
+        <script src="js/solicitudesVincuncular.js"></script>
+        <script src="js/notificaciones.js"></script>
+        <script src="/js/websocket.js"></script>
+        <script src="test-api-entidad.js"></script>
+        <script>
+            document.getElementById('misContactos').onclick = function () {
+                document.getElementById('modalMisContactos').style.display = 'block';
+                fetch(`/api/invitacion/mis-contactos/${userId}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        const tbody = document.getElementById('tablaContactosVerificados');
+                        tbody.innerHTML = '';
+                        // Mostrar contactos recibidos
+                        if (data.recibidos && Array.isArray(data.recibidos) && data.recibidos.length > 0) {
+                            data.recibidos.forEach(contacto => {
+
+                                console.log(contacto.telefono);
+
+                                const tr = document.createElement('tr');
+                                tr.innerHTML = `
                             <td>${contacto.name || ''}</td>
                             <td>${contacto.email || ''}</td>
                             <td>${contacto.entidad || ''}</td>
                             <td>${contacto.telefono || ''}</td>
                         `;
-                            tbody.appendChild(tr);
-                            console.log(tr);
+                                tbody.appendChild(tr);
+                                console.log(tr);
 
-                        });
-                    }
-                    // Mostrar contactos enviados
-                    if (data.enviados && Array.isArray(data.enviados) && data.enviados.length > 0) {
-                        data.enviados.forEach(contacto => {
-                            const tr = document.createElement('tr');
-                            tr.innerHTML = `
+                            });
+                        }
+                        // Mostrar contactos enviados
+                        if (data.enviados && Array.isArray(data.enviados) && data.enviados.length > 0) {
+                            data.enviados.forEach(contacto => {
+                                const tr = document.createElement('tr');
+                                tr.innerHTML = `
                             <td>${contacto.name || ''}</td>
                             <td>${contacto.email || ''}</td>
                             <td>${contacto.entidad.razonsocial || ''}</td>
                             <td>${contacto.telefono || ''}</td>
                         `;
-                            tbody.appendChild(tr);
+                                tbody.appendChild(tr);
+                            });
+                        }
+                        // Si no hay contactos en ninguno
+                        if (
+                            (!data.recibidos || data.recibidos.length === 0) &&
+                            (!data.enviados || data.enviados.length === 0)
+                        ) {
+                            tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No hay contactos verificados</td></tr>';
+                        }
+                    });
+            };
+            document.getElementById('cerrarModalMisContactos').onclick = function () {
+                document.getElementById('modalMisContactos').style.display = 'none';
+            };
+            document.getElementById('cerrarModalMisContactosBtn').onclick = function () {
+                document.getElementById('modalMisContactos').style.display = 'none';
+            };
+        </script>
+
+        <script>
+            function irEnConstruccion() {
+                window.location.href = "/construccion"; // o la ruta que tengas
+            }
+            fetchChallengeCount();
+            fetchEntidadesCount();
+            fetchUserCount();
+
+        </script>
+        <script>
+            // Abrir modal al hacer clic en la foto de usuario
+            document.getElementById('userPhoto').onclick = function () {
+                document.getElementById('modalFotoPerfil').style.display = 'block';
+
+                // Opcional: cargar foto actual si tienes la URL
+                // document.getElementById('previewFotoPerfil').src = 'URL_DE_LA_FOTO_ACTUAL';
+            };
+            // Cerrar modal
+            document.getElementById('cerrarModalFotoPerfil').onclick = function () {
+                document.getElementById('modalFotoPerfil').style.display = 'none';
+            };
+            // Vista previa de la imagen seleccionada
+            document.getElementById('inputFotoPerfil').onchange = function (e) {
+                const file = e.target.files[0];
+                if (file) {
+                    document.getElementById('previewFotoPerfil').src = URL.createObjectURL(file);
+                }
+            };
+            // Guardar foto (debes implementar la lógica de subida en tu backend)
+            document.getElementById('formFotoPerfil').onsubmit = async function (e) {
+                e.preventDefault();
+
+                const userId = obtenerCookie("userId");
+                const file = document.getElementById('inputFotoPerfil').files[0];
+
+                const name = document.getElementById('nombrePerfil').value.trim();
+                const telefono = document.getElementById('telefonoPerfil').value.trim();
+                const ciudadId = parseInt(document.getElementById('ciudadPerfil').value, 10) || null;
+                const perfilProfesional = document.getElementById('perfilProfesional').value.trim() || null;
+
+                try {
+                    // 1) Si hay archivo, sube la foto
+                    if (file) {
+                        const formData = new FormData();
+                        formData.append('fotoPerfil', file);
+                        // opcional: puedes mostrar un loader
+                        const resFoto = await fetch(`/api/user/cambiarFoto/${userId}`, {
+                            method: 'PUT',
+                            body: formData
+                        });
+                        if (!resFoto.ok) {
+                            const err = await resFoto.text().catch(() => '');
+                            throw new Error(`Error al subir la foto. ${err}`);
+                        }
+                    }
+
+                    // 2) Actualiza el perfil SIEMPRE (independiente de si hubo foto o no)
+                    const resPerfil = await fetch(`/api/user/actualizarPerfil/${userId}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            name,
+                            telefono,
+                            ciudadId,
+                            perfilProfesional
+                        })
+                    });
+                    if (!resPerfil.ok) {
+                        const err = await resPerfil.text().catch(() => '');
+                        throw new Error(`Error al actualizar el perfil. ${err}`);
+                    }
+
+                    // 3) Cierra modal y refresca (o actualiza sólo la imagen y los textos si prefieres)
+                    // Subir CV si se seleccionó archivo PDF
+                    const cvFile = document.getElementById('cvPdf').files[0];
+                    if (cvFile) {
+                        const cvFormData = new FormData();
+                        cvFormData.append('cvPdf', cvFile);
+                        const resCV = await fetch(`/api/user/cambiarCv/${userId}`, {
+                            method: 'PUT',
+                            body: cvFormData
+                        });
+                        if (!resCV.ok) {
+                            const err = await resCV.text().catch(() => '');
+                            throw new Error(`Error al subir la hoja de vida. ${err}`);
+                        }
+                    }
+                    document.getElementById('modalFotoPerfil').style.display = 'none';
+                    document.cookie = `user=${encodeURIComponent(name)}; path=/;`;
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Perfil actualizado',
+                        text: 'Tus datos se han guardado correctamente.',
+                        timer: 1800,
+                        showConfirmButton: false
+                    }).then(() => {
+                        location.reload(); // O actualiza sólo la foto y los textos
+                    });
+                } catch (err) {
+                    console.error(err);
+                    alert(err.message || 'Ocurrió un error al actualizar el perfil.');
+                }
+            };
+
+        </script>
+
+        <script>
+            const userMenuBtn = document.getElementById("userMenuBtn");
+            const dropdown = userMenuBtn.closest(".dropdown");
+
+            // Mostrar / ocultar el menú al hacer clic
+            userMenuBtn.addEventListener("click", (event) => {
+                event.stopPropagation(); // evita que el clic cierre inmediatamente el menú
+                dropdown.classList.toggle("show");
+            });
+
+            // Cerrar el menú si haces clic fuera
+            document.addEventListener("click", () => {
+                dropdown.classList.remove("show");
+            });
+        </script>
+
+        <script>
+            // Función para obtener departamentos desde la API
+            async function obtenerDepartamentosColombia() {
+                try {
+                    const res = await fetch('/api/departamentos');
+                    const data = await res.json();
+                    return data.departamentos || [];
+                } catch (err) {
+                    console.error('Error obteniendo departamentos:', err);
+                    return [];
+                }
+            }
+
+
+            // Función para agregar departamentos al select
+            async function agregarDepartamentosPerfil() {
+                const departamentos = await obtenerDepartamentosColombia();
+                const depSelect = document.getElementById('departamentoPerfil');
+                depSelect.innerHTML = '<option value="">Seleccione departamento</option>';
+                if (depSelect && departamentos && departamentos.length > 0) {
+                    departamentos.forEach(dep => {
+                        const option = document.createElement('option');
+                        option.value = dep.id;
+                        option.textContent = dep.nombre;
+                        depSelect.appendChild(option);
+                    });
+                } else {
+                    console.warn('No se encontraron Departamentos para cargar.');
+                }
+
+                // Si ya tienes el departamento y ciudad del usuario, puedes preseleccionarlos aquí
+                const departamentoId = document.getElementById('departamentoPerfilValor').textContent;
+                // Si departamentoId es un número diferente de 0, selecciona ese departamento en el select
+                if (departamentoId && !isNaN(departamentoId) && Number(departamentoId) !== 0) {
+                    depSelect.value = departamentoId;
+                    await cargarCiudadesPerfil(departamentoId);
+                }
+            }
+
+            // Función para cargar ciudades según departamento seleccionado
+            async function cargarCiudadesPerfil(departamentoId) {
+                const ciudadSelect = document.getElementById('ciudadPerfil');
+                ciudadSelect.innerHTML = '<option value="">Seleccione ciudad</option>';
+                if (!departamentoId) return;
+                try {
+                    const res = await fetch(`/api/ciudades/${departamentoId}`);
+                    const data = await res.json();
+                    if (data.ciudades && data.ciudades.length > 0) {
+                        data.ciudades.forEach(ciudad => {
+                            const option = document.createElement('option');
+                            option.value = ciudad.id;
+                            option.textContent = ciudad.nombre;
+                            ciudadSelect.appendChild(option);
                         });
                     }
-                    // Si no hay contactos en ninguno
-                    if (
-                        (!data.recibidos || data.recibidos.length === 0) &&
-                        (!data.enviados || data.enviados.length === 0)
-                    ) {
-                        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No hay contactos verificados</td></tr>';
-                    }
-                });
-        };
-        document.getElementById('cerrarModalMisContactos').onclick = function () {
-            document.getElementById('modalMisContactos').style.display = 'none';
-        };
-        document.getElementById('cerrarModalMisContactosBtn').onclick = function () {
-            document.getElementById('modalMisContactos').style.display = 'none';
-        };
-    </script>
-
-    <script>
-        function irEnConstruccion() {
-            window.location.href = "/construccion"; // o la ruta que tengas
-        }
-        fetchChallengeCount();
-        fetchEntidadesCount();
-        fetchUserCount();
-
-    </script>
-    <script>
-        // Abrir modal al hacer clic en la foto de usuario
-        document.getElementById('userPhoto').onclick = function () {
-            document.getElementById('modalFotoPerfil').style.display = 'block';
-
-            // Opcional: cargar foto actual si tienes la URL
-            // document.getElementById('previewFotoPerfil').src = 'URL_DE_LA_FOTO_ACTUAL';
-        };
-        // Cerrar modal
-        document.getElementById('cerrarModalFotoPerfil').onclick = function () {
-            document.getElementById('modalFotoPerfil').style.display = 'none';
-        };
-        // Vista previa de la imagen seleccionada
-        document.getElementById('inputFotoPerfil').onchange = function (e) {
-            const file = e.target.files[0];
-            if (file) {
-                document.getElementById('previewFotoPerfil').src = URL.createObjectURL(file);
-            }
-        };
-        // Guardar foto (debes implementar la lógica de subida en tu backend)
-        document.getElementById('formFotoPerfil').onsubmit = async function (e) {
-            e.preventDefault();
-
-            const userId = obtenerCookie("userId");
-            const file = document.getElementById('inputFotoPerfil').files[0];
-
-            const name = document.getElementById('nombrePerfil').value.trim();
-            const telefono = document.getElementById('telefonoPerfil').value.trim();
-            const ciudadId = parseInt(document.getElementById('ciudadPerfil').value, 10) || null;
-            const perfilProfesional = document.getElementById('perfilProfesional').value.trim() || null;
-
-            try {
-                // 1) Si hay archivo, sube la foto
-                if (file) {
-                    const formData = new FormData();
-                    formData.append('fotoPerfil', file);
-                    // opcional: puedes mostrar un loader
-                    const resFoto = await fetch(`/api/user/cambiarFoto/${userId}`, {
-                        method: 'PUT',
-                        body: formData
-                    });
-                    if (!resFoto.ok) {
-                        const err = await resFoto.text().catch(() => '');
-                        throw new Error(`Error al subir la foto. ${err}`);
-                    }
+                } catch (err) {
+                    console.error('Error obteniendo ciudades:', err);
+                }
+                // Si ya tienes la ciudad del usuario, puedes preseleccionarla aquí
+                const ciudadId = document.getElementById('ciudadPerfilValor').textContent;
+                if (ciudadId && !isNaN(ciudadId) && Number(ciudadId) !== 0) {
+                    ciudadSelect.value = ciudadId;
                 }
 
-                // 2) Actualiza el perfil SIEMPRE (independiente de si hubo foto o no)
-                const resPerfil = await fetch(`/api/user/actualizarPerfil/${userId}`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        name,
-                        telefono,
-                        ciudadId,
-                        perfilProfesional
-                    })
-                });
-                if (!resPerfil.ok) {
-                    const err = await resPerfil.text().catch(() => '');
-                    throw new Error(`Error al actualizar el perfil. ${err}`);
-                }
-
-                // 3) Cierra modal y refresca (o actualiza sólo la imagen y los textos si prefieres)
-                // Subir CV si se seleccionó archivo PDF
-                const cvFile = document.getElementById('cvPdf').files[0];
-                if (cvFile) {
-                    const cvFormData = new FormData();
-                    cvFormData.append('cvPdf', cvFile);
-                    const resCV = await fetch(`/api/user/cambiarCv/${userId}`, {
-                        method: 'PUT',
-                        body: cvFormData
-                    });
-                    if (!resCV.ok) {
-                        const err = await resCV.text().catch(() => '');
-                        throw new Error(`Error al subir la hoja de vida. ${err}`);
-                    }
-                }
-                document.getElementById('modalFotoPerfil').style.display = 'none';
-                document.cookie = `user=${encodeURIComponent(name)}; path=/;`;
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Perfil actualizado',
-                    text: 'Tus datos se han guardado correctamente.',
-                    timer: 1800,
-                    showConfirmButton: false
-                }).then(() => {
-                    location.reload(); // O actualiza sólo la foto y los textos
-                });
-            } catch (err) {
-                console.error(err);
-                alert(err.message || 'Ocurrió un error al actualizar el perfil.');
-            }
-        };
-
-    </script>
-
-    <script>
-        const userMenuBtn = document.getElementById("userMenuBtn");
-        const dropdown = userMenuBtn.closest(".dropdown");
-
-        // Mostrar / ocultar el menú al hacer clic
-        userMenuBtn.addEventListener("click", (event) => {
-            event.stopPropagation(); // evita que el clic cierre inmediatamente el menú
-            dropdown.classList.toggle("show");
-        });
-
-        // Cerrar el menú si haces clic fuera
-        document.addEventListener("click", () => {
-            dropdown.classList.remove("show");
-        });
-    </script>
-
-    <script>
-        // Función para obtener departamentos desde la API
-        async function obtenerDepartamentosColombia() {
-            try {
-                const res = await fetch('/api/departamentos');
-                const data = await res.json();
-                return data.departamentos || [];
-            } catch (err) {
-                console.error('Error obteniendo departamentos:', err);
-                return [];
-            }
-        }
-
-
-        // Función para agregar departamentos al select
-        async function agregarDepartamentosPerfil() {
-            const departamentos = await obtenerDepartamentosColombia();
-            const depSelect = document.getElementById('departamentoPerfil');
-            depSelect.innerHTML = '<option value="">Seleccione departamento</option>';
-            if (depSelect && departamentos && departamentos.length > 0) {
-                departamentos.forEach(dep => {
-                    const option = document.createElement('option');
-                    option.value = dep.id;
-                    option.textContent = dep.nombre;
-                    depSelect.appendChild(option);
-                });
-            } else {
-                console.warn('No se encontraron Departamentos para cargar.');
             }
 
-            // Si ya tienes el departamento y ciudad del usuario, puedes preseleccionarlos aquí
-            const departamentoId = document.getElementById('departamentoPerfilValor').textContent;
-            // Si departamentoId es un número diferente de 0, selecciona ese departamento en el select
-            if (departamentoId && !isNaN(departamentoId) && Number(departamentoId) !== 0) {
-                depSelect.value = departamentoId;
-                await cargarCiudadesPerfil(departamentoId);
-            }
-        }
+            // Inicializar departamentos al mostrar el modal
+            document.getElementById('userPhoto').onclick = function () {
+                document.getElementById('modalFotoPerfil').style.display = 'block';
+                agregarDepartamentosPerfil();
 
-        // Función para cargar ciudades según departamento seleccionado
-        async function cargarCiudadesPerfil(departamentoId) {
-            const ciudadSelect = document.getElementById('ciudadPerfil');
-            ciudadSelect.innerHTML = '<option value="">Seleccione ciudad</option>';
-            if (!departamentoId) return;
-            try {
-                const res = await fetch(`/api/ciudades/${departamentoId}`);
-                const data = await res.json();
-                if (data.ciudades && data.ciudades.length > 0) {
-                    data.ciudades.forEach(ciudad => {
-                        const option = document.createElement('option');
-                        option.value = ciudad.id;
-                        option.textContent = ciudad.nombre;
-                        ciudadSelect.appendChild(option);
-                    });
-                }
-            } catch (err) {
-                console.error('Error obteniendo ciudades:', err);
-            }
-            // Si ya tienes la ciudad del usuario, puedes preseleccionarla aquí
-            const ciudadId = document.getElementById('ciudadPerfilValor').textContent;
-            if (ciudadId && !isNaN(ciudadId) && Number(ciudadId) !== 0) {
-                ciudadSelect.value = ciudadId;
-            }
+            };
 
-        }
+            // Cambiar ciudades al seleccionar departamento
+            document.getElementById('departamentoPerfil').onchange = function () {
+                cargarCiudadesPerfil(this.value);
+            };
+        </script>
 
-        // Inicializar departamentos al mostrar el modal
-        document.getElementById('userPhoto').onclick = function () {
-            document.getElementById('modalFotoPerfil').style.display = 'block';
-            agregarDepartamentosPerfil();
-
-        };
-
-        // Cambiar ciudades al seleccionar departamento
-        document.getElementById('departamentoPerfil').onchange = function () {
-            cargarCiudadesPerfil(this.value);
-        };
-    </script>
 
   <style>
     /* Spinner overlay */
