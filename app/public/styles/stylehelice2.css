@@ -108,6 +108,7 @@ body {
 .nav-button.pulse:hover::after {
     animation: ripple 1s ease-out;
 }
+
 .imagenPerfil {
     border-radius: 50%;
     object-fit: cover;
@@ -216,6 +217,13 @@ body {
 .subtitle {
     color: var(--text-description);
     font-size: 1rem;
+}
+
+.tittle,
+h2 {
+
+    color: var(--primary-color);
+
 }
 
 .action-buttons {
@@ -1033,4 +1041,22 @@ form {
     animation: markerPulse 2s infinite;
 }
 
+/*tabla de datos perfil*/
+.table-perfil {
+    
+    border-collapse: collapse;
+    margin-top: 1rem;
+    background-color: rgb(242, 248, 252);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    border: 1px solid black;
 
+}
+
+
+.table-perfil td {
+    padding: 0.75rem 1.5rem;
+    border-bottom: 1px solid #ddd;
+    color: var(--text-description);
+}

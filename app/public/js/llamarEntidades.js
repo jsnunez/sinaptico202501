@@ -79,10 +79,10 @@ function cargarEmpresas(empresas) {
     listado.appendChild(empresaCard);
   }
 
-  document.getElementById("empresaC").innerText = empresaC;
-  document.getElementById("SociedadC").innerText = SociedadC;
-  document.getElementById("EstadoC").innerText = EstadoC;
-  document.getElementById("AcademiaesC").innerText = AcademiaesC;
+  // document.getElementById("empresaC").innerText = empresaC;
+  // document.getElementById("SociedadC").innerText = SociedadC;
+  // document.getElementById("EstadoC").innerText = EstadoC;
+  // document.getElementById("AcademiaesC").innerText = AcademiaesC;
 
 }
 
@@ -132,41 +132,41 @@ document.addEventListener('DOMContentLoaded', function () {
     // Hacer PUT para aumentar el contador en el backend
     if (empresa && empresa.id) {
       fetch(`${API_BASE_URL}/api/entidad/aumentarContadorContacto/${empresa.id}`, {
-      method: 'PUT'
+        method: 'PUT'
       }).catch(err => console.error('Error al aumentar contador:', err));
     }
     // Enviar invitación al hacer clic en el botón de contacto
- const userId = obtenerCookie("userId");   
-  const paraUserId = empresa.UserAdminId; // Ajusta según la estructura de tu objeto empresa
+    const userId = obtenerCookie("userId");
+    const paraUserId = empresa.UserAdminId; // Ajusta según la estructura de tu objeto empresa
     const mensaje = `Hola, me gustaría ponerme en contacto con ${empresa.razonSocial}`;
     const telefonoEmpresa = empresa.telefono;
 
     if (userId && paraUserId) {
       fetch(`${API_BASE_URL}/api/invitacion`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        desdeuserid: userId,
-        parauserid: paraUserId,
-        mensaje,
-        telefono: telefonoEmpresa
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          desdeuserid: userId,
+          parauserid: paraUserId,
+          mensaje,
+          telefono: telefonoEmpresa
+        })
       })
-      })
-      .then(res => res.json())
-      .then(data => {
-        console.log('Respuesta del servidor:', data);
-      if (data && data.id) {
-        alert('Invitación enviada correctamente.');
-      } else {
-        alert('No se pudo enviar la invitación: ' + (data.error || 'Error desconocido.'));
-      }
-      })
-      .catch(err => {
-      console.error('Error al enviar invitación:', err);
-      alert('Error al enviar la invitación.');
-      });
+        .then(res => res.json())
+        .then(data => {
+          console.log('Respuesta del servidor:', data);
+          if (data && data.id) {
+            alert('Invitación enviada correctamente.');
+          } else {
+            alert('No se pudo enviar la invitación: ' + (data.error || 'Error desconocido.'));
+          }
+        })
+        .catch(err => {
+          console.error('Error al enviar invitación:', err);
+          alert('Error al enviar la invitación.');
+        });
     }
 
     // telefono.setAttribute('data-contador', contador);
@@ -216,7 +216,7 @@ async function llamarIntegrantes(idEntidad) {
   try {
     const response = await fetch(url);
     const datos = await response.json();
-          console.log(datos);
+    console.log(datos);
 
     if (Array.isArray(datos) && datos.length > 0) {
 
@@ -224,25 +224,118 @@ async function llamarIntegrantes(idEntidad) {
       const integrantes = datos
         .filter(item => item.estado) // Solo los activos
         .map(item => ({
+          id: item.User?.id,
           nombre: item.User?.name || 'Sin nombre',
-          rol: item.Cargo?.nombre || 'Sin rol'
+          rol: item.Cargo?.nombre || 'Sin rol',
+          fotoPerfil: item.User?.fotoPerfil || 'sinfoto.jpg'
         }));
 
-      let integrantesHTML = '<ul>';
+      let integrantesHTML = '<div style="display: block;">';
+
       if (integrantes.length > 0) {
         integrantes.forEach(integrante => {
-          integrantesHTML += `<li>${integrante.nombre} - ${integrante.rol}</li>`;
+          console.log(integrante.fotoPerfil);
+          integrantesHTML += `
+              <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                <div style="position: relative; width: 50px; height: 50px; cursor: pointer;" id="verIntegrante" onclick="abrirModalIntegrante(${integrante.id})">
+                  <img src="/photo/${integrante.fotoPerfil}" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
+                  <span style="position: absolute; bottom: 0; right: 0; background: #fff; border-radius: 50%; padding: 2px;">
+                    <i class="bi bi-pencil-fill" style="font-size: 1em; color: #007bff;"></i>
+                  </span>
+                </div>
+                <p style="margin: 0;">${integrante.nombre} - ${integrante.rol}</p>
+              </div>
+            `;
         });
       } else {
-        integrantesHTML += '<li>Sin1 ningún integrante</li>';
+        integrantesHTML += '<div>Sin ningún integrante</div>';
       }
-      integrantesHTML += '</ul>';
+
+      integrantesHTML += '</div>';
+
       document.getElementById('integrantesAsociados').innerHTML = integrantesHTML;
+
     } else {
       document.getElementById('integrantesAsociados').innerHTML = 'No se encontraron integrantes.';
     }
   } catch (error) {
     console.error('Error al obtener integrantes:', error);
     document.getElementById('integrantesAsociados').innerHTML = 'Error al cargar integrantes.';
+  }
+}
+
+// Abrir modal al hacer clic en la foto de usuario
+
+abrirModalIntegrante = async function (userId) {
+  console.log("ID del integrante:", userId);
+  document.getElementById('modalIntegrante').style.display = 'block';
+
+  const response = await fetch(`${API_BASE_URL}/api/user/${userId}`);
+  const data = await response.json();
+  console.log(data);
+
+  try {
+    if (!userId) return;
+
+    const res = await fetch(`/api/user/${userId}`);
+    if (!res.ok) throw new Error('No se pudo obtener el perfil');
+    const data = await res.json();
+    console.log(data);
+    // Coloca los datos en los elementos correspondientes
+    document.getElementById('MiNombreCompleto').textContent = data.name || '';
+    document.getElementById('MiPerfilProfesional').textContent = data.perfilProfesional || '';
+    document.getElementById('MiTelefono').textContent = data.telefono || '';
+    document.getElementById('MiUbicacion').textContent = data.ciudad.nombre + ' - ' + data.ciudad.departamento.nombre || '';
+    document.getElementById('MiCorreo').textContent = data.email || '';
+    document.getElementById("imagenPerfilIntegrante").src = data.fotoPerfil ? "photo/" + data.fotoPerfil : "photo/sinfoto.jpg";
+
+
+    if (data.ciudadId) {
+      try {
+        const resp = await fetch(`/api/ciudades/ciudad/${data.ciudadId}`);
+        const ciudadData = await resp.json();
+        document.getElementById("departamentoPerfilValor").innerHTML = ciudadData.ciudad.departamentoId || '';
+      } catch (err) {
+        document.getElementById("departamentoPerfilValor").innerHTML = '';
+        console.error('Error al consultar el departamento:', err);
+      }
+    } else {
+      document.getElementById("departamentoPerfilValor").innerHTML = '';
+    }
+
+    document.getElementById("ciudadPerfilValor").innerHTML = data.ciudadId || '';
+
+    // Si tienes la URL del CV PDF (usando data.enlaceHojaDeVida)
+    if (data.enlaceHojaDeVida) {
+      const iframe = document.querySelector('iframe');
+      if (iframe) {
+        iframe.src = "CV/" + data.enlaceHojaDeVida;
+        iframe.style.display = 'block';
+      }
+    }
+
+  } catch (err) {
+    console.error('Error cargando datos de usuario:', err);
+  }
+
+  // Verificar si hay una entidad asociada al usuario
+  try {
+    const entidadRes = await fetch(`/api/entidad/verificar-entidad/${userId}`);
+    if (entidadRes.ok) {
+      const entidadData = await entidadRes.json();
+      console.log('Entidad asociada:', entidadData.success);
+      // Si hay entidad asociada, muestra el nombre, si no, muestra "Sin entidad asociada"
+      if (entidadData.success) {
+        console.log('Entidad asociada:', entidadData.entidad.razonSocial);
+        var entidadNombre = entidadData.entidad.razonSocial;
+      } else {
+        console.log('Entidad asociada: Sin entidad asociada');
+        var entidadNombre = "Sin entidad asociada";
+      }
+      // Busca la celda correspondiente y actualiza el texto
+      document.getElementById('MiVinculado').textContent = entidadNombre;
+    }
+  } catch (e) {
+    console.error('Error verificando entidad asociada:', e);
   }
 }
