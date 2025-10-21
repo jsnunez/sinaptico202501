@@ -269,7 +269,7 @@ async function llamarIntegrantes(idEntidad) {
 abrirModalIntegrante = async function (userId) {
   console.log("ID del integrante:", userId);
   document.getElementById('modalIntegrante').style.display = 'block';
-
+//Cerrar modal integrante
   document.getElementById('cerrarModalIntegrante').onclick = function () {
     document.getElementById('modalIntegrante').style.display = 'none';
   };
