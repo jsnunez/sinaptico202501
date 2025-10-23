@@ -45,16 +45,14 @@ function renderTable(solicitudes, adminUserId) {
             <td style="padding:12px 8px;">
             ${solicitud.Cargo ? solicitud.Cargo.nombre : ''}
             </td>
-            <td style="padding:12px 8px;display:flex;gap:8px;justify-content: center  ;align-items:center;">
+            <td style="display:flex;justify-content: center ; aling-item: center;">
             <!-- Toggle bonito (si es administrador no se puede cambiar) -->
             ${(solicitud.User && solicitud.User.id === adminUserId) ?
-            `<button
-            aria-disabled="true"
+            `<button aria-disabled="true"
             title="No se puede modificar el estado de un administrador"
             style="display:inline-flex;align-items:center;gap:10px;border:0;padding:6px 10px;border-radius:999px;cursor:not-allowed;
                background: linear-gradient(180deg,#6c757d,#495057);
-               color:#fff;box-shadow:0 2px 6px rgba(43,52,69,0.08);font-weight:600;opacity:0.85;"
-            >
+               color:#fff;box-shadow:0 2px 6px rgba(43,52,69,0.08);font-weight:600;opacity:0.85;">
             <span style="position:relative;width:44px;height:24px;display:inline-block;border-radius:12px;background:rgba(255,255,255,0.18);flex-shrink:0;">
             <span style="position:absolute;top:2px;left:${solicitud.estado ? '22px' : '2px'};width:20px;height:20px;background:#fff;border-radius:50%;
              box-shadow:0 2px 4px rgba(0,0,0,0.15);transition:left .18s;"></span>
@@ -77,20 +75,61 @@ function renderTable(solicitudes, adminUserId) {
             </span>
             <span style="font-size:0.88rem;">${solicitud.estado ? 'Habilitado' : 'Deshabilitado'}</span>
             </button>` }
-            
-            <!-- Botón eliminar con ícono (no mostrar si es administrador) -->
-            ${(solicitud.User && solicitud.User.id === adminUserId) ? '' :
-            `<button
-            class="delete-solicitud-btn"
-            data-id="${solicitud.id}"
-            title="Eliminar solicitud"
-            style="background:transparent;border:0;padding:6px;border-radius:8px;cursor:pointer;color:#c92a2a;display:inline-flex;align-items:center;gap:6px;"
-            >
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
-            <path d="M5.5 5.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-4a.5.5 0 0 1-.5-.5v-7z"/>
-            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9.5A1.5 1.5 0 0 1 11.5 15h-7A1.5 1.5 0 0 1 3 13.5V4H2.5a1 1 0 1 1 0-2h3.1a1 1 0 0 1 .9-.6h2a1 1 0 0 1 .9.6H13.5a1 1 0 0 1 1 1zM5.118 4 5 4.059V13.5a.5.5 0 0 0 .5.5h5a.5.5 0 0 0 .5-.5V4.059L10.882 4H5.118z"/>
-            </svg>
-            </button>` }
+            </td>
+        
+            <td >
+            <!-- Botón eliminar con ícono -->
+            ${(solicitud.User && solicitud.User.id === adminUserId)
+            ? `
+                <!-- Si es administrador: ícono gris e inhabilitado -->
+                <button
+                    aria-disabled="true"
+                    title="No se puede eliminar un administrador"
+                    style="
+                    background: transparent;
+                    border: 0;
+                    padding: 6px;
+                    border-radius: 8px;
+                    cursor: not-allowed;
+                    color: #adb5bd; /* gris claro */
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 6px;
+                    opacity: 0.6;
+                    "
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    viewBox="0 0 16 16" aria-hidden="true">
+                    <path d="M5.5 5.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-4a.5.5 0 0 1-.5-.5v-7z"/>
+                    <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9.5A1.5 1.5 0 0 1 11.5 15h-7A1.5 1.5 0 0 1 3 13.5V4H2.5a1 1 0 1 1 0-2h3.1a1 1 0 0 1 .9-.6h2a1 1 0 0 1 .9.6H13.5a1 1 0 0 1 1 1zM5.118 4 5 4.059V13.5a.5.5 0 0 0 .5.5h5a.5.5 0 0 0 .5-.5V4.059L10.882 4H5.118z"/>
+                    </svg>
+                </button>
+                `
+            : `
+                <!-- Si NO es administrador: botón normal de eliminar -->
+                <button
+                    class="delete-solicitud-btn"
+                    data-id="${solicitud.id}"
+                    title="Eliminar solicitud"
+                    style="
+                    background: transparent;
+                    border: 0;
+                    padding: 6px;
+                    border-radius: 8px;
+                    cursor: pointer;
+                    color: #c92a2a;
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 6px;
+                    "
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    viewBox="0 0 16 16" aria-hidden="true">
+                    <path d="M5.5 5.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-4a.5.5 0 0 1-.5-.5v-7z"/>
+                    <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9.5A1.5 1.5 0 0 1 11.5 15h-7A1.5 1.5 0 0 1 3 13.5V4H2.5a1 1 0 1 1 0-2h3.1a1 1 0 0 1 .9-.6h2a1 1 0 0 1 .9.6H13.5a1 1 0 0 1 1 1zM5.118 4 5 4.059V13.5a.5.5 0 0 0 .5.5h5a.5.5 0 0 0 .5-.5V4.059L10.882 4H5.118z"/>
+                    </svg>
+                </button>
+                `}
             </td>
             </tr>
         `).join('');
