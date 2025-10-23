@@ -1060,3 +1060,8 @@ form {
     border-bottom: 1px solid #ddd;
     color: var(--text-description);
 }
+.bi-facebook,
+.fa-instagram{
+    font-size: 3rem;
+    text-align: center;
+}

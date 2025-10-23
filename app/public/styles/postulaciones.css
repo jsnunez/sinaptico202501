@@ -67,6 +67,7 @@ body {
 .nav {
     display: flex;
     gap: 1rem;
+    align-items: center;
 }
 
 .nav-button {
@@ -81,6 +82,8 @@ body {
     transition: var(--transition);
     position: relative;
     overflow: hidden;
+    height: min-content;
+
 }
 
 .nav-button:hover {
@@ -105,6 +108,32 @@ body {
 .nav-button.pulse:hover::after {
     animation: ripple 1s ease-out;
 }
+
+.imagenPerfil {
+    border-radius: 50%;
+    object-fit: cover;
+    width: 5vh;
+    height: 5vh;
+    box-shadow: none;
+    outline: none;
+}
+
+#imagenPerfil:hover {
+    box-shadow: 0 0 0 3px var(--primary-color);
+    transform: scale(1.1);
+    transition: var(--transition);
+}
+
+#userMenuBtn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    padding: 5px;
+    border-radius: 50%;
+    transition: background 0.3s;
+}
+
 
 /* Contenedor de bienvenida */
 .welcome-container {
@@ -402,6 +431,7 @@ body {
     font-size: 0.9rem;
     line-height: 1.5;
 }
+
 .title {
     font-size: 1.8rem;
     color: var(--primary-color);
@@ -814,6 +844,7 @@ td {
 .data-table td {
     border: 0px;
 }
+
 .action-icon {
     display: inline-flex;
     align-items: center;
@@ -996,337 +1027,338 @@ td {
     text-align: center;
     border-bottom: 1px solid #eee;
 }
+
 /* Estilos para las badges de los estados del proyecto */
 
-  .badge {
+.badge {
     display: inline-block;
     padding: 0.25rem 0.75rem;
     border-radius: 50px;
     font-size: 0.75rem;
     font-weight: 500;
-  }
+}
 
-    
-  .badge-secondary {
+
+.badge-secondary {
     background-color: #6c757d;
     color: white;
-  }
-  
-  .badge-success {
+}
+
+.badge-success {
     background-color: #28a745;
     color: white;
-  }
-  
-  .badge-danger {
+}
+
+.badge-danger {
     background-color: #dc3545;
     color: white;
-  }
-  
-  .badge-warning {
+}
+
+.badge-warning {
     background-color: #ffc107;
     color: #212529;
-  }
-  
-  .badge-info {
+}
+
+.badge-info {
     background-color: #17a2b8;
     color: white;
-  }
-  
-  .badge-light {
+}
+
+.badge-light {
     background-color: #f8f9fa;
     color: #212529;
     border: 1px solid #dee2e6;
-  }
-  
-  .badge-dark {
+}
+
+.badge-dark {
     background-color: #343a40;
     color: white;
-  }
-  
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #e0e0e0;
-            margin-bottom: 20px;
-        }
-
-        .modal-header h3 {
-            margin: 0;
-            color: #333;
-            font-size: 1.5em;
-            font-weight: 600;
-        }
-
-        .modal-header .close {
-            font-size: 28px;
-            font-weight: bold;
-            color: #999;
-            cursor: pointer;
-            transition: color 0.3s ease;
-        }
-
-        .modal-header .close:hover {
-            color: #333;
-        }
-
-        .modal-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-            margin-top: 20px;
-            padding-top: 15px;
-            border-top: 1px solid #e0e0e0;
-        }
-
-        .modal-button-secondary {
-            background-color: #6c757d;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: background-color 0.3s ease;
-        }
-
-        .modal-button-secondary:hover {
-            background-color: #5a6268;
-        }
-
-        #modalEditar .modal-content {
-            max-width: 800px;
-            width: 90%;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        /* Estilos para el formulario completo del dashboard */
-        .form-section {
-            margin-bottom: 20px;
-            padding: 15px;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            background-color: #fafafa;
-        }
-
-        .form-section h4 {
-            margin: 0 0 15px 0;
-            color: #333;
-            font-size: 16px;
-            font-weight: 600;
-            border-bottom: 2px solid #007bff;
-            padding-bottom: 5px;
-        }
-
-        .input-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 15px;
-        }
-
-        .input-box {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .input-box span,
-        .input-box label {
-            font-weight: 500;
-            margin-bottom: 5px;
-            color: #555;
-            font-size: 14px;
-        }
-
-        .input-box input,
-        .input-box select,
-        .input-box textarea {
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
-            transition: border-color 0.3s ease;
-        }
-
-        .input-box input:focus,
-        .input-box select:focus,
-        .input-box textarea:focus {
-            outline: none;
-            border-color: #007bff;
-            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
-        }
-
-        /* Estilo especial para campos de una sola columna */
-        .input-box.full-width {
-            grid-column: 1 / -1;
-        }
-
-        /* Estilos para el mapa */
-        #edit-location-map {
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-
-        /* Botones de mapa */
-        .map-buttons {
-            margin-top: 10px;
-            display: flex;
-            gap: 5px;
-        }
-
-        .map-btn {
-            padding: 8px 12px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 12px;
-            transition: background-color 0.3s ease;
-        }
-
-        .map-btn.primary {
-            background: #007bff;
-            color: white;
-        }
-
-        .map-btn.primary:hover {
-            background: #0056b3;
-        }
-
-        .map-btn.danger {
-            background: #dc3545;
-            color: white;
-        }
-
-        .map-btn.danger:hover {
-            background: #c82333;
-        }
-
-        /* Coordenadas */
-        .coordinates-row {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .coordinate-input {
-            flex: 1;
-        }
-
-        .coordinate-input label {
-            font-size: 12px;
-            color: #666;
-        }
-
-        .coordinate-input input {
-            width: 100%;
-            padding: 5px;
-            font-size: 12px;
-        }
-
-        /* Estilos para la sección de logo */
-        .logo-preview-container {
-            transition: all 0.3s ease;
-        }
-
-        .logo-preview-container img {
-            transition: transform 0.2s ease;
-        }
-
-        .logo-preview-container img:hover {
-            transform: scale(1.05);
-        }
-
-        .logo-upload-container {
-            position: relative;
-        }
-
-        #logoPreview {
-            margin-top: 10px;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Estilos para las estadísticas */
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .stat-card {
-            background: white;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            text-align: left;
-            border-top: 4px solid #3498db;
-            transition: transform 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 18px;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .stat-icon {
-            font-size: 3em;
-            margin-bottom: 0;
-            margin-right: 10px;
-        }
-
-        .stat-number {
-            font-size: 2.5em;
-            font-weight: bold;
-            color: #2c3e50;
-            margin-bottom: 10px;
-        }
-
-        .stat-label {
-            color: #7f8c8d;
-            font-size: 1.1em;
-            font-weight: 500;
-        }
-
-        .stat-card.presentados {
-            border-top-color: #3498db;
-        }
-
-        .stat-card.evaluacion {
-            border-top-color: #f39c12;
-        }
-
-        .stat-card.comite {
-            border-top-color: #9b59b6;
-        }
-
-        .stat-card.aprobados {
-            border-top-color: #27ae60;
-        }
-
-        .stat-card.rechazados {
-            border-top-color: #e74c3c;
-        }
+}
 
 
-        .nav {
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #e0e0e0;
+    margin-bottom: 20px;
+}
+
+.modal-header h3 {
+    margin: 0;
+    color: #333;
+    font-size: 1.5em;
+    font-weight: 600;
+}
+
+.modal-header .close {
+    font-size: 28px;
+    font-weight: bold;
+    color: #999;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.modal-header .close:hover {
+    color: #333;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.modal-button-secondary {
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.modal-button-secondary:hover {
+    background-color: #5a6268;
+}
+
+#modalEditar .modal-content {
+    max-width: 800px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+/* Estilos para el formulario completo del dashboard */
+.form-section {
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: #fafafa;
+}
+
+.form-section h4 {
+    margin: 0 0 15px 0;
+    color: #333;
+    font-size: 16px;
+    font-weight: 600;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 5px;
+}
+
+.input-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.input-box {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-box span,
+.input-box label {
+    font-weight: 500;
+    margin-bottom: 5px;
+    color: #555;
+    font-size: 14px;
+}
+
+.input-box input,
+.input-box select,
+.input-box textarea {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+}
+
+.input-box input:focus,
+.input-box select:focus,
+.input-box textarea:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+/* Estilo especial para campos de una sola columna */
+.input-box.full-width {
+    grid-column: 1 / -1;
+}
+
+/* Estilos para el mapa */
+#edit-location-map {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+/* Botones de mapa */
+.map-buttons {
+    margin-top: 10px;
+    display: flex;
+    gap: 5px;
+}
+
+.map-btn {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background-color 0.3s ease;
+}
+
+.map-btn.primary {
+    background: #007bff;
+    color: white;
+}
+
+.map-btn.primary:hover {
+    background: #0056b3;
+}
+
+.map-btn.danger {
+    background: #dc3545;
+    color: white;
+}
+
+.map-btn.danger:hover {
+    background: #c82333;
+}
+
+/* Coordenadas */
+.coordinates-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.coordinate-input {
+    flex: 1;
+}
+
+.coordinate-input label {
+    font-size: 12px;
+    color: #666;
+}
+
+.coordinate-input input {
+    width: 100%;
+    padding: 5px;
+    font-size: 12px;
+}
+
+/* Estilos para la sección de logo */
+.logo-preview-container {
+    transition: all 0.3s ease;
+}
+
+.logo-preview-container img {
+    transition: transform 0.2s ease;
+}
+
+.logo-preview-container img:hover {
+    transform: scale(1.05);
+}
+
+.logo-upload-container {
+    position: relative;
+}
+
+#logoPreview {
+    margin-top: 10px;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Estilos para las estadísticas */
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    border-top: 4px solid #3498db;
+    transition: transform 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+}
+
+.stat-icon {
+    font-size: 3em;
+    margin-bottom: 0;
+    margin-right: 10px;
+}
+
+.stat-number {
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+.stat-label {
+    color: #7f8c8d;
+    font-size: 1.1em;
+    font-weight: 500;
+}
+
+.stat-card.presentados {
+    border-top-color: #3498db;
+}
+
+.stat-card.evaluacion {
+    border-top-color: #f39c12;
+}
+
+.stat-card.comite {
+    border-top-color: #9b59b6;
+}
+
+.stat-card.aprobados {
+    border-top-color: #27ae60;
+}
+
+.stat-card.rechazados {
+    border-top-color: #e74c3c;
+}
+
+
+.nav {
     display: flex;
     gap: 1rem;
 }
@@ -1377,6 +1409,7 @@ td {
     box-shadow: none;
     outline: none;
 }
+
 #imagenPerfil:hover {
     box-shadow: 0 0 0 3px var(--primary-color);
     transform: scale(1.1);
@@ -1436,4 +1469,16 @@ td {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+.tittle,
+h2 {
+
+    color: var(--primary-color);
+
+}
+
+
+.form-section p {
+    text-align: justify;
 }

@@ -6,7 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>sinaptico - Innovación Abierta</title>
   <link rel="stylesheet" href="styles/colores.css">
-
   <link rel="stylesheet" href="styles/stylehelice2.css">
   <link rel="stylesheet" href="styles/innovacion.css">
   <link rel="stylesheet" href="styles/clasificados.css">
@@ -28,6 +27,7 @@
     </div>
     <nav class="nav">
       <button class="nav-button pulse" onclick="window.location.href='/helice'">Hélice</button>
+      <button class="nav-button pulse" onclick="window.location.href='/proyectos'">Proyectos</button>
       <button class="nav-button pulse" onclick="window.location.href='/innovacion'">Innovación</button>
 
       <button class="nav-button pulse" onclick="window.location.href='/Conocimiento'">Conocimiento</button>
@@ -36,10 +36,32 @@
       <button class="nav-button pulse" onclick="window.location.href='/eventos'">Eventos</button>
 
       <button class="nav-button pulse" onclick="window.location.href='/mapa-usuarios'">Mapa</button>
+      <div style="position:fixed;top:10px;right:20px;z-index:1000;font-size:1.5em;cursor:pointer;">
+        <span id="icono-notif">🔔 <span
+            style='background:red;color:white;border-radius:50%;padding:2px 7px;font-size:0.9em;'>0</span></span>
+      </div>
+      <div class="notificaciones" id="notificaciones"></div>
 
-      <button class="nav-button pulse" id="cerrarSesion">Cerrar sesión</button>
+      <!-- <button class="nav-button pulse" id="cerrarSesion">Cerrar sesión</button> -->
+      <!-- Botón con menú desplegable -->
+      <div class="dropdown">
+        <button class=" " id="userMenuBtn">
+          <div id="userPhoto ">
+            <img class="imagenPerfil" id="imagenPerfilSecundaria" src="img/sinfoto.jpg" alt="Foto de perfil"
+              onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
+          </div>
+
+        </button>
+
+        <div class="dropdown-menu" id="userMenu">
+          <a href="/perfil">Perfil</a>
+          <a href="/configuracion">Configuración</a>
+          <a href="#" id="cerrarSesion">Cerrar sesión</a>
+        </div>
+      </div>
     </nav>
   </header>
+
   <div class="welcome-container">
     <div id="userPhoto">
       <img id="imagenPerfil" src="img/sinfoto.jpg" alt="Foto de perfil"
@@ -141,7 +163,7 @@
     <div class="container">
       <div class="section-header">
         <i class="fas fa-rocket"></i>
-        <h2>2025 - Retos activos</h2>
+        <h2 style="color:white;">2025 - Retos activos</h2>
       </div>
 
       <div class="challenges-grid">
@@ -320,21 +342,25 @@
   <div id="modalCrearReto" class="modal" style="display: none;">
     <div class="modal-content">
       <span class="close">&times;</span>
-      <h1>Crear Nuevo Reto</h1>
+      <h2 style="text-align: center;">Nuevo Reto</h2>
       <form id="crearRetoForm">
-        <label for="nombre">Nombre del Reto:</label>
-        <input type="text" id="nombre" name="nombre" required>
+        <div class="form-section">
+          <div class="input-box ">
+            <label for="nombre">Nombre del Reto:</label>
+            <input type="text" id="nombre" name="nombre" required>
 
-        <label for="ubicacionVideo">Ubicación del Video:</label>
-        <input type="file" id="video" name="video" accept="video/*">
+            <label for="ubicacionVideo">Video promotor:</label>
+            <input type="file" id="video" name="video" accept="video/*">
 
-        <label for="descripcion">Descripción:</label>
-        <textarea id="descripcion" name="descripcion"></textarea>
+            <label for="descripcion">Descripción:</label>
+            <textarea id="descripcion" name="descripcion"></textarea>
 
-        <label for="ubicacionFicha">Ubicación de la Ficha:</label>
-        <input type="file" id="ficha" name="ficha" accept=".pdf,.doc,.docx">
-
+            <label for="ubicacionFicha">Ficha de Requisitos:</label>
+            <input type="file" id="ficha" name="ficha" accept=".pdf,.doc,.docx">
+          </div>
+        </div>
         <button type="submit">Crear Reto</button>
+
       </form>
     </div>
   </div>
@@ -344,7 +370,7 @@
   <script src="js/retos.js"></script>
   <script src="js/clasificadosMostrar.js"></script>
   <script src="js/ContactarServicio.js"></script>
-      <script src="js/crearReto.js"></script>
+  <script src="js/crearReto.js"></script>
 
   <script>
 
@@ -370,13 +396,8 @@
       const input = document.getElementById('classified-price');
       input.value = input.value.replace(/\./g, ''); // Enviar número limpio al backend
     });
-
-
-
-
-
-
   </script>
+
   <script>
     function irEnConstruccion() {
       window.location.href = "/construccion"; // o la ruta que tengas
@@ -456,8 +477,8 @@
       const response = await fetch(`${API_BASE_URL}/api/user/${userId}`);
       const data = await response.json();
 
+      document.getElementById("imagenPerfilSecundaria").src = data.fotoPerfil ? "photo/" + data.fotoPerfil : "photo/sinfoto.jpg";
       document.getElementById("imagenPerfil").src = data.fotoPerfil ? "photo/" + data.fotoPerfil : "photo/sinfoto.jpg";
-
 
 
       console.log(data);
@@ -479,6 +500,46 @@
       return data; // { exists: true, entidad: {...} }
     }
   </script>
+  <script>
+    document.getElementById("cerrarSesion").addEventListener("click", () => {
+      Swal.fire({
+        title: '¿Estás seguro?',
+        text: '¿Querés cerrar sesión?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, cerrar sesión',
+        cancelButtonText: 'Cancelar',
+        reverseButtons: true
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Borrar cookies y redirigir
+          document.cookie = 'jwt=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+          document.cookie = 'user=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+          document.cookie = 'userId=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+          document.location.href = "/";
+
+        }
+        // Si el usuario cancela, no pasa nada
+      });
+    });
+
+  </script>
+  <script>
+    const userMenuBtn = document.getElementById("userMenuBtn");
+    const dropdown = userMenuBtn.closest(".dropdown");
+
+    // Mostrar / ocultar el menú al hacer clic
+    userMenuBtn.addEventListener("click", (event) => {
+      event.stopPropagation(); // evita que el clic cierre inmediatamente el menú
+      dropdown.classList.toggle("show");
+    });
+
+    // Cerrar el menú si haces clic fuera
+    document.addEventListener("click", () => {
+      dropdown.classList.remove("show");
+    });
+  </script>
+
 </body>
 
 </html>

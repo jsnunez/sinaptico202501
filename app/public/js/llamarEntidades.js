@@ -240,7 +240,7 @@ async function llamarIntegrantes(idEntidad) {
                 <div style="position: relative; width: 50px; height: 50px; cursor: pointer;" id="verIntegrante" onclick="abrirModalIntegrante(${integrante.id})">
                   <img src="/photo/${integrante.fotoPerfil}" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
                   <span style="position: absolute; bottom: 0; right: 0; background: #fff; border-radius: 50%; padding: 2px;">
-                    <i class="bi bi-pencil-fill" style="font-size: 1em; color: #007bff;"></i>
+                    <i class="bi bi-pencil-fill" style="font-size: 1em; color: var(--primary-color);"></i>
                   </span>
                 </div>
                 <p style="margin: 0;">${integrante.nombre} - ${integrante.rol}</p>
@@ -269,6 +269,10 @@ async function llamarIntegrantes(idEntidad) {
 abrirModalIntegrante = async function (userId) {
   console.log("ID del integrante:", userId);
   document.getElementById('modalIntegrante').style.display = 'block';
+//Cerrar modal integrante
+  document.getElementById('cerrarModalIntegrante').onclick = function () {
+    document.getElementById('modalIntegrante').style.display = 'none';
+  };
 
   const response = await fetch(`${API_BASE_URL}/api/user/${userId}`);
   const data = await response.json();

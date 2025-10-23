@@ -26,27 +26,57 @@
     <canvas id="neuralCanvas"></canvas>
   </div>
 
+
   <!-- Encabezado -->
   <header class="header">
-    <div class="logo">
+    <div onclick="window.location.href='/helice'" class="logo">
+      <!-- <span class="logo-icon">⚡</span> -->
       <span class="logo-text">SINAPTICO</span>
     </div>
     <nav class="nav">
       <button class="nav-button pulse" onclick="window.location.href='/helice'">Hélice</button>
+      <button class="nav-button pulse" onclick="window.location.href='/proyectos'">Proyectos</button>
       <button class="nav-button pulse" onclick="window.location.href='/innovacion'">Innovación</button>
+
       <button class="nav-button pulse" onclick="window.location.href='/Conocimiento'">Conocimiento</button>
       <button class="nav-button pulse" onclick="window.location.href='/convocatorias'">Convocatorias</button>
+
       <button class="nav-button pulse" onclick="window.location.href='/eventos'">Eventos</button>
-      <button class="nav-button pulse" onclick="irEnConstruccion()">Mapa</button>
-      <button class="nav-button pulse" id="cerrarSesion">Cerrar sesión</button>
+
+      <button class="nav-button pulse" onclick="window.location.href='/mapa-usuarios'">Mapa</button>
+      <div style="position:fixed;top:10px;right:20px;z-index:1000;font-size:1.5em;cursor:pointer;">
+        <span id="icono-notif">🔔 <span
+            style='background:red;color:white;border-radius:50%;padding:2px 7px;font-size:0.9em;'>0</span></span>
+      </div>
+      <div class="notificaciones" id="notificaciones"></div>
+
+      <!-- <button class="nav-button pulse" id="cerrarSesion">Cerrar sesión</button> -->
+      <!-- Botón con menú desplegable -->
+      <div class="dropdown">
+        <button class=" " id="userMenuBtn">
+          <div id="userPhoto ">
+            <img class="imagenPerfil" id="imagenPerfilSecundaria" src="img/sinfoto.jpg" alt="Foto de perfil"
+              onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
+          </div>
+
+        </button>
+
+        <div class="dropdown-menu" id="userMenu">
+          <a href="/perfil">Perfil</a>
+          <a href="/configuracion">Configuración</a>
+          <a href="#" id="cerrarSesion">Cerrar sesión</a>
+        </div>
+      </div>
     </nav>
   </header>
+
 
   <!-- Bienvenida y botones de acción -->
   <div class="welcome-container">
     <div class="welcome-text">
       <h2 id="title">Eventos</h2>
-      <p class="subtitle">Consulta los eventos activos para fortalecer tu participación en el ecosistema CTEI de Santander</p>
+      <p class="subtitle">Consulta los eventos activos para fortalecer tu participación en el ecosistema CTEI de
+        Santander</p>
     </div>
     <div class="action-buttons" style="display: none;">
       <button class="action-button" id="btnNuevoEvento">
@@ -164,8 +194,8 @@
                   <p class="convocatoria-subtitle-color">Organizador: ${evento.organizador || 'No especificado'}</p>
                   <p class="convocatoria-subtitle-color">
                     Fecha límite: ${evento.fechaLimite
-                      ? new Date(evento.fechaLimite).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })
-                      : 'Sin fecha'}
+                ? new Date(evento.fechaLimite).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })
+                : 'Sin fecha'}
                   </p>
                 </div>
               </div>
@@ -251,7 +281,7 @@
           body: JSON.stringify(datosEvento)
         });
         if (response.ok) {
-            Swal.fire('¡Éxito!', `El evento ha sido creado. Espera que el administrador la revise y la habilite.`, 'success');
+          Swal.fire('¡Éxito!', `El evento ha sido creado. Espera que el administrador la revise y la habilite.`, 'success');
           document.getElementById('modalEdicion').style.display = "none";
           document.getElementById('formEditarEvento').reset();
         } else {
@@ -290,5 +320,78 @@
       }
     });
   </script>
+
+  <script>
+    // =========================
+    // Utilidades
+    // =========================
+    function obtenerCookie(nombre) {
+      const nombreCookie = `${nombre}=`;
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        let cookie = cookies[i].trim();
+        if (cookie.indexOf(nombreCookie) === 0) {
+          return cookie.substring(nombreCookie.length, cookie.length);
+        }
+      }
+      return null;
+    }
+
+    const userId = obtenerCookie("userId");
+
+    (async () => {
+      try {
+        // Cargar usuario (para cabecera y foto)
+        const resUser = await fetch(`/api/user/${userId}`);
+        const dataUser = await resUser.json();
+
+        document.getElementById("imagenPerfilSecundaria").src = dataUser.fotoPerfil ? "photo/" + dataUser.fotoPerfil : "photo/sinfoto.jpg";
+
+      } catch (error) {
+        console.error("Error al inicializar usuario:", error);
+      }
+    })();
+
+  </script>
+  <script>
+    document.getElementById("cerrarSesion").addEventListener("click", () => {
+      Swal.fire({
+        title: '¿Estás seguro?',
+        text: '¿Querés cerrar sesión?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, cerrar sesión',
+        cancelButtonText: 'Cancelar',
+        reverseButtons: true
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Borrar cookies y redirigir
+          document.cookie = 'jwt=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+          document.cookie = 'user=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+          document.cookie = 'userId=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+          document.location.href = "/";
+
+        }
+        // Si el usuario cancela, no pasa nada
+      });
+    });
+
+  </script>
+  <script>
+    const userMenuBtn = document.getElementById("userMenuBtn");
+    const dropdown = userMenuBtn.closest(".dropdown");
+
+    // Mostrar / ocultar el menú al hacer clic
+    userMenuBtn.addEventListener("click", (event) => {
+      event.stopPropagation(); // evita que el clic cierre inmediatamente el menú
+      dropdown.classList.toggle("show");
+    });
+
+    // Cerrar el menú si haces clic fuera
+    document.addEventListener("click", () => {
+      dropdown.classList.remove("show");
+    });
+  </script>
 </body>
+
 </html>
