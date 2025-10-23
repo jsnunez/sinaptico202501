@@ -19,7 +19,7 @@ const router = express.Router();
 // rutas
 router.get('/verificarUserAdminIdConusuario/:id', verificarUserAdminIdConusuario)
 router.get('/verificar-entidad/:userId', verificarEntidad);
-router.get('/verificar-admin/:userId', getUserAdminId);
+router.get('/verificar-admin/:Id', getUserAdminId);
 router.get('/verificar-user-admin/:id', verificarUserAdminId);
 router.put('/modificar-user-admin/:id', modificarUserAdminId);
 router.get('/entidades', obtenerEntidad);

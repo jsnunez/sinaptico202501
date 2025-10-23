@@ -21,7 +21,7 @@ async function fetchSolicitudes(idEntidad) {
             tableBody.innerHTML = `<tr><td colspan="4">Error: ${error.message}</td></tr>`;
         }
     } catch (error) {
-        tableBody.innerHTML = `<tr><td colspan="4">Error: ${error.message}</td></tr>`;
+        tableBody.innerHTML = `<tr><td colspan="4">Error: ${error.message}hola</td></tr>`;
     }
 
 }

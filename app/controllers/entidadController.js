@@ -676,12 +676,11 @@ console.log('Verificando entidades con UserAdminId:', UserAdminId);
 
 
 export const getUserAdminId = async (req, res) => {
-  const userId = req.params.userId;
-  console.log('Obteniendo UserAdminId para usuario ID:', userId);
+  const id = req.params.Id;
+  console.log('Obteniendo UserAdminId para entidad ID:', id);
   
   try {
-    const entidad = await Entidad.findOne({
-      where: { UserAdminId: userId },
+    const entidad = await Entidad.findByPk(id, {
       attributes: ['id', 'UserAdminId', 'razonSocial']
     });
 
