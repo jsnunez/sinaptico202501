@@ -95,31 +95,31 @@
         <h3 class="section-title">Contacto Líder PPI</h3>
         <div class="input-box full-width">
           <label for="Entidad">Nombre de la Institución responsable </label>
-          <input disabled type="text" id="nombreEntidad" name="nombreEntidad"
-            placeholder="Ingrese el nombre de la entidad responsable" "
-                            required>
-                    </div>
+          <input disabled type="text" id="nombreEntidad" name="nombreEntidad" required>
+        </div>
 
-                <div class=" input-row">
+        <div class=" input-row">
+
           <div class="input-box">
-            <label for="nombreLider">Nombre</label>
+            <label for="nombreLider">Nombre y Cargo</label>
             <input type="text" id="nombreLider" name="nombreLider" placeholder="Ingrese el nombre del Líder PPI"
               required>
           </div>
-
-        </div>
-
-        <div class="input-row">
-          <div class="input-box">
-            <label for="correoLider">Correo Electrónico</label>
-            <input disabled="true" type="email" id="correoLider" name="correo" placeholder="Ingrese el correo" required>
-          </div>
-
           <div class="input-box">
             <label for="telefonoLider">Teléfono / Celular</label>
             <input disabled="true" type="text" id="telefonoLider" name="telefonoLider"
               placeholder="Ingrese el teléfono o celular" required>
           </div>
+
+        </div>
+
+        <div class="input-row">
+          <div class="input-box full-width">
+            <label for="correoLider">Correo Electrónico</label>
+            <input disabled="true" type="email" id="correoLider" name="correo" placeholder="Ingrese el correo" required>
+          </div>
+
+
 
         </div>
 
@@ -735,7 +735,7 @@
                     </div>
                 </div>
             `;
-       
+
           modal.style.display = 'block';
         })
         .catch(() => {

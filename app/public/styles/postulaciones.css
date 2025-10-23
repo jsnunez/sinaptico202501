@@ -627,13 +627,14 @@ form {
 
 .input-box {
     margin-bottom: 1rem;
+   
 }
 
 .input-box span {
     display: block;
     font-size: 0.9rem;
     margin-bottom: 0.3rem;
-    color: #555;
+
 }
 
 .input-box input,
@@ -645,6 +646,7 @@ form {
     border-radius: 8px;
     font-size: 0.9rem;
     transition: var(--transition);
+    
 }
 
 .input-box input:focus,
@@ -1169,7 +1171,7 @@ td {
 .input-box label {
     font-weight: 500;
     margin-bottom: 5px;
-    color: #555;
+
     font-size: 14px;
 }
 

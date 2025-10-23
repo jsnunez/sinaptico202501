@@ -234,8 +234,9 @@
             <button class="nav-button pulse" onclick="window.location.href='/Conocimiento'">Conocimiento</button>
             <button class="nav-button pulse" onclick="window.location.href='/convocatorias'">Convocatorias</button>
 
-            <button class="nav-button pulse" onclick="window.location.href='/mapa-usuarios'">Mapa</button>
+            <button class="nav-button pulse" onclick="window.location.href='/eventos'">Eventos</button>
 
+            <button class="nav-button pulse" onclick="window.location.href='/mapa-usuarios'">Mapa</button>
             <div style="position:fixed;top:10px;right:20px;z-index:1000;font-size:1.5em;cursor:pointer;">
                 <span id="icono-notif">🔔 <span
                         style='background:red;color:white;border-radius:50%;padding:2px 7px;font-size:0.9em;'>0</span></span>
@@ -261,7 +262,6 @@
             </div>
         </nav>
     </header>
-
     </div>
     <!-- Bienvenida y botones de acción -->
     <div class="welcome-container">
@@ -627,7 +627,7 @@
                     <a href="https://facebook.com" target="_blank"><i class="bi bi-facebook"></i></i></a>
                     <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a><br>
                     <a href="https://twitter.com" target="_blank"><span>Pagina Web</span></a>
-              
+
 
                 </div>
 
@@ -1092,77 +1092,82 @@
         </script>
 
 
-  <style>
-    /* Spinner overlay */
-    #page-spinner-overlay{
-        position:fixed;
-        inset:0;
-        display:flex;
-        flex-direction:column;
-        align-items:center;
-        justify-content:center;
-        gap:12px;
-        background:rgba(255,255,255,0.95);
-        z-index:99999;
-        transition:opacity .4s ease;
-        -webkit-backdrop-filter: blur(2px);
-        backdrop-filter: blur(2px);
-    }
+        <style>
+            /* Spinner overlay */
+            #page-spinner-overlay {
+                position: fixed;
+                inset: 0;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 12px;
+                background: rgba(255, 255, 255, 0.95);
+                z-index: 99999;
+                transition: opacity .4s ease;
+                -webkit-backdrop-filter: blur(2px);
+                backdrop-filter: blur(2px);
+            }
 
-    /* Circular spinner */
-    #page-spinner-overlay .spinner{
-        width:64px;
-        height:64px;
-        border-radius:50%;
-        border:6px solid rgba(0,0,0,0.08);
-        border-top-color:#007bff;
-        animation:spin 1s linear infinite;
-        box-shadow:0 6px 20px rgba(0,0,0,0.06);
-    }
-    @keyframes spin{ to{transform:rotate(360deg);} }
+            /* Circular spinner */
+            #page-spinner-overlay .spinner {
+                width: 64px;
+                height: 64px;
+                border-radius: 50%;
+                border: 6px solid rgba(0, 0, 0, 0.08);
+                border-top-color: #007bff;
+                animation: spin 1s linear infinite;
+                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+            }
 
-    /* Texto opcional */
-    #page-spinner-overlay .spinner-text{
-        color:#333;
-        font-family:inherit;
-        font-size:14px;
-        font-weight:500;
-    }
-    </style>
+            @keyframes spin {
+                to {
+                    transform: rotate(360deg);
+                }
+            }
 
-    <div id="page-spinner-overlay" aria-hidden="true" role="status" aria-label="Cargando">
-        <div class="spinner" aria-hidden="true"></div>
-        <div class="spinner-text">Cargando...</div>
-    </div>
+            /* Texto opcional */
+            #page-spinner-overlay .spinner-text {
+                color: #333;
+                font-family: inherit;
+                font-size: 14px;
+                font-weight: 500;
+            }
+        </style>
 
-    <script>
-    (function(){
-        // Garantiza que el overlay permanezca al menos 5s desde que se ejecuta este script.
-        const MIN_MS = 3000;
-        const overlay = document.getElementById('page-spinner-overlay');
-        if (!overlay) return;
+        <div id="page-spinner-overlay" aria-hidden="true" role="status" aria-label="Cargando">
+            <div class="spinner" aria-hidden="true"></div>
+            <div class="spinner-text">Cargando...</div>
+        </div>
 
-        // Si ya pasó más de MIN_MS desde la navegación start, aun así mostramos el overlay breve
-        const start = performance.timing ? performance.timing.navigationStart : Date.now();
-        const now = Date.now();
-        const elapsed = Math.max(0, now - start);
-        const remaining = Math.max(0, MIN_MS - elapsed);
+        <script>
+            (function () {
+                // Garantiza que el overlay permanezca al menos 5s desde que se ejecuta este script.
+                const MIN_MS = 3000;
+                const overlay = document.getElementById('page-spinner-overlay');
+                if (!overlay) return;
 
-        // Evita interacción mientras existe el overlay
-        document.documentElement.style.overflow = 'hidden';
-        document.body.style.overflow = 'hidden';
+                // Si ya pasó más de MIN_MS desde la navegación start, aun así mostramos el overlay breve
+                const start = performance.timing ? performance.timing.navigationStart : Date.now();
+                const now = Date.now();
+                const elapsed = Math.max(0, now - start);
+                const remaining = Math.max(0, MIN_MS - elapsed);
 
-        setTimeout(() => {
-            overlay.style.opacity = '0';
-            // permitir scroll cuando hide completo
-            setTimeout(() => {
-                if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
-                document.documentElement.style.overflow = '';
-                document.body.style.overflow = '';
-            }, 420);
-        }, remaining);
-    })();
-    </script>
+                // Evita interacción mientras existe el overlay
+                document.documentElement.style.overflow = 'hidden';
+                document.body.style.overflow = 'hidden';
+
+                setTimeout(() => {
+                    overlay.style.opacity = '0';
+                    // permitir scroll cuando hide completo
+                    setTimeout(() => {
+                        if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
+                        document.documentElement.style.overflow = '';
+                        document.body.style.overflow = '';
+                    }, 420);
+                }, remaining);
+            })();
+        </script>
 </body>
 
 </html>

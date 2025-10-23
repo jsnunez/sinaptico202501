@@ -130,7 +130,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             openModalBtn.disabled = true;
             openModalBtn.textContent = "Contactate con el administrador de la empresa para aplicar";
             openModalBtn.classList.add("disabled");
-            openModalBtn.style.backgroundColor = "orange";
+            openModalBtn.style.backgroundColor = "--primary-color";
           }
 
 
@@ -144,7 +144,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             openModalBtn.disabled = true;
             openModalBtn.textContent = "Ya aplicado";
             openModalBtn.classList.add("disabled");
-            openModalBtn.style.backgroundColor = "green";
+            openModalBtn.style.backgroundColor = "#157347";
           }
         } catch (error) {
           console.error("Error verifying application or entity status:", error);
