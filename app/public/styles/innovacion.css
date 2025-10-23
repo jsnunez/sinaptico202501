@@ -72,7 +72,7 @@
   }
   
 .btn-yellow:hover {
-  background-color: var(--text-color);
+  background-color: var(--yellow);
   border-color: var( --yellow); /* Borde del color amarillo */
   border-width: 2px; /* Puedes ajustar el grosor del borde */
   color: var(--text-description);

@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             Tu navegador no soporta la reproducción de videos.
           </video>
           <p>${challenge.descripcion}</p>
-          <a href="temario/${challenge.temario}" class="btn btn-outline btn-full" target="_blank">Ver temario</a>
+          <a href="temario/${challenge.temario}" class="btn btn-yellow btn-full" target="_blank">Ver temario</a>
           <button id="inscribirse${challenge.id}" class="btn btn-primary btn-full open-modal-btn">Inscribirse</button>
         `;
 
@@ -91,7 +91,7 @@ document.getElementById(`inscribirse${challenge.id}`).style.display = "none"; //
               const startCourseButton = document.createElement("button");
               startCourseButton.textContent = "Iniciar Curso";
               startCourseButton.classList.add("btn", "btn-success", "btn-full");
-              startCourseButton.style.background = "green";
+              startCourseButton.style.background = "#157347";
               startCourseButton.style.color = "white";
               startCourseButton.addEventListener("click", () => {
                 const courseSection = document.getElementById("cursosSection");

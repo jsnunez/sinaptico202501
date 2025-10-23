@@ -8,10 +8,10 @@
     <link rel="stylesheet" href="styles/colores.css">
     <link rel="stylesheet" href="styles/stylehelice2.css">
     <link rel="stylesheet" href="styles/mapa-usuarios.css">
-    
+
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    
+
     <style>
         /* Reset y base */
         * {
@@ -42,7 +42,7 @@
             border-radius: 12px;
             margin-bottom: 20px;
             text-align: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
         .map-header h1 {
@@ -68,7 +68,7 @@
             padding: 20px;
             border-radius: 10px;
             text-align: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             border-left: 4px solid #3498db;
         }
 
@@ -90,7 +90,7 @@
             padding: 20px;
             border-radius: 10px;
             margin-bottom: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             display: flex;
             flex-wrap: wrap;
             gap: 15px;
@@ -109,7 +109,8 @@
             color: #2c3e50;
         }
 
-        .control-input, .control-select {
+        .control-input,
+        .control-select {
             padding: 10px;
             border: 2px solid #ecf0f1;
             border-radius: 6px;
@@ -117,7 +118,8 @@
             transition: border-color 0.3s;
         }
 
-        .control-input:focus, .control-select:focus {
+        .control-input:focus,
+        .control-select:focus {
             outline: none;
             border-color: #3498db;
         }
@@ -155,7 +157,7 @@
             background: white;
             border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
         }
 
@@ -174,7 +176,7 @@
             background: white;
             border-radius: 12px;
             padding: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
         .users-list h3 {
@@ -334,8 +336,13 @@
         }
 
         @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
         }
 
         /* Responsive */
@@ -344,19 +351,19 @@
                 flex-direction: column;
                 align-items: stretch;
             }
-            
+
             .control-group {
                 width: 100%;
             }
-            
+
             .filter-buttons {
                 justify-content: center;
             }
-            
+
             .map-wrapper {
                 height: 400px;
             }
-            
+
             .container {
                 padding: 10px;
             }
@@ -408,8 +415,9 @@
             <button class="nav-button pulse" onclick="window.location.href='/Conocimiento'">Conocimiento</button>
             <button class="nav-button pulse" onclick="window.location.href='/convocatorias'">Convocatorias</button>
 
-            <button class="nav-button pulse" onclick="window.location.href='/mapa-usuarios'">Mapa</button>
+            <button class="nav-button pulse" onclick="window.location.href='/eventos'">Eventos</button>
 
+            <button class="nav-button pulse" onclick="window.location.href='/mapa-usuarios'">Mapa</button>
             <div style="position:fixed;top:10px;right:20px;z-index:1000;font-size:1.5em;cursor:pointer;">
                 <span id="icono-notif">🔔 <span
                         style='background:red;color:white;border-radius:50%;padding:2px 7px;font-size:0.9em;'>0</span></span>
@@ -436,20 +444,12 @@
         </nav>
     </header>
 
-
-    <!-- Bienvenida -->
-    <div class="welcome-container">
-        <div class="welcome-text">
-            <h2 id="bienvenido">Bienvenido</h2>
-        </div>
-    </div>
-
     <!-- Contenido principal -->
-    <div class="container">
+    <div class="main-content">
         <!-- Header del mapa -->
-        <div class="map-header">
-            <h1>🗺️ Mapa de Entidades</h1>
-            <p>Explora la ubicación de empresas, Academiaes y organizaciones de la red SinAptico</p>
+        <div class="helix-title">
+            <h1 class="title" >🗺️ Mapa</h1>
+            <p>Explora la ubicación de empresas, Academias y organizaciones de la red Sinaptico</p>
         </div>
 
         <!-- Estadísticas -->
@@ -478,14 +478,14 @@
                 <label class="control-label">Buscar entidad</label>
                 <input type="text" class="control-input" id="search-user" placeholder="Nombre o actividad...">
             </div>
-            
+
             <div class="control-group">
                 <label class="control-label">Filtrar por ciudad</label>
                 <select class="control-select" id="filter-city">
                     <option value="">Todas las ciudades</option>
                 </select>
             </div>
-            
+
             <div class="control-group">
                 <label class="control-label">Tipo de entidad</label>
                 <div class="filter-buttons">
@@ -650,7 +650,7 @@
         ];
 
         // Inicialización
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             initializeMap();
             loadUsers();
             setupEventListeners();
@@ -659,7 +659,7 @@
 
         function checkUserSession() {
             const usuario = obtenerCookie("user");
-            
+
             if (usuario) {
                 let cleanedStr = decodeURIComponent(usuario.replace(/%20/g, " "));
                 let nombreUsuario = cleanedStr.split(" ")[0];
@@ -726,7 +726,7 @@
                     populateCityFilter();
                     displayMarkersOnMap();
                     displayUsersList();
-                    
+
                     Swal.fire({
                         icon: 'warning',
                         title: 'Datos de demostración',
@@ -747,7 +747,7 @@
         function populateCityFilter() {
             const cities = [...new Set(usersData.map(u => u.city))].sort();
             const citySelect = document.getElementById('filter-city');
-            
+
             cities.forEach(city => {
                 const option = document.createElement('option');
                 option.value = city;
@@ -882,7 +882,7 @@
 
         function displayUsersList() {
             const listContent = document.getElementById('users-list-content');
-            
+
             if (filteredUsers.length === 0) {
                 listContent.innerHTML = `
                     <div style="text-align: center; padding: 40px; color: #7f8c8d;">
@@ -921,7 +921,7 @@
         function setupEventListeners() {
             // Filtros de tipo de usuario
             document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
+                btn.addEventListener('click', function () {
                     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
                     this.classList.add('active');
                     currentFilter = this.dataset.type;
@@ -931,12 +931,12 @@
 
             // Búsqueda
             document.getElementById('search-user').addEventListener('input', applyFilters);
-            
+
             // Filtro de ciudad
             document.getElementById('filter-city').addEventListener('change', applyFilters);
 
             // Cerrar sesión
-            document.getElementById('cerrarSesion').addEventListener('click', function() {
+            document.getElementById('cerrarSesion').addEventListener('click', function () {
                 Swal.fire({
                     title: '¿Cerrar sesión?',
                     text: "¿Estás seguro que quieres cerrar tu sesión?",
@@ -962,13 +962,13 @@
             filteredUsers = usersData.filter(user => {
                 // Filtro de tipo
                 const typeMatch = currentFilter === 'all' || user.claseEntidad === currentFilter;
-                
+
                 // Filtro de búsqueda
-                const searchMatch = !searchTerm || 
-                                  user.name.toLowerCase().includes(searchTerm) ||
-                                  user.email.toLowerCase().includes(searchTerm) ||
-                                  user.company.toLowerCase().includes(searchTerm);
-                
+                const searchMatch = !searchTerm ||
+                    user.name.toLowerCase().includes(searchTerm) ||
+                    user.email.toLowerCase().includes(searchTerm) ||
+                    user.company.toLowerCase().includes(searchTerm);
+
                 // Filtro de ciudad
                 const cityMatch = !cityFilter || user.city === cityFilter;
 
@@ -983,10 +983,10 @@
             const user = usersData.find(u => u.id === userId);
             if (user) {
                 map.setView([user.lat, user.lng], 12);
-                
+
                 // Encontrar y abrir el popup del marcador
-                const marker = markers.find(m => 
-                    Math.abs(m.getLatLng().lat - user.lat) < 0.001 && 
+                const marker = markers.find(m =>
+                    Math.abs(m.getLatLng().lat - user.lat) < 0.001 &&
                     Math.abs(m.getLatLng().lng - user.lng) < 0.001
                 );
                 if (marker) {
@@ -1000,7 +1000,7 @@
             document.querySelectorAll('.user-item').forEach(item => {
                 item.style.background = '';
             });
-            
+
             const userElement = document.querySelector(`[onclick="focusOnUser(${userId})"]`);
             if (userElement) {
                 userElement.style.background = '#e3f2fd';
@@ -1045,7 +1045,7 @@
             });
         }
     </script>
-    
+
     <script>
         // =========================
         // Utilidades
@@ -1073,50 +1073,51 @@
                 document.getElementById("imagenPerfilSecundaria").src = dataUser.fotoPerfil ? "photo/" + dataUser.fotoPerfil : "photo/sinfoto.jpg";
 
             } catch (error) {
-                console.error("Error al inicializar usuario:", error);      
+                console.error("Error al inicializar usuario:", error);
             }
         })();
 
     </script>
 
-                <script>
-                document.getElementById("cerrarSesion").addEventListener("click", () => {
-                    Swal.fire({
-                        title: '¿Estás seguro?',
-                        text: '¿Querés cerrar sesión?',
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonText: 'Sí, cerrar sesión',
-                        cancelButtonText: 'Cancelar',
-                        reverseButtons: true
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            // Borrar cookies y redirigir
-                            document.cookie = 'jwt=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-                            document.cookie = 'user=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-                            document.cookie = 'userId=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-                            document.location.href = "/";
+    <script>
+        document.getElementById("cerrarSesion").addEventListener("click", () => {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: '¿Querés cerrar sesión?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, cerrar sesión',
+                cancelButtonText: 'Cancelar',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Borrar cookies y redirigir
+                    document.cookie = 'jwt=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+                    document.cookie = 'user=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+                    document.cookie = 'userId=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+                    document.location.href = "/";
 
-                        }
-                        // Si el usuario cancela, no pasa nada
-                    });
-                });
+                }
+                // Si el usuario cancela, no pasa nada
+            });
+        });
 
-            </script>
-            <script>
-                const userMenuBtn = document.getElementById("userMenuBtn");
-                const dropdown = userMenuBtn.closest(".dropdown");
+    </script>
+    <script>
+        const userMenuBtn = document.getElementById("userMenuBtn");
+        const dropdown = userMenuBtn.closest(".dropdown");
 
-                // Mostrar / ocultar el menú al hacer clic
-                userMenuBtn.addEventListener("click", (event) => {
-                    event.stopPropagation(); // evita que el clic cierre inmediatamente el menú
-                    dropdown.classList.toggle("show");
-                });
+        // Mostrar / ocultar el menú al hacer clic
+        userMenuBtn.addEventListener("click", (event) => {
+            event.stopPropagation(); // evita que el clic cierre inmediatamente el menú
+            dropdown.classList.toggle("show");
+        });
 
-                // Cerrar el menú si haces clic fuera
-                document.addEventListener("click", () => {
-                    dropdown.classList.remove("show");
-                });
-            </script>
+        // Cerrar el menú si haces clic fuera
+        document.addEventListener("click", () => {
+            dropdown.classList.remove("show");
+        });
+    </script>
 </body>
+
 </html>
