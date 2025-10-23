@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="styles/dashboard.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    
+
     <!-- Leaflet CSS y JS para el mapa -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -20,7 +20,7 @@
             justify-content: center;
             align-items: center;
         }
-        
+
         .action-icon {
             padding: 6px 8px;
             border-radius: 4px;
@@ -30,43 +30,43 @@
             min-width: 32px;
             text-align: center;
         }
-        
+
         .action-icon.edit {
             background-color: #e3f2fd;
             color: #1976d2;
             border: 1px solid #bbdefb;
         }
-        
+
         .action-icon.edit:hover {
             background-color: #1976d2;
             color: white;
             transform: scale(1.05);
         }
-        
+
         .action-icon.edit-full {
             background-color: #f3e5f5;
             color: #7b1fa2;
             border: 1px solid #ce93d8;
         }
-        
+
         .action-icon.edit-full:hover {
             background-color: #7b1fa2;
             color: white;
             transform: scale(1.05);
         }
-        
+
         .action-icon.delete {
             background-color: #ffebee;
             color: #d32f2f;
             border: 1px solid #ffcdd2;
         }
-        
+
         .action-icon.delete:hover {
             background-color: #d32f2f;
             color: white;
             transform: scale(1.05);
         }
-        
+
         /* Estilos para los mensajes de advertencia */
         .warning-message {
             display: flex;
@@ -74,7 +74,7 @@
             gap: 8px;
             font-size: 13px;
         }
-        
+
         /* Estilos para SweetAlert2 más grande */
         .swal2-popup-large {
             font-size: 14px !important;
@@ -267,15 +267,15 @@
             <h2>Gestión de Entidades</h2>
             <p class="subtitle">Administra las entidades de la aplicación</p>
         </div>
- <button id="btnNuevaEntidad" class="action-button" style="margin-left: 10px;">
-            <i class="bi bi-plus-circle"></i>  Nueva Entidad
+        <button id="btnNuevaEntidad" class="action-button" style="margin-left: 10px;">
+            <i class="bi bi-plus-circle"></i> Nueva Entidad
         </button>
     </div>
 
     <!-- Filtros y acciones -->
     <div class="filter-container">
         <input type="text" id="buscarEntidad" placeholder="Buscar entidades..." class="filter-input">
-       
+
     </div>
 
     <!-- Tabla de entidades -->
@@ -307,11 +307,11 @@
         <div class="modal-content" style="max-width: 800px; max-height: 90vh; overflow-y: auto;">
             <span class="close">&times;</span>
             <div class="modal-header">
-                <h3 id="tituloModalEntidad">Nueva Entidad</h3>
+                <h3 id="tituloModalEntidad" style="color: white;">Nueva Entidad</h3>
             </div>
             <form id="formEntidad">
                 <input type="hidden" id="entidadId">
-                
+
                 <!-- Datos básicos de la entidad -->
                 <div class="form-section">
                     <h4>Información Básica</h4>
@@ -330,7 +330,7 @@
                             <input type="text" id="nombreEntidad" name="razonSocial" required>
                         </div>
                     </div>
-                    
+
                     <div class="input-row">
                         <div class="input-box">
                             <span>Número de Identificación</span>
@@ -349,7 +349,7 @@
                             </select>
                         </div>
                     </div>
-                    
+
                     <div class="input-row">
                         <div class="input-box">
                             <span>Naturaleza Jurídica</span>
@@ -379,7 +379,7 @@
                             <input type="tel" id="telefonoEntidad" name="telefono">
                         </div>
                     </div>
-                    
+
                     <div class="input-row">
                         <div class="input-box">
                             <span>Fecha de Constitución</span>
@@ -409,32 +409,41 @@
                             </select>
                         </div>
                     </div>
-                    
+
                     <!-- Sección del mapa para ubicación exacta -->
                     <div class="input-row" style="margin-top: 15px;">
                         <div class="input-box" style="width: 100%;">
                             <span>Ubicación en el Mapa</span>
-                            <div id="mapaEntidad" style="height: 300px; width: 100%; border: 1px solid #ddd; border-radius: 4px; margin-top: 5px;"></div>
+                            <div id="mapaEntidad"
+                                style="height: 300px; width: 100%; border: 1px solid #ddd; border-radius: 4px; margin-top: 5px;">
+                            </div>
                             <div style="margin-top: 10px; display: flex; gap: 10px;">
                                 <div style="flex: 1;">
                                     <label for="latitudEntidad" style="font-size: 12px; color: #666;">Latitud:</label>
-                                    <input type="number" id="latitudEntidad" name="latitud" step="0.0000001" placeholder="Ej: 7.0734245" readonly style="width: 100%; padding: 5px; font-size: 12px;">
+                                    <input type="number" id="latitudEntidad" name="latitud" step="0.0000001"
+                                        placeholder="Ej: 7.0734245" readonly
+                                        style="width: 100%; padding: 5px; font-size: 12px;">
                                 </div>
                                 <div style="flex: 1;">
                                     <label for="longitudEntidad" style="font-size: 12px; color: #666;">Longitud:</label>
-                                    <input type="number" id="longitudEntidad" name="longitud" step="0.0000001" placeholder="Ej: -73.1198624" readonly style="width: 100%; padding: 5px; font-size: 12px;">
+                                    <input type="number" id="longitudEntidad" name="longitud" step="0.0000001"
+                                        placeholder="Ej: -73.1198624" readonly
+                                        style="width: 100%; padding: 5px; font-size: 12px;">
                                 </div>
                             </div>
                             <div style="margin-top: 5px;">
-                                <button type="button" id="btnUbicarEnMapa" style="padding: 8px 12px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px;">
+                                <button type="button" id="btnUbicarEnMapa"
+                                    style="padding: 8px 12px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px;">
                                     � Reinicializar Mapa
                                 </button>
-                                <button type="button" id="btnLimpiarUbicacion" style="padding: 8px 12px; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px; margin-left: 5px;">
+                                <button type="button" id="btnLimpiarUbicacion"
+                                    style="padding: 8px 12px; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px; margin-left: 5px;">
                                     🗑️ Limpiar Ubicación
                                 </button>
                             </div>
                             <p style="font-size: 11px; color: #666; margin-top: 5px;">
-                                💡 El mapa se muestra automáticamente. Haga clic en él para establecer la ubicación exacta.
+                                💡 El mapa se muestra automáticamente. Haga clic en él para establecer la ubicación
+                                exacta.
                             </p>
                         </div>
                     </div>
@@ -455,7 +464,7 @@
                             </select>
                         </div>
                     </div>
-                    
+
                     <div class="input-row">
                         <div class="input-box">
                             <span>Correo del Contacto</span>
@@ -480,7 +489,8 @@
                         </div>
                         <div class="input-box">
                             <span>Email Admin Actual</span>
-                            <input type="email" id="emailAdminActual" name="emailAdminActual" readonly style="background-color: #f8f9fa; border: 1px solid #e9ecef;">
+                            <input type="email" id="emailAdminActual" name="emailAdminActual" readonly
+                                style="background-color: #f8f9fa; border: 1px solid #e9ecef;">
                         </div>
                     </div>
                 </div>
@@ -491,14 +501,16 @@
                     <div class="input-row">
                         <div class="input-box">
                             <span>Facebook</span>
-                            <input type="url" id="facebookEntidad" name="facebook" placeholder="https://facebook.com/...">
+                            <input type="url" id="facebookEntidad" name="facebook"
+                                placeholder="https://facebook.com/...">
                         </div>
                         <div class="input-box">
                             <span>Instagram</span>
-                            <input type="url" id="instagramEntidad" name="instagram" placeholder="https://instagram.com/...">
+                            <input type="url" id="instagramEntidad" name="instagram"
+                                placeholder="https://instagram.com/...">
                         </div>
                     </div>
-                    
+
                     <div class="input-row">
                         <div class="input-box">
                             <span>Página Web</span>
