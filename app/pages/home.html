@@ -48,6 +48,101 @@
 
 
             </div>
+            <div class="logos-slider">
+                <div class="logos-track">
+                    <div class="logo-slide">
+                        <img src="img/empresa1.png" alt="Empresa 1">
+                    </div>
+                    <div class="logo-slide">
+                        <img src="img/empresa2.png" alt="Empresa 2">
+                    </div>
+                    <div class="logo-slide">
+                        <img src="img/empresa3.png" alt="Empresa 3">
+                    </div>
+                    <div class="logo-slide">
+                        <img src="img/empresa4.png" alt="Empresa 4">
+                    </div>
+                    <div class="logo-slide">
+                        <img src="img/empresa5.png" alt="Empresa 5">
+                    </div>
+                    <div class="logo-slide">
+                        <img src="img/empresa6.png" alt="Empresa 6">
+                    </div>
+                    <!-- Duplicar para efecto infinito -->
+                    <div class="logo-slide">
+                        <img src="img/empresa1.png" alt="Empresa 1">
+                    </div>
+                    <div class="logo-slide">
+                        <img src="img/empresa2.png" alt="Empresa 2">
+                    </div>
+                    <div class="logo-slide">
+                        <img src="img/empresa3.png" alt="Empresa 3">
+                    </div>
+                    <div class="logo-slide">
+                        <img src="img/empresa4.png" alt="Empresa 4">
+                    </div>
+                    <div class="logo-slide">
+                        <img src="img/empresa5.png" alt="Empresa 5">
+                    </div>
+                    <div class="logo-slide">
+                        <img src="img/empresa6.png" alt="Empresa 6">
+                    </div>
+                </div>
+            </div>
+
+            <style>
+            .logos-slider {
+                width: 100%;
+                overflow: hidden;
+                padding: 2rem 0;
+                background: transparent;
+            }
+
+            .logos-track {
+                display: flex;
+                animation: scroll 30s linear infinite;
+                gap: 3rem;
+                width: max-content;
+            }
+
+            .logo-slide {
+                flex-shrink: 0;
+                width: 150px;
+                height: 80px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: white;
+                border-radius: 8px;
+                padding: 1rem;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            }
+
+            .logo-slide img {
+                max-width: 100%;
+                max-height: 100%;
+                object-fit: contain;
+                filter: grayscale(10%);
+                transition: filter 0.3s ease;
+            }
+
+            .logo-slide:hover img {
+                filter: grayscale(0%);
+            }
+
+            @keyframes scroll {
+                0% {
+                    transform: translateX(0);
+                }
+                100% {
+                    transform: translateX(-50%);
+                }
+            }
+
+            .logos-slider:hover .logos-track {
+                animation-play-state: paused;
+            }
+            </style>
 
         </div>
 
@@ -285,8 +380,7 @@
                                                     style="width: 16px; height: 16px; margin-top: 2px;">
                                                 <div style="margin-left: 8px;">
                                                     Autorizo el tratamiento de mis datos personales según la
-                                                    <a href="documents/politicas_cpc.pdf" target="_blank">política de
-                                                        tratamiento de
+                                                    <a href="documents/politicas_cpc.pdf" target="_blank">política de tratamiento de
                                                         datos</a>.
                                                 </div>
                                             </div>
