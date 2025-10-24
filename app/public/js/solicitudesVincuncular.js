@@ -1,6 +1,23 @@
 // solicitudesVincuncular.js
+document.getElementById('verIntegrantesEntidad').onclick = function () {
+
+            document.getElementById('modalVerIntegrantesEntidad').style.display = 'block';
+
+            // Opcional: cargar foto actual si tienes la URL
+            // document.getElementById('previewFotoPerfil').src = 'URL_DE_LA_FOTO_ACTUAL';
+        };
+        // Cerrar modal
+        document.getElementById('cerrarModalVerIntegrantesEntidad').onclick = function () {
+            document.getElementById('modalVerIntegrantesEntidad').style.display = 'none';
+        };
+                document.getElementById('cerrarModalVerIntegrantesEntidadBtn').onclick = function () {
+            document.getElementById('modalVerIntegrantesEntidad').style.display = 'none';
+        };
+
+
 
 const tableBody = document.getElementById('solicitudes-list-body');
+
 
 async function fetchSolicitudes(idEntidad) {
     console.log('id entidad', idEntidad);
@@ -20,6 +37,7 @@ async function fetchSolicitudes(idEntidad) {
         } catch (error) {
             tableBody.innerHTML = `<tr><td colspan="4">Error: ${error.message}</td></tr>`;
         }
+        
     } catch (error) {
         tableBody.innerHTML = `<tr><td colspan="4">Error: ${error.message}hola</td></tr>`;
     }
@@ -35,7 +53,7 @@ function renderTable(solicitudes, adminUserId) {
     }
     tableBody.innerHTML = solicitudes.map(solicitud => `
             <tr style="border-bottom:1px solid #e9ecef;">
-            <td style="padding:12px 8px;">${solicitud.id}</td>
+         
             <td style="padding:12px 8px;font-weight:600;color:#2b2f3a;">
             ${solicitud.User ? solicitud.User.name : ''}
             </td>
