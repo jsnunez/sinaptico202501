@@ -152,24 +152,34 @@
             color: white;
         }
 
-        /* Contenedor del mapa */
+        /* Contenedor principal del mapa */
         .map-container {
             background: white;
             border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
+            margin: 40px auto;
+            width: 80%;
+            max-width: 80%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
+        /* Wrapper del mapa */
         .map-wrapper {
             position: relative;
+            width: 100%;
             height: 600px;
         }
 
+        /* Mapa */
         #mapid {
-            height: 100%;
             width: 100%;
+            height: 100%;
+            display: block;
         }
+
 
         /* Lista de usuarios */
         .users-list {
@@ -448,11 +458,12 @@
     <div class="main-content">
         <!-- Header del mapa -->
         <div class="helix-title">
-            <h1 class="title" >🗺️ Mapa</h1>
-            <p>Explora la ubicación de empresas, Academias y organizaciones de la red Sinaptico</p>
+            <h1 class="title">🗺️ Mapa</h1>
+            <p>Explora la ubicación de empresas, instituciones educativas y organizaciones de la red SinAptico</p>
         </div>
 
         <!-- Estadísticas -->
+
         <div class="stats-container">
             <div class="stat-card">
                 <div class="stat-number" id="total-users">0</div>
@@ -471,6 +482,7 @@
                 <div class="stat-label">Ciudades</div>
             </div>
         </div>
+
 
         <!-- Controles del mapa -->
         <div class="map-controls">
@@ -499,11 +511,15 @@
         </div>
 
         <!-- Contenedor del mapa -->
+
+
         <div class="map-container">
             <div class="map-wrapper">
                 <div id="mapid"></div>
             </div>
         </div>
+
+
 
         <!-- Lista de usuarios -->
         <div class="users-list">

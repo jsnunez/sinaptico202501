@@ -246,7 +246,7 @@
             <!-- <button class="nav-button pulse" id="cerrarSesion">Cerrar sesión</button> -->
             <!-- Botón con menú desplegable -->
             <div class="dropdown">
-                <button class=" " id="userMenuBtn">
+                <button  id="userMenuBtn">
                     <div id="userPhoto ">
                         <img class="imagenPerfil" id="imagenPerfilSecundaria" src="img/sinfoto.jpg" alt="Foto de perfil"
                             onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
@@ -313,7 +313,8 @@
                         <th>Nombre</th>
                         <th>Email</th>
                         <th>Cargo</th>
-                        <th>estado</th>
+                        <th>Estado</th>
+                        <th>Solicitud</th>
                     </tr>
                 </thead>
                 <tbody id="solicitudes-list-body">
@@ -332,7 +333,7 @@
         <button class="filter-button" id="Empresas">Empresas</button>
         <button class="filter-button" id="Sociedads">Sociedads</button>
         <button class="filter-button" id="Estados">Estados</button>
-        <button class="filter-button" id="Academia">Academiaes</button>
+        <button class="filter-button" id="Academia">Academias</button>
         <!-- Filtros -->
 
     </div>
@@ -460,8 +461,6 @@
             <h3>Estadísticas del Ecosistema</h3>
             <p>Nodos activos en nuestra red neural de innovación</p>
         </div>
-
-
 
         <div class="counters-container">
             <div class="counter">
@@ -834,6 +833,8 @@
         <script src="js/notificaciones.js"></script>
         <script src="/js/websocket.js"></script>
         <script src="test-api-entidad.js"></script>
+
+        <!-- Mis contactos -->
         <script>
             document.getElementById('misContactos').onclick = function () {
                 document.getElementById('modalMisContactos').style.display = 'block';
@@ -890,6 +891,7 @@
             };
         </script>
 
+        <!-- En construcción -->
         <script>
             function irEnConstruccion() {
                 window.location.href = "/construccion"; // o la ruta que tengas
@@ -899,6 +901,8 @@
             fetchUserCount();
 
         </script>
+
+        <!-- Modal foto de perfil -->
         <script>
             // Abrir modal al hacer clic en la foto de usuario
             document.getElementById('userPhoto').onclick = function () {
@@ -996,6 +1000,7 @@
 
         </script>
 
+        <!-- Menú desplegable -->
         <script>
             const userMenuBtn = document.getElementById("userMenuBtn");
             const dropdown = userMenuBtn.closest(".dropdown");
@@ -1012,6 +1017,7 @@
             });
         </script>
 
+        <!-- Obtener departamentos y ciudades -->
         <script>
             // Función para obtener departamentos desde la API
             async function obtenerDepartamentosColombia() {
@@ -1090,7 +1096,6 @@
                 cargarCiudadesPerfil(this.value);
             };
         </script>
-
 
         <style>
             /* Spinner overlay */

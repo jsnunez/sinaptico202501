@@ -83,9 +83,10 @@
         <div class="modal-content">
             <span id="cerrarModalEditar" class="close">&times;</span>
             <div class="modal-header">
-                <h3 id="tituloModalUsuario">Nuevo Usuario</h3>
+                <h3 id="tituloModalUsuario" style="color: white;">Nuevo Usuario</h3>
             </div>
             <form id="formUsuario">
+                <div class="form-section">
                 <input type="hidden" id="usuarioId">
                 <div class="input-box">
                     <span>Nombre</span>
@@ -120,6 +121,7 @@
                         <option value="1">Activo</option>
                         <option value="0">Inactivo</option>
                     </select>
+                </div>
                 </div>
                 <button type="submit" id="btnGuardarUsuario" class="modal-button">Guardar</button>
             </form>
