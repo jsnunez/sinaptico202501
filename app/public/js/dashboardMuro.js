@@ -195,30 +195,30 @@ function mostrarDatosClasificadoDesdeBoton(button) {
 
 document.addEventListener("change", (event) => {
     if (event.target.classList.contains("toggle-input")) {
-    const checkbox = event.target;
-    const clasificadoId = checkbox.getAttribute("data-id");
-    const featured = checkbox.checked;
-    fetch(`/api/clasificados/${clasificadoId}`, {
-        method: "PUT",
-        headers: {
-        "Content-Type": "application/json"
-        },
-        body: JSON.stringify({"featured":featured })
-    })
-    .then(response => {
-        if (!response.ok) {
-        throw new Error("Error al actualizar el estado de featured");
-        }
-        return response.json();
-    })
-    .then(data => {
-        Swal.fire("Éxito", "El estado de destacado se ha actualizado correctamente.", "success");
+        const checkbox = event.target;
+        const clasificadoId = checkbox.getAttribute("data-id");
+        const featured = checkbox.checked;
+        fetch(`/api/clasificados/${clasificadoId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ "featured": featured })
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Error al actualizar el estado de featured");
+                }
+                return response.json();
+            })
+            .then(data => {
+                Swal.fire("Éxito", "El estado de destacado se ha actualizado correctamente.", "success");
 
-    })
-    .catch(error => {
-        console.error("Error:", error);
-        Swal.fire("Error", "No se pudo actualizar el estado de destacado.", "error");
-        checkbox.checked = !destacado; // Revertir el cambio en caso de error
-    });
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                Swal.fire("Error", "No se pudo actualizar el estado de destacado.", "error");
+                checkbox.checked = !destacado; // Revertir el cambio en caso de error
+            });
     }
 });

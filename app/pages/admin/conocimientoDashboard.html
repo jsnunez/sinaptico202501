@@ -7,6 +7,7 @@
     <title>Dashboard de Control</title>
     <link rel="stylesheet" href="styles/dashboard.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
@@ -15,29 +16,42 @@
     <div class="neural-background">
         <canvas id="neuralCanvas"></canvas>
     </div>
-
     <!-- Encabezado -->
     <div class="header">
-        <div class="logo">
+        <div class="logo" onclick="window.location.href='/dashboard'">
             <div class="logo-icon">
                 <i class="fas fa-trophy"></i>
             </div>
             <div class="logo-text">Control sinaptico</div>
         </div>
         <div class="nav">
+            <button class="nav-button helice" data-page="helice">Helice</button>
             <button class="nav-button" data-page="dashboard">Dashboard</button>
-            <button class="nav-button" data-page="helice">Helice</button>
             <button class="nav-button" data-page="usuarios">Usuarios</button>
             <button class="nav-button" data-page="entidades">Entidades</button>
-            <button class="nav-button " data-page="retos">Retos</button>
-            <button class="nav-button" data-page="muro">Muro</button>
 
-            <button class="nav-button" data-page="eventosDashboard">Eventos</button>
-            <button class="nav-button active" data-page="conocimientoDashboard">conocimiento</button>
+            <div class="innovacionMenu">
+                <button class="nav-button" id="adminInnovacionBtn">Innovacion</button>
+                <div class="dropdown-menu" id="adminInnovacion">
+                    <a href="/retos">Retos</a>
+                    <a href="/muro">Muro Servicios</a>
+                </div>
+            </div>
 
+            <button class="nav-button" data-page="eventosDashboard">Convocatorias<br>Eventos</button>
 
+            <div class="dropdown">
+                <button class="nav-button active" id="userMenuAdminBtn">Conocimiento</button>
+                <div class="dropdown-menu" id="userMenuAdmin">
+                    <a href="/conocimientoDashboard">Biblioteca</a>
+                    <a href="/cursoDashboard">Cursos</a>
+                </div>
+            </div>
+
+            <button class="nav-button" id="cerrarSesion" href="#" ><i class="bi bi-box-arrow-in-right" style="font-size: 1.2rem;"></i></button>
         </div>
     </div>
+
     <!-- Contenedor de bienvenida -->
     <div class="welcome-container">
         <div class="welcome-text">
@@ -57,7 +71,7 @@
         <input type="text" id="buscarReto" placeholder="Buscar recurso..." class="filter-input">
     </div>
 
-    <!-- Tabla de retos -->
+    <!-- Tabla de retos Biblioteca -->
     <div class="main-content">
         <table class="data-table" id="tablaRetos">
             <thead>
@@ -75,6 +89,7 @@
             </tbody>
         </table>
     </div>
+    <!-- Modal crear recursos -->
     <div id="modalCrearReto" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
@@ -95,7 +110,7 @@
             </form>
         </div>
     </div>
-
+    <!-- Modal editar recursos -->
     <div id="modalEditarrecurso" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
@@ -120,7 +135,6 @@
             </form>
         </div>
     </div>
-
 
     <!-- Modal para ver detalles del reto -->
     <div id="modalDetallesReto" class="modal">
@@ -197,8 +211,6 @@
             <iframe id="fichaViewer" src="" width="100%" height="100%" style="border:none;"></iframe>
         </div>
     </div>
-
-
     <!-- Modal -->
     <div id="modalAplicaciones" class="modal" style="display: none;">
         <div class="modal-content">
@@ -221,10 +233,8 @@
         </div>
     </div>
 
-
     <script src="/js/config.js"></script>
     <script src="js/NavegacionDash.js"></script>
-
     <script src="js/crearRecurso.js"></script>
     <script src="js/dashboardConocimiento.js"></script>
 

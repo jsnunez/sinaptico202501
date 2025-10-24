@@ -20,7 +20,6 @@
 </head>
 
 <body>
-
   <!-- Encabezado -->
   <header class="header">
     <div onclick="window.location.href='/helice'" class="logo">
@@ -83,10 +82,7 @@
 
 
   </div>
-
-
-
-  <!-- Contacto del lider de PPI -->
+  <!-- Crear nueva idea PPI-->
   <div id="modalPostulaciones" class="modal">
     <div class="modal-content" style="max-width:900px;">
       <span class="close" id="cerrarModalPostulaciones">&times;</span>
@@ -333,9 +329,7 @@
             </div> -->
     </div>
   </div>
-
   <!-- Mis Proyectos -->
-
   <div class="main-content">
     <div style="display: flex;   justify-content: space-between;">
       <h2 class="title" id="misProyectos">Proyectos de </h2>
@@ -374,7 +368,7 @@
 
 
   </div>
-
+  <!--Crear idea PPI-->
   <script>
     document.getElementById('guardarFichaPPI').onclick = async function () {
       // Recoge los datos del formulario
@@ -431,7 +425,7 @@
       }
     };
   </script>
-
+  <!-- Utilidades-->
   <script>
     // =========================
     // Utilidades
@@ -668,6 +662,7 @@
       }
     });
   </script>
+  <!--Detalles de mis proyectos-->
   <script>
     function verMasProyecto(proyectoId) {
       fetch(`/api/proyectos/${proyectoId}`)
@@ -743,6 +738,7 @@
         });
     }
   </script>
+  <!--Cerrar Sesión-->
   <script>
     document.getElementById("cerrarSesion").addEventListener("click", () => {
       Swal.fire({
@@ -766,6 +762,7 @@
       });
     });
   </script>
+  <!--Mis proyectos-->
   <script>
     (() => {
       const $ = (id) => document.getElementById(id);
@@ -925,8 +922,7 @@
       });
     })();
   </script>
-
-
+  <!--Cargar foto Perfil-->
   <script>
     // Abrir modal al hacer clic en la foto de usuario
     document.getElementById('userPhoto').onclick = function () {
@@ -978,8 +974,7 @@
   <script src="/js/websocket.js"></script>
   <!-- <script src="/js/cargarProyectos.js"></script> -->
 
-
-
+  <!--Menú desplegables-->
   <script>
     const userMenuBtn = document.getElementById("userMenuBtn");
     const dropdown = userMenuBtn.closest(".dropdown");
@@ -995,9 +990,6 @@
       dropdown.classList.remove("show");
     });
   </script>
-
-
-
 </body>
 
 </html>

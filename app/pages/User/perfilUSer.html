@@ -70,7 +70,7 @@
         <h1 style="display: none;" id="ciudadPerfilValor"></h1>
         <!-- <p class="subtitle">Conectando entidades para potenciar la innovación</p> -->
     </div>
-
+    <!--Modal ver Perfil-->
     <div class="main-content" id="miPerfil">
 
         <div class="section">
@@ -132,412 +132,412 @@
                 <iframe src="" width="100%" height="700px" style="display:none;"></iframe>
 
             </div>
+        </div>
+    </div>
+    <!--Modal Actualizar Perfil-->
+    <div id="modalPerfil" class="modal">
+        <div class="modal-content" style="max-width:900px;">
+            <span class="close" id="cerrarModalPerfil">&times;</span>
+            <h2>Mi Perfil</h2>
+            <form id="formFotoPerfil">
+                <div class="form-section logo-preview-container"
+                    style="text-align:center;display: flex; flex-direction: column;align-items: center;">
+                    <label for="inputFotoPerfil" style="font-weight:500;color:#555;">Foto de perfil:</label>
 
+                    <img id="previewFotoPerfil" src="" alt="Foto actual"
+                        style="width:100px;height:100px;border-radius:50%;object-fit:cover;margin-bottom:15px;"
+                        onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
+                    <input type="file" id="inputFotoPerfil" name="fotoPerfil" accept="image/*">
+                </div>
+                <div class="form-section">
 
-            <!--Modal Actualizar Perfil-->
+                    <!--Actualizar Datos Generales-->
+                    <h3 class="section-title">Datos Generales</h3>
 
-            <div id="modalPerfil" class="modal">
-                <div class="modal-content" style="max-width:900px;">
-                    <span class="close" id="cerrarModalPerfil">&times;</span>
-                    <h2>Mi Perfil</h2>
-                    <form id="formFotoPerfil">
-                        <div class="form-section logo-preview-container"
-                            style="text-align:center;display: flex; flex-direction: column;align-items: center;">
-                            <label for="inputFotoPerfil" style="font-weight:500;color:#555;">Foto de perfil:</label>
-
-                            <img id="previewFotoPerfil" src="" alt="Foto actual"
-                                style="width:100px;height:100px;border-radius:50%;object-fit:cover;margin-bottom:15px;"
-                                onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
-                            <input type="file" id="inputFotoPerfil" name="fotoPerfil" accept="image/*">
+                    <div class=" input-row">
+                        <div class="input-box">
+                            <label for="nombrePerfil">Nombre</label>
+                            <input type="text" id="nombrePerfil" name="nombrePerfil" required>
                         </div>
-                        <div class="form-section">
-
-                            <!--Actualizar Datos Generales-->
-                            <h3 class="section-title">Datos Generales</h3>
-
-                            <div class=" input-row">
-                                <div class="input-box">
-                                    <label for="nombrePerfil">Nombre</label>
-                                    <input type="text" id="nombrePerfil" name="nombrePerfil" required>
-                                </div>
-                                <div class="input-box">
-                                    <label for="telefonoPerfil">Teléfono / Celular</label>
-                                    <input type="tel" id="telefonoPerfil" name="telefonoPerfil" required>
-                                </div>
-
-
-                            </div>
-
-                            <div class="input-row">
-                                <div class="input-box">
-                                    <label for="departamentoPerfil">Departamento:</label>
-                                    <select id="departamentoPerfil" name="departamentoPerfil" required>
-                                        <option value="">Seleccione departamento</option>
-                                        <!-- Opciones se cargarán dinámicamente -->
-                                    </select>
-                                </div>
-
-                                <div class="input-box">
-                                    <label for="ciudadPerfil">Ciudad:</label>
-                                    <select id="ciudadPerfil" name="ciudadPerfil" required>
-                                        <option value="">Seleccione ciudad</option>
-                                        <!-- Opciones se cargarán dinámicamente -->
-                                    </select>
-                                </div>
-
-                            </div>
-
+                        <div class="input-box">
+                            <label for="telefonoPerfil">Teléfono / Celular</label>
+                            <input type="tel" id="telefonoPerfil" name="telefonoPerfil" required>
                         </div>
 
-                        <!--Actualizar CV-->
-                        <div class="form-section">
-                            <h3 class="section-title">Perfil profesional:</h3>
 
-                            <div class="input-row">
-                                <div class="input-box full-width">
-                                    <label for="perfilProfesional">Describe tu perfil</label>
-                                    <textarea id="perfilProfesional" name="perfilProfesional" required></textarea>
-                                </div>
-                                <div class="input-box">
-                                    <label for="cvPdf" type="file">Hoja de Vida</label>
-                                    <input type="file" id="cvPdf" name="cvPdf" accept="application/pdf">
-                                </div>
+                    </div>
 
-                            </div>
-                            <div class="modal-actions">
-                                <button type="button" class="modal-button-secondary" id="cancelarActualizarPerfil">
-                                    Cancelar
-                                </button>
-                                <button type="submit" class="modal-button" id="actualizarPerfil"> Guardar
-                                    Cambios</button>
-
-                            </div>
-
+                    <div class="input-row">
+                        <div class="input-box">
+                            <label for="departamentoPerfil">Departamento:</label>
+                            <select id="departamentoPerfil" name="departamentoPerfil" required>
+                                <option value="">Seleccione departamento</option>
+                                <!-- Opciones se cargarán dinámicamente -->
+                            </select>
                         </div>
 
-                    </form>
+                        <div class="input-box">
+                            <label for="ciudadPerfil">Ciudad:</label>
+                            <select id="ciudadPerfil" name="ciudadPerfil" required>
+                                <option value="">Seleccione ciudad</option>
+                                <!-- Opciones se cargarán dinámicamente -->
+                            </select>
+                        </div>
+
+                    </div>
+
                 </div>
 
-            </div>
+                <!--Actualizar CV-->
+                <div class="form-section">
+                    <h3 class="section-title">Perfil profesional:</h3>
 
-            <script>
+                    <div class="input-row">
+                        <div class="input-box full-width">
+                            <label for="perfilProfesional">Describe tu perfil</label>
+                            <textarea id="perfilProfesional" name="perfilProfesional" required></textarea>
+                        </div>
+                        <div class="input-box">
+                            <label for="cvPdf" type="file">Hoja de Vida</label>
+                            <input type="file" id="cvPdf" name="cvPdf" accept="application/pdf">
+                        </div>
 
-                async function cargarDatosMiPerfil() {
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" class="modal-button-secondary" id="cancelarActualizarPerfil">
+                            Cancelar
+                        </button>
+                        <button type="submit" class="modal-button" id="actualizarPerfil"> Guardar
+                            Cambios</button>
+
+                    </div>
+
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+    </div>
+    <!--Cargar Datos mi Perfil-->
+    <script>
+
+        async function cargarDatosMiPerfil() {
+            try {
+                const userId = obtenerCookie("userId");
+                if (!userId) return;
+
+                const res = await fetch(`/api/user/${userId}`);
+                if (!res.ok) throw new Error('No se pudo obtener el perfil');
+                const data = await res.json();
+                console.log(data);
+                // Coloca los datos en los elementos correspondientes
+                document.getElementById('MiNombreCompleto').textContent = data.name || '';
+                document.getElementById('MiPerfilProfesional').textContent = data.perfilProfesional || '';
+                document.getElementById('MiTelefono').textContent = data.telefono || '';
+                document.getElementById('MiUbicacion').textContent = data.ciudad.nombre + ' - ' + data.ciudad.departamento.nombre || '';
+                document.getElementById('MiCorreo').textContent = data.email || '';
+
+                document.getElementById("imagenPerfilSecundaria").src = data.fotoPerfil ? "photo/" + data.fotoPerfil : "photo/sinfoto.jpg";
+                document.getElementById("imagenPerfil").src = data.fotoPerfil ? "photo/" + data.fotoPerfil : "photo/sinfoto.jpg";
+
+                // Cargar Datos para actualizar Perfil
+
+                document.getElementById("nombrePerfil").value = data.name || '';
+                document.getElementById("telefonoPerfil").value = data.telefono || '';
+                document.getElementById("perfilProfesional").value = data.perfilProfesional || '';
+                document.getElementById("previewFotoPerfil").src = data.fotoPerfil ? "photo/" + data.fotoPerfil : "photo/sinfoto.jpg";
+
+
+                if (data.ciudadId) {
                     try {
-                        const userId = obtenerCookie("userId");
-                        if (!userId) return;
-
-                        const res = await fetch(`/api/user/${userId}`);
-                        if (!res.ok) throw new Error('No se pudo obtener el perfil');
-                        const data = await res.json();
-                        console.log(data);
-                        // Coloca los datos en los elementos correspondientes
-                        document.getElementById('MiNombreCompleto').textContent = data.name || '';
-                        document.getElementById('MiPerfilProfesional').textContent = data.perfilProfesional || '';
-                        document.getElementById('MiTelefono').textContent = data.telefono || '';
-                        document.getElementById('MiUbicacion').textContent = data.ciudad.nombre + ' - ' + data.ciudad.departamento.nombre || '';
-                        document.getElementById('MiCorreo').textContent = data.email || '';
-
-                        document.getElementById("imagenPerfilSecundaria").src = data.fotoPerfil ? "photo/" + data.fotoPerfil : "photo/sinfoto.jpg";
-                        document.getElementById("imagenPerfil").src = data.fotoPerfil ? "photo/" + data.fotoPerfil : "photo/sinfoto.jpg";
-
-                        // Cargar Datos para actualizar Perfil
-
-                        document.getElementById("nombrePerfil").value = data.name || '';
-                        document.getElementById("telefonoPerfil").value = data.telefono || '';
-                        document.getElementById("perfilProfesional").value = data.perfilProfesional || '';
-                    document.getElementById("previewFotoPerfil").src = data.fotoPerfil ? "photo/" + data.fotoPerfil : "photo/sinfoto.jpg";
-
-                      
-                        if (data.ciudadId) {
-                            try {
-                                const resp = await fetch(`/api/ciudades/ciudad/${data.ciudadId}`);
-                                const ciudadData = await resp.json();
-                                document.getElementById("departamentoPerfilValor").innerHTML = ciudadData.ciudad.departamentoId || '';
-                            } catch (err) {
-                                document.getElementById("departamentoPerfilValor").innerHTML = '';
-                                console.error('Error al consultar el departamento:', err);
-                            }
-                        } else {
-                            document.getElementById("departamentoPerfilValor").innerHTML = '';
-                        }
-
-                        document.getElementById("ciudadPerfilValor").innerHTML = data.ciudadId || '';
-
-
-
-                        // Si tienes la URL del CV PDF (usando data.enlaceHojaDeVida)
-                        if (data.enlaceHojaDeVida) {
-                            const iframe = document.querySelector('iframe');
-                            if (iframe) {
-                                iframe.src = "CV/" + data.enlaceHojaDeVida;
-                                iframe.style.display = 'block';
-                            }
-                        }
-
+                        const resp = await fetch(`/api/ciudades/ciudad/${data.ciudadId}`);
+                        const ciudadData = await resp.json();
+                        document.getElementById("departamentoPerfilValor").innerHTML = ciudadData.ciudad.departamentoId || '';
                     } catch (err) {
-                        console.error('Error cargando datos de usuario:', err);
+                        document.getElementById("departamentoPerfilValor").innerHTML = '';
+                        console.error('Error al consultar el departamento:', err);
                     }
-
-                    // Verificar si hay una entidad asociada al usuario
-                    try {
-                        const entidadRes = await fetch(`/api/entidad/verificar-entidad/${userId}`);
-                        if (entidadRes.ok) {
-                            const entidadData = await entidadRes.json();
-                            console.log('Entidad asociada:', entidadData.success);
-                            // Si hay entidad asociada, muestra el nombre, si no, muestra "Sin entidad asociada"
-                            if (entidadData.success) {
-                                console.log('Entidad asociada:', entidadData.entidad.razonSocial);
-                                var entidadNombre = entidadData.entidad.razonSocial;
-                            } else {
-                                console.log('Entidad asociada: Sin entidad asociada');
-                                var entidadNombre = "Sin entidad asociada";
-                            }
-                            // Busca la celda correspondiente y actualiza el texto
-                            document.getElementById('MiVinculado').textContent = entidadNombre;
-                        }
-                    } catch (e) {
-                        console.error('Error verificando entidad asociada:', e);
-                    }
+                } else {
+                    document.getElementById("departamentoPerfilValor").innerHTML = '';
                 }
-                // Función para obtener el valor de una cookie por su nombre
-                function obtenerCookie(nombre) {
-                    const nombreCookie = `${nombre}=`;
-                    const cookies = document.cookie.split(';');
 
-                    for (let i = 0; i < cookies.length; i++) {
-                        let cookie = cookies[i].trim();
+                document.getElementById("ciudadPerfilValor").innerHTML = data.ciudadId || '';
 
-                        if (cookie.indexOf(nombreCookie) === 0) {
-                            return cookie.substring(nombreCookie.length, cookie.length);
-                        }
-                    }
 
-                    return null; // Retorna null si no se encuentra la cookie
-                }
-                // Llama a la función al cargar la página
-                window.addEventListener('DOMContentLoaded', cargarDatosMiPerfil);
-            </script>
 
-            <script>
-                const userMenuBtn = document.getElementById("userMenuBtn");
-                const dropdown = userMenuBtn.closest(".dropdown");
-
-                // Mostrar / ocultar el menú al hacer clic
-                userMenuBtn.addEventListener("click", (event) => {
-                    event.stopPropagation(); // evita que el clic cierre inmediatamente el menú
-                    dropdown.classList.toggle("show");
-                });
-
-                // Cerrar el menú si haces clic fuera
-                document.addEventListener("click", () => {
-                    dropdown.classList.remove("show");
-                });
-            </script>
-
-            <script>
-                document.getElementById("cerrarSesion").addEventListener("click", () => {
-                    Swal.fire({
-                        title: '¿Estás seguro?',
-                        text: '¿Querés cerrar sesión?',
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonText: 'Sí, cerrar sesión',
-                        cancelButtonText: 'Cancelar',
-                        reverseButtons: true
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            // Borrar cookies y redirigir
-                            document.cookie = 'jwt=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-                            document.cookie = 'user=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-                            document.cookie = 'userId=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-                            document.location.href = "/";
-
-                        }
-                        // Si el usuario cancela, no pasa nada
-                    });
-                });
-
-            </script>
-            <script>
-
-                // Abrir formulario actualizar de perfil al hacer clic en el botón
-                document.getElementById('perfil').onclick = function () {
-                    document.getElementById('modalPerfil').style.display = 'block';
-
-                };
-                document.getElementById('cerrarModalPerfil').onclick = function () {
-                    document.getElementById('modalPerfil').style.display = 'none';
-                };
-                // Vista previa de la imagen seleccionada
-                document.getElementById('inputFotoPerfil').onchange = function (e) {
-                    const file = e.target.files[0];
-                    if (file) {
-                        document.getElementById('previewFotoPerfil').src = URL.createObjectURL(file);
-                    }
-                };
-                // Guardar foto (debes implementar la lógica de subida en tu backend)
-                document.getElementById('formFotoPerfil').onsubmit = async function (e) {
-                    e.preventDefault();
-
-                    const userId = obtenerCookie("userId");
-                    const file = document.getElementById('inputFotoPerfil').files[0];
-                    const name = document.getElementById('nombrePerfil').value.trim();
-                    const telefono = document.getElementById('telefonoPerfil').value.trim();
-                    const ciudadId = parseInt(document.getElementById('ciudadPerfil').value, 10) || null;
-                    const perfilProfesional = document.getElementById('perfilProfesional').value.trim() || null;
-
-                    try {
-                        // 1) Si hay archivo, sube la foto
-                        if (file) {
-                            const formData = new FormData();
-                            formData.append('fotoPerfil', file);
-                            // opcional: puedes mostrar un loader
-                            const resFoto = await fetch(`/api/user/cambiarFoto/${userId}`, {
-                                method: 'PUT',
-                                body: formData
-                            });
-                            if (!resFoto.ok) {
-                                const err = await resFoto.text().catch(() => '');
-                                throw new Error(`Error al subir la foto. ${err}`);
-                            }
-                        }
-
-                        // 2) Actualiza el perfil SIEMPRE (independiente de si hubo foto o no)
-                        const resPerfil = await fetch(`/api/user/actualizarPerfil/${userId}`, {
-                            method: 'PUT',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                                name,
-                                telefono,
-                                ciudadId,
-                                perfilProfesional
-                            })
-                        });
-                        if (!resPerfil.ok) {
-                            const err = await resPerfil.text().catch(() => '');
-                            throw new Error(`Error al actualizar el perfil. ${err}`);
-                        }
-
-                        // 3) Cierra modal y refresca (o actualiza sólo la imagen y los textos si prefieres)
-                        // Subir CV si se seleccionó archivo PDF
-                        const cvFile = document.getElementById('cvPdf').files[0];
-                        if (cvFile) {
-                            const cvFormData = new FormData();
-                            cvFormData.append('cvPdf', cvFile);
-                            const resCV = await fetch(`/api/user/cambiarCv/${userId}`, {
-                                method: 'PUT',
-                                body: cvFormData
-                            });
-                            if (!resCV.ok) {
-                                const err = await resCV.text().catch(() => '');
-                                throw new Error(`Error al subir la hoja de vida. ${err}`);
-                            }
-                        }
-                        document.getElementById('modalPerfil').style.display = 'none';
-                        document.cookie = `user=${encodeURIComponent(name)}; path=/;`;
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Perfil actualizado',
-                            text: 'Tus datos se han guardado correctamente.',
-                            timer: 1800,
-                            showConfirmButton: false
-                        }).then(() => {
-                            location.reload(); // O actualiza sólo la foto y los textos
-                        });
-                    } catch (err) {
-                        console.error(err);
-                        alert(err.message || 'Ocurrió un error al actualizar el perfil.');
-                    }
-                };
-
-            </script>
-
-            <script>
-                // Función para obtener departamentos desde la API
-                async function obtenerDepartamentosColombia() {
-                    try {
-                        const res = await fetch('/api/departamentos');
-                        const data = await res.json();
-                        return data.departamentos || [];
-                    } catch (err) {
-                        console.error('Error obteniendo departamentos:', err);
-                        return [];
+                // Si tienes la URL del CV PDF (usando data.enlaceHojaDeVida)
+                if (data.enlaceHojaDeVida) {
+                    const iframe = document.querySelector('iframe');
+                    if (iframe) {
+                        iframe.src = "CV/" + data.enlaceHojaDeVida;
+                        iframe.style.display = 'block';
                     }
                 }
 
+            } catch (err) {
+                console.error('Error cargando datos de usuario:', err);
+            }
 
-                // Función para agregar departamentos al select
-                async function agregarDepartamentosPerfil() {
-                    const departamentos = await obtenerDepartamentosColombia();
-                    const depSelect = document.getElementById('departamentoPerfil');
-                    depSelect.innerHTML = '<option value="">Seleccione departamento</option>';
-                    if (depSelect && departamentos && departamentos.length > 0) {
-                        departamentos.forEach(dep => {
-                            const option = document.createElement('option');
-                            option.value = dep.id;
-                            option.textContent = dep.nombre;
-                            depSelect.appendChild(option);
-                        });
+            // Verificar si hay una entidad asociada al usuario
+            try {
+                const entidadRes = await fetch(`/api/entidad/verificar-entidad/${userId}`);
+                if (entidadRes.ok) {
+                    const entidadData = await entidadRes.json();
+                    console.log('Entidad asociada:', entidadData.success);
+                    // Si hay entidad asociada, muestra el nombre, si no, muestra "Sin entidad asociada"
+                    if (entidadData.success) {
+                        console.log('Entidad asociada:', entidadData.entidad.razonSocial);
+                        var entidadNombre = entidadData.entidad.razonSocial;
                     } else {
-                        console.warn('No se encontraron Departamentos para cargar.');
+                        console.log('Entidad asociada: Sin entidad asociada');
+                        var entidadNombre = "Sin entidad asociada";
                     }
+                    // Busca la celda correspondiente y actualiza el texto
+                    document.getElementById('MiVinculado').textContent = entidadNombre;
+                }
+            } catch (e) {
+                console.error('Error verificando entidad asociada:', e);
+            }
+        }
+        // Función para obtener el valor de una cookie por su nombre
+        function obtenerCookie(nombre) {
+            const nombreCookie = `${nombre}=`;
+            const cookies = document.cookie.split(';');
 
-                    // Si ya tienes el departamento y ciudad del usuario, puedes preseleccionarlos aquí
-                    const departamentoId = document.getElementById('departamentoPerfilValor').textContent;
-                    // Si departamentoId es un número diferente de 0, selecciona ese departamento en el select
-                    if (departamentoId && !isNaN(departamentoId) && Number(departamentoId) !== 0) {
-                        depSelect.value = departamentoId;
-                        await cargarCiudadesPerfil(departamentoId);
+            for (let i = 0; i < cookies.length; i++) {
+                let cookie = cookies[i].trim();
+
+                if (cookie.indexOf(nombreCookie) === 0) {
+                    return cookie.substring(nombreCookie.length, cookie.length);
+                }
+            }
+
+            return null; // Retorna null si no se encuentra la cookie
+        }
+        // Llama a la función al cargar la página
+        window.addEventListener('DOMContentLoaded', cargarDatosMiPerfil);
+    </script>
+    </div>
+    <!--Menú desplegable -->
+    <script>
+        const userMenuBtn = document.getElementById("userMenuBtn");
+        const dropdown = userMenuBtn.closest(".dropdown");
+
+        // Mostrar / ocultar el menú al hacer clic
+        userMenuBtn.addEventListener("click", (event) => {
+            event.stopPropagation(); // evita que el clic cierre inmediatamente el menú
+            dropdown.classList.toggle("show");
+        });
+
+        // Cerrar el menú si haces clic fuera
+        document.addEventListener("click", () => {
+            dropdown.classList.remove("show");
+        });
+    </script>
+    <!--Cerrar Sesion -->
+    <script>
+        document.getElementById("cerrarSesion").addEventListener("click", () => {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: '¿Querés cerrar sesión?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, cerrar sesión',
+                cancelButtonText: 'Cancelar',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Borrar cookies y redirigir
+                    document.cookie = 'jwt=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+                    document.cookie = 'user=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+                    document.cookie = 'userId=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+                    document.location.href = "/";
+
+                }
+                // Si el usuario cancela, no pasa nada
+            });
+        });
+
+    </script>
+    <!--Modal Actualizar Perfil-->
+    <script>
+
+        // Abrir formulario actualizar de perfil al hacer clic en el botón
+        document.getElementById('perfil').onclick = function () {
+            document.getElementById('modalPerfil').style.display = 'block';
+
+        };
+        document.getElementById('cerrarModalPerfil').onclick = function () {
+            document.getElementById('modalPerfil').style.display = 'none';
+        };
+        // Vista previa de la imagen seleccionada
+        document.getElementById('inputFotoPerfil').onchange = function (e) {
+            const file = e.target.files[0];
+            if (file) {
+                document.getElementById('previewFotoPerfil').src = URL.createObjectURL(file);
+            }
+        };
+        // Guardar foto (debes implementar la lógica de subida en tu backend)
+        document.getElementById('formFotoPerfil').onsubmit = async function (e) {
+            e.preventDefault();
+
+            const userId = obtenerCookie("userId");
+            const file = document.getElementById('inputFotoPerfil').files[0];
+            const name = document.getElementById('nombrePerfil').value.trim();
+            const telefono = document.getElementById('telefonoPerfil').value.trim();
+            const ciudadId = parseInt(document.getElementById('ciudadPerfil').value, 10) || null;
+            const perfilProfesional = document.getElementById('perfilProfesional').value.trim() || null;
+
+            try {
+                // 1) Si hay archivo, sube la foto
+                if (file) {
+                    const formData = new FormData();
+                    formData.append('fotoPerfil', file);
+                    // opcional: puedes mostrar un loader
+                    const resFoto = await fetch(`/api/user/cambiarFoto/${userId}`, {
+                        method: 'PUT',
+                        body: formData
+                    });
+                    if (!resFoto.ok) {
+                        const err = await resFoto.text().catch(() => '');
+                        throw new Error(`Error al subir la foto. ${err}`);
                     }
                 }
 
-                // Función para cargar ciudades según departamento seleccionado
-                async function cargarCiudadesPerfil(departamentoId) {
-                    const ciudadSelect = document.getElementById('ciudadPerfil');
-                    ciudadSelect.innerHTML = '<option value="">Seleccione ciudad</option>';
-                    if (!departamentoId) return;
-                    try {
-                        const res = await fetch(`/api/ciudades/${departamentoId}`);
-                        const data = await res.json();
-                        if (data.ciudades && data.ciudades.length > 0) {
-                            data.ciudades.forEach(ciudad => {
-                                const option = document.createElement('option');
-                                option.value = ciudad.id;
-                                option.textContent = ciudad.nombre;
-                                ciudadSelect.appendChild(option);
-                            });
-                        }
-                    } catch (err) {
-                        console.error('Error obteniendo ciudades:', err);
-                    }
-                    // Si ya tienes la ciudad del usuario, puedes preseleccionarla aquí
-                    const ciudadId = document.getElementById('ciudadPerfilValor').textContent;
-                    if (ciudadId && !isNaN(ciudadId) && Number(ciudadId) !== 0) {
-                        ciudadSelect.value = ciudadId;
-                    }
-
+                // 2) Actualiza el perfil SIEMPRE (independiente de si hubo foto o no)
+                const resPerfil = await fetch(`/api/user/actualizarPerfil/${userId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        name,
+                        telefono,
+                        ciudadId,
+                        perfilProfesional
+                    })
+                });
+                if (!resPerfil.ok) {
+                    const err = await resPerfil.text().catch(() => '');
+                    throw new Error(`Error al actualizar el perfil. ${err}`);
                 }
 
-                // Inicializar departamentos al mostrar el modal
-                document.getElementById('perfil').onclick = function () {
-                    document.getElementById('modalPerfil').style.display = 'block';
-                    agregarDepartamentosPerfil();
+                // 3) Cierra modal y refresca (o actualiza sólo la imagen y los textos si prefieres)
+                // Subir CV si se seleccionó archivo PDF
+                const cvFile = document.getElementById('cvPdf').files[0];
+                if (cvFile) {
+                    const cvFormData = new FormData();
+                    cvFormData.append('cvPdf', cvFile);
+                    const resCV = await fetch(`/api/user/cambiarCv/${userId}`, {
+                        method: 'PUT',
+                        body: cvFormData
+                    });
+                    if (!resCV.ok) {
+                        const err = await resCV.text().catch(() => '');
+                        throw new Error(`Error al subir la hoja de vida. ${err}`);
+                    }
+                }
+                document.getElementById('modalPerfil').style.display = 'none';
+                document.cookie = `user=${encodeURIComponent(name)}; path=/;`;
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Perfil actualizado',
+                    text: 'Tus datos se han guardado correctamente.',
+                    timer: 1800,
+                    showConfirmButton: false
+                }).then(() => {
+                    location.reload(); // O actualiza sólo la foto y los textos
+                });
+            } catch (err) {
+                console.error(err);
+                alert(err.message || 'Ocurrió un error al actualizar el perfil.');
+            }
+        };
 
-                };
+    </script>
+    <!--Obtener ubicaciones-->
+    <script>
+        // Función para obtener departamentos desde la API
+        async function obtenerDepartamentosColombia() {
+            try {
+                const res = await fetch('/api/departamentos');
+                const data = await res.json();
+                return data.departamentos || [];
+            } catch (err) {
+                console.error('Error obteniendo departamentos:', err);
+                return [];
+            }
+        }
 
-                // Cambiar ciudades al seleccionar departamento
-                document.getElementById('departamentoPerfil').onchange = function () {
-                    cargarCiudadesPerfil(this.value);
-                };
-            </script>
 
+        // Función para agregar departamentos al select
+        async function agregarDepartamentosPerfil() {
+            const departamentos = await obtenerDepartamentosColombia();
+            const depSelect = document.getElementById('departamentoPerfil');
+            depSelect.innerHTML = '<option value="">Seleccione departamento</option>';
+            if (depSelect && departamentos && departamentos.length > 0) {
+                departamentos.forEach(dep => {
+                    const option = document.createElement('option');
+                    option.value = dep.id;
+                    option.textContent = dep.nombre;
+                    depSelect.appendChild(option);
+                });
+            } else {
+                console.warn('No se encontraron Departamentos para cargar.');
+            }
 
-            <script src="js/notificaciones.js"></script>
-            <script src="/js/websocket.js"></script>
+            // Si ya tienes el departamento y ciudad del usuario, puedes preseleccionarlos aquí
+            const departamentoId = document.getElementById('departamentoPerfilValor').textContent;
+            // Si departamentoId es un número diferente de 0, selecciona ese departamento en el select
+            if (departamentoId && !isNaN(departamentoId) && Number(departamentoId) !== 0) {
+                depSelect.value = departamentoId;
+                await cargarCiudadesPerfil(departamentoId);
+            }
+        }
 
+        // Función para cargar ciudades según departamento seleccionado
+        async function cargarCiudadesPerfil(departamentoId) {
+            const ciudadSelect = document.getElementById('ciudadPerfil');
+            ciudadSelect.innerHTML = '<option value="">Seleccione ciudad</option>';
+            if (!departamentoId) return;
+            try {
+                const res = await fetch(`/api/ciudades/${departamentoId}`);
+                const data = await res.json();
+                if (data.ciudades && data.ciudades.length > 0) {
+                    data.ciudades.forEach(ciudad => {
+                        const option = document.createElement('option');
+                        option.value = ciudad.id;
+                        option.textContent = ciudad.nombre;
+                        ciudadSelect.appendChild(option);
+                    });
+                }
+            } catch (err) {
+                console.error('Error obteniendo ciudades:', err);
+            }
+            // Si ya tienes la ciudad del usuario, puedes preseleccionarla aquí
+            const ciudadId = document.getElementById('ciudadPerfilValor').textContent;
+            if (ciudadId && !isNaN(ciudadId) && Number(ciudadId) !== 0) {
+                ciudadSelect.value = ciudadId;
+            }
 
-            <!-- <script src="/js/cargarProyectos.js"></script> -->
+        }
+
+        // Inicializar departamentos al mostrar el modal
+        document.getElementById('perfil').onclick = function () {
+            document.getElementById('modalPerfil').style.display = 'block';
+            agregarDepartamentosPerfil();
+
+        };
+
+        // Cambiar ciudades al seleccionar departamento
+        document.getElementById('departamentoPerfil').onchange = function () {
+            cargarCiudadesPerfil(this.value);
+        };
+    </script>
+
+    <script src="js/notificaciones.js"></script>
+    <script src="/js/websocket.js"></script>
+
+    <!-- <script src="/js/cargarProyectos.js"></script> -->
 
 
 </body>
