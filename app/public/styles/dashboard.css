@@ -636,111 +636,7 @@ body {
   transform: translateX(-100%);
 }
 
-/* Modales */
-.modal {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1000;
-  overflow-y: auto;
-}
 
-.modal-content {
-  position: relative;
-  background-color: var(--card-bg);
-  margin: 5% auto;
-  padding: 2rem;
-  width: 90%;
-  max-width: 800px;
-  border-radius: 15px;
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
-  animation: modalFadeIn 0.3s;
-}
-
-.modal-header {
-  margin-bottom: 1.5rem;
-  text-align: center;
-  align-items: center;
-}
-
-.modal-header h3 {
-  color: var(--primary-color);
-  font-size: 1.5rem;
-}
-
-.close {
-  position: absolute;
-  top: 1rem;
-  right: 1.5rem;
-  color: #aaa;
-  font-size: 1.5rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: var(--transition);
-}
-
-.close:hover {
-  color: var(--primary-color);
-}
-
-.modal-icon {
-  display: block;
-  font-size: 2rem;
-  text-align: center;
-  margin-bottom: 1rem;
-}
-
-.modal-info {
-  margin-top: 1rem;
-}
-
-.modal-button {
-  display: block;
-  width: 100%;
-  padding: 0.8rem;
-  margin-top: 1.5rem;
-  background: var(--gradient-1);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: var(--transition);
-}
-
-.modal-button:hover {
-  background: var(--gradient-2);
-  transform: translateY(-2px);
-}
-
-.modal-button-secondary {
-  display: block;
-  width: 100%;
-  padding: 0.8rem;
-  margin-top: 1.5rem;
-  background: #f1f1f1;
-  color: #333;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: var(--transition);
-}
-
-.modal-button-secondary:hover {
-  background: #e1e1e1;
-}
-
-.modal-actions {
-  display: flex;
-  gap: 1rem;
-}
 
 /* Formularios */
 form {
@@ -1026,6 +922,89 @@ form {
   transform: translateY(-2px);
 }
 
+
+
+.modal-header {
+  margin-bottom: 1.5rem;
+  text-align: center;
+  align-items: center;
+}
+
+.modal-header h3 {
+  color: var(--primary-color);
+  font-size: 1.5rem;
+}
+
+.close {
+  position: absolute;
+  top: 1rem;
+  right: 1.5rem;
+  color: #aaa;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.close:hover {
+  color: var(--primary-color);
+}
+
+.modal-icon {
+  display: block;
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.modal-info {
+  margin-top: 1rem;
+}
+
+.modal-button {
+  display: block;
+  width: 100%;
+  padding: 0.8rem;
+  margin-top: 1.5rem;
+  background: var(--gradient-1);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.modal-button:hover {
+  background: var(--gradient-2);
+  transform: translateY(-2px);
+}
+
+.modal-button-secondary {
+  display: block;
+  width: 100%;
+  padding: 0.8rem;
+  margin-top: 1.5rem;
+  background: #f1f1f1;
+  color: #333;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.modal-button-secondary:hover {
+  background: #e1e1e1;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 1rem;
+}
+
 .fila-vencida {
   background-color: rgba(0, 123, 255, 0.1);
   /* azul claro con opacidad */
@@ -1083,6 +1062,23 @@ form {
   backdrop-filter: blur(4px);
   animation: fadeIn 0.3s ease;
 }
+
+
+/* Modales */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  overflow-y: auto;
+
+}
+
+
 
 .modal-content {
   background-color: white;
@@ -1420,7 +1416,7 @@ form {
   border: none;
   border-radius: 50px;
   padding: 0.75rem 1.5rem;
-  font-size: 0.9rem;
+
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;

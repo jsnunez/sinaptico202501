@@ -7,6 +7,7 @@
     <title>Dashboard de Control</title>
     <link rel="stylesheet" href="styles/dashboard.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
@@ -18,25 +19,41 @@
 
     <!-- Encabezado -->
     <div class="header">
-        <div class="logo">
+        <div class="logo" onclick="window.location.href='/dashboard'">
             <div class="logo-icon">
                 <i class="fas fa-trophy"></i>
             </div>
             <div class="logo-text">Control sinaptico</div>
         </div>
         <div class="nav">
+            <button class="nav-button helice" data-page="helice">Helice</button>
             <button class="nav-button" data-page="dashboard">Dashboard</button>
-            <button class="nav-button" data-page="helice">Helice</button>
             <button class="nav-button" data-page="usuarios">Usuarios</button>
             <button class="nav-button" data-page="entidades">Entidades</button>
-            <button class="nav-button " data-page="retos">Retos</button>
-            <button class="nav-button" data-page="muro">Muro</button>
-            <button class="nav-button active" data-page="eventosDashboard">Eventos</button>
-            <button class="nav-button" data-page="conocimientoDashboard">conocimiento</button>
 
+            <div class="innovacionMenu">
+                <button class="nav-button" id="adminInnovacionBtn">Innovacion</button>
+                <div class="dropdown-menu" id="adminInnovacion">
+                    <a href="/retos">Retos</a>
+                    <a href="/muro">Muro Servicios</a>
+                </div>
+            </div>
 
+            <button class="nav-button active" data-page="eventosDashboard">Convocatorias<br>Eventos</button>
+
+            <div class="dropdown">
+                <button class="nav-button" id="userMenuAdminBtn">Conocimiento</button>
+                <div class="dropdown-menu" id="userMenuAdmin">
+                    <a href="/conocimientoDashboard">Biblioteca</a>
+                    <a href="/cursoDashboard">Cursos</a>
+                </div>
+            </div>
+
+            <button class="nav-button" id="cerrarSesion" href="#"><i class="bi bi-box-arrow-in-right"
+                    style="font-size: 1.2rem;"></i></button>
         </div>
     </div>
+
     <!-- Contenedor de bienvenida -->
     <div class="welcome-container">
         <div class="welcome-text">
@@ -50,13 +67,11 @@
             </button>
         </div>
     </div>
-
     <!-- Filtros -->
     <div class="filter-container">
         <input type="text" id="buscarReto" placeholder="Buscar retos..." class="filter-input">
     </div>
-
-    <!-- Tabla de retos -->
+    <!-- Tabla de Convocatorias o eventos -->
     <div class="main-content">
         <table class="data-table" id="tablaConvocatorias">
             <thead>
@@ -67,7 +82,7 @@
                     <th>organizador</th>
                     <th>URL Convocatoria</th>
                     <th>Tipo Convocatoria</th>
-                                        <th>Estado</th>                    
+                    <th>Estado</th>
 
                     <th>Fecha finalizacion</th>
                     <th>Acciones</th>
@@ -78,10 +93,11 @@
             </tbody>
         </table>
     </div>
+    <!-- Modal crear Convocatorias o eventos-->
     <div id="modalCrearReto" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
-            <h1 >Crear Nueva Convocatoria o Evento</h1>
+            <h1>Crear Nueva Convocatoria o Evento</h1>
             <form id="crearRetoForm">
                 <label for="nombre">Nombre del Reto:</label>
                 <input type="text" id="nombre" name="nombre" required>
@@ -99,7 +115,6 @@
             </form>
         </div>
     </div>
-
     <!-- Modal de edición -->
     <div id="modalEdicion" class="modal">
         <div class="modal-content">
@@ -109,48 +124,40 @@
             </div>
             <form id="formEditarConvocatoria">
                 <div class="form-section">
-                <div class="form-group">
-                    <label for="nombre">Nombre:</label>
-                    <input type="text" id="nombreConvocatoria" name="nombre" required>
-                </div>
-                <div class="form-group">
-                    <label for="financiamiento">Financiamiento:</label>
-                    <input type="text" id="financiamiento" name="financiamiento">
-                </div>
-                <div class="form-group">
-                    <label for="organizador">Organizador:</label>
-                    <input type="text" id="organizador" name="organizador">
-                </div>
-                <div class="form-group">
-                    <label for="urlConvocatoria">URL Convocatoria:</label>
-                    <input type="text" id="urlConvocatoria" name="urlConvocatoria">
-                </div>
-                <div class="form-group">
-                    <label for="tipoConvocatoria">Tipo Convocatoria:</label>
-                    <select id="tipoConvocatoria" name="tipoConvocatoria" required>
-                        <option value="">Selecciona un tipo</option>
-                        <!-- Se llenará dinámicamente -->
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="fechaLimite">Fecha Límite:</label>
-                    <input type="date" id="fechaLimite" name="fechaLimite" required>
-                </div>
+                    <div class="form-group">
+                        <label for="nombre">Nombre:</label>
+                        <input type="text" id="nombreConvocatoria" name="nombre" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="financiamiento">Financiamiento:</label>
+                        <input type="text" id="financiamiento" name="financiamiento">
+                    </div>
+                    <div class="form-group">
+                        <label for="organizador">Organizador:</label>
+                        <input type="text" id="organizador" name="organizador">
+                    </div>
+                    <div class="form-group">
+                        <label for="urlConvocatoria">URL Convocatoria:</label>
+                        <input type="text" id="urlConvocatoria" name="urlConvocatoria">
+                    </div>
+                    <div class="form-group">
+                        <label for="tipoConvocatoria">Tipo Convocatoria:</label>
+                        <select id="tipoConvocatoria" name="tipoConvocatoria" required>
+                            <option value="">Selecciona un tipo</option>
+                            <!-- Se llenará dinámicamente -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="fechaLimite">Fecha Límite:</label>
+                        <input type="date" id="fechaLimite" name="fechaLimite" required>
+                    </div>
 
                 </div>
                 <button type="submit" id="btnGuardarCambios" class="modal-button">Guardar cambios</button>
             </form>
         </div>
     </div>
-
-
-
-
-
-
-
-
-    <!-- Modal -->
+    <!-- Modal listar Convocatorias o Eventos-->
     <div id="modalAplicaciones" class="modal" style="display: none;">
         <div class="modal-content">
             <span class="close" onclick="cerrarModalAplicaciones()">&times;</span>
@@ -171,11 +178,9 @@
             </table>
         </div>
     </div>
-
-
     <script src="/js/config.js"></script>
     <script src="js/NavegacionDash.js"></script>
-
+    <!-- Crear Nuevo Evento/Convocatoria -->
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
             let idConvocatoriaEditando = null; // Variable global
@@ -218,7 +223,7 @@
             try {
                 const response = await fetch('/api/convocatorias');
                 const data = await response.json();
-console.log(data);
+                console.log(data);
                 const tbody = document.querySelector('#tablaConvocatorias tbody');
                 tbody.innerHTML = ''; // Limpiar contenido previo
 
@@ -423,7 +428,7 @@ console.log(data);
                             document.getElementById('formEditarConvocatoria').reset();
 
                             // Recargar la tabla
-                         
+
                         }
                         else {
                             Swal.fire(
@@ -440,7 +445,7 @@ console.log(data);
                             'error'
                         );
                     }
-                       location.reload();
+                    location.reload();
                 });
 
             } catch (error) {
@@ -545,41 +550,40 @@ console.log(data);
             });
         }
 
- document.addEventListener('change', async (event) => {
-    if (event.target.classList.contains('toggle-input')) {
-      const checkbox = event.target;
-      const id = checkbox.id.replace('toggle-', '');
-      const habilitado = checkbox.checked;
+        document.addEventListener('change', async (event) => {
+            if (event.target.classList.contains('toggle-input')) {
+                const checkbox = event.target;
+                const id = checkbox.id.replace('toggle-', '');
+                const habilitado = checkbox.checked;
 
-      try {
-        const response = await fetch(`/api/convocatorias/habilitar/${id}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ habilitado })
+                try {
+                    const response = await fetch(`/api/convocatorias/habilitar/${id}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ habilitado })
+                    });
+
+                    if (response.ok) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Estado actualizado',
+                            text: `El reto ha sido ${habilitado ? 'habilitado' : 'deshabilitado'}.`,
+                            timer: 1200,
+                            showConfirmButton: false
+                        });
+                        location.reload();
+                    } else {
+                        throw new Error('No se pudo actualizar el estado');
+                    }
+                } catch (error) {
+                    Swal.fire('Error', 'No se pudo actualizar el estado del reto.', 'error');
+                    checkbox.checked = !habilitado; // revertir el cambio visual
+                }
+            }
         });
-
-        if (response.ok) {
-          Swal.fire({
-            icon: 'success',
-            title: 'Estado actualizado',
-            text: `El reto ha sido ${habilitado ? 'habilitado' : 'deshabilitado'}.`,
-            timer: 1200,
-            showConfirmButton: false
-          });
-        location.reload();
-        } else {
-          throw new Error('No se pudo actualizar el estado');
-        }
-      } catch (error) {
-        Swal.fire('Error', 'No se pudo actualizar el estado del reto.', 'error');
-        checkbox.checked = !habilitado; // revertir el cambio visual
-      }
-    }
-  });
     </script>
-
 
 </body>
 

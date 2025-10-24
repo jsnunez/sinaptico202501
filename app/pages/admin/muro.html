@@ -7,6 +7,7 @@
     <title>Dashboard de Control</title>
     <link rel="stylesheet" href="styles/dashboard.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
@@ -18,26 +19,40 @@
 
     <!-- Encabezado -->
     <div class="header">
-        <div class="logo">
+        <div class="logo" onclick="window.location.href='/dashboard'">
             <div class="logo-icon">
                 <i class="fas fa-trophy"></i>
             </div>
             <div class="logo-text">Control sinaptico</div>
         </div>
         <div class="nav">
+            <button class="nav-button helice" data-page="helice">Helice</button>
             <button class="nav-button" data-page="dashboard">Dashboard</button>
-            <button class="nav-button" data-page="helice">Helice</button>
             <button class="nav-button" data-page="usuarios">Usuarios</button>
             <button class="nav-button" data-page="entidades">Entidades</button>
-            <button class="nav-button" data-page="retos">Retos</button>
-            <button class="nav-button active" data-page="muro">Muro</button>
-            <button class="nav-button" data-page="eventosDashboard">Eventos</button>
-            <button class="nav-button" data-page="conocimientoDashboard">conocimiento</button>
 
+            <div class="innovacionMenu">
+                <button class="nav-button active" id="adminInnovacionBtn">Innovacion</button>
+                <div class="dropdown-menu" id="adminInnovacion">
+                    <a href="/retos">Retos</a>
+                    <a href="/muro">Muro Servicios</a>
+                </div>
+            </div>
 
+            <button class="nav-button" data-page="eventosDashboard">Convocatorias<br>Eventos</button>
+
+            <div class="dropdown">
+                <button class="nav-button" id="userMenuAdminBtn">Conocimiento</button>
+                <div class="dropdown-menu" id="userMenuAdmin">
+                    <a href="/conocimientoDashboard">Biblioteca</a>
+                    <a href="/cursoDashboard">Cursos</a>
+                </div>
+            </div>
+
+            <button class="nav-button" id="cerrarSesion" href="#"><i class="bi bi-box-arrow-in-right"
+                    style="font-size: 1.2rem;"></i></button>
         </div>
     </div>
-
     <!-- Contenedor de bienvenida -->
     <div class="welcome-container">
         <div class="welcome-text">
@@ -51,12 +66,10 @@
             </button>
         </div> -->
     </div>
-
     <!-- Filtros -->
     <div class="filter-container">
         <input type="text" id="buscarReto" placeholder="Buscar Clasificados..." class="filter-input">
     </div>
-
     <!-- Tabla de Clasificados -->
     <div class="main-content">
         <table class="data-table" id="tablaClasificados">
@@ -80,11 +93,6 @@
             </tbody>
         </table>
     </div>
-
-
-
-
-
     <!-- Modal de confirmación para eliminar -->
     <div id="modalConfirmacion" class="modal">
         <div class="modal-content">

@@ -371,7 +371,7 @@
   <script src="js/clasificadosMostrar.js"></script>
   <script src="js/ContactarServicio.js"></script>
   <script src="js/crearReto.js"></script>
-
+  <!-- Formulario de clasificados -->
   <script>
 
     const priceInput = document.getElementById('classified-price');
@@ -397,7 +397,7 @@
       input.value = input.value.replace(/\./g, ''); // Enviar número limpio al backend
     });
   </script>
-
+    <!-- En construccion -->
   <script>
     function irEnConstruccion() {
       window.location.href = "/construccion"; // o la ruta que tengas
@@ -500,6 +500,7 @@
       return data; // { exists: true, entidad: {...} }
     }
   </script>
+    <!-- Cerrar Sesion -->
   <script>
     document.getElementById("cerrarSesion").addEventListener("click", () => {
       Swal.fire({
@@ -524,6 +525,7 @@
     });
 
   </script>
+    <!-- Menú Desplegable -->
   <script>
     const userMenuBtn = document.getElementById("userMenuBtn");
     const dropdown = userMenuBtn.closest(".dropdown");

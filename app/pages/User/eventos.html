@@ -25,8 +25,6 @@
   <div class="neural-background">
     <canvas id="neuralCanvas"></canvas>
   </div>
-
-
   <!-- Encabezado -->
   <header class="header">
     <div onclick="window.location.href='/helice'" class="logo">
@@ -69,8 +67,6 @@
       </div>
     </nav>
   </header>
-
-
   <!-- Bienvenida y botones de acción -->
   <div class="welcome-container">
     <div class="welcome-text">
@@ -99,9 +95,7 @@
       <option value="Cerrado">Cerrado</option>
     </select>
   </div>
-
   <div class="main-content" id="eventos"></div>
-
   <!-- Modal de edición -->
   <div id="modalEdicion" class="modal">
     <div class="modal-content">
@@ -141,7 +135,9 @@
     </div>
   </div>
 
+  
   <script src="/js/config.js"></script>
+  <!-- Cerrar Sesion -->
   <script>
     document.getElementById("cerrarSesion").addEventListener("click", () => {
       Swal.fire({
@@ -320,7 +316,7 @@
       }
     });
   </script>
-
+  <!-- Utilidades -->
   <script>
     // =========================
     // Utilidades
@@ -353,30 +349,7 @@
     })();
 
   </script>
-  <script>
-    document.getElementById("cerrarSesion").addEventListener("click", () => {
-      Swal.fire({
-        title: '¿Estás seguro?',
-        text: '¿Querés cerrar sesión?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Sí, cerrar sesión',
-        cancelButtonText: 'Cancelar',
-        reverseButtons: true
-      }).then((result) => {
-        if (result.isConfirmed) {
-          // Borrar cookies y redirigir
-          document.cookie = 'jwt=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-          document.cookie = 'user=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-          document.cookie = 'userId=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-          document.location.href = "/";
-
-        }
-        // Si el usuario cancela, no pasa nada
-      });
-    });
-
-  </script>
+  <!-- Menú desplegable -->
   <script>
     const userMenuBtn = document.getElementById("userMenuBtn");
     const dropdown = userMenuBtn.closest(".dropdown");

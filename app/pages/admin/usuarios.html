@@ -7,6 +7,7 @@
     <title>Dashboard de Control</title>
     <link rel="stylesheet" href="styles/dashboard.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
@@ -18,22 +19,38 @@
 
     <!-- Encabezado -->
     <div class="header">
-        <div class="logo">
+        <div class="logo" onclick="window.location.href='/dashboard'">
             <div class="logo-icon">
-                <i class="bi bi-trophy"></i>
+                <i class="fas fa-trophy"></i>
             </div>
             <div class="logo-text">Control sinaptico</div>
         </div>
         <div class="nav">
+            <button class="nav-button helice" data-page="helice">Helice</button>
             <button class="nav-button" data-page="dashboard">Dashboard</button>
-            <button class="nav-button" data-page="helice">Helice</button>
             <button class="nav-button active" data-page="usuarios">Usuarios</button>
             <button class="nav-button" data-page="entidades">Entidades</button>
-            <button class="nav-button" data-page="retos">Retos</button>
-            <button class="nav-button" data-page="muro">Muro</button>
-            <button class="nav-button" data-page="eventosDashboard">Eventos</button>
-            <button class="nav-button" data-page="conocimientoDashboard">conocimiento</button>
 
+            <div class="innovacionMenu">
+                <button class="nav-button" id="adminInnovacionBtn">Innovacion</button>
+                <div class="dropdown-menu" id="adminInnovacion">
+                    <a href="/retos">Retos</a>
+                    <a href="/muro">Muro Servicios</a>
+                </div>
+            </div>
+
+            <button class="nav-button" data-page="eventosDashboard">Convocatorias<br>Eventos</button>
+
+            <div class="dropdown">
+                <button class="nav-button" id="userMenuAdminBtn">Conocimiento</button>
+                <div class="dropdown-menu" id="userMenuAdmin">
+                    <a href="/conocimientoDashboard">Biblioteca</a>
+                    <a href="/cursoDashboard">Cursos</a>
+                </div>
+            </div>
+
+            <button class="nav-button" id="cerrarSesion" href="#"><i class="bi bi-box-arrow-in-right"
+                    style="font-size: 1.2rem;"></i></button>
         </div>
     </div>
 
@@ -87,41 +104,41 @@
             </div>
             <form id="formUsuario">
                 <div class="form-section">
-                <input type="hidden" id="usuarioId">
-                <div class="input-box">
-                    <span>Nombre</span>
-                    <input type="text" id="nombreUsuario" required>
-                </div>
-                <div class="input-box">
-                    <span>Email</span>
-                    <input type="email" id="emailUsuario" required>
-                </div>
-                <div class="input-box">
-                    <span>Teléfono</span>
-                    <input type="tel" id="telefonoUsuario" required>
-                </div>
-                <div class="input-box" id="passwordUsuarioContainer">
-                    <span>Contraseña</span>
-                    <input type="password" id="passwordUsuario" required>
-                </div>
-                <div class="input-box">
-                    <span>Rol</span>
-                    <select id="rolUsuario">
-                        <option value="1">Usuario</option>
-                        <option value="2">Editor</option>
-                        <option value="3">Administrador</option>
-                        <option value="4">Evaluador</option>
-                        <option value="5">Comité</option>
+                    <input type="hidden" id="usuarioId">
+                    <div class="input-box">
+                        <span>Nombre</span>
+                        <input type="text" id="nombreUsuario" required>
+                    </div>
+                    <div class="input-box">
+                        <span>Email</span>
+                        <input type="email" id="emailUsuario" required>
+                    </div>
+                    <div class="input-box">
+                        <span>Teléfono</span>
+                        <input type="tel" id="telefonoUsuario" required>
+                    </div>
+                    <div class="input-box" id="passwordUsuarioContainer">
+                        <span>Contraseña</span>
+                        <input type="password" id="passwordUsuario" required>
+                    </div>
+                    <div class="input-box">
+                        <span>Rol</span>
+                        <select id="rolUsuario">
+                            <option value="1">Usuario</option>
+                            <option value="2">Editor</option>
+                            <option value="3">Administrador</option>
+                            <option value="4">Evaluador</option>
+                            <option value="5">Comité</option>
 
-                    </select>
-                </div>
-                <div class="input-box" id="estadoUsuarioContainer" style="display: none;">
-                    <span>Estado</span>
-                    <select id="estadoUsuario">
-                        <option value="1">Activo</option>
-                        <option value="0">Inactivo</option>
-                    </select>
-                </div>
+                        </select>
+                    </div>
+                    <div class="input-box" id="estadoUsuarioContainer" style="display: none;">
+                        <span>Estado</span>
+                        <select id="estadoUsuario">
+                            <option value="1">Activo</option>
+                            <option value="0">Inactivo</option>
+                        </select>
+                    </div>
                 </div>
                 <button type="submit" id="btnGuardarUsuario" class="modal-button">Guardar</button>
             </form>
