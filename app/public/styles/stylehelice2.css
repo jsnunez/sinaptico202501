@@ -1067,7 +1067,8 @@ form {
     color: var(--text-description);
 }
 .bi-facebook,
-.fa-instagram{
+.fa-instagram,
+.bi-link-45deg{
     font-size: 3rem;
     text-align: center;
 }
