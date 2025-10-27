@@ -173,6 +173,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       document.getElementById("editarEntidad").style.display = data.entidad.habilitado == 1 ? "block" : "none";
       document.getElementById("asignarServicio").style.display = data.entidad.habilitado == 1 ? "block" : "none";
       document.getElementById("vincularEntidad").style.display = "none";
+      document.getElementById("verIntegrantesEntidad").style.display = data.entidad.habilitado == 1 ? "block" : "none";
       document.getElementById('bienvenido').innerText =
         `Hola ${nombreUsuario}.\nAdministrador de ${data.entidad.razonSocial}.\n ${estado}`;
       document.getElementById("solicitudes").style.display = "block";
@@ -180,6 +181,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
     } else {
+       idEntidad = data.entidad.id;
       // ✅ Verificar si pertenece a una entidad como usuarioempresa
       const usuarioData = await verificarUsuarioEntidad(userId);
       console.log(usuarioData)
@@ -189,6 +191,10 @@ document.addEventListener("DOMContentLoaded", async function () {
           `Hola ${nombreUsuario}.\n ${usuarioData[0].Cargo.nombre} de ${usuarioData[0].empresa.razonSocial} 
            ${usuarioData[0].estado == 1 ? "Estado:✅." : "Estamos Confirmando Tu Información ⏳"}`;
         document.getElementById("vincularEntidad").style.display = "none";
+        document.getElementById("misAsociados").style.display = "block";
+        await fetchMisAsociados(idEntidad);
+    
+
       } else {
         document.getElementById('bienvenido').innerText =
           `Hola ${nombreUsuario}, no estás unido a ninguna entidad.`;
@@ -230,18 +236,18 @@ async function cargarDatosUsuario(userId) {
   }
 
   document.getElementById("ciudadPerfilValor").innerHTML = data.ciudadId || '';
-  
-if (data.error) {
+
   if (data.error) {
-    // Limpiar cookies de sesión y redirigir a la raíz
-    document.cookie = 'jwt=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-    document.cookie = 'user=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-    document.cookie = 'userId=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-    window.location.href = '/';
+    if (data.error) {
+      // Limpiar cookies de sesión y redirigir a la raíz
+      document.cookie = 'jwt=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+      document.cookie = 'user=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+      document.cookie = 'userId=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+      window.location.href = '/';
+      return;
+    }
     return;
   }
-  return;
-}
   return data;
 }
 

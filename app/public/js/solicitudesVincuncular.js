@@ -1,18 +1,18 @@
 // solicitudesVincuncular.js
 document.getElementById('verIntegrantesEntidad').onclick = function () {
 
-            document.getElementById('modalVerIntegrantesEntidad').style.display = 'block';
+    document.getElementById('modalVerIntegrantesEntidad').style.display = 'block';
 
-            // Opcional: cargar foto actual si tienes la URL
-            // document.getElementById('previewFotoPerfil').src = 'URL_DE_LA_FOTO_ACTUAL';
-        };
-        // Cerrar modal
-        document.getElementById('cerrarModalVerIntegrantesEntidad').onclick = function () {
-            document.getElementById('modalVerIntegrantesEntidad').style.display = 'none';
-        };
-                document.getElementById('cerrarModalVerIntegrantesEntidadBtn').onclick = function () {
-            document.getElementById('modalVerIntegrantesEntidad').style.display = 'none';
-        };
+    // Opcional: cargar foto actual si tienes la URL
+    // document.getElementById('previewFotoPerfil').src = 'URL_DE_LA_FOTO_ACTUAL';
+};
+// Cerrar modal
+document.getElementById('cerrarModalVerIntegrantesEntidad').onclick = function () {
+    document.getElementById('modalVerIntegrantesEntidad').style.display = 'none';
+};
+document.getElementById('cerrarModalVerIntegrantesEntidadBtn').onclick = function () {
+    document.getElementById('modalVerIntegrantesEntidad').style.display = 'none';
+};
 
 
 
@@ -24,9 +24,10 @@ async function fetchSolicitudes(idEntidad) {
     let adminUserId = null;
     try {
         const response = await fetch('/api/entidad/verificar-admin/' + idEntidad);
+        console.log('Verfiicar admin', response);
         if (!response.ok) throw new Error('Error al obtener datos');
         const data = await response.json();
-        console.log('data entidad', data.entidad.UserAdminId);
+        console.log('data entidad', data);
         adminUserId = data.entidad.UserAdminId;
         try {
             const response = await fetch('/api/usuarioempresa/empresa/' + idEntidad);
@@ -34,10 +35,11 @@ async function fetchSolicitudes(idEntidad) {
             const data = await response.json();
 
             renderTable(data, adminUserId);
+
         } catch (error) {
             tableBody.innerHTML = `<tr><td colspan="4">Error: ${error.message}</td></tr>`;
         }
-        
+
     } catch (error) {
         tableBody.innerHTML = `<tr><td colspan="4">Error: ${error.message}hola</td></tr>`;
     }
@@ -170,10 +172,6 @@ function renderTable(solicitudes, adminUserId) {
     });
 }
 
-
-
-
-
 // Delegated handler para botones "Eliminar solicitud"
 tableBody.addEventListener('click', async (event) => {
     const btn = event.target.closest('.delete-solicitud-btn');
@@ -233,3 +231,82 @@ tableBody.addEventListener('click', async (event) => {
         btn.style.opacity = '';
     }
 });
+
+
+
+// solicitudesVincuncular.js
+document.getElementById('misAsociados').onclick = function () {
+
+    document.getElementById('modalAsociadosUser').style.display = 'block';
+
+};
+// Cerrar modal
+document.getElementById('cerrarModalAsociadosUser').onclick = function () {
+    document.getElementById('modalAsociadosUser').style.display = 'none';
+};
+document.getElementById('cerrarModalAsociadosUserBtn').onclick = function () {
+    document.getElementById('modalAsociadosUser').style.display = 'none';
+};
+
+
+const tableBodyUser = document.getElementById('solicitudes-list-body-user');
+
+
+async function fetchMisAsociados(idEntidad) {
+    console.log('id entidad', idEntidad);
+    const userId = obtenerCookie("userId");
+
+        try {
+            const responseUser = await fetch('/api/usuarioempresa/empresa/' + idEntidad);
+            console.log('Empresa', responseUser);
+            if (!responseUser.ok) throw new Error('Error al obtener datos');
+            const dataUser = await responseUser.json();
+
+            renderTableUser(dataUser, userId);
+        } catch (error) {
+            console.error('Error al obtener empresa:', error);
+            tableBodyUser.innerHTML = `<tr><td colspan="4">Error: ${error.message}</td></tr>`;
+        }
+
+    
+}
+
+function renderTableUser(solicitudes, UserId) {
+    console.log('solicitudes', solicitudes);
+    console.log('UserId', UserId);
+    if (!Array.isArray(solicitudes) || solicitudes.length === 0) {
+        tableBodyUser.innerHTML = '<tr><td colspan="4">No hay solicitudes vinculadas.</td></tr>';
+        return;
+    }
+    tableBodyUser.innerHTML = solicitudes.map(solicitud => `
+            <tr style="border-bottom:1px solid #e9ecef;">
+         
+            <td style="padding:12px 8px;font-weight:600;color:#2b2f3a;">
+            ${solicitud.User ? solicitud.User.name : ''}
+            </td>
+            <td style="padding:12px 8px;color:#6c757d;">
+            ${solicitud.User ? solicitud.User.email : ''}
+            </td>
+            <td style="padding:12px 8px;">
+            ${solicitud.Cargo ? solicitud.Cargo.nombre : ''}
+            </td>
+            </tr>
+        `).join('');
+
+    // Agregar listeners para los botones toggle
+    document.querySelectorAll('.toggle-estado-btn').forEach(btn => {
+        btn.addEventListener('click', async function () {
+            const id = this.getAttribute('data-id');
+            try {
+                const response = await fetch(`/api/usuarioempresa/habilitar/${id}`, {
+                    method: 'PUT'
+                });
+                if (!response.ok) throw new Error('No se pudo cambiar el estado');
+                // Opcional: refrescar la tabla
+                fetchSolicitudes(idEntidad);
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        });
+    });
+}
