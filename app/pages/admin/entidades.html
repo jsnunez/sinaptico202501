@@ -299,12 +299,12 @@
         <table class="data-table" id="tablaEntidades">
             <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Nombre</th>
-                    <th>Numero Identificacion</th>
-                    <th>Nombre Contacto</th>
-                    <th>Telefono Contacto</th>
+                    <th>Identificacion</th>
+                    <th>Contacto</th>
+                    <th>Telefono </th>
                     <th>Email Admin</th>
+                    <th>Integrantes</th>
                     <th>Estado</th>
                     <th>Acciones</th>
                 </tr>
@@ -316,6 +316,34 @@
         </table>
         <div id="paginacionEntidades" class="pagination"></div>
 
+    </div>
+    
+    <!-- solicitiudes para mi actor-->
+    <div class="modal" id="modalVerIntegrantesEntidad">
+        <div class="modal-content" id="solicitudes" style="max-width: 900px;">
+            <span class="close" id="cerrarModalVerIntegrantesEntidad">&times;</span>
+            <div class="helix-title">
+                <h3>Integrantes</h3>
+                <div class="solicitudes-list"></div>
+                <table style="width:100%;border-collapse:collapse;" id="admin-tabla">
+                    <thead>
+                        <tr>
+
+                            <th>Nombre</th>
+                            <th>Email</th>
+                            <th>Cargo</th>
+                            <th>Estado</th>
+                            <th>Solicitud</th>
+                        </tr>
+                    </thead>
+                    <tbody id="solicitudes-list-body">
+                        <!-- Las solicitudes se cargarán aquí -->
+                    </tbody>
+                </table>
+                <button class="modal-button" id="cerrarModalVerIntegrantesEntidadBtn">Cerrar</button>
+
+            </div>
+        </div>
     </div>
 
     <!-- Modal para crear/editar entidad -->
@@ -565,7 +593,8 @@
         </div>
     </div>
 
-    <script src="/js/config.js"></script>
+    <script src="/js/config.js"></script>   
+
     <script src="/js/dashboardEntidad.js"></script>
     <script src="js/NavegacionDash.js"></script>
 

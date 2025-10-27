@@ -67,7 +67,7 @@ function initEntidadesPage() {
             // Obtener datos de contacto para cada entidad
             if (entidades.empresas && entidades.empresas.length > 0) {
                 console.log(`📋 Procesando ${entidades.empresas.length} entidades`);
-                
+
                 const contactPromises = entidades.empresas.map((entidad) => {
                     console.log(`🔍 Procesando entidad ID: ${entidad.id}, contactoId: ${entidad.contactoId}`);
                     return fetch(`${API_BASE_URL}/api/contactos/${entidad.contactoId}`)
@@ -83,40 +83,40 @@ function initEntidadesPage() {
                         })
                         .catch((error) => console.error("Error:", error));
                 });
-              // Obtener el email del administrador para cada entidad
-            entidades.empresas.forEach((entidad) => {
-                console.log(`📧 Obteniendo email del admin para entidad ${entidad.id}, UserAdminId: ${entidad.UserAdminId}`);
-                contactPromises.push(
-                    fetch(`${API_BASE_URL}/api/user/email/${entidad.UserAdminId}`)
-                        .then((response) => {
-                            if (!response.ok) {
-                                throw new Error("Error al obtener el email del administrador");
-                            }
-                            return response.json();
-                        })
-                        .then((email) => {
-                            console.log(`📧 Email del admin para entidad ${entidad.id}:`, email);
-                            entidad.emailAdmin = email; // Agregar email del administrador a la entidad
-                        })
-                        .catch((error) => console.error("Error:", error))
-                );
-            });
-            // Esperar a que se resuelvan todas las promesas de contacto
-            Promise.all(contactPromises).then(() => {
-                console.log("✅ Todos los datos adicionales cargados. Entidades finales:", entidades.empresas);
-                renderEntidades(entidades.empresas); // Renderizar la tabla
-                document.getElementById("tablaEntidades").style.display = "table"; // Mostrar tabla
-                document.getElementById("paginacionEntidades").style.display = "block"; // Mostrar paginación
-                document.getElementById("loaderEntidades").style.display = "none";
+                // Obtener el email del administrador para cada entidad
+                entidades.empresas.forEach((entidad) => {
+                    console.log(`📧 Obteniendo email del admin para entidad ${entidad.id}, UserAdminId: ${entidad.UserAdminId}`);
+                    contactPromises.push(
+                        fetch(`${API_BASE_URL}/api/user/email/${entidad.UserAdminId}`)
+                            .then((response) => {
+                                if (!response.ok) {
+                                    throw new Error("Error al obtener el email del administrador");
+                                }
+                                return response.json();
+                            })
+                            .then((email) => {
+                                console.log(`📧 Email del admin para entidad ${entidad.id}:`, email);
+                                entidad.emailAdmin = email; // Agregar email del administrador a la entidad
+                            })
+                            .catch((error) => console.error("Error:", error))
+                    );
+                });
+                // Esperar a que se resuelvan todas las promesas de contacto
+                Promise.all(contactPromises).then(() => {
+                    console.log("✅ Todos los datos adicionales cargados. Entidades finales:", entidades.empresas);
+                    renderEntidades(entidades.empresas); // Renderizar la tabla
+                    document.getElementById("tablaEntidades").style.display = "table"; // Mostrar tabla
+                    document.getElementById("paginacionEntidades").style.display = "block"; // Mostrar paginación
+                    document.getElementById("loaderEntidades").style.display = "none";
 
-            });
-        }
-        else {
-            document.getElementById("loaderEntidades").innerText = "No existen entidades en este momento.";
-      
-        }
-        
-        
+                });
+            }
+            else {
+                document.getElementById("loaderEntidades").innerText = "No existen entidades en este momento.";
+
+            }
+
+
         })
         .catch((error) => console.error("Error:", error));
 
@@ -126,7 +126,7 @@ function initEntidadesPage() {
 
     const tbody = tablaEntidades.querySelector("tbody")
 
-    function renderEntidades(entidadesList, pagina = 1) {
+    async function renderEntidades(entidadesList, pagina = 1) {
         tbody.innerHTML = "";
 
         const inicio = (pagina - 1) * filasPorPagina;
@@ -137,143 +137,255 @@ function initEntidadesPage() {
             const tr = document.createElement("tr");
             tr.innerHTML = `<td colspan="8" style="text-align: center;">No se encontraron entidades</td>`;
             tbody.appendChild(tr);
-        } else {
+            return;
+        }
 
-            entidadesPagina.forEach((entidad) => {
-                // console.log("Entidad:", entidad)
-                // Obtener datos del usuario administrador
-                // console.log("ID del usuario administrador:", entidad.UserAdminId)
-                fetch(`${API_BASE_URL}/api/user/email/${entidad.UserAdminId}`)
-                    .then((response) => {
-                        if (!response.ok) {
-                            throw new Error("Error al obtener el ID del usuario administrador");
-                        }
-                        return response.json();
-                    })
-                    .then((email) => {
-                        emailAdmin = email; // Almacenar el email del admin
-                        entidad.emailAdmin = email; // Guardar el email en la entidad
-                    })
-                    .catch((error) => console.error("Error:", error));                      // Cargar tabla de entidades
-                const tr = document.createElement("tr");
-                tr.innerHTML = `
-                    <td>${entidad.id ?? ''}</td>
-                    <td>
-                        ${entidad.razonSocial ?? ''}
-                        ${entidad.ubicaciones && entidad.ubicaciones.length > 0 ? '<span style="color: green; margin-left: 5px;" title="Tiene ubicación en mapa">📍</span>' : '<span style="color: #ccc; margin-left: 5px;" title="Sin ubicación en mapa">📍</span>'}
-                    </td>
-                    <td>${entidad.numIdentificacion ?? ''}</td>
-                    <td>${entidad.contacto?.nombre ?? ''}</td>
-                    <td>${entidad.contacto?.telefono ?? ''}</td>
-                    <td>${entidad.emailAdmin?.email ?? ''}</td>
-                    <td>
-                        <div class="toggle-switch">
-                            <input type="checkbox" id="toggle-${entidad.id}" class="toggle-input" ${entidad.habilitado ? "checked" : ""}>
-                            <label for="toggle-${entidad.id}" class="toggle-label"></label>
-                            <span>${entidad.habilitado ? "Habilitada" : "Deshabilitada"}</span>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="action-icons">
-                            <span class="action-icon edit-full" data-id="${entidad.id}" title="Editar Entidad"> <i class="bi bi-gear"></i></span>
-                            <span class="action-icon delete" data-id="${entidad.id}" title="Eliminar"><i class="bi bi-trash3"></i></span>
-                        </div>
-                    </td>
-                `;   tbody.appendChild(tr);
+        // Iteramos sobre las entidades visibles en esta página
+        for (const entidad of entidadesPagina) {
+            try {
+                // Obtener el email del administrador
+                const response = await fetch(`${API_BASE_URL}/api/user/email/${entidad.UserAdminId}`);
+                if (!response.ok) throw new Error("Error al obtener el email del usuario administrador");
+                const email = await response.json();
+                entidad.emailAdmin = email;
+            } catch (error) {
+                console.error("Error al obtener email del admin:", error);
+                entidad.emailAdmin = { email: "No disponible" };
+            }
+
+            // Crear la fila
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+            <td>
+                ${entidad.razonSocial ?? ''}
+                ${entidad.ubicaciones?.length > 0
+                    ? '<span style="color: green; margin-left: 5px;" title="Tiene ubicación en mapa">📍</span>'
+                    : '<span style="color: #ccc; margin-left: 5px;" title="Sin ubicación en mapa">📍</span>'}
+            </td>
+            <td>${entidad.numIdentificacion ?? ''}</td>
+            <td>${entidad.contacto?.nombre ?? ''}</td>
+            <td>${entidad.contacto?.telefono ?? ''}</td>
+            <td>${entidad.emailAdmin?.email ?? ''}</td>
+            <td>            
+                <button class="action-button ver-integrantes-entidad" data-id="${entidad.id}" title="Ver Integrantes de la Entidad">
+                    <span class="button-icon"><i class="bi bi-person-lines-fill"></i></span> 
+                </button>
+            </td>
+            <td>
+                <div class="toggle-switch">
+                    <input type="checkbox" id="toggle-${entidad.id}" class="toggle-input" ${entidad.habilitado ? "checked" : ""}>
+                    <label for="toggle-${entidad.id}" class="toggle-label"></label>
+                    <span>${entidad.habilitado ? "Habilitada" : "Deshabilitada"}</span>
+                </div>
+            </td>
+            <td>
+                <div class="action-icons">
+                    <span class="action-icon edit-full" data-id="${entidad.id}" title="Editar Entidad"><i class="bi bi-gear"></i></span>
+                    <span class="action-icon delete" data-id="${entidad.id}" title="Eliminar"><i class="bi bi-trash3"></i></span>
+                </div>
+            </td>
+        `;
+            tbody.appendChild(tr);
+        }
+let idEntidad = null;
+        // ✅ Agregar event listeners SOLO una vez por renderizado
+        document.querySelectorAll(".ver-integrantes-entidad").forEach((btn) => {
+            btn.addEventListener("click", (e) => {
+                const entidadId = e.currentTarget.dataset.id;
+                idEntidad = entidadId;
+                console.log("Ver integrantes de entidad con ID:", entidadId);
+
+                const modal = document.getElementById("modalVerIntegrantesEntidad");
+                modal.style.display = "block";
+
+                // Llamar a tu función externa
+                if (typeof fetchSolicitudes === "function") {
+                    console.log("⚙️ Llamando a fetchSolicitudes() con entidadId:", entidadId);
+                    fetchSolicitudes(entidadId);
+                } else {
+                    console.error("⚠️ La función fetchSolicitudes() no está disponible.");
+                }
             });
         }
 
-        renderPaginacion(entidadesList.length, pagina);
+        );
+    }
 
-        function renderPaginacion(totalItems, paginaActual) {
-            const inicio = (paginaActual - 1) * filasPorPagina;
-            const fin = inicio + filasPorPagina;
-            const filtradas = entidadesList.slice(inicio, fin);
-            const totalPaginas = Math.ceil(totalItems / filasPorPagina);
+    const tableBody = document.getElementById('solicitudes-list-body');
 
-            const paginacionContainer = document.getElementById("paginacionEntidades");
-            paginacionContainer.innerHTML = "";
+    async function fetchSolicitudes(idEntidad) {
+        console.log('id entidad', idEntidad);
+        let adminUserId = null;
+     
+            try {
+                const response = await fetch('/api/usuarioempresa/empresa/' + idEntidad);
+                if (!response.ok) throw new Error('Error al obtener datos');
+                const data = await response.json();
+console.log('Datos de solicitudes recibidos:', data);
+                renderTable(data,idEntidad);
 
-            for (let i = 1; i <= totalPaginas; i++) {
-                const btn = document.createElement("button");
-                btn.className = "pagination-button";
-                btn.textContent = i;
-                if (i === paginaActual) {
-                    btn.classList.add("active");
-                }
-                btn.addEventListener("click", () => {
-                    console.log("Pagina: ", i)
-                    paginaActual = i;
-
-                    renderEntidades(entidades.empresas, i);
-                });
-                paginacionContainer.appendChild(btn);
+            } catch (error) {
+                tableBody.innerHTML = `<tr><td colspan="4">Error: ${error.message}</td></tr>`;
             }
+
+        
+
+    }
+
+    function renderTable(solicitudes,idEntidad) {
+        console.log('solicitudes', solicitudes);
+        if (!Array.isArray(solicitudes) || solicitudes.length === 0) {
+            tableBody.innerHTML = '<tr><td colspan="4">No hay solicitudes vinculadas.</td></tr>';
+            return;
         }
+        tableBody.innerHTML = solicitudes.map(solicitud => `
+            <tr style="border-bottom:1px solid #e9ecef;">
+         
+            <td style="padding:12px 8px;font-weight:600;color:#2b2f3a;">
+            ${solicitud.User ? solicitud.User.name : ''}
+            </td>
+            <td style="padding:12px 8px;color:#6c757d;">
+            ${solicitud.User ? solicitud.User.email : ''}
+            </td>
+            <td style="padding:12px 8px;">
+            ${solicitud.Cargo ? solicitud.Cargo.nombre : ''}
+            </td>
+ <td style="display:flex;justify-content:center;align-items:center;">
+                <!-- Toggle activo para todos -->
+                <button
+                    class="toggle-estado-btn"
+                    data-id="${solicitud.id}"
+                    aria-pressed="${solicitud.estado ? 'true' : 'false'}"
+                    title="${solicitud.estado ? 'Deshabilitar' : 'Habilitar'}"
+                    style="display:inline-flex;align-items:center;gap:10px;border:0;padding:6px 10px;border-radius:999px;cursor:pointer;
+                        background: linear-gradient(180deg, ${solicitud.estado ? '#46d36a' : '#ff8a8a'}, ${solicitud.estado ? '#28a745' : '#dc3545'});
+                        color:#fff;box-shadow:0 2px 6px rgba(43,52,69,0.08);font-weight:600;">
+                    <span style="position:relative;width:44px;height:24px;display:inline-block;border-radius:12px;background:rgba(255,255,255,0.18);flex-shrink:0;">
+                        <span style="position:absolute;top:2px;left:${solicitud.estado ? '22px' : '2px'};width:20px;height:20px;background:#fff;border-radius:50%;
+                            box-shadow:0 2px 4px rgba(0,0,0,0.15);transition:left .18s;"></span>
+                    </span>
+                    <span style="font-size:0.88rem;">${solicitud.estado ? 'Habilitado' : 'Deshabilitado'}</span>
+                </button>
+            </td>
 
+            <td>
+                <!-- Botón eliminar activo para todos -->
+                <button
+                    class="delete-solicitud-btn"
+                    data-id="${solicitud.id}"
+                    title="Eliminar solicitud"
+                    style="
+                        background: transparent;
+                        border: 0;
+                        padding: 6px;
+                        border-radius: 8px;
+                        cursor: pointer;
+                        color: #c92a2a;
+                        display: inline-flex;
+                        align-items: center;
+                        gap: 6px;
+                    ">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        viewBox="0 0 16 16" aria-hidden="true">
+                        <path d="M5.5 5.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-4a.5.5 0 0 1-.5-.5v-7z"/>
+                        <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9.5A1.5 1.5 0 0 1 11.5 15h-7A1.5 1.5 0 0 1 3 13.5V4H2.5a1 1 0 1 1 0-2h3.1a1 1 0 0 1 .9-.6h2a1 1 0 0 1 .9.6H13.5a1 1 0 0 1 1 1zM5.118 4 5 4.059V13.5a.5.5 0 0 0 .5.5h5a.5.5 0 0 0 .5-.5V4.059L10.882 4H5.118z"/>
+                    </svg>
+                </button>
+            </td>
+            </tr>
+        `).join('');
 
-
-        // Enviar cambio de estado a la base de datos
-        document.querySelectorAll(".toggle-input").forEach((toggle) => {
-            toggle.addEventListener("change", function () {
-                const id = Number.parseInt(this.id.split("-")[1]);
-                const estado = this.checked;
-
-                fetch(`${API_BASE_URL}/api/entidad/cambiarEstado/${id}`, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({ id, habilitado: estado }),
-                })
-                    .then((response) => {
-                        if (!response.ok) {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Error',
-                                text: 'Error al cambiar el estado de la entidad',
-                            });
-                            throw new Error("Error al cambiar el estado de la entidad");
-                        }
-                        return response.json();
-                    })
-                    .then((data) => {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Éxito',
-                            text: `El estado de la entidad se ${estado ? 'habilitó' : 'deshabilitó'} correctamente`,
-                        });
-                    })
-                    .catch((error) => {
-                        console.error("Error:", error);
-                        // Revertir el cambio en caso de error
-                        this.checked = !estado;
+        // Agregar listeners para los botones toggle
+        document.querySelectorAll('.toggle-estado-btn').forEach(btn => {
+            btn.addEventListener('click', async function () {
+                const id = this.getAttribute('data-id');
+                try {
+                    console.log('Cambiando estado para ID:', id);
+                    const response = await fetch(`/api/usuarioempresa/habilitar/${id}`, {
+                        method: 'PUT'
                     });
+                    if (!response.ok) throw new Error('No se pudo cambiar el estado');
+                    // Opcional: refrescar la tabla
+
+                    fetchSolicitudes(idEntidad);
+                    console.log('Actualizando tabla ID:', idEntidad);
+            
+                } catch (error) {
+                    alert('Error: ' + error.message);
+                    console.error('Error al cambiar estado:', error);
+                }
             });
         });
-        // Agregar eventos a los botones de acción
-        document.querySelectorAll(".action-icon.edit-full").forEach((btn) => {
-            btn.addEventListener("click", function () {
-                const id = Number.parseInt(this.getAttribute("data-id"))
-                editarEntidadCompleto(id) // Edición completa
-            })
-        })
-
-        document.querySelectorAll(".action-icon.delete").forEach((btn) => {
-            btn.addEventListener("click", function () {
-                const id = Number.parseInt(this.getAttribute("data-id"))
-                confirmarEliminarEntidad(id)
-            })
-        })
-
-        // Agregar eventos a los toggles
-        document.querySelectorAll(".toggle-input").forEach((toggle) => {
-            toggle.addEventListener("change", function () {
-                const id = Number.parseInt(this.id.split("-")[1])
-
-            })
-        })
     }
+
+    // Delegated handler para botones "Eliminar solicitud"
+    tableBody.addEventListener('click', async (event) => {
+        const btn = event.target.closest('.delete-solicitud-btn');
+        if (!btn) return;
+
+        const id = btn.getAttribute('data-id');
+        if (!id) return;
+
+        const result = await Swal.fire({
+            title: '¿Eliminar solicitud?',
+            text: 'Esta acción no se puede deshacer.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar'
+        });
+
+        if (!result.isConfirmed) return;
+
+        try {
+            btn.disabled = true;
+            btn.style.opacity = '0.6';
+
+            const response = await fetch(`/api/usuarioempresa/${id}`, { method: 'DELETE' });
+            if (!response.ok) {
+                let msg = 'No se pudo eliminar la solicitud';
+                try {
+                    const payload = await response.json();
+                    msg = payload.message || JSON.stringify(payload);
+                } catch (e) {
+                    try { msg = await response.text(); } catch (_) { }
+                }
+                throw new Error(msg);
+            }
+
+            // Remover la fila correspondiente del DOM
+            const row = btn.closest('tr');
+            if (row) row.remove();
+
+            await Swal.fire({
+                title: '¡Eliminado!',
+                text: 'La solicitud ha sido eliminada correctamente.',
+                icon: 'success',
+                timer: 2000,
+                showConfirmButton: false
+            });
+        } catch (error) {
+            await Swal.fire({
+                title: 'Error',
+                text: error.message,
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+            });
+            btn.disabled = false;
+            btn.style.opacity = '';
+        }
+    });
+    // Cerrar modal
+    document.getElementById('cerrarModalVerIntegrantesEntidad').onclick = function () {
+        document.getElementById('modalVerIntegrantesEntidad').style.display = 'none';
+    };
+    document.getElementById('cerrarModalVerIntegrantesEntidadBtn').onclick = function () {
+        document.getElementById('modalVerIntegrantesEntidad').style.display = 'none';
+    };
+
+
 
     // Renderizar entidades iniciales
     renderEntidades(entidades)
@@ -309,14 +421,14 @@ function initEntidadesPage() {
             document.querySelectorAll(".modal").forEach((modal) => {
                 modal.style.display = "none"
             })
-            
+
             // Limpiar mapa y variables globales al cerrar modal
             if (mapaEntidad) {
                 mapaEntidad.remove();
                 mapaEntidad = null;
                 marcadorEntidad = null;
             }
-            
+
             // Limpiar variables de ubicación
             window.entidadTieneUbicacion = false;
             window.ubicacionActual = null;
@@ -334,7 +446,7 @@ function initEntidadesPage() {
     // Event listener para cambio de departamento
     const departamentoSelect = document.getElementById("departamentoEntidad");
     if (departamentoSelect) {
-        departamentoSelect.addEventListener("change", async function() {
+        departamentoSelect.addEventListener("change", async function () {
             const departamentoId = this.value;
             await cargarCiudadesPorDepartamento(departamentoId);
         });
@@ -343,16 +455,16 @@ function initEntidadesPage() {
     // Event listener para cancelar modal
     const cancelarModal = document.getElementById("cancelarModal");
     if (cancelarModal) {
-        cancelarModal.addEventListener("click", function() {
+        cancelarModal.addEventListener("click", function () {
             modalEntidad.style.display = "none";
-            
+
             // Limpiar mapa y variables globales al cancelar
             if (mapaEntidad) {
                 mapaEntidad.remove();
                 mapaEntidad = null;
                 marcadorEntidad = null;
             }
-            
+
             // Limpiar variables de ubicación
             window.entidadTieneUbicacion = false;
             window.ubicacionActual = null;
@@ -362,15 +474,15 @@ function initEntidadesPage() {
     // Event listeners para botones del mapa
     const btnUbicarEnMapa = document.getElementById("btnUbicarEnMapa");
     const btnLimpiarUbicacion = document.getElementById("btnLimpiarUbicacion");
-    
+
     if (btnUbicarEnMapa) {
-        btnUbicarEnMapa.addEventListener("click", function() {
+        btnUbicarEnMapa.addEventListener("click", function () {
             inicializarMapaParaUbicacion();
         });
     }
-    
+
     if (btnLimpiarUbicacion) {
-        btnLimpiarUbicacion.addEventListener("click", function() {
+        btnLimpiarUbicacion.addEventListener("click", function () {
             limpiarUbicacionMapa();
         });
     }
@@ -403,15 +515,15 @@ function initEntidadesPage() {
             formData.append('facebook', document.getElementById("facebookEntidad").value);
             formData.append('instagram', document.getElementById("instagramEntidad").value);
             formData.append('paginaweb', document.getElementById("paginawebEntidad").value);
-            
+
             // Usuario Administrador
             const userAdminId = document.getElementById("usuarioAdmin").value || '1'; // Valor por defecto si no se selecciona
             formData.append('UserAdminId', userAdminId);
-            
+
             // Agregar datos de ubicación del mapa
             const latitud = document.getElementById("latitudEntidad").value;
             const longitud = document.getElementById("longitudEntidad").value;
-            
+
             if (latitud && longitud) {
                 formData.append('latitud', latitud);
                 formData.append('longitud', longitud);
@@ -475,20 +587,20 @@ function initEntidadesPage() {
                             UserAdminId: userAdminId,
                             habilitado: habilitado
                         };
-                        
+
                         // Actualizar ubicación si se proporcionó
                         if (latitud && longitud) {
                             if (!entidades.empresas[index].ubicaciones) {
                                 entidades.empresas[index].ubicaciones = [];
                             }
-                            
+
                             // Buscar ubicación existente o crear nueva
                             let ubicacionIndex = entidades.empresas[index].ubicaciones.findIndex(u => u.esUbicacionPrincipal);
                             if (ubicacionIndex === -1) {
                                 ubicacionIndex = 0;
                                 entidades.empresas[index].ubicaciones.push({});
                             }
-                            
+
                             entidades.empresas[index].ubicaciones[ubicacionIndex] = {
                                 ...entidades.empresas[index].ubicaciones[ubicacionIndex],
                                 latitud: latitud,
@@ -563,7 +675,7 @@ function initEntidadesPage() {
                     // Recargar la página para mostrar la nueva entidad
                     // O alternativamente, agregar la entidad al array y re-renderizar
                     window.location.reload();
-                    
+
                     modalEntidad.style.display = "none";
                 } catch (error) {
                     console.error("Error:", error);
@@ -619,7 +731,7 @@ function initEntidadesPage() {
             // Configurar el modal con los datos de la entidad
             document.getElementById("tituloModalEntidad").textContent = "Editar Entidad - Formulario Completo";
             document.getElementById("entidadId").value = entidad.id || "";
-            
+
             // Datos básicos
             document.getElementById("claseEntidad").value = entidad.claseEntidad || "Empresa";
             document.getElementById("nombreEntidad").value = entidad.razonSocial || "";
@@ -627,11 +739,11 @@ function initEntidadesPage() {
             document.getElementById("tipoEntidad").value = entidad.tipoEntidad || "Corporativa";
             document.getElementById("naturalezaJuridica").value = entidad.naturalezaJuridica || "Privada";
             document.getElementById("actividadEconomica").value = entidad.actividadEconomica || "";
-            
+
             // Información de contacto
             document.getElementById("correoEntidad").value = entidad.correo || "";
             document.getElementById("telefonoEntidad").value = entidad.telefono || "";
-            
+
             // Formatear fecha si existe
             if (entidad.fechaConstitucion) {
                 const fecha = new Date(entidad.fechaConstitucion);
@@ -639,26 +751,26 @@ function initEntidadesPage() {
                     document.getElementById("fechaConstitucion").value = fecha.toISOString().split('T')[0];
                 }
             }
-            
+
             document.getElementById("direccionEntidad").value = entidad.direccion || "";
-            
+
             // Ubicación - usar datos de la relación de ciudad y departamento
             const departamentoId = entidad.ciudad?.departamento?.id || entidad.departamento;
             const ciudadId = entidad.ciudad?.id || entidad.ciudadId;
-            
+
             console.log("📍 Datos de ubicación:", {
                 ciudad: entidad.ciudad,
                 departamentoId: departamentoId,
                 ciudadId: ciudadId
             });
-            
+
             // Departamento primero
             if (departamentoId) {
                 document.getElementById("departamentoEntidad").value = departamentoId;
                 // Cargar ciudades del departamento seleccionado
                 await cargarCiudadesPorDepartamento(departamentoId);
             }
-            
+
             // Luego ciudad
             if (ciudadId) {
                 // Esperar un poco para que se carguen las ciudades
@@ -666,14 +778,14 @@ function initEntidadesPage() {
                     document.getElementById("ciudadEntidad").value = ciudadId;
                 }, 200);
             }
-            
+
             // Persona de contacto - múltiples fuentes posibles
             const contactoData = entidad.Contacto || entidad.contacto || {};
             const nombreContacto = contactoData.nombre || entidad.nombreContacto || "";
             const cargoContacto = contactoData.cargoId || entidad.cargoPersona || "";
             const correoContacto = contactoData.email || entidad.correoContacto || "";
             const telefonoContactoVal = contactoData.telefono || entidad.telefonoContacto || "";
-            
+
             console.log("👤 Datos de contacto:", {
                 contactoOriginal: entidad.Contacto,
                 contactoLowercase: entidad.contacto,
@@ -682,22 +794,22 @@ function initEntidadesPage() {
                 correoContacto,
                 telefonoContactoVal
             });
-            
+
             document.getElementById("nombreContacto").value = nombreContacto;
             document.getElementById("cargoContacto").value = cargoContacto;
             document.getElementById("correoContacto").value = correoContacto;
             document.getElementById("telefonoContacto").value = telefonoContactoVal;
-            
+
             // Redes sociales
             document.getElementById("facebookEntidad").value = entidad.facebook || "";
             document.getElementById("instagramEntidad").value = entidad.instagram || "";
             document.getElementById("paginawebEntidad").value = entidad.paginaweb || "";
-            
+
             // Estado
             const estadoEntidad = entidad.habilitado !== undefined ? entidad.habilitado : true;
             document.getElementById("estadoEntidad").checked = estadoEntidad;
             document.getElementById("estadoEntidadText").textContent = estadoEntidad ? "Habilitada" : "Deshabilitada";
-            
+
             // Usuario Administrador
             if (entidad.UserAdminId) {
                 setTimeout(() => {
@@ -705,10 +817,10 @@ function initEntidadesPage() {
                     cargarInfoAdminActual(entidad.UserAdminId);
                 }, 300);
             }
-            
+
             // Configurar event listener para selección de admin
             setupAdminSelectListener();
-            
+
             // Cerrar loading y mostrar el modal
             Swal.close();
             modalEntidad.style.display = "block";
@@ -737,7 +849,7 @@ function initEntidadesPage() {
                 title: 'Error al cargar datos',
                 text: 'No se pudieron cargar todos los datos de la entidad. Algunos campos pueden estar vacíos.',
             });
-            
+
             // Aún así mostrar el modal con los datos disponibles
             modalEntidad.style.display = "block";
         }
@@ -763,7 +875,7 @@ function initEntidadesPage() {
             // Configurar el modal para nueva entidad
             document.getElementById("tituloModalEntidad").textContent = "Nueva Entidad - Formulario Completo";
             document.getElementById("entidadId").value = "";
-            
+
             // Limpiar todos los campos del formulario
             document.getElementById("claseEntidad").value = "Empresa";
             document.getElementById("nombreEntidad").value = "";
@@ -771,43 +883,43 @@ function initEntidadesPage() {
             document.getElementById("tipoEntidad").value = "Corporativa";
             document.getElementById("naturalezaJuridica").value = "Privada";
             document.getElementById("actividadEconomica").value = "";
-            
+
             // Información de contacto
             document.getElementById("correoEntidad").value = "";
             document.getElementById("telefonoEntidad").value = "";
             document.getElementById("fechaConstitucion").value = "";
             document.getElementById("direccionEntidad").value = "";
-            
+
             // Ubicación
             document.getElementById("departamentoEntidad").value = "";
             document.getElementById("ciudadEntidad").value = "";
-            
+
             // Persona de contacto
             document.getElementById("nombreContacto").value = "";
             document.getElementById("cargoContacto").value = "";
             document.getElementById("correoContacto").value = "";
             document.getElementById("telefonoContacto").value = "";
-            
+
             // Redes sociales
             document.getElementById("facebookEntidad").value = "";
             document.getElementById("instagramEntidad").value = "";
             document.getElementById("paginawebEntidad").value = "";
-            
+
             // Estado - habilitada por defecto para nueva entidad
             document.getElementById("estadoEntidad").checked = true;
             document.getElementById("estadoEntidadText").textContent = "Habilitada";
-            
+
             // Limpiar campos de ubicación del mapa
             document.getElementById("latitudEntidad").value = "";
             document.getElementById("longitudEntidad").value = "";
-            
+
             // Limpiar variables de ubicación
             window.entidadTieneUbicacion = false;
             window.ubicacionActual = null;
-            
+
             // Configurar event listener para selección de admin
             setupAdminSelectListener();
-            
+
             // Cerrar loading y mostrar el modal
             Swal.close();
             modalEntidad.style.display = "block";
@@ -826,7 +938,7 @@ function initEntidadesPage() {
                 title: 'Error al cargar formulario',
                 text: 'No se pudieron cargar todos los datos necesarios. Algunos campos pueden no estar disponibles.',
             });
-            
+
             // Aún así mostrar el modal
             modalEntidad.style.display = "block";
         }
@@ -847,11 +959,11 @@ function initEntidadesPage() {
                 if (responseDeptos.ok) {
                     const dataDep = await responseDeptos.json();
                     const departamentos = dataDep.departamentos || dataDep;
-                    
+
                     const selectDep = document.getElementById('departamentoEntidad');
                     if (selectDep) {
                         selectDep.innerHTML = '<option value="">Seleccione un departamento</option>';
-                        
+
                         if (Array.isArray(departamentos)) {
                             departamentos.forEach(dep => {
                                 const option = document.createElement('option');
@@ -875,11 +987,11 @@ function initEntidadesPage() {
                 if (responseCargos.ok) {
                     const dataCargos = await responseCargos.json();
                     const cargos = dataCargos.cargos || dataCargos;
-                    
+
                     const selectCargo = document.getElementById('cargoContacto');
                     if (selectCargo) {
                         selectCargo.innerHTML = '<option value="">Seleccione un cargo</option>';
-                        
+
                         if (Array.isArray(cargos)) {
                             cargos.forEach(cargo => {
                                 const option = document.createElement('option');
@@ -909,9 +1021,9 @@ function initEntidadesPage() {
     async function cargarCiudadesPorDepartamento(departamentoId) {
         const selectCiudad = document.getElementById('ciudadEntidad');
         if (!selectCiudad) return;
-        
+
         selectCiudad.innerHTML = '<option value="">Seleccione una ciudad</option>';
-        
+
         if (!departamentoId) return;
 
         try {
@@ -925,7 +1037,7 @@ function initEntidadesPage() {
             if (response.ok) {
                 const data = await response.json();
                 const ciudades = data.ciudades || data;
-                
+
                 if (Array.isArray(ciudades)) {
                     ciudades.forEach(ciudad => {
                         const option = document.createElement('option');
@@ -956,7 +1068,7 @@ function initEntidadesPage() {
 
         // Mostrar advertencia de que es edición limitada
         const modalContent = document.querySelector("#modalEntidad .modal-content");
-        
+
         // Eliminar advertencia previa si existe
         const existingWarning = modalContent.querySelector('.warning-message');
         if (existingWarning) {
@@ -971,7 +1083,7 @@ function initEntidadesPage() {
             <i class="bi bi-exclamation-triangle"></i> 
             <strong>Edición Limitada:</strong> Solo puede cambiar el estado. Para editar otros campos, use el "Formulario Completo".
         `;
-        
+
         modalContent.insertBefore(warningDiv, modalContent.querySelector('form'));
 
         modalEntidad.style.display = "block"
@@ -1059,23 +1171,23 @@ let marcadorEntidad = null;
 // Función para inicializar el mapa para ubicación
 function inicializarMapaParaUbicacion() {
     console.log("🗺️ Inicializando mapa para ubicación...");
-    
+
     // Si el mapa ya existe, destruirlo
     if (mapaEntidad) {
         mapaEntidad.remove();
         mapaEntidad = null;
         marcadorEntidad = null;
     }
-    
+
     // Coordenadas por defecto (Bogotá, Colombia)
     let latInicial = 4.6097;
     let lngInicial = -74.0817;
     let zoomInicial = 6;
-    
+
     // Si hay coordenadas previas, usarlas
     const latActual = document.getElementById("latitudEntidad").value;
     const lngActual = document.getElementById("longitudEntidad").value;
-    
+
     // Priorizar ubicación desde los datos cargados
     if (window.ubicacionActual && window.ubicacionActual.lat && window.ubicacionActual.lng) {
         latInicial = window.ubicacionActual.lat;
@@ -1090,16 +1202,16 @@ function inicializarMapaParaUbicacion() {
     } else {
         console.log("📍 Usando coordenadas por defecto (Bogotá)");
     }
-    
+
     // Crear el mapa
     mapaEntidad = L.map('mapaEntidad').setView([latInicial, lngInicial], zoomInicial);
-    
+
     // Agregar capa de OpenStreetMap
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors',
         maxZoom: 19
     }).addTo(mapaEntidad);
-    
+
     // Si hay coordenadas, mostrar marcador
     if ((window.ubicacionActual && window.ubicacionActual.lat) || (latActual && lngActual && latActual !== "" && lngActual !== "")) {
         marcadorEntidad = L.marker([latInicial, lngInicial])
@@ -1107,30 +1219,30 @@ function inicializarMapaParaUbicacion() {
             .bindPopup(`Ubicación actual<br>Lat: ${latInicial.toFixed(7)}<br>Lng: ${lngInicial.toFixed(7)}`)
             .openPopup();
     }
-    
+
     // Event listener para clic en el mapa
-    mapaEntidad.on('click', function(e) {
+    mapaEntidad.on('click', function (e) {
         const lat = e.latlng.lat;
         const lng = e.latlng.lng;
-        
+
         // Actualizar campos de latitud y longitud
         document.getElementById("latitudEntidad").value = lat.toFixed(7);
         document.getElementById("longitudEntidad").value = lng.toFixed(7);
-        
+
         // Remover marcador anterior si existe
         if (marcadorEntidad) {
             mapaEntidad.removeLayer(marcadorEntidad);
         }
-        
+
         // Agregar nuevo marcador
         marcadorEntidad = L.marker([lat, lng])
             .addTo(mapaEntidad)
             .bindPopup(`Ubicación seleccionada:<br>Lat: ${lat.toFixed(7)}<br>Lng: ${lng.toFixed(7)}`)
             .openPopup();
-        
+
         console.log(`📍 Nueva ubicación seleccionada: ${lat.toFixed(7)}, ${lng.toFixed(7)}`);
     });
-    
+
     // Redimensionar mapa después de un breve delay
     setTimeout(() => {
         if (mapaEntidad) {
@@ -1144,12 +1256,12 @@ function inicializarMapaParaUbicacion() {
 function limpiarUbicacionMapa() {
     document.getElementById("latitudEntidad").value = "";
     document.getElementById("longitudEntidad").value = "";
-    
+
     if (marcadorEntidad && mapaEntidad) {
         mapaEntidad.removeLayer(marcadorEntidad);
         marcadorEntidad = null;
     }
-    
+
     console.log("🗑️ Ubicación del mapa limpiada");
 }
 
@@ -1158,32 +1270,32 @@ function cargarUbicacionDesdeEntidad(entidad) {
     try {
         console.log(`🔍 Cargando ubicación desde datos de entidad ${entidad.id}`);
         console.log("📍 Ubicaciones disponibles:", entidad.ubicaciones);
-        
+
         // Buscar la ubicación principal o la primera activa
         let ubicacion = null;
-        
+
         if (entidad.ubicaciones && entidad.ubicaciones.length > 0) {
             // Buscar ubicación principal primero
             ubicacion = entidad.ubicaciones.find(u => u.esUbicacionPrincipal && u.activa);
-            
+
             // Si no hay principal, tomar la primera activa
             if (!ubicacion) {
                 ubicacion = entidad.ubicaciones.find(u => u.activa);
             }
-            
+
             // Si no hay activa, tomar la primera
             if (!ubicacion) {
                 ubicacion = entidad.ubicaciones[0];
             }
         }
-        
+
         if (ubicacion) {
             console.log("📍 Ubicación encontrada:", ubicacion);
-            
+
             // Llenar campos de coordenadas
             document.getElementById("latitudEntidad").value = ubicacion.latitud;
             document.getElementById("longitudEntidad").value = ubicacion.longitud;
-            
+
             // Marcar que hay ubicación para que el mapa se centre correctamente
             window.entidadTieneUbicacion = true;
             window.ubicacionActual = {
@@ -1195,7 +1307,7 @@ function cargarUbicacionDesdeEntidad(entidad) {
             // Limpiar campos si no hay ubicación
             document.getElementById("latitudEntidad").value = "";
             document.getElementById("longitudEntidad").value = "";
-            
+
             // Marcar que no hay ubicación
             window.entidadTieneUbicacion = false;
             window.ubicacionActual = null;
@@ -1209,36 +1321,36 @@ function cargarUbicacionDesdeEntidad(entidad) {
 async function cargarUbicacionEntidad(entidadId) {
     try {
         console.log(`🔍 Cargando ubicación para entidad ${entidadId}`);
-        
+
         if (typeof API_BASE_URL === 'undefined') {
             console.warn('API_BASE_URL no está definida');
             return;
         }
-        
+
         const response = await fetch(`${API_BASE_URL}/api/ubicacion-entidad/entidad/${entidadId}`);
         if (response.ok) {
             const data = await response.json();
-            
+
             if (data.ubicaciones && data.ubicaciones.length > 0) {
                 const ubicacion = data.ubicaciones[0]; // Tomar la primera ubicación
-                
+
                 console.log("📍 Ubicación encontrada:", ubicacion);
-                
+
                 // Llenar campos de coordenadas
                 document.getElementById("latitudEntidad").value = ubicacion.latitud;
                 document.getElementById("longitudEntidad").value = ubicacion.longitud;
-                
+
                 // Si el mapa está inicializado, centrar y agregar marcador
                 if (mapaEntidad) {
                     const lat = parseFloat(ubicacion.latitud);
                     const lng = parseFloat(ubicacion.longitud);
-                    
+
                     mapaEntidad.setView([lat, lng], 15);
-                    
+
                     if (marcadorEntidad) {
                         mapaEntidad.removeLayer(marcadorEntidad);
                     }
-                    
+
                     marcadorEntidad = L.marker([lat, lng])
                         .addTo(mapaEntidad)
                         .bindPopup('Ubicación actual de la entidad')
@@ -1259,7 +1371,7 @@ async function cargarUbicacionEntidad(entidadId) {
 async function cargarUsuariosAdmin() {
     try {
         console.log("👥 Cargando usuarios administradores...");
-        
+
         if (typeof API_BASE_URL === 'undefined') {
             console.warn('API_BASE_URL no está definida');
             return;
@@ -1280,13 +1392,13 @@ async function cargarUsuariosAdmin() {
         console.log("👥 Usuarios extraídos:", usuarios);
         console.log("👥 Tipo de usuarios:", typeof usuarios);
         console.log("👥 Es array usuarios?:", Array.isArray(usuarios));
-        
+
         if (usuarios && usuarios.length > 0) {
             console.log("👥 Primer usuario como ejemplo:", usuarios[0]);
             console.log("👥 Campos disponibles en el primer usuario:", Object.keys(usuarios[0]));
         }
         const selectAdmin = document.getElementById('usuarioAdmin');
-        
+
         if (!selectAdmin) {
             console.warn('Elemento usuarioAdmin no encontrado');
             return;
@@ -1299,23 +1411,23 @@ async function cargarUsuariosAdmin() {
             usuarios.forEach(usuario => {
                 const option = document.createElement('option');
                 option.value = usuario.id;
-                
+
                 // Usar el campo correcto: 'name' en lugar de 'nombre'
-                const nombre = usuario.name || usuario.nombre || usuario.username || usuario.firstName || 
-                              (usuario.firstName && usuario.lastName ? `${usuario.firstName} ${usuario.lastName}` : '') ||
-                              usuario.email || `Usuario ${usuario.id}`;
-                
+                const nombre = usuario.name || usuario.nombre || usuario.username || usuario.firstName ||
+                    (usuario.firstName && usuario.lastName ? `${usuario.firstName} ${usuario.lastName}` : '') ||
+                    usuario.email || `Usuario ${usuario.id}`;
+
                 const email = usuario.email || '';
-                
+
                 // Mostrar nombre y email si están disponibles
                 if (email && email !== nombre) {
                     option.textContent = `${nombre} (${email})`;
                 } else {
                     option.textContent = nombre;
                 }
-                
+
                 selectAdmin.appendChild(option);
-                
+
                 // Log para debugging
                 console.log(`👥 Usuario agregado: ID=${usuario.id}, Nombre=${nombre}, Email=${email}`);
             });
@@ -1337,7 +1449,7 @@ async function cargarInfoAdminActual(userAdminId) {
         }
 
         console.log(`📧 Cargando info del admin actual ID: ${userAdminId}`);
-        
+
         if (typeof API_BASE_URL === 'undefined') {
             console.warn('API_BASE_URL no está definida');
             return;
@@ -1368,7 +1480,7 @@ async function cargarInfoAdminActual(userAdminId) {
 function setupAdminSelectListener() {
     const selectAdmin = document.getElementById('usuarioAdmin');
     if (selectAdmin) {
-        selectAdmin.addEventListener('change', function() {
+        selectAdmin.addEventListener('change', function () {
             const selectedUserId = this.value;
             if (selectedUserId) {
                 cargarInfoAdminActual(selectedUserId);
