@@ -367,13 +367,19 @@
       </form>
     </div>
   </div>
-
+    <!-- Spinner de carga de página -->
+    <div id="page-spinner-overlay" aria-hidden="true" role="status" aria-label="Cargando">
+        <div class="spinner" aria-hidden="true"></div>
+        <div class="spinner-text">Cargando...</div>
+    </div>
   <script src="/js/config.js"></script>
 
   <script src="js/retos.js"></script>
   <script src="js/clasificadosMostrar.js"></script>
   <script src="js/ContactarServicio.js"></script>
   <script src="js/crearReto.js"></script>
+      <script src="js/notificaciones.js"></script>
+    <script src="/js/websocket.js"></script>
   <!-- Formulario de clasificados -->
   <script>
 
@@ -544,6 +550,36 @@
       dropdown.classList.remove("show");
     });
   </script>
+
+
+    <script>
+        (function () {
+            // Garantiza que el overlay permanezca al menos 5s desde que se ejecuta este script.
+            const MIN_MS = 3000;
+            const overlay = document.getElementById('page-spinner-overlay');
+            if (!overlay) return;
+
+            // Si ya pasó más de MIN_MS desde la navegación start, aun así mostramos el overlay breve
+            const start = performance.timing ? performance.timing.navigationStart : Date.now();
+            const now = Date.now();
+            const elapsed = Math.max(0, now - start);
+            const remaining = Math.max(0, MIN_MS - elapsed);
+
+            // Evita interacción mientras existe el overlay
+            document.documentElement.style.overflow = 'hidden';
+            document.body.style.overflow = 'hidden';
+
+            setTimeout(() => {
+                overlay.style.opacity = '0';
+                // permitir scroll cuando hide completo
+                setTimeout(() => {
+                    if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
+                    document.documentElement.style.overflow = '';
+                    document.body.style.overflow = '';
+                }, 420);
+            }, remaining);
+        })();
+    </script>
 
 </body>
 
