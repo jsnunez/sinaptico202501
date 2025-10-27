@@ -240,7 +240,7 @@ async function llamarIntegrantes(idEntidad) {
                 <div style="position: relative; width: 50px; height: 50px; cursor: pointer;" id="verIntegrante" onclick="abrirModalIntegrante(${integrante.id})">
                   <img src="/photo/${integrante.fotoPerfil}" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
                   <span style="position: absolute; bottom: 0; right: 0; background: #fff; border-radius: 50%; padding: 2px;">
-                    <i class="bi bi-pencil-fill" style="font-size: 1em; color: var(--primary-color);"></i>
+                    <i class="bi bi-search" style="font-size: 1em; color: var(--primary-color);"></i>
                   </span>
                 </div>
                 <p style="margin: 0;">${integrante.nombre} - ${integrante.rol}</p>

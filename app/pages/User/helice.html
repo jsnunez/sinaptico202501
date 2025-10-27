@@ -222,9 +222,13 @@
 
     <!-- Encabezado -->
     <header class="header">
-        <div onclick="window.location.href='/helice'" class="logo">
+        <div onclick="window.location.href='/helice'">
             <!-- <span class="logo-icon">⚡</span> -->
-            <span class="logo-text">SINAPTICO</span>
+            <span class="logo-text logo">SINAPTICO</span>
+
+            <p style="color: #00109e;"><strong>Cargo: </strong> Supervisor</p>
+            <p style="color: #00109e;"><strong>Asociado: </strong>Tecnologias y Desarrollo</p>
+
         </div>
         <nav class="nav">
             <button class="nav-button pulse" onclick="window.location.href='/helice'">Hélice</button>
@@ -242,9 +246,6 @@
                         style='background:red;color:white;border-radius:50%;padding:2px 7px;font-size:0.9em;'>0</span></span>
             </div>
             <div class="notificaciones" id="notificaciones"></div>
-
-            <!-- <button class="nav-button pulse" id="cerrarSesion">Cerrar sesión</button> -->
-            <!-- Botón con menú desplegable -->
             <div class="dropdown">
                 <button id="userMenuBtn">
                     <div id="userPhoto ">
@@ -262,7 +263,7 @@
             </div>
         </nav>
     </header>
-    
+
     </div>
     <!-- Bienvenida y botones de acción -->
     <div class="welcome-container">
@@ -292,6 +293,9 @@
             <button class="action-button" id="editarEntidad" style="display: none;">
                 <span class="button-icon">✏️</span> Editar entidad
             </button>
+            <button class="action-button" id="verIntegrantesEntidad" >
+                <span class="button-icon"><i class="bi bi-person-lines-fill"></i></span> Asociados
+            </button>
             <button class="action-button" id="misContactos">
                 <span class="button-icon"><i class="bi bi-person-fill"></i></span> Mis Contactos
             </button>
@@ -303,27 +307,31 @@
     </div>
 
     <!-- solicitiudes para mi actor-->
-    <div class="main-content" id="solicitudes" style="display: none;">
-        <div class="helix-title">
-            <h3>Mis Integrantes</h3>
-            <div class="solicitudes-list"></div>
-            <table style="width:100%;border-collapse:collapse;">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Email</th>
-                        <th>Cargo</th>
-                        <th>Estado</th>
-                        <th>Solicitud</th>
-                    </tr>
-                </thead>
-                <tbody id="solicitudes-list-body">
-                    <!-- Las solicitudes se cargarán aquí -->
-                </tbody>
-            </table>
+    <div class="modal" id="modalVerIntegrantesEntidad">
+        <div class="modal-content" id="solicitudes" style="max-width: 900px;">
+            <span class="close" id="cerrarModalVerIntegrantesEntidad">&times;</span>
+            <div class="helix-title">
+                <h3>Mis Integrantes</h3>
+                <div class="solicitudes-list"></div>
+                <table style="width:100%;border-collapse:collapse;" id="admin-tabla">
+                    <thead>
+                        <tr>
+                        
+                            <th>Nombre</th>
+                            <th>Email</th>
+                            <th>Cargo</th>
+                            <th>Estado</th>
+                            <th>Solicitud</th>
+                        </tr>
+                    </thead>
+                    <tbody id="solicitudes-list-body">
+                        <!-- Las solicitudes se cargarán aquí -->
+                    </tbody>
+                </table>
+                <button class="modal-button" id="cerrarModalVerIntegrantesEntidadBtn">Cerrar</button>
+
+            </div>
         </div>
-    </div>
     </div>
 
     <!-- Filtros -->
@@ -592,23 +600,34 @@
             <div class="form-section">
 
                 <div class="input-row">
+                    <div class="input-box">
+                        <p><strong>Actividad Economica:</strong> </p>
+                        <p><span id="descripcionEmpresa"></span></p>
 
-                    <p><strong>Actividad Economica:</strong> </p>
-                    <p><span id="descripcionEmpresa"></span></p>
-
-
-
-                    <p><strong>Telefono:</strong>
-                        <span id="telefonoEntidad"></span>
-                    </p>
+                        <p><strong>Telefono:</strong>
+                            <span id="telefonoEntidad"></span>
+                        </p>
 
 
-                    <div class="input-box full-width">
+                        <div class="input-box full-width">
 
-                        <p><strong>Ubicacion:</strong> </p>
-                        <p><span id="UbicacionEntidad"></span></p>
+                            <p><strong>Ubicacion:</strong> </p>
+                            <p><span id="UbicacionEntidad"></span></p>
+
+                        </div>
+                    </div>
+                    <div class="input-box">
+                        <p><strong>Redes Sociales</strong> </p>
+                        <div class="social-icons">
+                            <a href="https://facebook.com" target="_blank"><i class="bi bi-facebook"></i></i></a>
+                            <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+                            <a href="https://www.cpcoriente.org/servicios" target="_blank"><i
+                                    class="bi bi-link-45deg"></i></a>
+
+                        </div>
 
                     </div>
+
 
                 </div>
                 <div class="input-row">
@@ -621,17 +640,7 @@
 
                 </div>
             </div>
-            <div class="form-section">
-                <p><strong>Redes Sociales</strong> </p>
-                <div class="social-icons">
-                    <a href="https://facebook.com" target="_blank"><i class="bi bi-facebook"></i></i></a>
-                    <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a><br>
-                    <a href="https://twitter.com" target="_blank"><span>Pagina Web</span></a>
 
-
-                </div>
-
-            </div>
             <div class="form-section">
                 <!-- <p><strong>Persona de contacto:</strong> </p>
                 <p><span id="contactoEntidad"></span></p> -->
@@ -818,8 +827,6 @@
                 </div>
             </div>
         </div>
-
-
         <div id="page-spinner-overlay" aria-hidden="true" role="status" aria-label="Cargando">
             <div class="spinner" aria-hidden="true"></div>
             <div class="spinner-text">Cargando...</div>
