@@ -95,7 +95,11 @@ document.getElementById("cerrarModal").addEventListener("click", () => {
   overlay.style.display = 'none'; // Ocultar overlay
 
 })
+document.getElementById("cerrarModalBtn").addEventListener("click", () => {
+  document.getElementById('myModal').style.display = 'none';
+  overlay.style.display = 'none'; // Ocultar overlay
 
+})
 
 // Función para obtener el valor de una cookie por su nombre
 function obtenerCookie(nombre) {
