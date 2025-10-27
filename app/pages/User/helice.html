@@ -885,7 +885,7 @@
     <script>
         document.getElementById('misContactos').onclick = function () {
             document.getElementById('modalMisContactos').style.display = 'block';
-            fetch(`/api/invitacion/mis-contactos/${userId}`)
+            fetch(`/api/invitacion/mis-contactos/${userIdNotify}`)
                 .then(res => res.json())
                 .then(data => {
                     const tbody = document.getElementById('tablaContactosVerificados');
