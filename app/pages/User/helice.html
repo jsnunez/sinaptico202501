@@ -293,12 +293,16 @@
             <button class="action-button" id="editarEntidad" style="display: none;">
                 <span class="button-icon">✏️</span> Editar entidad
             </button>
-            <button class="action-button" id="verIntegrantesEntidad" >
-                <span class="button-icon"><i class="bi bi-person-lines-fill"></i></span> Asociados
+            <button class="action-button" id="verIntegrantesEntidad" style="display: none;">
+                <span class="button-icon"><i class="bi bi-person-lines-fill"></i></span> Integrantes
+            </button>
+                  </button>
+              <button class="action-button" id="misAsociados" style="display: none;">
+                <span class="button-icon"><i class="bi bi-person-lines-fill"></i></span> Integrantes
             </button>
             <button class="action-button" id="misContactos">
                 <span class="button-icon"><i class="bi bi-person-fill"></i></span> Mis Contactos
-            </button>
+      
             <button class="action-button" id="asignarServicio" style="display: none;"
                 onclick="abrirModalAgregarServicio()">
                 <span class="button-icon">🔄</span> Servicios
@@ -311,7 +315,7 @@
         <div class="modal-content" id="solicitudes" style="max-width: 900px;">
             <span class="close" id="cerrarModalVerIntegrantesEntidad">&times;</span>
             <div class="helix-title">
-                <h3>Mis Integrantes</h3>
+                <h3>Integrantes</h3>
                 <div class="solicitudes-list"></div>
                 <table style="width:100%;border-collapse:collapse;" id="admin-tabla">
                     <thead>
@@ -329,6 +333,32 @@
                     </tbody>
                 </table>
                 <button class="modal-button" id="cerrarModalVerIntegrantesEntidadBtn">Cerrar</button>
+
+            </div>
+        </div>
+    </div>
+
+    
+    <!-- solicitiudes para mi actor-->
+    <div class="modal" id="modalAsociadosUser">
+        <div class="modal-content" id="solicitudesUser" style="max-width: 900px;">
+            <span class="close" id="cerrarModalAsociadosUser">&times;</span>
+            <div class="helix-title">
+                <h3>Integrantes</h3>
+                <div class="solicitudes-list-user"></div>
+                <table style="width:100%;border-collapse:collapse;" id="user-tabla">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Email</th>
+                            <th>Cargo</th>
+                        </tr>
+                    </thead>
+                    <tbody id="solicitudes-list-body-user">
+                        <!-- Las solicitudes se cargarán aquí -->
+                    </tbody>
+                </table>
+                <button class="modal-button" id="cerrarModalAsociadosUserBtn">Cerrar</button>
 
             </div>
         </div>
