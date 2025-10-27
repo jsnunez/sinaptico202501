@@ -7,9 +7,11 @@
   <title>SINAPTICO</title>
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="stylesheet" href="styles/stylehelice2.css">
 
   <link rel="stylesheet" href="styles/colores.css">
   <link rel="stylesheet" href="styles/postulaciones.css">
+
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
   <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
 
@@ -62,7 +64,11 @@
       </div>
     </nav>
   </header>
-
+   <!-- Spinner de carga de página -->
+    <div id="page-spinner-overlay" aria-hidden="true" role="status" aria-label="Cargando">
+        <div class="spinner" aria-hidden="true"></div>
+        <div class="spinner-text">Cargando...</div>
+    </div>
   <!-- Bienvenida y botones de acción -->
   <div style="display: none;" class="welcome-container">
     <div id="userPhoto">
@@ -990,6 +996,35 @@
       dropdown.classList.remove("show");
     });
   </script>
+
+      <script>
+        (function () {
+            // Garantiza que el overlay permanezca al menos 5s desde que se ejecuta este script.
+            const MIN_MS = 3000;
+            const overlay = document.getElementById('page-spinner-overlay');
+            if (!overlay) return;
+
+            // Si ya pasó más de MIN_MS desde la navegación start, aun así mostramos el overlay breve
+            const start = performance.timing ? performance.timing.navigationStart : Date.now();
+            const now = Date.now();
+            const elapsed = Math.max(0, now - start);
+            const remaining = Math.max(0, MIN_MS - elapsed);
+
+            // Evita interacción mientras existe el overlay
+            document.documentElement.style.overflow = 'hidden';
+            document.body.style.overflow = 'hidden';
+
+            setTimeout(() => {
+                overlay.style.opacity = '0';
+                // permitir scroll cuando hide completo
+                setTimeout(() => {
+                    if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
+                    document.documentElement.style.overflow = '';
+                    document.body.style.overflow = '';
+                }, 420);
+            }, remaining);
+        })();
+    </script>
 </body>
 
 </html>
