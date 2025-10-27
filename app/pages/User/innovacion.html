@@ -73,10 +73,7 @@
       <!-- <p class="subtitle">Conectando entidades para potenciar la innovación</p> -->
     </div>
     <div class="action-buttons">
-      <button class="action-button" id="crearReto" style="display: none;">
 
-        <span class="button-icon">+</span>Crear Reto
-      </button>
       <button class="action-button" id="vincularEntidad" style="display: none;">
         <span class="button-icon">+</span> vincular entidad
       </button>
@@ -160,16 +157,22 @@
 
   <!-- Challenges Section -->
   <section id="retos" class="main-content" style="display: none;">
-    <div class="container">
-      <div class="section-header">
-        <i class="fas fa-rocket"></i>
-        <h2 style="color:white;">2025 - Retos activos</h2>
-      </div>
+    <div class="main-content">
+      <div style="display: flex;   justify-content: space-between;     margin-bottom: 3rem;">
+        <div class="section-header">
+          <i class="fas fa-rocket"></i>
+          <h2 style="color:white;">2025 - Retos activos</h2>
+        </div>
+        <button class="action-button" id="crearReto">
 
+          <span class="button-icon" style="">+</span>Crear Reto
+        </button>
+
+      </div>
       <div class="challenges-grid">
-
+        <!-- Despliega los retos activos -->
       </div>
-
+    </div>
   </section>
 
   <!-- clasificados Section -->
@@ -397,7 +400,7 @@
       input.value = input.value.replace(/\./g, ''); // Enviar número limpio al backend
     });
   </script>
-    <!-- En construccion -->
+  <!-- En construccion -->
   <script>
     function irEnConstruccion() {
       window.location.href = "/construccion"; // o la ruta que tengas
@@ -500,7 +503,7 @@
       return data; // { exists: true, entidad: {...} }
     }
   </script>
-    <!-- Cerrar Sesion -->
+  <!-- Cerrar Sesion -->
   <script>
     document.getElementById("cerrarSesion").addEventListener("click", () => {
       Swal.fire({
@@ -525,7 +528,7 @@
     });
 
   </script>
-    <!-- Menú Desplegable -->
+  <!-- Menú Desplegable -->
   <script>
     const userMenuBtn = document.getElementById("userMenuBtn");
     const dropdown = userMenuBtn.closest(".dropdown");
