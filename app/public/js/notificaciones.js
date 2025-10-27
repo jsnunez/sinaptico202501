@@ -1,14 +1,15 @@
-     const userId = obtenerCookie("userId"); 
+
+const userIdNotify = obtenerCookie("userId");
 
 // Conectar socket y escuchar notificaciones al cargar la página
 window.addEventListener('DOMContentLoaded', () => {
     
   // Mostrar contador de notificaciones pendientes
 async function actualizarContadorNotificaciones() {
-  
+  console.log('Actualizando contador de notificaciones...');
 
-  if (!userId) return;
-  const res = await fetch(`${API_BASE_URL}/api/invitacion/${userId}`);
+  if (!userIdNotify) return;
+  const res = await fetch(`/api/invitacion/${userIdNotify}`);
   const data = await res.json();
   // Solo cuenta las no verificadas
   console.log(data);
@@ -36,12 +37,12 @@ const iconoNotif = document.getElementById('icono-notif');
 iconoNotif.style.position = 'relative';
 let notificacionesVisibles = false;
 iconoNotif.onclick = async function() {
-    if (!userId) return;
+    if (!userIdNotify) return;
     notificacionesVisibles = !notificacionesVisibles;
     const div = document.getElementById('notificaciones');
     if (notificacionesVisibles) {
         // Mostrar solo invitaciones NO verificadas
-        const res = await fetch(`${API_BASE_URL}/api/invitacion/${userId}`);
+        const res = await fetch(`/api/invitacion/${userIdNotify}`);
         const data = await res.json();
         console.log(data);
         const noVerificadas = data.filter(n => !n.verificado);
@@ -78,7 +79,7 @@ window.aceptarInvitacion = async function(de) {
   const res = await fetch(`${API_BASE_URL}/api/invitacion/verificar`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ de, para: userId })
+    body: JSON.stringify({ de, para: userIdNotify })
   });
   const data = await res.json();
   if (data.ok) {
@@ -95,4 +96,5 @@ window.onload = function() {
     document.getElementById('notificaciones').style.display = 'none';
 };
 actualizarContadorNotificaciones();
-});
+})
+
