@@ -60,9 +60,28 @@ async function soloAdmin(req, res, next) {
   console.log("Acceso denegado");
   return res.redirect("/");
 }
+async function soloSupervisor(req, res, next) {
+  const logueado = await revisarCookie(req);
+  if (!logueado) {
+    console.log("Inicia sesión");
+    return res.redirect("/supervisor");
+  }
 
+  const cookieJWT = req.headers.cookie.split("; ").find(cookie => cookie.startsWith("jwt=")).slice(4);
+  const decodificada = jsonwebtoken.verify(cookieJWT, process.env.JWT_SECRET);
+
+  const usuarioAResvisar = await User.findOne({ where: { email: decodificada.email } });
+
+  if (usuarioAResvisar && usuarioAResvisar.rol === 3) {
+    return next();
+  }
+
+  console.log("Acceso denegado");
+  return res.redirect("/");
+}
 export const methods = {
   soloUser,
   soloPublico,
-  soloAdmin
+  soloAdmin,
+  soloSupervisor
 }

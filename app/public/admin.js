@@ -181,7 +181,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
     } else {
-       idEntidad = data.entidad.id;
+      //  idEntidad = data.entidad.id;
       // ✅ Verificar si pertenece a una entidad como usuarioempresa
       const usuarioData = await verificarUsuarioEntidad(userId);
       console.log(usuarioData)

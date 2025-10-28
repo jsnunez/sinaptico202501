@@ -91,6 +91,9 @@ async function login(req, res) {
       res.send({ status: "ok", message: "Usuario logueado", redirect: "/helice", idusuario: usuarioAResvisar.id });
     } else if (usuarioAResvisar.rol === 3) {
       res.send({ status: "ok", message: "Usuario logueado", redirect: "/dashboard", idusuario: usuarioAResvisar.id });
+    } 
+    else if (usuarioAResvisar.rol === 4) {
+      res.send({ status: "ok", message: "Usuario logueado", redirect: "/supervisor", idusuario: usuarioAResvisar.id });
     } else {
       res.status(403).send({ status: "Error", message: "Acceso denegado" });
     }

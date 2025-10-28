@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Control</title>
+    <link rel="stylesheet" href="styles/dashboard.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Leaflet CSS y JS para el mapa -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        /* Estilos para los botones de acción mejorados */
+        .action-icons {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .action-icon {
+            padding: 6px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            min-width: 32px;
+            text-align: center;
+        }
+
+        .action-icon.edit {
+            background-color: #e3f2fd;
+            color: #1976d2;
+            border: 1px solid #bbdefb;
+        }
+
+        .action-icon.edit:hover {
+            background-color: #1976d2;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .action-icon.edit-full {
+            background-color: #f3e5f5;
+            color: #7b1fa2;
+            border: 1px solid #ce93d8;
+        }
+
+        .action-icon.edit-full:hover {
+            background-color: #7b1fa2;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .action-icon.delete {
+            background-color: #ffebee;
+            color: #d32f2f;
+            border: 1px solid #ffcdd2;
+        }
+
+        .action-icon.delete:hover {
+            background-color: #d32f2f;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        /* Estilos para los mensajes de advertencia */
+        .warning-message {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+        }
+
+        /* Estilos para SweetAlert2 más grande */
+        .swal2-popup-large {
+            font-size: 14px !important;
+        }
+
+        /* Estilos para el botón Nueva Entidad */
+        .btn-primary {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #0056b3, #004494);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2);
+        }
+
+        /* Ajustes para el contenedor de filtros */
+        .filter-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .filter-input {
+            flex: 1;
+            max-width: 300px;
+        }
+
+        /* Estilos para el formulario completo */
+        .form-section {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background-color: #fafafa;
+        }
+
+        .form-section h4 {
+            margin: 0 0 15px 0;
+            color: #333;
+            font-size: 16px;
+            font-weight: 600;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 5px;
+        }
+
+        .input-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .input-box {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-box span {
+            font-weight: 500;
+            margin-bottom: 5px;
+            color: #555;
+            font-size: 14px;
+        }
+
+        .input-box input,
+        .input-box select {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        .input-box input:focus,
+        .input-box select:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .modal-button,
+        .modal-button-secondary {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .modal-button {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .modal-button:hover {
+            background-color: #0056b3;
+        }
+
+        .modal-button-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .modal-button-secondary:hover {
+            background-color: #545b62;
+        }
+
+        /* Estilos específicos para campos de administrador */
+        .input-box input[readonly] {
+            background-color: #f8f9fa !important;
+            border: 1px solid #e9ecef !important;
+            color: #6c757d;
+            cursor: not-allowed;
+        }
+
+        .input-box select#usuarioAdmin {
+            min-width: 250px;
+        }
+
+        /* Responsive design */
+        @media (max-width: 600px) {
+            .input-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Fondo neuronal -->
+    <div class="neural-background">
+        <canvas id="neuralCanvas"></canvas>
+    </div>
+
+    <!-- Encabezado -->
+    <div class="header">
+        <div class="logo" onclick="window.location.href='/dashboard'">
+            <div class="logo-icon">
+                <i class="fas fa-trophy"></i>
+            </div>
+            <div class="logo-text">Control administrativo</div>
+        </div>
+        <div class="nav">
+            
+
+            <button class="nav-button" id="cerrarSesion" href="#"><i class="bi bi-box-arrow-in-right"
+                    style="font-size: 1.2rem;"></i></button>
+        </div>
+    </div>
+
+    <!-- Contenedor de bienvenida -->
+    <div class="welcome-container">
+        <div class="welcome-text">
+            <h2>Gestión de Entidades</h2>
+            <p class="subtitle">Administra las entidades que pertenecen a tu grupo</p>
+        </div>
+       
+    </div>
+
+    <!-- Filtros y acciones -->
+    <div class="filter-container">
+        <input type="text" id="buscarEntidad" placeholder="Buscar entidades..." class="filter-input">
+
+    </div>
+
+    <!-- Tabla de entidades -->
+    <div class="main-content">
+        <table class="data-table" id="tablaEntidades">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Numero Identificacion</th>
+                    <th>Nombre Contacto</th>
+                    <th>Telefono Contacto</th>
+                    <th>Email Admin</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Los datos se cargarán dinámicamente con JavaScript -->
+                <div id="loaderEntidades" style="text-align: center;">Cargando entidades...</div>
+            </tbody>
+        </table>
+        <div id="paginacionEntidades" class="pagination"></div>
+
+    </div>
+
+    <!-- Modal para crear/editar entidad -->
+    <div id="modalEntidad" class="modal">
+        <div class="modal-content" style="max-width: 800px; max-height: 90vh; overflow-y: auto;">
+            <span class="close">&times;</span>
+            <div class="modal-header">
+                <h3 id="tituloModalEntidad" style="color: white;">Nueva Entidad</h3>
+            </div>
+            <form id="formEntidad">
+                <input type="hidden" id="entidadId">
+
+                <!-- Datos básicos de la entidad -->
+                <div class="form-section">
+                    <h4>Información Básica</h4>
+                    <div class="input-row">
+                        <div class="input-box">
+                            <span>Clase de Entidad</span>
+                            <select id="claseEntidad" name="claseEntidad">
+                                <option value="Empresa">Empresa</option>
+                                <option value="Estado">Estado</option>
+                                <option value="Sociedad">Sociedad</option>
+                                <option value="Academia">Academia</option>
+                            </select>
+                        </div>
+                        <div class="input-box">
+                            <span>Razón Social</span>
+                            <input type="text" id="nombreEntidad" name="razonSocial" required>
+                        </div>
+                    </div>
+
+                    <div class="input-row">
+                        <div class="input-box">
+                            <span>Número de Identificación</span>
+                            <input type="text" id="numIdentificacion" name="numIdentificacion">
+                        </div>
+                        <div class="input-box">
+                            <span>Tipo de Entidad</span>
+                            <select id="tipoEntidad" name="tipoEntidad">
+                                <option value="Sociedad Anónima">Sociedad Anónima</option>
+                                <option value="Sociedad Limitada">Sociedad Limitada</option>
+                                <option value="Persona Natural">Persona Natural</option>
+                                <option value="Corporativa">Corporativa</option>
+                                <option value="Sin fines de lucro">Sin fines de lucro</option>
+                                <option value="Educativa">Educativa</option>
+                                <option value="Gubernamental">Gubernamental</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="input-row">
+                        <div class="input-box">
+                            <span>Naturaleza Jurídica</span>
+                            <select id="naturalezaJuridica" name="naturalezaJuridica">
+                                <option value="Privada">Privada</option>
+                                <option value="Pública">Pública</option>
+                                <option value="Mixta">Mixta</option>
+                            </select>
+                        </div>
+                        <div class="input-box">
+                            <span>Actividad Económica</span>
+                            <input type="text" id="actividadEconomica" name="actividadEconomica">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Información de contacto -->
+                <div class="form-section">
+                    <h4>Información de Contacto</h4>
+                    <div class="input-row">
+                        <div class="input-box">
+                            <span>Correo de la Entidad</span>
+                            <input type="email" id="correoEntidad" name="correo">
+                        </div>
+                        <div class="input-box">
+                            <span>Teléfono de la Entidad</span>
+                            <input type="tel" id="telefonoEntidad" name="telefono">
+                        </div>
+                    </div>
+
+                    <div class="input-row">
+                        <div class="input-box">
+                            <span>Fecha de Constitución</span>
+                            <input type="date" id="fechaConstitucion" name="fechaConstitucion">
+                        </div>
+                        <div class="input-box">
+                            <span>Dirección</span>
+                            <input type="text" id="direccionEntidad" name="direccion">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ubicación -->
+                <div class="form-section">
+                    <h4>Ubicación</h4>
+                    <div class="input-row">
+                        <div class="input-box">
+                            <span>Departamento</span>
+                            <select id="departamentoEntidad" name="departamento">
+                                <option value="">Seleccione un departamento</option>
+                            </select>
+                        </div>
+                        <div class="input-box">
+                            <span>Ciudad</span>
+                            <select id="ciudadEntidad" name="ciudadId">
+                                <option value="">Seleccione una ciudad</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Sección del mapa para ubicación exacta -->
+                    <div class="input-row" style="margin-top: 15px;">
+                        <div class="input-box" style="width: 100%;">
+                            <span>Ubicación en el Mapa</span>
+                            <div id="mapaEntidad"
+                                style="height: 300px; width: 100%; border: 1px solid #ddd; border-radius: 4px; margin-top: 5px;">
+                            </div>
+                            <div style="margin-top: 10px; display: flex; gap: 10px;">
+                                <div style="flex: 1;">
+                                    <label for="latitudEntidad" style="font-size: 12px; color: #666;">Latitud:</label>
+                                    <input type="number" id="latitudEntidad" name="latitud" step="0.0000001"
+                                        placeholder="Ej: 7.0734245" readonly
+                                        style="width: 100%; padding: 5px; font-size: 12px;">
+                                </div>
+                                <div style="flex: 1;">
+                                    <label for="longitudEntidad" style="font-size: 12px; color: #666;">Longitud:</label>
+                                    <input type="number" id="longitudEntidad" name="longitud" step="0.0000001"
+                                        placeholder="Ej: -73.1198624" readonly
+                                        style="width: 100%; padding: 5px; font-size: 12px;">
+                                </div>
+                            </div>
+                            <div style="margin-top: 5px;">
+                                <button type="button" id="btnUbicarEnMapa"
+                                    style="padding: 8px 12px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px;">
+                                    � Reinicializar Mapa
+                                </button>
+                                <button type="button" id="btnLimpiarUbicacion"
+                                    style="padding: 8px 12px; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px; margin-left: 5px;">
+                                    🗑️ Limpiar Ubicación
+                                </button>
+                            </div>
+                            <p style="font-size: 11px; color: #666; margin-top: 5px;">
+                                💡 El mapa se muestra automáticamente. Haga clic en él para establecer la ubicación
+                                exacta.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Persona de contacto -->
+                <div class="form-section">
+                    <h4>Persona de Contacto</h4>
+                    <div class="input-row">
+                        <div class="input-box">
+                            <span>Nombre del Contacto</span>
+                            <input type="text" id="nombreContacto" name="nombreContacto">
+                        </div>
+                        <div class="input-box">
+                            <span>Cargo</span>
+                            <select id="cargoContacto" name="cargoPersona">
+                                <option value="">Seleccione un cargo</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="input-row">
+                        <div class="input-box">
+                            <span>Correo del Contacto</span>
+                            <input type="email" id="correoContacto" name="correoContacto">
+                        </div>
+                        <div class="input-box">
+                            <span>Teléfono del Contacto</span>
+                            <input type="tel" id="telefonoContacto" name="telefonoContacto">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Usuario Administrador -->
+                <div class="form-section">
+                    <h4>Usuario Administrador</h4>
+                    <div class="input-row">
+                        <div class="input-box">
+                            <span>Usuario Admin</span>
+                            <select id="usuarioAdmin" name="UserAdminId">
+                                <option value="">Seleccione un usuario administrador</option>
+                            </select>
+                        </div>
+                        <div class="input-box">
+                            <span>Email Admin Actual</span>
+                            <input type="email" id="emailAdminActual" name="emailAdminActual" readonly
+                                style="background-color: #f8f9fa; border: 1px solid #e9ecef;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Redes sociales -->
+                <div class="form-section">
+                    <h4>Redes Sociales (Opcional)</h4>
+                    <div class="input-row">
+                        <div class="input-box">
+                            <span>Facebook</span>
+                            <input type="url" id="facebookEntidad" name="facebook"
+                                placeholder="https://facebook.com/...">
+                        </div>
+                        <div class="input-box">
+                            <span>Instagram</span>
+                            <input type="url" id="instagramEntidad" name="instagram"
+                                placeholder="https://instagram.com/...">
+                        </div>
+                    </div>
+
+                    <div class="input-row">
+                        <div class="input-box">
+                            <span>Página Web</span>
+                            <input type="url" id="paginawebEntidad" name="paginaweb" placeholder="https://...">
+                        </div>
+                        <div class="input-box" id="estadoEntidadContainer">
+                            <span>Estado</span>
+                            <div class="toggle-switch">
+                                <input type="checkbox" id="estadoEntidad" class="toggle-input">
+                                <label for="estadoEntidad" class="toggle-label"></label>
+                                <span id="estadoEntidadText">Habilitada</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="modal-button-secondary" id="cancelarModal">Cancelar</button>
+                    <button type="submit" class="modal-button">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de confirmación para eliminar -->
+    <div id="modalConfirmacion" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Confirmar Eliminación</h3>
+            </div>
+            <p>¿Estás seguro de que deseas eliminar esta entidad?</p>
+            <div class="modal-actions">
+                <button id="btnCancelarEliminar" class="modal-button-secondary">Cancelar</button>
+                <button id="btnConfirmarEliminar" class="modal-button">Eliminar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/config.js"></script>
+    <script src="/js/dashboardSupervisor.js"></script>
+    <script src="js/NavegacionDash.js"></script>
+
+
+</body>
+
+</html>
