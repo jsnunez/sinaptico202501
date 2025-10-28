@@ -21,6 +21,7 @@ import UsuarioVideos from "./usuarioVideosRoutes.js"; // Importar las rutas de U
 import InvitacionRoutes from "./invitacionRoutes.js"; // Importar las rutas de Invitacion
 import UbicacionEntidadRoutes from "./ubicacionEntidadRoutes.js"; // Importar las rutas de UbicacionEntidad
 import Proyectos from "./proyectosRoutes.js"; // Importar las rutas de Proyectos
+import Contactar from "./contactar.Routes.js"; // Importar las rutas de Contactar
 const router = express.Router();
 
 router.use('/entidad', entidadRoutes);
@@ -45,4 +46,5 @@ router.use('/usuarioVideos', UsuarioVideos); // Descomentar si se necesita la ru
 router.use('/invitacion', InvitacionRoutes); // Descomentar si se necesita la ruta de invitacion
 router.use('/ubicacion-entidad', UbicacionEntidadRoutes); // Rutas de ubicación de entidades
 router.use('/proyectos', Proyectos); // Rutas de proyectos
+router.use('/contactar', Contactar); // Rutas de contactar
 export default router;
