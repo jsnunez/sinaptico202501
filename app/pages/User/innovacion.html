@@ -63,34 +63,11 @@
     </nav>
   </header>
 
-  <div class="welcome-container">
-    <div id="userPhoto">
-      <img id="imagenPerfil" src="img/sinfoto.jpg" alt="Foto de perfil"
-        onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
-    </div>
 
-    <div class="welcome-text">
-      <h2 id="bienvenido">Hola </h2>
-      <!-- <p class="subtitle">Conectando entidades para potenciar la innovación</p> -->
-    </div>
-    <div class="action-buttons">
-
-      <button class="action-button" id="vincularEntidad" style="display: none;">
-        <span class="button-icon">+</span> vincular entidad
-      </button>
-      <button class="action-button" id="editarEntidad" style="display: none;">
-        <span class="button-icon">✏️</span> Editar entidad
-      </button>
-
-      <button class="action-button" id="asignarServicio" style="display: none;" onclick="abrirModalAgregarServicio()">
-        <span class="button-icon">🔄</span> Servicios
-      </button>
-    </div>
-  </div>
 
 
   <!-- Contenido principal - Entidades -->
-  <div class="main-content" id="entidades">
+  <div class="main-content" id="entidades" style="margin: 2rem auto 1rem;">
     <!-- Tarjetas de la triple hélice -->
     <div class="helix-title">
       <h3>Modelo de cuadruple Hélice</h3>
@@ -157,7 +134,7 @@
   </div>
 
   <!-- Challenges Section -->
-  <section id="retos" class="main-content" style="display: none;">
+  <section id="retos" class="main-content" style="display: none; margin: 2rem auto 1rem;">
     <div class="main-content">
       <div style="display: flex;   justify-content: space-between;     margin-bottom: 3rem;">
         <div class="section-header">

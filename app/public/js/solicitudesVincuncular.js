@@ -41,7 +41,7 @@ async function fetchSolicitudes(idEntidad) {
         }
 
     } catch (error) {
-        tableBody.innerHTML = `<tr><td colspan="4">Error: ${error.message}hola</td></tr>`;
+        tableBody.innerHTML = `<tr><td colspan="4">Error: ${error.message}</td></tr>`;
     }
 
 }
@@ -256,19 +256,19 @@ async function fetchMisAsociados(idEntidad) {
     console.log('id entidad', idEntidad);
     const userId = obtenerCookie("userId");
 
-        try {
-            const responseUser = await fetch('/api/usuarioempresa/empresa/' + idEntidad);
-            console.log('Empresa', responseUser);
-            if (!responseUser.ok) throw new Error('Error al obtener datos');
-            const dataUser = await responseUser.json();
+    try {
+        const responseUser = await fetch('/api/usuarioempresa/empresa/' + idEntidad);
+        console.log('Empresa', responseUser);
+        if (!responseUser.ok) throw new Error('Error al obtener datos');
+        const dataUser = await responseUser.json();
 
-            renderTableUser(dataUser, userId);
-        } catch (error) {
-            console.error('Error al obtener empresa:', error);
-            tableBodyUser.innerHTML = `<tr><td colspan="4">Error: ${error.message}</td></tr>`;
-        }
+        renderTableUser(dataUser, userId);
+    } catch (error) {
+        console.error('Error al obtener empresa:', error);
+        tableBodyUser.innerHTML = `<tr><td colspan="4">Error: ${error.message}</td></tr>`;
+    }
 
-    
+
 }
 
 function renderTableUser(solicitudes, UserId) {
