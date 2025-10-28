@@ -26,11 +26,14 @@ document.getElementById("directorio").addEventListener("click", () => {
 
 
 })
+
+
 document.getElementById("Todos1").addEventListener("click", () => {
   var entidades = document.getElementById("entidades");
   entidades.style.display = "none";
   var listado = document.getElementById("listado");
   listado.style.display = "flex";
+ 
   cargarEmpresas(todasLasEmpresas);
 
 })

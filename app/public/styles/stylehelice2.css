@@ -596,6 +596,46 @@ h1 {
     font-size: 1.5rem;
 }
 
+
+.page-title {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.page-title h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: var(--primary-color);
+}
+
+.page-title p {
+  color: #666;
+  max-width: 600px;
+  margin: 0 auto;
+}
+.view-toggle {
+  display: flex;
+justify-content: right;
+  gap: 1rem;
+  margin: 1.5rem auto;
+  margin-right: 60px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  font-weight: 500;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: var(--transition);
+  border: none;
+  margin-bottom: 2vh;
+}
+
 .close {
     position: absolute;
     top: 1rem;
@@ -951,101 +991,7 @@ form {
     }
 }
 
-/* Estilos para el mapa en el formulario de entidad */
-.map-section {
-    margin: 15px 0;
-}
 
-.map-container {
-    border: 2px solid var(--primary-color);
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-}
-
-.map-container:hover {
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-    transform: translateY(-2px);
-}
-
-.coordinates-display {
-    display: flex;
-    gap: 15px;
-    margin-top: 10px;
-}
-
-.coordinates-display>div {
-    flex: 1;
-}
-
-.coordinates-display label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: 500;
-    color: var(--text-color);
-}
-
-.coordinates-display input {
-    width: 100%;
-    padding: 8px 12px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    background-color: #f8f9fa;
-    color: #666;
-    font-size: 0.9em;
-}
-
-.map-instructions {
-    color: #666;
-    font-size: 0.9em;
-    margin: 5px 0;
-    padding: 8px 12px;
-    background-color: #f0f8ff;
-    border-left: 4px solid var(--primary-color);
-    border-radius: 4px;
-}
-
-.map-help-text {
-    color: #666;
-    font-size: 0.8em;
-    margin-top: 8px;
-    text-align: center;
-    font-style: italic;
-}
-
-/* Estilos específicos del leaflet dentro del modal */
-.modal .leaflet-control-container {
-    font-size: 12px;
-}
-
-.modal .leaflet-popup-content {
-    font-size: 13px;
-    line-height: 1.4;
-}
-
-.modal .leaflet-popup-content strong {
-    color: var(--primary-color);
-}
-
-/* Animación para el marcador personalizado */
-@keyframes markerPulse {
-    0% {
-        transform: scale(1);
-    }
-
-    50% {
-        transform: scale(1.1);
-    }
-
-    100% {
-        transform: scale(1);
-    }
-}
-
-.location-marker {
-    animation: markerPulse 2s infinite;
-}
 
 /*tabla de datos perfil*/
 .table-perfil {
