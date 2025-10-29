@@ -7,7 +7,7 @@
     <title>SinAptico - Mapa de Usuarios</title>
     <link rel="stylesheet" href="styles/colores.css">
     <link rel="stylesheet" href="styles/stylehelice2.css">
-    <link rel="stylesheet" href="styles/mapa-usuarios.css">
+
     <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
 
     <!-- Leaflet CSS -->
@@ -456,7 +456,7 @@
     </header>
 
     <!-- Contenido principal -->
-    <div class="main-content" style="margin: 2rem auto 1rem;">
+    <div class="main-content" style="margin: 2rem auto 1rem;" id="modalMapa">
         <!-- Header del mapa -->
         <div class="helix-title">
             <h1 class="title">🗺️ Mapa</h1>
@@ -1063,80 +1063,8 @@
             });
         }
     </script>
-    <!-- Utilidades -->
-    <script>
-        // =========================
-        // Utilidades
-        // =========================
-        function obtenerCookie(nombre) {
-            const nombreCookie = `${nombre}=`;
-            const cookies = document.cookie.split(';');
-            for (let i = 0; i < cookies.length; i++) {
-                let cookie = cookies[i].trim();
-                if (cookie.indexOf(nombreCookie) === 0) {
-                    return cookie.substring(nombreCookie.length, cookie.length);
-                }
-            }
-            return null;
-        }
+    
 
-        const userId = obtenerCookie("userId");
-
-        (async () => {
-            try {
-                // Cargar usuario (para cabecera y foto)
-                const resUser = await fetch(`/api/user/${userId}`);
-                const dataUser = await resUser.json();
-
-                document.getElementById("imagenPerfilSecundaria").src = dataUser.fotoPerfil ? "photo/" + dataUser.fotoPerfil : "photo/sinfoto.jpg";
-
-            } catch (error) {
-                console.error("Error al inicializar usuario:", error);
-            }
-        })();
-
-    </script>
-    <!-- Cerrar Sesión -->
-    <script>
-        document.getElementById("cerrarSesion").addEventListener("click", () => {
-            Swal.fire({
-                title: '¿Estás seguro?',
-                text: '¿Querés cerrar sesión?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Sí, cerrar sesión',
-                cancelButtonText: 'Cancelar',
-                reverseButtons: true
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Borrar cookies y redirigir
-                    document.cookie = 'jwt=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-                    document.cookie = 'user=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-                    document.cookie = 'userId=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-                    document.location.href = "/";
-
-                }
-                // Si el usuario cancela, no pasa nada
-            });
-        });
-
-    </script>
-    <!-- Menu desplegable -->
-    <script>
-        const userMenuBtn = document.getElementById("userMenuBtn");
-        const dropdown = userMenuBtn.closest(".dropdown");
-
-        // Mostrar / ocultar el menú al hacer clic
-        userMenuBtn.addEventListener("click", (event) => {
-            event.stopPropagation(); // evita que el clic cierre inmediatamente el menú
-            dropdown.classList.toggle("show");
-        });
-
-        // Cerrar el menú si haces clic fuera
-        document.addEventListener("click", () => {
-            dropdown.classList.remove("show");
-        });
-    </script>
      <script src="js/notificaciones.js"></script>
   <script src="/js/websocket.js"></script>
 </body>

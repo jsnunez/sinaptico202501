@@ -6,10 +6,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>sinaptico - Innovación Abierta</title>
   <link rel="stylesheet" href="styles/colores.css">
-  <link rel="stylesheet" href="styles/stylehelice2.css">
-  <link rel="stylesheet" href="styles/innovacion.css">
-  <link rel="stylesheet" href="styles/clasificados.css">
-    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+
+    <link rel="stylesheet" href="styles/innovacion.css">
+    <link rel="stylesheet" href="styles/clasificados.css">
+    <link rel="stylesheet" href="styles/conocimiento.css">
+  <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
 
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap">
@@ -62,9 +63,6 @@
       </div>
     </nav>
   </header>
-
-
-
 
   <!-- Contenido principal - Entidades -->
   <div class="main-content" id="entidades" style="margin: 2rem auto 1rem;">
@@ -173,6 +171,7 @@
 
 
       </div>
+
       <div class="view-toggle">
         <button id="toggleViewBtn" class="btn">📃 Lista</button>
 
@@ -202,7 +201,7 @@
       <div class="challenges-grid">
 
       </div>
-
+    </div>
   </section>
 
   <!-- Create classified modal -->
@@ -384,11 +383,14 @@
       input.value = input.value.replace(/\./g, ''); // Enviar número limpio al backend
     });
   </script>
+
+
   <!-- En construccion -->
   <script>
     function irEnConstruccion() {
       window.location.href = "/construccion"; // o la ruta que tengas
     }
+
     const toggleViewBtn = document.getElementById('toggleViewBtn');
     const classifiedWall = document.querySelector('.classified-wall');
 
@@ -398,6 +400,9 @@
       // Cambiar ícono/texto según el modo actual
       toggleViewBtn.textContent = isList ? '🟦 Cuadrícula' : '📃 Lista';
     });
+
+
+    
     const gridBtn = document.getElementById('gridViewBtn');
     const listBtn = document.getElementById('listViewBtn');
     const wall = document.querySelector('.classified-wall');

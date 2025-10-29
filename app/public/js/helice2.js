@@ -111,8 +111,11 @@ document.addEventListener('DOMContentLoaded', function() {
       // Mostrar listado de empresas
         document.getElementById('listado').style.display = 'flex';
 
-        document.getElementById('entidades').style.display = 'none';
+        document.getElementById('modalDirectorio').style.display = 'block';
+ 
+        
 
+        document.getElementById('entidades').style.display = 'none';
     });
     // Activar el botón "Todos" por defecto
     document.getElementById('Todos1').classList.add('active');
