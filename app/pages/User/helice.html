@@ -1289,8 +1289,7 @@
 
         // Inicialización
         document.addEventListener('DOMContentLoaded', function () {
-            initializeMap();
-            loadUsers();
+        
             setupEventListeners();
             checkUserSession();
         });
@@ -1324,6 +1323,7 @@
 
         function initializeMap() {
             // Inicializar mapa centrado en Colombia
+            console.log('🗺️ Inicializando mapa...');
             map = L.map('mapid').setView([4.5709, -74.2973], 6);
 
             // Agregar capa de mapa
@@ -2037,11 +2037,16 @@
                 busquedaEntidad.style.display = 'block';
                 modalMapa.style.display = 'none';
                 toggleViewBtn.textContent = '🗺️ Mapa';
+                
             } else {
                 // Mostrar mapa
                 busquedaEntidad.style.display = 'none';
                 modalMapa.style.display = 'block';
                 toggleViewBtn.textContent = '🟦 Muro';
+                   initializeMap();
+ 
+            loadUsers();
+                
             }
         });
     </script>
