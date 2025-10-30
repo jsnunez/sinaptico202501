@@ -82,7 +82,7 @@ app.get('/supervisor', authorization.soloSupervisor, (req, res) => res.sendFile(
 
 app.get('/register', authorization.soloPublico, (req, res) => res.sendFile(path.join(__dirname, 'pages/register.html')));
 app.get('/reestablecerpass', authorization.soloPublico, (req, res) => res.sendFile(path.join(__dirname, 'pages/restablecer.html')));
-app.get('/compartir-datos', authorization.soloPublico, (req, res) => res.sendFile(path.join(__dirname, 'pages/compartir-datos.html')));
+app.get('/compartir-datos',  (req, res) => res.sendFile(path.join(__dirname, 'pages/compartir-datos.html')));
 // Rutas HTML para usuarios
 app.get('/helice', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/helice.html')));
 app.get('/innovacion', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/innovacion.html')));

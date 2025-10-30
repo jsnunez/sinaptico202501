@@ -22,7 +22,7 @@ const Invitacion = sequelize.define('Invitacion', {
     },
     telefono: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
     },
     verificado: {
         type: DataTypes.BOOLEAN,

@@ -148,8 +148,8 @@ document.addEventListener('DOMContentLoaded', function () {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          desdeuserid: userId,
-          parauserid: paraUserId,
+          desdeuserid: parseInt(userId),
+          parauserid: parseInt(paraUserId),
           mensaje,
           telefono: telefonoEmpresa
         })
@@ -232,18 +232,41 @@ async function llamarIntegrantes(idEntidad) {
 
       let integrantesHTML = '<div style="display: block;">';
 
-      if (integrantes.length > 0) {
+      // if (integrantes.length > 0) {
+      //   integrantes.forEach(integrante => {
+      //     console.log(integrante.fotoPerfil);
+      //     integrantesHTML += `
+      //         <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+      //           <div style="position: relative; width: 50px; height: 50px; cursor: pointer;" id="verIntegrante${integrante.id}" onclick="abrirModalIntegrante(${integrante.id})">
+      //             <img src="/photo/${integrante.fotoPerfil}" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
+      //             <span style="position: absolute; bottom: 0; right: 0; background: #fff; border-radius: 50%; padding: 2px;">
+      //               <i class="bi bi-search" style="font-size: 1em; color: var(--primary-color);"></i>
+      //             </span>
+      //           </div>
+      //           <p style="margin: 0;">${integrante.nombre} - ${integrante.rol}</p>
+      //           <button class="btn btn-sm btn-primary" onclick="contactarIntegrante(${integrante.id}, '${integrante.nombre.replace(/'/g, "\\'")}')">
+      //             <i class="bi bi-telephone"></i> Contactar
+      //           </button>
+      //         </div>
+      //       `;
+      //   });
+           if (integrantes.length > 0) {
         integrantes.forEach(integrante => {
           console.log(integrante.fotoPerfil);
-          integrantesHTML += `
-              <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
-                <div style="position: relative; width: 50px; height: 50px; cursor: pointer;" id="verIntegrante" onclick="abrirModalIntegrante(${integrante.id})">
-                  <img src="/photo/${integrante.fotoPerfil}" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
-                  <span style="position: absolute; bottom: 0; right: 0; background: #fff; border-radius: 50%; padding: 2px;">
-                    <i class="bi bi-search" style="font-size: 1em; color: var(--primary-color);"></i>
-                  </span>
+            integrantesHTML += `
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <div style="position: relative; width: 50px; height: 50px; cursor: pointer;" id="verIntegrante${integrante.id}" >
+                    <img src="/photo/${integrante.fotoPerfil}" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
+                    <span style="position: absolute; bottom: 0; right: 0; background: #fff; border-radius: 50%; padding: 2px;">
+
+                    </span>
+                  </div>
+                  <p style="margin: 0;">${integrante.nombre} - ${integrante.rol}</p>
                 </div>
-                <p style="margin: 0;">${integrante.nombre} - ${integrante.rol}</p>
+                <button class="btn btn-sm btn-primary" onclick="contactarIntegrante(${integrante.id}, '${integrante.nombre.replace(/'/g, "\\'")}')">
+                  <i class="bi bi-telephone"></i> Contactar
+                </button>
               </div>
             `;
         });

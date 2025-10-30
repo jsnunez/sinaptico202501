@@ -11,7 +11,7 @@ router.post('/enviar', enviarContacto);
 router.post('/solicitar-datos', solicitarDatos);
 
 // Ruta para compartir mi información con otro contacto
-router.post('/compartir', compartirMiInformacion);
+router.post('/compartir/:token', compartirMiInformacion);
 router.post('/accept', aceptarCompartirDatos);
 
 export default router;

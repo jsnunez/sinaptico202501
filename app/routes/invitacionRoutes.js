@@ -4,7 +4,7 @@ import Invitacion from '../models/invitaciones.js';
 import User from '../models/user.js';
 import Entidad from '../models/entidad.js';
 import { Op } from 'sequelize';
-import { enviarNotificacion } from '../config/socketUtils.js'; 
+import { enviarNotificacion } from '../config/socketUtils.js';
 const router = express.Router();
 // Enviar invitación o mensaje usando MySQL
 
@@ -12,22 +12,30 @@ const router = express.Router();
 // Crear una nueva invitación
 router.post('/', async (req, res) => {
     try {
-        const { desdeuserid, parauserid, mensaje, telefono } = req.body;
-
-        // Verificar si ya existe una invitación entre estos usuarios
+        const { desdeuserid, parauserid, mensaje } = req.body;
+        // Verificar que no se invite a sí mismo
+        if (desdeuserid === parauserid) {
+            return res.status(400).json({ error: 'estas contactando a ti mismo' });
+        }
+        // Verificar si ya existe una invitación entre estos usuarios (en cualquier dirección)
         const existente = await Invitacion.findOne({
-            where: { desdeuserid, parauserid }
+            where: {
+                [Op.or]: [
+                    { desdeuserid, parauserid },
+                    { desdeuserid: parauserid, parauserid: desdeuserid }
+                ]
+            }
         });
 
         if (existente) {
             return res.status(400).json({ error: 'Ya existe una invitación entre estos usuarios' });
         }
 
+
         const invitacion = await Invitacion.create({
             desdeuserid,
             parauserid,
-            mensaje,
-            telefono,
+            mensaje            
         });
 
         // Enviar notificación al usuario invitado

@@ -77,26 +77,26 @@ export const solicitarDatos = async (req, res) => {
 
         // Generar token único para el link de aceptación
         const token = Buffer.from(`${destinatario}-${Date.now()}`).toString('base64');
-        const acceptLink = `${process.env.FRONTEND_URL || 'http://localhost:3000/'}compartir-datos/${token}`;
+        const acceptLink = `${process.env.FRONTEND_URL || 'http://localhost:4000/'}compartir/${token}`;
 
         const mailOptions = {
             from: process.env.EMAIL_USER,
             to: destinatario,
             subject: `Sinaptico: ${miNombre} solicita tu información de contacto`,
             html: `
-                <h2>Solicitud de Información</h2>
-                <p>${miNombre} te está solicitando compartir tu información de contacto.</p>
-                <p>Si deseas compartir tus datos, haz clic en el siguiente enlace:</p>
-                <p style="margin: 20px 0;">
-                    <a href="${acceptLink}" 
-                       style="background-color: #4CAF50; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; display: inline-block;">
-                        Compartir mis datos
-                    </a>
-                </p>
-                <hr>
-                <p style="color: #666; font-size: 12px;">
-                    Este enlace te permite autorizar el envío de tu información de contacto a ${miNombre}.
-                </p>
+            <h2>Solicitud de Información</h2>
+            <p>${miNombre} te está solicitando compartir tu información de contacto.</p>
+            <p>Si deseas compartir tus datos, ingresa a Sinaptico y acepta compartir tu información:</p>
+            <p style="margin: 20px 0;">
+                <a href="${process.env.FRONTEND_URL || 'http://localhost:4000'}" 
+                   style="background-color: #4CAF50; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; display: inline-block;">
+                Ir a Sinaptico
+                </a>
+            </p>
+            <hr>
+            <p style="color: #666; font-size: 12px;">
+                Este enlace te redirige a Sinaptico donde podrás autorizar el envío de tu información de contacto a ${miNombre}.
+            </p>
             `
         };
 
@@ -165,9 +165,9 @@ export const compartirMiInformacion = async (req, res) => {
 // Aceptar compartir datos (validar token y enviar información)
 export const aceptarCompartirDatos = async (req, res) => {
     try {
-        const { token, nombre, email, telefono, mensaje } = req.body;
+        const {  nombre, email, telefono, mensaje } = req.body;
 
-        if (!token || !nombre || !email) {
+        if (!nombre || !email) {
             return res.status(400).json({
                 success: false,
                 message: 'Faltan campos requeridos'
@@ -178,31 +178,27 @@ export const aceptarCompartirDatos = async (req, res) => {
         const decoded = Buffer.from(token, 'base64').toString('utf-8');
         const [emailSolicitante, timestamp] = decoded.split('-');
 
-        // Validar que el token no sea muy antiguo (ej: 7 días)
-        const tokenAge = Date.now() - parseInt(timestamp);
-        const maxAge = 7 * 24 * 60 * 60 * 1000; // 7 días en milisegundos
+      
 
-        if (tokenAge > maxAge) {
-            return res.status(400).json({
-                success: false,
-                message: 'El enlace ha expirado'
-            });
-        }
-
+        const infoLink = `${process.env.FRONTEND_URL || 'http://localhost:4000'}`;
+        
         const mailOptions = {
             from: process.env.EMAIL_USER,
             to: emailSolicitante,
             subject: `${nombre} ha compartido su información contigo`,
             html: `
-                <h2>${nombre} aceptó compartir su información</h2>
-                <p><strong>Nombre:</strong> ${nombre}</p>
-                <p><strong>Email:</strong> ${email}</p>
-                <p><strong>Teléfono:</strong> ${telefono || 'No proporcionado'}</p>
-                ${mensaje ? `<p><strong>Mensaje:</strong></p><p>${mensaje}</p>` : ''}
-                <hr>
-                <p style="color: #666; font-size: 12px;">
-                    Esta persona autorizó compartir su información de contacto contigo a través de Sinaptico.
-                </p>
+            <h2>${nombre} aceptó compartir su información</h2>
+            <p>Ingresa a Sinaptico para ver la información de contacto:</p>
+            <p style="margin: 20px 0;">
+                <a href="${infoLink}" 
+                   style="background-color: #4CAF50; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; display: inline-block;">
+                Ver Información en Sinaptico
+                </a>
+            </p>
+            <hr>
+            <p style="color: #666; font-size: 12px;">
+                ${nombre} autorizó compartir su información de contacto contigo a través de Sinaptico.
+            </p>
             `
         };
 
