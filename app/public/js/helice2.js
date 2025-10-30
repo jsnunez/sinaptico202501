@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('entidades').style.display = 'none';
     });
     // Activar el botón "Todos" por defecto
-    document.getElementById('Todos1').classList.add('active');
+    // document.getElementById('Todos1').classList.add('active');
     
     filterButtons.forEach(button => {
         button.addEventListener('click', function() {

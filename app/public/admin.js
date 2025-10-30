@@ -28,49 +28,49 @@ document.getElementById("directorio").addEventListener("click", () => {
 })
 
 
-document.getElementById("Todos1").addEventListener("click", () => {
-  var entidades = document.getElementById("entidades");
-  entidades.style.display = "none";
-  var listado = document.getElementById("listado");
-  listado.style.display = "flex";
+// document.getElementById("Todos1").addEventListener("click", () => {
+//   var entidades = document.getElementById("entidades");
+//   entidades.style.display = "none";
+//   var listado = document.getElementById("listado");
+//   listado.style.display = "flex";
  
-  cargarEmpresas(todasLasEmpresas);
+//   cargarEmpresas(todasLasEmpresas);
 
-})
+// })
 
-document.getElementById("Empresas").addEventListener("click", () => {
-  const empresasFiltradas = todasLasEmpresas.filter(emp => emp.claseEntidad === "Empresa");
-  cargarEmpresas(empresasFiltradas);
-  var entidades = document.getElementById("entidades");
-  entidades.style.display = "none";
-  var listado = document.getElementById("listado");
-  listado.style.display = "flex";
-})
-document.getElementById("Sociedads").addEventListener("click", () => {
-  const empresasFiltradas = todasLasEmpresas.filter(emp => emp.claseEntidad === "Sociedad");
-  cargarEmpresas(empresasFiltradas);
-  var entidades = document.getElementById("entidades");
-  entidades.style.display = "none";
-  var listado = document.getElementById("listado");
-  listado.style.display = "flex";
-})
-document.getElementById("Estados").addEventListener("click", () => {
-  const empresasFiltradas = todasLasEmpresas.filter(emp => emp.claseEntidad === "Estado");
-  cargarEmpresas(empresasFiltradas);
-  var entidades = document.getElementById("entidades");
-  entidades.style.display = "none";
-  var listado = document.getElementById("listado");
-  listado.style.display = "flex";
-})
+// document.getElementById("Empresas").addEventListener("click", () => {
+//   const empresasFiltradas = todasLasEmpresas.filter(emp => emp.claseEntidad === "Empresa");
+//   cargarEmpresas(empresasFiltradas);
+//   var entidades = document.getElementById("entidades");
+//   entidades.style.display = "none";
+//   var listado = document.getElementById("listado");
+//   listado.style.display = "flex";
+// })
+// document.getElementById("Sociedads").addEventListener("click", () => {
+//   const empresasFiltradas = todasLasEmpresas.filter(emp => emp.claseEntidad === "Sociedad");
+//   cargarEmpresas(empresasFiltradas);
+//   var entidades = document.getElementById("entidades");
+//   entidades.style.display = "none";
+//   var listado = document.getElementById("listado");
+//   listado.style.display = "flex";
+// })
+// document.getElementById("Estados").addEventListener("click", () => {
+//   const empresasFiltradas = todasLasEmpresas.filter(emp => emp.claseEntidad === "Estado");
+//   cargarEmpresas(empresasFiltradas);
+//   var entidades = document.getElementById("entidades");
+//   entidades.style.display = "none";
+//   var listado = document.getElementById("listado");
+//   listado.style.display = "flex";
+// })
 
-document.getElementById("Academia").addEventListener("click", () => {
-  const empresasFiltradas = todasLasEmpresas.filter(emp => emp.claseEntidad === "Academia");
-  cargarEmpresas(empresasFiltradas);
-  var entidades = document.getElementById("entidades");
-  entidades.style.display = "none";
-  var listado = document.getElementById("listado");
-  listado.style.display = "flex";
-})
+// document.getElementById("Academia").addEventListener("click", () => {
+//   const empresasFiltradas = todasLasEmpresas.filter(emp => emp.claseEntidad === "Academia");
+//   cargarEmpresas(empresasFiltradas);
+//   var entidades = document.getElementById("entidades");
+//   entidades.style.display = "none";
+//   var listado = document.getElementById("listado");
+//   listado.style.display = "flex";
+// })
 
 
 
