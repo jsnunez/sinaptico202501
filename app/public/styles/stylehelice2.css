@@ -226,12 +226,12 @@ h2 {
 
 }
 
-.tittle,
+.tittle
 h1 {
-
     color: var(--primary-color);
 
 }
+
 .action-buttons {
     display: flex;
     gap: 1rem;
@@ -543,12 +543,12 @@ h1 {
 
 /* Tarjetas de información */
 .cardinfo {
-    width: 280px;
-    height: 280px;
+    width: 300px;
+    height: 300px;
     background-color: var(--card-bg);
     border-radius: 15px;
     box-shadow: var(--card-shadow);
-    padding: 1.5rem;
+    padding: 1.2rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -598,42 +598,43 @@ h1 {
 
 
 .page-title {
-  text-align: center;
-  margin-bottom: 1.5rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
 }
 
 .page-title h1 {
-  font-size: 2rem;
-  font-weight: bold;
-  margin-bottom: 0.5rem;
-  color: var(--primary-color);
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    color: var(--primary-color);
 }
 
 .page-title p {
-  color: #666;
-  max-width: 600px;
-  margin: 0 auto;
+    color: #666;
+    max-width: 600px;
+    margin: 0 auto;
 }
+
 .view-toggle {
-  display: flex;
-justify-content: right;
-  gap: 1rem;
-  margin: 1.5rem auto;
-  margin-right: 60px;
+    display: flex;
+    justify-content: right;
+    gap: 1rem;
+    margin: 1.5rem auto;
+    margin-right: 60px;
 }
 
 .btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.5rem 1rem;
-  border-radius: 50px;
-  font-weight: 500;
-  font-size: 0.875rem;
-  cursor: pointer;
-  transition: var(--transition);
-  border: none;
-  margin-bottom: 2vh;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    font-weight: 500;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: var(--transition);
+    border: none;
+    margin-bottom: 2vh;
 }
 
 .close {
@@ -995,7 +996,7 @@ form {
 
 /*tabla de datos perfil*/
 .table-perfil {
-    
+
     border-collapse: collapse;
     margin-top: 1rem;
     background-color: rgb(242, 248, 252);
@@ -1012,12 +1013,14 @@ form {
     border-bottom: 1px solid #ddd;
     color: var(--text-description);
 }
+
 .bi-facebook,
 .fa-instagram,
-.bi-link-45deg{
+.bi-link-45deg {
     font-size: 3rem;
     text-align: center;
 }
+
 /* Estilos para el formulario completo del dashboard */
 .form-section {
     margin-bottom: 20px;
@@ -1079,44 +1082,61 @@ form {
 }
 
 
+/* Spinner overlay */
+#page-spinner-overlay {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    background: rgba(255, 255, 255, 0.95);
+    z-index: 99999;
+    transition: opacity .4s ease;
+    -webkit-backdrop-filter: blur(2px);
+    backdrop-filter: blur(2px);
+}
 
-        /* Spinner overlay */
-        #page-spinner-overlay {
-            position: fixed;
-            inset: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            background: rgba(255, 255, 255, 0.95);
-            z-index: 99999;
-            transition: opacity .4s ease;
-            -webkit-backdrop-filter: blur(2px);
-            backdrop-filter: blur(2px);
-        }
+/* Circular spinner */
+#page-spinner-overlay .spinner {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    border: 6px solid rgba(0, 0, 0, 0.08);
+    border-top-color: #007bff;
+    animation: spin 1s linear infinite;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+}
 
-        /* Circular spinner */
-        #page-spinner-overlay .spinner {
-            width: 64px;
-            height: 64px;
-            border-radius: 50%;
-            border: 6px solid rgba(0, 0, 0, 0.08);
-            border-top-color: #007bff;
-            animation: spin 1s linear infinite;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
-        }
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
 
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
+/* Texto opcional */
+#page-spinner-overlay .spinner-text {
+    color: #333;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+}
 
-        /* Texto opcional */
-        #page-spinner-overlay .spinner-text {
-            color: #333;
-            font-family: inherit;
-            font-size: 14px;
-            font-weight: 500;
-        }
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: var(--secondary-color);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--border-radius);
+
+    width: fit-content;
+    height: fit-content;
+}
+
+.section-header i {
+    font-size: 1.25rem;
+}
+

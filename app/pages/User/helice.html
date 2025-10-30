@@ -77,7 +77,7 @@
 
         /* Controles del mapa */
         .map-controls {
-            background: white;
+            background: #5f86d4;
             padding: 20px;
             border-radius: 10px;
             margin-bottom: 20px;
@@ -97,7 +97,7 @@
         .control-label {
             font-size: 0.9em;
             font-weight: 600;
-            color: #2c3e50;
+            color: #ffffff;
         }
 
         .control-input,
@@ -407,9 +407,6 @@
             <!-- <span class="logo-icon">⚡</span> -->
             <span class="logo-text logo">SINAPTICO</span>
 
-            <p style="color: #00109e;"><strong>Cargo: </strong> Supervisor</p>
-            <p style="color: #00109e;"><strong>Asociado: </strong>Tecnologias y Desarrollo</p>
-
         </div>
         <nav class="nav">
             <button class="nav-button pulse" onclick="window.location.href='/helice'">Hélice</button>
@@ -458,10 +455,10 @@
         <div class="action-buttons">
             <button class="action-button" id="crearEntidad" style="display: none;">
 
-                <span class="button-icon">+</span>Crear entidad
+                <span class="button-icon"><i class="bi bi-plus-square"></i></span>Crear entidad
             </button>
             <button class="action-button" id="vincularEntidad" style="display: flex;">
-                <span class="button-icon">+</span> vincular entidad
+                <span class="button-icon"><i class="bi bi-plus-circle"></i></span> Vincular entidad
             </button>
             <button class="action-button" id="editarEntidad" style="display: none;">
                 <span class="button-icon">✏️</span> Editar entidad
@@ -539,115 +536,101 @@
 
     <!-- Contenido principal - Directorio -->
     <section class="main-content" id="modalDirectorio" style="display: none;">
-        <div class="container">
-            <section class="page-title">
-                <h1>Directorio</h1>
-            </section>
-            <div class="view-toggle">
-                <button id="toggleViewBtn" class="btn">🟦 Muro</button>
+        <div class="main-content">
+            <div style="display: flex;   justify-content: space-between;">
 
-            </div>
+                <section class="section-header">
 
-            <div class="busquedaEntidad" id="busquedaEntidad">
-                <!-- Filtros -->
-                <div class="filter-container" style="display: none;" id="filtros">
-                    <input type="text" id="buscarEntidad" placeholder="Nombre Entidad" class="filter-input">
-                    <button class="filter-button" id="Todos1">Todos</button>
-
-                    <button class="filter-button" id="Empresas">Empresas</button>
-                    <button class="filter-button" id="Sociedads">Sociedad</button>
-                    <button class="filter-button" id="Estados">Estados</button>
-                    <button class="filter-button" id="Academia">Academias</button>
-                    <!-- Filtros -->
+                    <h2 style="color: white;"> <i class="bi bi-list-task"></i> Directorio SinAptico</h2>
+                </section>
+                <div class="view-toggle">
+                    <button id="toggleViewBtn" class="btn">🟦 Muro</button>
 
                 </div>
 
+            </div>
+
+
+            <!-- Controles del mapa -->
+            <div class="map-controls">
+                <div class="control-group">
+                    <label class="control-label">Buscar entidad</label>
+                    <input type="text" class="control-input" id="search-user" placeholder="Nombre o actividad...">
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">Filtrar por Departamento</label>
+                    <select class="control-select" id="filter-dpto">
+                        <option value="">Todos los departamentos</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Filtrar por Municipio</label>
+                    <select class="control-select" id="filter-city">
+                        <option value="">Todas las ciudades</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Tipo de entidad</label>
+                    <select class="control-select" id="filter-city">
+                        <option value="">Todos los tipos</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Actividad Economica</label>
+                    <select class="control-select" id="filter-city">
+                        <option value="">Todas las actividades economicas</option>
+                    </select>
+                </div>
+            </div>
+
+
+            <div class="busquedaEntidad" id="busquedaEntidad">
+
                 <!-- Contenido principal - Listado -->
-                <div class="main-content" id="listado">
+                <div id="listado">
                     <!-- Las tarjetas de empresas se cargarán aquí -->
                 </div>
             </div>
 
             <!-- Contenido principal -->
+
+
             <div class="main-content" style="margin: 2rem auto 1rem;" id="modalMapa">
                 <!-- Header del mapa -->
                 <div class="helix-title">
-                    <h1 class="title">🗺️ Mapa</h1>
-                    <p>Explora la ubicación de empresas, instituciones educativas y organizaciones de la red SinAptico
+                    <h1 class="tittle">Mapa</h1>
+                    <p>Explora las ubicación de empresas, instituciones educativas y organizaciones de la red SinAptico
                     </p>
-                </div>
-
-                <!-- Estadísticas -->
-
-                <div class="stats-container">
-                    <div class="stat-card">
-                        <div class="stat-number" id="total-users">0</div>
-                        <div class="stat-label">Entidades Totales</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number" id="online-users">0</div>
-                        <div class="stat-label">Verificadas</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number" id="total-companies">0</div>
-                        <div class="stat-label">Tipos de Entidad</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number" id="total-cities">0</div>
-                        <div class="stat-label">Ciudades</div>
-                    </div>
-                </div>
-
-
-                <!-- Controles del mapa -->
-                <div class="map-controls">
-                    <div class="control-group">
-                        <label class="control-label">Buscar entidad</label>
-                        <input type="text" class="control-input" id="search-user" placeholder="Nombre o actividad...">
-                    </div>
-
-                    <div class="control-group">
-                        <label class="control-label">Filtrar por ciudad</label>
-                        <select class="control-select" id="filter-city">
-                            <option value="">Todas las ciudades</option>
-                        </select>
-                    </div>
-
-                    <div class="control-group">
-                        <label class="control-label">Tipo de entidad</label>
-                        <div class="filter-buttons">
-                            <button class="filter-btn active" data-type="all">Todas</button>
-                            <button class="filter-btn" data-type="Empresa">🏢 Empresas</button>
-                            <button class="filter-btn" data-type="Academia">🎓 Academiaes</button>
-                            <button class="filter-btn" data-type="Estado">� Estados</button>
-                            <button class="filter-btn" data-type="Sociedad">💡 Sociedads</button>
-                        </div>
-                    </div>
                 </div>
 
                 <!-- Contenedor del mapa -->
 
-                <div class="map-container">
-                    <div class="map-wrapper">
-                        <div id="mapid"></div>
-                    </div>
-                    
-                    
-                </div>
-
-                <!-- Lista de usuarios -->
-                <div class="users-list">
-                    <h3><i class="fas fa-building"></i> Entidades en el Mapa</h3>
-                    <div id="users-list-content">
-                        <div class="loading">
-                            <i class="fas fa-spinner"></i>
-                            <p>Cargando entidades...</p>
+                <div class="map-container" >
+                    <div >
+                        <div class="map-wrapper">
+                            <div id="mapid"></div>
                         </div>
                     </div>
+                    <!-- Lista de usuarios -->
+                    <div>
+                        <div class="users-list">
+                            <h3><i class="fas fa-building"></i> Entidades en el Mapa</h3>
+                            <div id="users-list-content">
+                                <div class="loading">
+                                    <i class="fas fa-spinner"></i>
+                                    <p>Cargando entidades...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
+
+
             </div>
 
-
+        </div>
     </section>
 
 
@@ -1289,7 +1272,7 @@
 
         // Inicialización
         document.addEventListener('DOMContentLoaded', function () {
-        
+
             setupEventListeners();
             checkUserSession();
         });
@@ -1683,6 +1666,7 @@
             });
         }
     </script>
+
     <!-- Mis contactos -->
     <script>
         document.getElementById('misContactos').onclick = function () {
@@ -1992,7 +1976,7 @@
     <script>
         (function () {
             // Garantiza que el overlay permanezca al menos 5s desde que se ejecuta este script.
-            const MIN_MS = 2000;
+            const MIN_MS = 100;
             const overlay = document.getElementById('page-spinner-overlay');
             if (!overlay) return;
 
@@ -2037,16 +2021,16 @@
                 busquedaEntidad.style.display = 'block';
                 modalMapa.style.display = 'none';
                 toggleViewBtn.textContent = '🗺️ Mapa';
-                
+
             } else {
                 // Mostrar mapa
                 busquedaEntidad.style.display = 'none';
                 modalMapa.style.display = 'block';
                 toggleViewBtn.textContent = '🟦 Muro';
-                   initializeMap();
- 
-            loadUsers();
-                
+                initializeMap();
+
+                loadUsers();
+
             }
         });
     </script>
