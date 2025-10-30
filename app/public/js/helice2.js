@@ -105,8 +105,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Manejar clic en el div de directorio
     const directorioDiv = document.getElementById('directorio');
     directorioDiv.addEventListener('click', function() {
-        // Mostrar filtros
-        document.getElementById('filtros').style.display = 'flex';
+
         
       // Mostrar listado de empresas
         document.getElementById('listado').style.display = 'flex';
