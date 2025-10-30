@@ -7,6 +7,7 @@
     <title>SINAPTICO</title>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
 
     <link rel="stylesheet" href="styles/colores.css">
     <link rel="stylesheet" href="styles/stylehelice2.css">
@@ -1334,7 +1335,67 @@
             // Personalizar controles
             map.zoomControl.setPosition('topright');
         }
+async function addColombiaMask() {
+            try {
+                // GeoJSON mundial (Natural Earth simplificado)
+                const url = `${API_BASE_URL}/api/mapa/coordenadas`;
+                const world = await fetch(url);
+                const worldGeoJSON = await world.json();
+                console.log('GeoJSON mundial cargado:', worldGeoJSON.data.geometry, 'features');
+                // Busca la feature de Colombia (ISO_A3 = COL o ADMIN = Colombia)
+                const colFeature = worldGeoJSON.data.geometry;
+                if (!colFeature) {
+                    console.warn('No se encontró la geometría de Colombia en el GeoJSON.');
+                    return;
+                }
 
+                // Crea un rectángulo grande (mundo) para restarle Colombia
+                // Evitamos los polos extremos para mayor estabilidad geométrica
+                const worldBBox = [-180, -85, 180, 85];
+                const worldPoly = turf.bboxPolygon(worldBBox);
+
+                // Asegura que la geometría de Colombia sea válida (por si viene como MultiPolygon)
+                const colGeom = colFeature;
+                const colPoly = turf.feature(colGeom);
+
+                // Calcula: máscara = mundo - Colombia
+                const maskGeom = turf.difference(worldPoly, colPoly);
+                if (!maskGeom) {
+                    console.warn('No fue posible crear la máscara (difference retornó null).');
+                    return;
+                }
+
+                // Dibuja la máscara (exterior de Colombia en azul)
+                const maskLayer = L.geoJSON(maskGeom, {
+                    pane: 'overlayPane',   // se dibuja sobre los tiles
+                    interactive: false
+                });
+                maskLayer.setStyle({
+                    fillColor: '#a8d5f7',
+                    fillOpacity: 1,
+                    stroke: false
+                });
+                maskLayer.addTo(map);
+
+                // Dibuja la silueta de Colombia encima para resaltarla
+                const colombiaOutline = L.geoJSON(colPoly, {
+                    style: {
+                        color: '#1f4e79',
+                        weight: 2,
+                        fill: false
+                    }
+                }).addTo(map);
+
+                // (Opcional) Enfoca el mapa a Colombia respetando tu lógica de markers
+                // Solo si aún no hay markers colocados:
+                if (!markers || markers.length === 0) {
+                    const b = colombiaOutline.getBounds();
+                    map.fitBounds(b.pad(0.05));
+                }
+            } catch (e) {
+                console.error('Error creando la máscara de Colombia:', e);
+            }
+        }
         function loadUsers() {
             console.log('🔄 Cargando entidades desde la API...');
             // Cargar entidades desde la API
@@ -1405,11 +1466,11 @@
                 marker.addTo(map);
             });
 
-            // Ajustar vista si hay marcadores
-            if (markers.length > 0) {
-                const group = new L.featureGroup(markers);
-                map.fitBounds(group.getBounds().pad(0.1));
-            }
+            // // Ajustar vista si hay marcadores
+            // if (markers.length > 0) {
+            //     const group = new L.featureGroup(markers);
+            //     map.fitBounds(group.getBounds().pad(0.1));
+            // }
         }
 
         function createUserMarker(user) {
@@ -2044,7 +2105,7 @@
                 modalMapa.style.display = 'block';
                 toggleViewBtn.textContent = '🟦 Muro';
                    initializeMap();
- 
+ addColombiaMask();
             loadUsers();
                 
             }
