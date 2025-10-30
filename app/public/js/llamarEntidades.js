@@ -41,7 +41,11 @@ function cargarEmpresas(empresas) {
             <img src="/logos/${rutaCompleta}" alt="Logo Empresa" class="card-icon" onerror="this.onerror=null;this.src='/img/sinfoto.jpg';">
             <h3 class="card-title">${empresa.razonSocial}</h3>
             <p class="card-text">${empresa.actividadEconomica}</p>
-        <button class="botonEntidad" id="masinfo${empresa.numIdentificacion}" ">Mas informacion</button>
+            <button class="botonEntidad btnMasInfo" data-id="${empresa.numIdentificacion}" id="intgranteBtn">
+              Más información
+            </button>
+
+
 
         `;
 
@@ -93,9 +97,11 @@ document.addEventListener('DOMContentLoaded', function () {
     if (e.target && e.target.classList.contains('botonEntidad')) {
       console.log(todasLasEmpresas)
 
-      const id = e.target.id.replace('masinfo', '');
+      const id = e.target.dataset.id;
       console.log(todasLasEmpresas)
-      const empresa = todasLasEmpresas.find(emp => emp.numIdentificacion === id);
+
+      const empresa = todasLasEmpresas.find(emp => emp.numIdentificacion == id || emp.id == id);
+
       console.log(empresa)
 
 
@@ -250,10 +256,10 @@ async function llamarIntegrantes(idEntidad) {
       //         </div>
       //       `;
       //   });
-           if (integrantes.length > 0) {
+      if (integrantes.length > 0) {
         integrantes.forEach(integrante => {
           console.log(integrante.fotoPerfil);
-            integrantesHTML += `
+          integrantesHTML += `
               <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px;">
                 <div style="display: flex; align-items: center; gap: 10px;">
                   <div style="position: relative; width: 50px; height: 50px; cursor: pointer;" id="verIntegrante${integrante.id}" >
@@ -292,7 +298,7 @@ async function llamarIntegrantes(idEntidad) {
 abrirModalIntegrante = async function (userId) {
   console.log("ID del integrante:", userId);
   document.getElementById('modalIntegrante').style.display = 'block';
-//Cerrar modal integrante
+  //Cerrar modal integrante
   document.getElementById('cerrarModalIntegrante').onclick = function () {
     document.getElementById('modalIntegrante').style.display = 'none';
   };
@@ -365,4 +371,476 @@ abrirModalIntegrante = async function (userId) {
   } catch (e) {
     console.error('Error verificando entidad asociada:', e);
   }
+}
+
+
+// Variables globales
+let map;
+let markers = [];
+let usersData = [];
+let filteredUsers = [];
+let currentFilter = 'all';
+
+
+// Inicialización
+document.addEventListener('DOMContentLoaded', function () {
+
+  setupEventListeners();
+  checkUserSession();
+});
+
+function checkUserSession() {
+  const usuario = obtenerCookie("user");
+
+  if (usuario) {
+    let cleanedStr = decodeURIComponent(usuario.replace(/%20/g, " "));
+    let nombreUsuario = cleanedStr.split(" ")[0];
+    document.getElementById('bienvenido').textContent = `Hola, ${nombreUsuario}`;
+  } else {
+    document.getElementById('bienvenido').textContent = 'Bienvenido al Mapa';
+  }
+}
+
+function obtenerCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      if (cookie.substring(0, name.length + 1) === (name + '=')) {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
+}
+
+function initializeMap() {
+  // Inicializar mapa centrado en Colombia
+  console.log('🗺️ Inicializando mapa...');
+  map = L.map('mapid').setView([4.5709, -74.2973], 6);
+
+  // Agregar capa de mapa
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors'
+  }).addTo(map);
+
+  // Personalizar controles
+  map.zoomControl.setPosition('topright');
+}
+async function addColombiaMask() {
+  try {
+    // GeoJSON mundial (Natural Earth simplificado)
+    const url = `${API_BASE_URL}/api/mapa/coordenadas`;
+    const world = await fetch(url);
+    const worldGeoJSON = await world.json();
+    console.log('GeoJSON mundial cargado:', worldGeoJSON.data.geometry, 'features');
+    // Busca la feature de Colombia (ISO_A3 = COL o ADMIN = Colombia)
+    const colFeature = worldGeoJSON.data.geometry;
+    if (!colFeature) {
+      console.warn('No se encontró la geometría de Colombia en el GeoJSON.');
+      return;
+    }
+
+    // Crea un rectángulo grande (mundo) para restarle Colombia
+    // Evitamos los polos extremos para mayor estabilidad geométrica
+    const worldBBox = [-180, -85, 180, 85];
+    const worldPoly = turf.bboxPolygon(worldBBox);
+
+    // Asegura que la geometría de Colombia sea válida (por si viene como MultiPolygon)
+    const colGeom = colFeature;
+    const colPoly = turf.feature(colGeom);
+
+    // Calcula: máscara = mundo - Colombia
+    const maskGeom = turf.difference(worldPoly, colPoly);
+    if (!maskGeom) {
+      console.warn('No fue posible crear la máscara (difference retornó null).');
+      return;
+    }
+
+    // Dibuja la máscara (exterior de Colombia en azul)
+    const maskLayer = L.geoJSON(maskGeom, {
+      pane: 'overlayPane',   // se dibuja sobre los tiles
+      interactive: false
+    });
+    maskLayer.setStyle({
+      fillColor: '#a8d5f7',
+      fillOpacity: 1,
+      stroke: false
+    });
+    maskLayer.addTo(map);
+
+    // Dibuja la silueta de Colombia encima para resaltarla
+    const colombiaOutline = L.geoJSON(colPoly, {
+      style: {
+        color: '#1f4e79',
+        weight: 2,
+        fill: false
+      }
+    }).addTo(map);
+
+    // (Opcional) Enfoca el mapa a Colombia respetando tu lógica de markers
+    // Solo si aún no hay markers colocados:
+    if (!markers || markers.length === 0) {
+      const b = colombiaOutline.getBounds();
+      map.fitBounds(b.pad(0.05));
+    }
+  } catch (e) {
+    console.error('Error creando la máscara de Colombia:', e);
+  }
+}
+
+function loadUsers() {
+  console.log('🔄 Cargando entidades desde la API...');
+  // Cargar entidades desde la API
+  fetch(`${API_BASE_URL}/api/ubicacion-entidad/mapa/entidades`)
+    .then(response => {
+      console.log('📡 Respuesta de la API:', response.status);
+      if (!response.ok) {
+        throw new Error('Error al cargar entidades');
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log('✅ Entidades cargadas:', data);
+      usersData = data;
+      filteredUsers = [...usersData];
+      updateStatistics();
+      populateCityFilter();
+      displayMarkersOnMap();
+      displayUsersList();
+    })
+    .catch(error => {
+      console.error('❌ Error:', error);
+      // Usar datos de ejemplo en caso de error
+      usersData = [...mockUsers];
+      filteredUsers = [...usersData];
+      updateStatistics();
+      populateCityFilter();
+      displayMarkersOnMap();
+      displayUsersList();
+
+      Swal.fire({
+        icon: 'warning',
+        title: 'Datos de demostración',
+        text: 'Se están mostrando datos de ejemplo. No se pudieron cargar las entidades reales.',
+        timer: 3000,
+        timerProgressBar: true
+      });
+    });
+}
+
+function updateStatistics() {
+  document.getElementById('total-users').textContent = usersData.length;
+  document.getElementById('online-users').textContent = usersData.filter(u => u.verificada).length;
+  document.getElementById('total-companies').textContent = [...new Set(usersData.map(u => u.claseEntidad))].length;
+  document.getElementById('total-cities').textContent = [...new Set(usersData.map(u => u.city))].length;
+}
+
+function populateCityFilter() {
+  const cities = [...new Set(usersData.map(u => u.city))].sort();
+  const citySelect = document.getElementById('filter-city');
+
+  cities.forEach(city => {
+    const option = document.createElement('option');
+    option.value = city;
+    option.textContent = city;
+    citySelect.appendChild(option);
+  });
+}
+
+function displayMarkersOnMap() {
+  // Limpiar marcadores existentes
+  markers.forEach(marker => map.removeLayer(marker));
+  markers = [];
+
+  filteredUsers.forEach(user => {
+    const marker = createUserMarker(user);
+    markers.push(marker);
+    marker.addTo(map);
+  });
+
+  // // Ajustar vista si hay marcadores
+  // if (markers.length > 0) {
+  //     const group = new L.featureGroup(markers);
+  //     map.fitBounds(group.getBounds().pad(0.1));
+  // }
+}
+
+function createUserMarker(user) {
+  // Crear icono personalizado
+  const iconHtml = `
+                <div class="marker-entidad" style="
+                    width: 40px; 
+                    height: 40px; 
+                    border-radius: 50%; 
+                    display: flex; 
+                    align-items: center; 
+                    justify-content: center; 
+                    color: white; 
+                    font-weight: bold; 
+                    font-size: 14px;
+                    border: 3px solid white;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+                    background: ${getEntityColor(user.claseEntidad)};
+                ">
+                    ${user.avatar}
+                </div>
+            `;
+
+  const customIcon = L.divIcon({
+    html: iconHtml,
+    className: 'custom-marker',
+    iconSize: [40, 40],
+    iconAnchor: [20, 20],
+    popupAnchor: [0, -20]
+  });
+
+  const marker = L.marker([user.lat, user.lng], { icon: customIcon });
+
+  // Crear popup personalizado
+  const popupContent = createPopupContent(user);
+  marker.bindPopup(popupContent, {
+    maxWidth: 300,
+    className: 'custom-popup'
+  });
+
+  // Eventos del marcador
+  marker.on('click', () => {
+    highlightUser(user.id);
+  });
+
+  return marker;
+}
+
+function getEntityColor(claseEntidad) {
+  const colors = {
+    'Empresa': 'linear-gradient(135deg, #3498db, #2980b9)',
+    'Academia': 'linear-gradient(135deg, #e74c3c, #c0392b)',
+    'Estado': 'linear-gradient(135deg, #27ae60, #219a52)',
+    'Sociedad': 'linear-gradient(135deg, #f39c12, #e67e22)'
+  };
+  return colors[claseEntidad] || 'linear-gradient(135deg, #95a5a6, #7f8c8d)';
+}
+
+function createPopupContent(user) {
+  const typeLabels = {
+    'Empresa': '🏢 Empresa',
+    'Academia': '🎓 Academia',
+    'Estado': '� Estado',
+    'Sociedad': '💡 Sociedad'
+  };
+
+  const statusColor = user.verificada ? '#27ae60' : '#e74c3c';
+
+  return `
+                <div class="popup-header">
+                    <div class="popup-name">${user.name}</div>
+                    <div class="popup-role">${typeLabels[user.claseEntidad] || '🏢 Entidad'}</div>
+                </div>
+                <div class="popup-body">
+                    <div class="popup-info">
+                        <span class="popup-label">Tipo:</span>
+                        <span class="popup-value">${user.claseEntidad}</span>
+                    </div>
+                    <div class="popup-info">
+                        <span class="popup-label">Ciudad:</span>
+                        <span class="popup-value">${user.city}</span>
+                    </div>
+                    <div class="popup-info">
+                        <span class="popup-label">Dirección:</span>
+                        <span class="popup-value">${user.direccion || 'No especificada'}</span>
+                    </div>
+                    <div class="popup-info">
+                        <span class="popup-label">Estado:</span>
+                        <span class="popup-value" style="color: ${statusColor}">
+                            ● ${user.verificada ? 'Verificada' : 'Sin verificar'}
+                        </span>
+                    </div>
+                    <div class="popup-info">
+                        <span class="popup-label">Teléfono:</span>
+                        <span class="popup-value">${user.telefono || 'No disponible'}</span>
+                    </div>
+                    <div class="popup-actions">
+                        <button class="popup-btn btn-primary" onclick="contactUser('${user.email}')">
+                            <i class="fas fa-envelope"></i> Contactar
+                        </button>
+                        ${user.website ? `<button class="popup-btn btn-secondary" onclick="window.open('${user.website}', '_blank')">
+                            <i class="fas fa-globe"></i> Web
+                        </button>` : ''}
+                    </div>
+                </div>
+            `;
+}
+
+function displayUsersList() {
+  const listContent = document.getElementById('users-list-content');
+
+  if (filteredUsers.length === 0) {
+    listContent.innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: #7f8c8d;">
+                        <i class="fas fa-search" style="font-size: 2em; margin-bottom: 10px;"></i>
+                        <p>No se encontraron entidades con los filtros seleccionados</p>
+                    </div>
+                `;
+    return;
+  }
+
+  const usersHtml = filteredUsers.map(user => {
+    const typeIcons = {
+      'Empresa': '🏢',
+      'Academia': '🎓',
+      'Estado': '�',
+      'Sociedad': '💡'
+    };
+
+    return `
+            <div class="user-item" onclick="focusOnUser(${user.id})">
+                <div class="user-avatar">${user.avatar}</div>
+                <div class="user-info">
+                    <div class="user-name">${typeIcons[user.claseEntidad] || '🏢'} ${user.name}</div>
+                    <div class="user-details">${user.claseEntidad} • ${user.city}</div>
+                </div>
+                <div class="user-status ${user.verificada ? 'status-online' : 'status-offline'}">
+                    ${user.verificada ? 'Verificada' : 'Sin verificar'}
+                </div>
+            </div>
+
+           <button class="botonEntidad btnMasInfo" data-id="${user.id}">
+            Más información
+          </button>
+
+          `;
+
+  }).join('');
+
+  listContent.innerHTML = usersHtml;
+}
+
+function setupEventListeners() {
+  // Filtros de tipo de usuario
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', function () {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      currentFilter = this.dataset.type;
+      applyFilters();
+    });
+  });
+
+  // Búsqueda
+  document.getElementById('search-user').addEventListener('input', applyFilters);
+
+  // Filtro de ciudad
+  document.getElementById('filter-city').addEventListener('change', applyFilters);
+
+  // Cerrar sesión
+  document.getElementById('cerrarSesion').addEventListener('click', function () {
+    Swal.fire({
+      title: '¿Cerrar sesión?',
+      text: "¿Estás seguro que quieres cerrar tu sesión?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, cerrar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        clearCookies();
+        window.location.href = '/';
+      }
+    });
+  });
+}
+
+function applyFilters() {
+  const searchTerm = document.getElementById('search-user').value.toLowerCase();
+  const cityFilter = document.getElementById('filter-city').value;
+
+  filteredUsers = usersData.filter(user => {
+    // Filtro de tipo
+    const typeMatch = currentFilter === 'all' || user.claseEntidad === currentFilter;
+
+    // Filtro de búsqueda
+    const searchMatch = !searchTerm ||
+      user.name.toLowerCase().includes(searchTerm) ||
+      user.email.toLowerCase().includes(searchTerm) ||
+      user.company.toLowerCase().includes(searchTerm);
+
+    // Filtro de ciudad
+    const cityMatch = !cityFilter || user.city === cityFilter;
+
+    return typeMatch && searchMatch && cityMatch;
+  });
+
+  displayMarkersOnMap();
+  displayUsersList();
+}
+
+function focusOnUser(userId) {
+  const user = usersData.find(u => u.id === userId);
+  if (user) {
+    map.setView([user.lat, user.lng], 12);
+
+    // Encontrar y abrir el popup del marcador
+    const marker = markers.find(m =>
+      Math.abs(m.getLatLng().lat - user.lat) < 0.001 &&
+      Math.abs(m.getLatLng().lng - user.lng) < 0.001
+    );
+    if (marker) {
+      marker.openPopup();
+    }
+  }
+}
+
+function highlightUser(userId) {
+  // Resaltar usuario en la lista
+  document.querySelectorAll('.user-item').forEach(item => {
+    item.style.background = '';
+  });
+
+  const userElement = document.querySelector(`[onclick="focusOnUser(${userId})"]`);
+  if (userElement) {
+    userElement.style.background = '#e3f2fd';
+    userElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+}
+
+function contactUser(email) {
+  window.location.href = `mailto:${email}?subject=Contacto desde SinAptico&body=Hola, me gustaría ponerme en contacto contigo a través de la plataforma SinAptico.`;
+}
+
+function viewProfile(userId) {
+  const user = usersData.find(u => u.id === userId);
+  if (user) {
+    Swal.fire({
+      title: `Perfil de ${user.name}`,
+      html: `
+                        <div style="text-align: left;">
+                            <p><strong>Email:</strong> ${user.email}</p>
+                            <p><strong>Empresa:</strong> ${user.company}</p>
+                            <p><strong>Rol:</strong> ${user.role}</p>
+                            <p><strong>Ciudad:</strong> ${user.city}</p>
+                            <p><strong>Proyectos:</strong> ${user.projects}</p>
+                            <p><strong>Estado:</strong> ${user.status === 'online' ? 'En línea' : 'Desconectado'}</p>
+                        </div>
+                    `,
+      showCancelButton: true,
+      confirmButtonText: 'Contactar',
+      cancelButtonText: 'Cerrar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        contactUser(user.email);
+      }
+    });
+  }
+}
+
+function clearCookies() {
+  const cookies = ['user', 'userEmail', 'userId', 'userRole'];
+  cookies.forEach(cookie => {
+    document.cookie = `${cookie}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+  });
 }
