@@ -401,8 +401,9 @@
         .marker-empresa {
             background: linear-gradient(135deg, #27ae60, #219a52);
         }
-
         /* Capa de océano (exterior de Colombia) */
+
+
     </style>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -537,7 +538,7 @@
             </div>
         </div>
     </div>
-
+    
     <!-- Ubicaciones -->
     <script>
         // Variables globales
@@ -548,81 +549,76 @@
         let currentFilter = 'all';
 
         // Datos de ejemplo de usuarios con ubicaciones en Colombia
+       
+
+  // Llama a la máscara después de inicializar el mapa
+  document.addEventListener('DOMContentLoaded', function () {
+    initializeMap();
+    loadUsers();
+    addColombiaMask();               // <-- NUEVO
+    setupEventListeners();
+    checkUserSession();
+    
+  });
 
 
-        // Llama a la máscara después de inicializar el mapa
-        document.addEventListener('DOMContentLoaded', function () {
-            initializeMap();
-            loadUsers();
-            addColombiaMask();               // <-- NUEVO
-            setupEventListeners();
-            checkUserSession();
 
-        });
+ async function addColombiaMask() {
+    try {
+      // GeoJSON mundial (Natural Earth simplificado)
+      const url = `${API_BASE_URL}/api/mapa/coordenadas`;
+      const world = await fetch(url);
+      console.log('GeoJSON mundial cargado:', world, 'features');
+      // Busca la feature de Colombia (ISO_A3 = COL o ADMIN = Colombia)
+      const colFeature = world;
+      if (!colFeature) {
+        console.warn('No se encontró la geometría de Colombia en el GeoJSON.');
+        return;
+      }
 
+    //   // Crea un rectángulo grande (mundo) para restarle Colombia
+    //   // Evitamos los polos extremos para mayor estabilidad geométrica
+    //   const worldBBox = [-180, -85, 180, 85];
+    //   const worldPoly = turf.bboxPolygon(worldBBox);
 
+    //   // Asegura que la geometría de Colombia sea válida (por si viene como MultiPolygon)
+    //   const colGeom = colFeature;
+    //   const colPoly = turf.feature(colGeom);
 
-        async function addColombiaMask() {
-            try {
-                // GeoJSON mundial (Natural Earth simplificado)
-                const url = `${API_BASE_URL}/api/mapa/coordenadas`;
-                const world = await fetch(url);
-                const worldGeoJSON = await world.json();
-                console.log('GeoJSON mundial cargado:', worldGeoJSON.data.geometry, 'features');
-                // Busca la feature de Colombia (ISO_A3 = COL o ADMIN = Colombia)
-                const colFeature = worldGeoJSON.data.geometry;
-                if (!colFeature) {
-                    console.warn('No se encontró la geometría de Colombia en el GeoJSON.');
-                    return;
-                }
+    //   // Calcula: máscara = mundo - Colombia
+    //   const maskGeom = turf.difference(worldPoly, colPoly);
+    //   if (!maskGeom) {
+    //     console.warn('No fue posible crear la máscara (difference retornó null).');
+    //     return;
+    //   }
 
-                // Crea un rectángulo grande (mundo) para restarle Colombia
-                // Evitamos los polos extremos para mayor estabilidad geométrica
-                const worldBBox = [-180, -85, 180, 85];
-                const worldPoly = turf.bboxPolygon(worldBBox);
+    //   // Dibuja la máscara (exterior de Colombia en azul)
+    //   const maskLayer = L.geoJSON(maskGeom, {
+    //     pane: 'overlayPane',   // se dibuja sobre los tiles
+    //     interactive: false
+    //   });
+    //   maskLayer.getContainer?.().classList.add('ocean-mask'); // Para el CSS
+    //   maskLayer.addTo(map);
 
-                // Asegura que la geometría de Colombia sea válida (por si viene como MultiPolygon)
-                const colGeom = colFeature;
-                const colPoly = turf.feature(colGeom);
+    //   // Dibuja la silueta de Colombia encima para resaltarla
+    //   const colombiaOutline = L.geoJSON(colPoly, {
+    //     style: {
+    //       color: '#1f4e79',
+    //       weight: 2,
+    //       fill: false
+    //     }
+    //   }).addTo(map);
 
-                // Calcula: máscara = mundo - Colombia
-                const maskGeom = turf.difference(worldPoly, colPoly);
-                if (!maskGeom) {
-                    console.warn('No fue posible crear la máscara (difference retornó null).');
-                    return;
-                }
-
-                // Dibuja la máscara (exterior de Colombia en azul)
-                const maskLayer = L.geoJSON(maskGeom, {
-                    pane: 'overlayPane',   // se dibuja sobre los tiles
-                    interactive: false
-                });
-                maskLayer.setStyle({
-                    fillColor: '#a8d5f7',
-                    fillOpacity: 1,
-                    stroke: false
-                });
-                maskLayer.addTo(map);
-
-                // Dibuja la silueta de Colombia encima para resaltarla
-                const colombiaOutline = L.geoJSON(colPoly, {
-                    style: {
-                        color: '#1f4e79',
-                        weight: 2,
-                        fill: false
-                    }
-                }).addTo(map);
-
-                // (Opcional) Enfoca el mapa a Colombia respetando tu lógica de markers
-                // Solo si aún no hay markers colocados:
-                if (!markers || markers.length === 0) {
-                    const b = colombiaOutline.getBounds();
-                    map.fitBounds(b.pad(0.05));
-                }
-            } catch (e) {
-                console.error('Error creando la máscara de Colombia:', e);
-            }
-        }
+    //   // (Opcional) Enfoca el mapa a Colombia respetando tu lógica de markers
+    //   // Solo si aún no hay markers colocados:
+    //   if (!markers || markers.length === 0) {
+    //     const b = colombiaOutline.getBounds();
+    //     map.fitBounds(b.pad(0.05));
+    //   }
+    } catch (e) {
+      console.error('Error creando la máscara de Colombia:', e);
+    }
+  }
         function checkUserSession() {
             const usuario = obtenerCookie("user");
 
@@ -1011,10 +1007,10 @@
             });
         }
     </script>
+    
 
-
-    <script src="js/notificaciones.js"></script>
-    <script src="/js/websocket.js"></script>
+     <script src="js/notificaciones.js"></script>
+  <script src="/js/websocket.js"></script>
 </body>
 
 </html>

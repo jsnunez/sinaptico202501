@@ -22,6 +22,7 @@ import InvitacionRoutes from "./invitacionRoutes.js"; // Importar las rutas de I
 import UbicacionEntidadRoutes from "./ubicacionEntidadRoutes.js"; // Importar las rutas de UbicacionEntidad
 import Proyectos from "./proyectosRoutes.js"; // Importar las rutas de Proyectos
 import Contactar from "./contactar.Routes.js"; // Importar las rutas de Contactar
+import mapa from "./mapa.Routes.js"; // Importar las rutas de Mapa
 const router = express.Router();
 
 router.use('/entidad', entidadRoutes);
@@ -47,4 +48,5 @@ router.use('/invitacion', InvitacionRoutes); // Descomentar si se necesita la ru
 router.use('/ubicacion-entidad', UbicacionEntidadRoutes); // Rutas de ubicación de entidades
 router.use('/proyectos', Proyectos); // Rutas de proyectos
 router.use('/contactar', Contactar); // Rutas de contactar
+router.use('/mapa', mapa); // Rutas de mapa
 export default router;
