@@ -150,6 +150,7 @@
             border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin: 40px auto;
             width: 80%;
             max-width: 80%;
             display: flex;
@@ -601,35 +602,29 @@
                     </div>
 
                 </div>
-                     <div class="helix-title">
-                            <h1 class="title">🗺️ Mapa</h1>
-                            <p>Explora la ubicación de empresas, instituciones educativas y organizaciones de la red
-                                SinAptico
-                            </p>
-                        </div>
-                <div class="main-content" style="display: flex;">
-
-                    
-                    <div id="modalMapa">
+                <div id="modalMapa">
 
 
-                        <!-- Contenedor del mapa -->
-                        <!-- Header del mapa -->
-                    
-
-                        <div class="map-container" style="width: 40vw;">
-
-                            <div class="map-wrapper">
-                                <div id="mapid"></div>
-                            </div>
-
-
-                        </div>
-
+                    <!-- Contenedor del mapa -->
+                    <!-- Header del mapa -->
+                    <div class="helix-title">
+                        <h1 class="title">🗺️ Mapa</h1>
+                        <p>Explora la ubicación de empresas, instituciones educativas y organizaciones de la red
+                            SinAptico
+                        </p>
                     </div>
 
+                    <div class="map-container">
+
+                        <div class="map-wrapper">
+                            <div id="mapid"></div>
+                        </div>
+
+
+                    </div>
                     <!-- Lista de usuarios -->
-                    <div class="users-list" id="busquedaEntidad">
+                    <div class="users-list">
+                        <h3><i class="fas fa-building"></i> Entidades en el Mapa</h3>
                         <div id="users-list-content">
                             <div class="loading">
                                 <i class="fas fa-spinner"></i>
@@ -638,6 +633,19 @@
                         </div>
                     </div>
                 </div>
+
+
+                <div class="busquedaEntidad" id="busquedaEntidad">
+
+
+                    <!-- Contenido principal - Listado -->
+                    <div id="listado">
+                        <!-- Las tarjetas de empresas se cargarán aquí -->
+                    </div>
+                </div>
+
+
+
             </div>
 
         </div>
@@ -882,6 +890,23 @@
                     </tbody>
                 </table>
             </div>
+
+            <!-- Tabla de contactos en espera -->
+            <div id="tablaEspera" style="overflow-x:auto;display:none;">
+                <table style="width:100%;border-collapse:collapse;">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Entidad</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaContactosEspera">
+                        <!-- Los contactos en espera se cargarán aquí -->
+                    </tbody>
+                </table>
+            </div>
+
             <button class="modal-button" id="cerrarModalMisContactosBtn">Cerrar</button>
         </div>
     </div>
@@ -1292,7 +1317,7 @@
                     if (data.recibidos && Array.isArray(data.recibidos) && data.recibidos.length > 0) {
                         data.recibidos.forEach(contacto => {
 
-                            console.log(contacto.telefono);
+                            console.log(contacto);
 
                             const tr = document.createElement('tr');
                             tr.innerHTML = `
@@ -1316,6 +1341,7 @@
                     // Mostrar contactos enviados
                     if (data.enviados && Array.isArray(data.enviados) && data.enviados.length > 0) {
                         data.enviados.forEach(contacto => {
+                            console.log(contacto);
                             const tr = document.createElement('tr');
                             tr.innerHTML = `
                             <td style="text-align:center;">${contacto.User.name || ''}</td>
@@ -1684,11 +1710,13 @@
         })();
     </script>
 
-    <!-- En abril modal map / muro -->
+    <!-- En construccion -->
     <script>
         const toggleViewBtn = document.getElementById('toggleViewBtn');
-        const modalMapa = document.getElementById('modalMapa');
         const busquedaEntidad = document.getElementById('busquedaEntidad');
+        const modalMapa = document.getElementById('modalMapa');
+
+
 
         busquedaEntidad.style.display = 'block';
         modalMapa.style.display = 'none';
@@ -1701,32 +1729,23 @@
             isMuro = !isMuro;
 
             if (isMuro) {
-
+                // Mostrar muro / lista
                 busquedaEntidad.style.display = 'block';
-                busquedaEntidad.classList.remove('mapa-view');
-                busquedaEntidad.classList.add('muro-view');
-
                 modalMapa.style.display = 'none';
                 toggleViewBtn.textContent = '🗺️ Mapa';
 
 
-                loadUsers();
-
             } else {
-
+                // Mostrar mapa
+                busquedaEntidad.style.display = 'none';
                 modalMapa.style.display = 'block';
-                busquedaEntidad.style.display = 'block';
-                busquedaEntidad.classList.remove('muro-view');
-                busquedaEntidad.classList.add('mapa-view');
-
                 toggleViewBtn.textContent = '🟦 Muro';
-
                 initializeMap();
                 addColombiaMask();
                 loadUsers();
+
             }
         });
-
     </script>
 
 </body>
