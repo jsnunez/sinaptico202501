@@ -2,6 +2,7 @@ import UbicacionEntidad from '../models/ubicacionEntidad.js';
 import Entidad from '../models/entidad.js';
 import Ciudad from '../models/ciudad.js';
 import { Op } from 'sequelize';
+import Departamento from '../models/departamento.js';
 
 // Obtener todas las ubicaciones de entidades
 export const obtenerTodasLasUbicaciones = async (req, res) => {
@@ -206,6 +207,9 @@ export const obtenerEntidadesParaMapa = async (req, res) => {
         id: entidad.id,
         name: entidad.razonSocial,
         type: 'entidad',
+        logo: entidad.logo,
+        actividadEconomica: entidad.actividadEconomica,
+        departamento: entidad.Ciudad ? entidad.Ciudad.departamentoId : 'Colombia',
         company: entidad.razonSocial,
         claseEntidad: entidad.claseEntidad,
         city: entidad.Ciudad ? entidad.Ciudad.nombre : 'Colombia',
