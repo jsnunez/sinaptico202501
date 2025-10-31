@@ -854,8 +854,20 @@
     <div id="modalMisContactos" class="modal">
         <div class="modal-content" style="max-width:900px;">
             <span class="close" id="cerrarModalMisContactos">&times;</span>
-            <h2>Mis Contactos Verificados</h2>
-            <div style="overflow-x:auto;">
+            <h2>Mis Contactos</h2>
+
+            <!-- Toggle para cambiar entre verificados y en espera -->
+            <div style="text-align:center;margin:20px 0;">
+                <button class="filter-btn active" id="btnContactosVerificados">
+                    Verificados
+                </button>
+                <button class="filter-btn" id="btnContactosEspera">
+                    En Espera
+                </button>
+            </div>
+
+            <!-- Tabla de contactos verificados -->
+            <div id="tablaVerificados" style="overflow-x:auto;">
                 <table style="width:100%;border-collapse:collapse;">
                     <thead>
                         <tr>
@@ -1159,18 +1171,19 @@
                 .then(data => {
                     const tbody = document.getElementById('tablaContactosVerificados');
                     tbody.innerHTML = '';
+                    console.log(data);
                     // Mostrar contactos recibidos
                     if (data.recibidos && Array.isArray(data.recibidos) && data.recibidos.length > 0) {
                         data.recibidos.forEach(contacto => {
 
-                            console.log(contacto.telefono);
+                            console.log(contacto);
 
                             const tr = document.createElement('tr');
                             tr.innerHTML = `
-                            <td>${contacto.name || ''}</td>
-                            <td>${contacto.email || ''}</td>
-                            <td>${contacto.entidad || ''}</td>
-                            <td>${contacto.telefono || ''}</td>
+                            <td>${contacto.User.name || ''}</td>
+                            <td>${contacto.User.email || ''}</td>                            
+                            <td>${contacto.empresa.razonSocial || ''}</td>
+                            <td>${contacto.User.telefono || ''}</td>
                         `;
                             tbody.appendChild(tr);
                             console.log(tr);
@@ -1180,12 +1193,13 @@
                     // Mostrar contactos enviados
                     if (data.enviados && Array.isArray(data.enviados) && data.enviados.length > 0) {
                         data.enviados.forEach(contacto => {
+                            console.log(contacto);
                             const tr = document.createElement('tr');
                             tr.innerHTML = `
-                            <td>${contacto.name || ''}</td>
-                            <td>${contacto.email || ''}</td>
-                            <td>${contacto.entidad.razonsocial || ''}</td>
-                            <td>${contacto.telefono || ''}</td>
+                               <td>${contacto.User.name || ''}</td>
+                            <td>${contacto.User.email || ''}</td>                            
+                            <td>${contacto.empresa.razonSocial || ''}</td>
+                            <td>${contacto.User.telefono || ''}</td>
                         `;
                             tbody.appendChild(tr);
                         });
@@ -1205,6 +1219,191 @@
         document.getElementById('cerrarModalMisContactosBtn').onclick = function () {
             document.getElementById('modalMisContactos').style.display = 'none';
         };
+
+
+        // Toggle entre contactos verificados y en espera
+        document.getElementById('btnContactosVerificados').onclick = function () {
+             fetch(`/api/invitacion/mis-contactos/${userIdNotify}`)
+                .then(res => res.json())
+                .then(data => {
+                    const tbody = document.getElementById('tablaContactosVerificados');
+                    tbody.innerHTML = '';
+                    console.log(data);
+                    // Mostrar contactos recibidos
+                    if (data.recibidos && Array.isArray(data.recibidos) && data.recibidos.length > 0) {
+                        data.recibidos.forEach(contacto => {
+
+                            console.log(contacto);
+
+                            const tr = document.createElement('tr');
+                            tr.innerHTML = `
+                            <td>${contacto.User.name || ''}</td>
+                            <td>${contacto.User.email || ''}</td>                            
+                            <td>${contacto.empresa.razonSocial || ''}</td>
+                            <td>${contacto.User.telefono || ''}</td>
+                        `;
+                            tbody.appendChild(tr);
+                            console.log(tr);
+
+                        });
+                    }
+                    // Mostrar contactos enviados
+                    if (data.enviados && Array.isArray(data.enviados) && data.enviados.length > 0) {
+                        data.enviados.forEach(contacto => {
+                            console.log(contacto);
+                            const tr = document.createElement('tr');
+                            tr.innerHTML = `
+                               <td>${contacto.User.name || ''}</td>
+                            <td>${contacto.User.email || ''}</td>                            
+                            <td>${contacto.empresa.razonSocial || ''}</td>
+                            <td>${contacto.User.telefono || ''}</td>
+                        `;
+                            tbody.appendChild(tr);
+                        });
+                    }
+                    // Si no hay contactos en ninguno
+                    if (
+                        (!data.recibidos || data.recibidos.length === 0) &&
+                        (!data.enviados || data.enviados.length === 0)
+                    ) {
+                        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No hay contactos verificados</td></tr>';
+                    }
+                });
+            document.getElementById('tablaVerificados').style.display = 'block';
+            document.getElementById('tablaEspera').style.display = 'none';
+            this.classList.add('active');
+            document.getElementById('btnContactosEspera').classList.remove('active');
+        };
+
+        document.getElementById('btnContactosEspera').onclick = function () {
+            document.getElementById('tablaVerificados').style.display = 'none';
+            document.getElementById('tablaEspera').style.display = 'block';
+            this.classList.add('active');
+            document.getElementById('btnContactosVerificados').classList.remove('active');
+
+            // Cargar contactos en espera
+            fetch(`/api/invitacion/mis-contactos-pendientes/${userIdNotify}`)
+                .then(res => res.json())
+                .then(data => {
+                    const tbody = document.getElementById('tablaContactosEspera');
+                    tbody.innerHTML = '';
+                    console.log(data);
+                    // Mostrar contactos recibidos
+                    if (data.recibidos && Array.isArray(data.recibidos) && data.recibidos.length > 0) {
+                        data.recibidos.forEach(contacto => {
+
+                            console.log(contacto.telefono);
+
+                            const tr = document.createElement('tr');
+                            tr.innerHTML = `
+                            <td style="text-align:center;">${contacto.User.name || ''}</td>
+                            <td style="text-align:center;">${contacto.empresa.razonSocial || ''}</td>
+                            <td style="display:flex;gap:8px;justify-content:center;">
+                                <button class="filter-btn" style="background-color:#28a745;color:white;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:0.9em;" onclick="aceptarInvitacion(${contacto.invitacionId})">
+                                    <i class="bi bi-check-circle"></i> Aceptar
+                                </button>
+                                <button class="filter-btn" style="background-color:#dc3545;color:white;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:0.9em;" onclick="rechazarInvitacion(${contacto.invitacionId})">
+                                    <i class="bi bi-x-circle"></i> Rechazar
+                                </button>
+                            </td>
+                            </td>
+                        `;
+                            tbody.appendChild(tr);
+                            console.log(tr);
+
+                        });
+                    }
+                    // Mostrar contactos enviados
+                    if (data.enviados && Array.isArray(data.enviados) && data.enviados.length > 0) {
+                        data.enviados.forEach(contacto => {
+                            const tr = document.createElement('tr');
+                            tr.innerHTML = `
+                            <td style="text-align:center;">${contacto.User.name || ''}</td>
+                            <td style="text-align:center;">${contacto.empresa.razonSocial || ''}</td>
+                             <td style="text-align:center;">
+                                <button class="filter-btn" style="background-color:#dc3545;color:white;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:0.9em;" onclick="rechazarInvitacion(${contacto.invitacionId})">
+                                    <i class="bi bi-x-circle"></i> Cancelar
+                                </button>
+                            </td>
+                        `;
+                            tbody.appendChild(tr);
+                        });
+                    }
+                    // Función para aceptar invitación
+                    window.aceptarInvitacion = async function (invitacionId) {
+                        try {
+                            const res = await fetch(`/api/invitacion/${invitacionId}/verificar`, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' }
+                            });
+                            const data = await res.json();
+                            if (data.ok) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Invitación aceptada',
+                                    text: 'El contacto ha sido agregado exitosamente',
+                                    timer: 1500,
+                                    showConfirmButton: false
+                                });
+                                // Recargar la tabla de contactos en espera
+                                document.getElementById('btnContactosEspera').click();
+                            } else {
+                                throw new Error(data.message || 'Error al aceptar invitación');
+                            }
+                        } catch (error) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: error.message
+                            });
+                        }
+                    };
+
+                    // Función para rechazar/cancelar invitación
+                    window.rechazarInvitacion = async function (invitacionId) {
+                        try {
+                            const res = await fetch(`/api/invitacion/${invitacionId}/rechazar`, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' }
+                            });
+                            const data = await res.json();
+                            if (data.ok) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Invitación cancelada',
+                                    text: 'La invitación ha sido rechazada',
+                                    timer: 1500,
+                                    showConfirmButton: false
+                                });
+                                // Recargar la tabla de contactos en espera
+                                document.getElementById('btnContactosEspera').click();
+                            } else {
+                                throw new Error(data.message || 'Error al rechazar invitación');
+                            }
+                        } catch (error) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: error.message
+                            });
+                        }
+                    };
+                    // Si no hay contactos en ninguno
+                    if (
+                        (!data.recibidos || data.recibidos.length === 0) &&
+                        (!data.enviados || data.enviados.length === 0)
+                    ) {
+                        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No hay contactos verificados</td></tr>';
+                    }
+                });
+        };
+        document.getElementById('cerrarModalMisContactos').onclick = function () {
+            document.getElementById('modalMisContactos').style.display = 'none';
+        };
+        document.getElementById('cerrarModalMisContactosBtn').onclick = function () {
+            document.getElementById('modalMisContactos').style.display = 'none';
+        }
+
     </script>
 
     <!-- En construcción -->

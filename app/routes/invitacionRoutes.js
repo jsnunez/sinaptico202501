@@ -25,11 +25,21 @@ router.post('/', async (req, res) => {
                     { desdeuserid, parauserid },
                     { desdeuserid: parauserid, parauserid: desdeuserid }
                 ]
-            }
+            },
+            order: [
+                ['verificado', 'ASC'] // Prioridad: 0, 1, 2
+            ]
         });
 
         if (existente) {
-            return res.status(400).json({ error: 'Ya existe una invitación entre estos usuarios' });
+            console.log('Invitación existente:', existente.verificado);
+            if (existente.verificado == 1) {
+                return res.status(400).json({ error: 'Ya se encuentra en tus contactos' });
+            }
+            if (existente.verificado == 0) {
+                return res.status(400).json({ error: 'Ya existe una invitación entre estos usuarios' });
+            }
+            // Si verificado == 2, se ignora y continúa creando la nueva invitación
         }
 
 
@@ -84,8 +94,50 @@ router.get('/', async (req, res) => {
 router.post('/verificar', async (req, res) => {
     try {
         const { de, para } = req.body;
+
+        // Buscar la última invitación entre los dos usuarios
+        const invitacion = await Invitacion.findOne({
+            where: { desdeuserid: de, parauserid: para, contactarIntegranteverificado: false },
+            order: [['updatedAt', 'DESC']],
+        });
+
+        if (!invitacion) {
+            return res.status(404).json({ error: 'Invitación no encontrada' });
+        }
+
+        // Actualizar solo esa invitación
+        await invitacion.update({ verificado: true });
+
+        res.json({ ok: true, mensaje: 'Contacto verificado' });
+
+    } catch (error) {
+        console.error('Error al verificar invitación:', error);
+        res.status(500).json({ error: 'Error en la base de datos', details: error.message });
+    }
+});
+router.post('/:id/verificar', async (req, res) => {
+    try {
+        const invitacionId = parseInt(req.params.id);
+        
+        const invitacion = await Invitacion.findByPk(invitacionId);
+        
+        if (!invitacion) {
+            return res.status(404).json({ error: 'Invitación no encontrada' });
+        }
+        
+        await invitacion.update({ verificado: 1 });
+        
+        res.json({ ok: true, mensaje: 'Invitación verificada' });
+    } catch (error) {
+        res.status(500).json({ error: 'Error al verificar la invitación', details: error.message });
+    }
+});
+
+router.post('/rechazar', async (req, res) => {
+    try {
+        const { de, para } = req.body;
         const [updatedRows] = await Invitacion.update(
-            { verificado: true },
+            { verificado: 2 },
             { where: { desdeuserid: de, parauserid: para } }
         );
         if (updatedRows === 0) {
@@ -96,13 +148,32 @@ router.post('/verificar', async (req, res) => {
         res.status(500).json({ error: 'Error en la base de datos', details: error.message });
     }
 });
+router.post('/:id/rechazar', async (req, res) => {
+    
+    try {
+        const invitacionId = parseInt(req.params.id);
+        
+        const invitacion = await Invitacion.findByPk(invitacionId);
+        
+        if (!invitacion) {
+            return res.status(404).json({ error: 'Invitación no encontrada' });
+        }
+        
+        await invitacion.update({ verificado: 2 });
+        
+        res.json({ ok: true, mensaje: 'Invitación rechazada' });
+    } catch (error) {
+        res.status(500).json({ error: 'Error al rechazar la invitación', details: error.message });
+    }
+});
+
 router.get('/mis-contactos/:id', async (req, res) => {
     try {
         const id = parseInt(req.params.id);
 
         // Usuarios a los que yo (id) he invitado (soy desdeuserid)
             const enviados = await Invitacion.findAll({
-                where: { desdeuserid: id, verificado: true },
+                where: { desdeuserid: id, verificado: 1 },
                 attributes: [],
                 include: [
                     {
@@ -205,96 +276,105 @@ router.get('/mis-contactos/:id', async (req, res) => {
 router.get('/mis-contactos-pendientes/:id', async (req, res) => {
     try {
         const id = parseInt(req.params.id);
-
         // Usuarios a los que yo (id) he invitado (soy desdeuserid)
         const enviados = await Invitacion.findAll({
-            where: { desdeuserid: id, verificado: false },
-            attributes: [],
-            include: [
+                where: { desdeuserid: id, verificado: false },
+                attributes: ['id'],
+                include: [
                 {
                     model: User,
                     as: 'paraUser',
                     attributes: ['id']
                 }
-            ]
-        });
+                ]
+            });
 
         // Obtener información de empresa y cargo para los usuarios enviados
         const idsEnviados = enviados.map(inv => inv.paraUser.id);
+        const invitacionesIds = enviados.map(inv => inv.id);
         const enviadoCompleto = [];
-        for (const userId of idsEnviados) {
+        for (let i = 0; i < idsEnviados.length; i++) {
+            const userId = idsEnviados[i];
+            const invitacionId = invitacionesIds[i];
             const usuarioData = await UsuarioEmpresaCargo.findOne({
-                where: { userId: userId },
-                include: [
-                    {
-                        model: User,
-                        attributes: ['id', 'name']
-                    },
-                    {
-                        model: Entidad,
-                        as: 'empresa',
-                        attributes: ['id', 'razonSocial'],
-                        required: false
-                    }
-                ]
+            where: { userId: userId },
+             
+            include: [
+                {
+                model: User,
+                attributes: ['id', 'name']
+                },
+                {
+                model: Entidad,
+                as: 'empresa',
+                attributes: ['id', 'razonSocial'],
+                required: false
+                }
+            ]
             });
 
             // Si no tiene empresa asociada, crear objeto con valores por defecto
             if (usuarioData && !usuarioData.empresa) {
-                usuarioData.empresa = {
-                    id: null,
-                    razonSocial: 'Ninguno'
-                };
+            usuarioData.empresa = {
+                id: null,
+                razonSocial: 'Ninguno'
+            };
             }
             if (usuarioData) {
-                enviadoCompleto.push(usuarioData);
+            usuarioData.dataValues.invitacionId = invitacionId;
+            enviadoCompleto.push(usuarioData);
             }
         }
 
-        // Usuarios que me han invitado a mí (soy parauserid) y no están verificados
-        const recibidos = await Invitacion.findAll({
-            where: { parauserid: id, verificado: false },
-            attributes: [],
-            include: [
+            // Usuarios que me han invitado a mí (soy parauserid) y no están verificados
+            const recibidos = await Invitacion.findAll({
+                where: { parauserid: id, verificado: false },
+                attributes: ['id'],
+                include: [
                 {
                     model: User,
                     as: 'desdeUser',
                     attributes: ['id']
                 }
-            ]
-        });
-
-        // Obtener información de empresa y cargo para los usuarios recibidos
-        const idsRecibidos = recibidos.map(inv => inv.desdeUser.id);
-        const recibidosDatos = [];
-        for (const userId of idsRecibidos) {
-            const usuarioData = await UsuarioEmpresaCargo.findOne({
-                where: { userId: userId },
-                include: [
-                    {
-                        model: User,
-                        attributes: ['id', 'name', 'email', 'telefono']
-                    },
-                    {
-                        model: Entidad,
-                        as: 'empresa',
-                        attributes: ['id', 'razonSocial'],
-                        required: false
-                    }
                 ]
             });
 
-            // Si no tiene empresa asociada, crear objeto con valores por defecto
-            if (usuarioData && !usuarioData.empresa) {
+            // Obtener información de empresa y cargo para los usuarios recibidos
+            const idsRecibidos = recibidos.map(inv => inv.desdeUser.id);
+            const invitacionesIdsRecibidos = recibidos.map(inv => inv.id);
+            const recibidosDatos = [];
+            for (let i = 0; i < idsRecibidos.length; i++) {
+                const userId = idsRecibidos[i];
+                const invitacionId = invitacionesIdsRecibidos[i];
+                const usuarioData = await UsuarioEmpresaCargo.findOne({
+                where: { userId: userId },
+                include: [
+                    {
+                    model: User,
+                    attributes: ['id', 'name', 'email', 'telefono']
+                    },
+                    {
+                    model: Entidad,
+                    as: 'empresa',
+                    attributes: ['id', 'razonSocial'],
+                    required: false
+                    }
+                ]
+                });
+
+                // Si no tiene empresa asociada, crear objeto con valores por defecto
+                if (usuarioData && !usuarioData.empresa) {
                 usuarioData.empresa = {
                     id: null,
                     razonSocial: 'Ninguno'
                 };
-            }
-            if (usuarioData) {
+                }
+                if (usuarioData) {
+                usuarioData.dataValues.invitacionId = invitacionId;
                 recibidosDatos.push(usuarioData);
+                }
             }
-        }
+
 
         res.json({
             enviados: enviadoCompleto,
