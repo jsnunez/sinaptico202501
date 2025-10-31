@@ -50,14 +50,25 @@ iconoNotif.onclick = async function() {
             div.innerHTML = '<em>No hay notificaciones</em>';
         } else {
             div.innerHTML = noVerificadas.map(n => `
-                <div id="notif-div-${n.desdeuserid}" style='color:black; background:#fffff;padding:8px;margin:4px 0;border:1px solid #ccc;'>
-                    <b>De:</b> ${n.desdeUser.name}  <b>Mensaje:</b> ${n.mensaje}
-                    <span id="verif-${n.de}" style="margin-left:10px;">
-                        <button onclick='aceptarInvitacion(${n.desdeuserid})'>Aceptar</button>
-                    </span>
-                    <span id="tel-${n.de}" style="display:none;"></span>
-                </div>
-            `).join('');
+                      <div id="notif-div-${n.desdeuserid}" style='color:#333; background:#f8f9fa;padding:12px;margin:8px;border:2px solid #007bff;border-radius:8px;box-shadow:0 2px 4px rgba(0,123,255,0.1);'>
+                        <div style="margin-bottom:8px;">
+                        <b style="color:#007bff;">De:</b> <span style="color:#333;">${n.desdeUser.name}</span>
+                        </div>
+                        <div style="margin-bottom:10px;">
+                        <b style="color:#007bff;">Mensaje:</b> <span style="color:#666;">${n.mensaje}</span>
+                        </div>
+                        <div style="display:flex;gap:8px;justify-content:flex-end;">
+                        <button class="filter-btn" style="background-color:#28a745;color:white;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:0.9em;" onclick="aceptarInvitacion(${n.desdeuserid})">
+                          <i class="bi bi-check-circle"></i> Aceptar
+                        </button>
+                        <button class="filter-btn" style="background-color:#dc3545;color:white;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:0.9em;" onclick="rechazarInvitacion(${n.desdeuserid})">
+                          <i class="bi bi-x-circle"></i> Rechazar
+                        </button>
+                        </div>
+                        <span id="verif-${n.de}" style="display:none;"></span>
+                        <span id="tel-${n.de}" style="display:none;"></span>
+                      </div>
+                      `).join('');
         }
         // Mostrar como popup flotante bajo el icono
         div.style.display = 'block';
@@ -97,6 +108,22 @@ window.aceptarInvitacion = async function(de) {
     agregarPersonaSolicitante(de);
   }
 };
+
+window.rechazarInvitacion = async function(de) {
+  const res = await fetch(`${API_BASE_URL}/api/invitacion/rechazar`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ de, para: userIdNotify })
+  });
+  const data = await res.json();
+  if (data.ok) {
+    // Eliminar la notificación visualmente
+    const notifDiv = document.getElementById('notif-div-' + de);
+    if (notifDiv) notifDiv.remove();
+    actualizarContadorNotificaciones();
+  }
+};
+
 // Al cargar la página, ocultar el div de notificaciones
 window.onload = function() {
     document.getElementById('notificaciones').style.display = 'none';

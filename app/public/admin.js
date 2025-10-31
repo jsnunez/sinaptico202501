@@ -199,7 +199,7 @@ document.addEventListener("DOMContentLoaded", async function () {
            ${usuarioData[0].estado == 1 ? "Estado:✅." : "Estamos Confirmando Tu Información ⏳"}`;
         document.getElementById("vincularEntidad").style.display = "none";
         document.getElementById("misAsociados").style.display = "block";
-        await fetchMisAsociados(idEntidad);
+        await fetchMisAsociados(usuarioData[0].empresaId);
     
 
       } else {
