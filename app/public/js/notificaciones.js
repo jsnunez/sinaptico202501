@@ -81,6 +81,12 @@ window.aceptarInvitacion = async function(de) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ de, para: userIdNotify })
   });
+  // Enviar solicitud para compartir información
+  await fetch(`${API_BASE_URL}/api/contactar/compartir`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ de: userIdNotify, para: de })
+  });
   const data = await res.json();
   if (data.ok) {
     // Eliminar la notificación visualmente

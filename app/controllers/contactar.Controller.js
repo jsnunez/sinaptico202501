@@ -1,5 +1,6 @@
 import nodemailer from 'nodemailer';
 import dotenv from "dotenv";
+import User from '../models/user.js';
 dotenv.config();
 
 // filepath: d:\sebastian\sinaptico2025\app\controllers\contactar.Controller.js
@@ -66,22 +67,29 @@ export const enviarContacto = async (req, res) => {
 // Solicitar información de contacto
 export const solicitarDatos = async (req, res) => {
     try {
-        const { miNombre, destinatario } = req.body;
+        const { miNombre, userId } = req.body;
 
-        if (!miNombre || !destinatario) {
+
+        if (!miNombre || !userId) {
             return res.status(400).json({
                 success: false,
                 message: 'Faltan campos requeridos'
             });
         }
 
+        const destinatario = await User.findOne({
+            where: { id: userId },
+            attributes: ['email'],
+            
+        });
+console.log('Destinatario encontrado:', destinatario.email);
         // Generar token único para el link de aceptación
-        const token = Buffer.from(`${destinatario}-${Date.now()}`).toString('base64');
+        const token = Buffer.from(`${destinatario.email}-${Date.now()}`).toString('base64');
         const acceptLink = `${process.env.FRONTEND_URL || 'http://localhost:4000/'}compartir/${token}`;
 
         const mailOptions = {
             from: process.env.EMAIL_USER,
-            to: destinatario,
+            to: destinatario.email,
             subject: `Sinaptico: ${miNombre} solicita tu información de contacto`,
             html: `
             <h2>Solicitud de Información</h2>
@@ -99,7 +107,7 @@ export const solicitarDatos = async (req, res) => {
             </p>
             `
         };
-
+console.log('Mail options:', mailOptions);
         await transporter.sendMail(mailOptions);
 
         res.status(200).json({
@@ -121,25 +129,35 @@ export const solicitarDatos = async (req, res) => {
 // Compartir mi información con otro contacto
 export const compartirMiInformacion = async (req, res) => {
     try {
-        const { miNombre, miEmail, miTelefono, destinatario, mensaje } = req.body;
+        const { de, para } = req.body;
 
-        if (!miNombre || !miEmail || !destinatario) {
+        if (!de || !para) {
             return res.status(400).json({
                 success: false,
                 message: 'Faltan campos requeridos'
             });
         }
 
+  const destinatario = await User.findOne({
+            where: { id: para },
+            attributes: ['email'],
+            
+        });
+        const remitente = await User.findOne({
+            where: { id: de },
+            attributes: ['name', 'email', 'telefono'],
+        });
+
         const mailOptions = {
             from: process.env.EMAIL_USER,
-            to: destinatario,
-            subject: `${miNombre} quiere compartir su información contigo`,
+            to: destinatario.email,
+            subject: `${remitente.name} quiere compartir su información contigo`,
             html: `
-                <h2>${miNombre} desea ponerse en contacto</h2>
-                <p><strong>Nombre:</strong> ${miNombre}</p>
-                <p><strong>Email:</strong> ${miEmail}</p>
-                <p><strong>Teléfono:</strong> ${miTelefono || 'No proporcionado'}</p>
-                ${mensaje ? `<p><strong>Mensaje:</strong></p><p>${mensaje}</p>` : ''}
+                <h2>${remitente.name} desea ponerse en contacto</h2>
+                <p><strong>Nombre:</strong> ${remitente.name}</p>
+                <p><strong>Email:</strong> ${remitente.email}</p>
+                <p><strong>Teléfono:</strong> ${remitente.telefono || 'No proporcionado'}</p>
+               
                 <hr>
                 <p style="color: #666; font-size: 12px;">Este mensaje fue enviado porque autorizaste compartir tu información.</p>
             `

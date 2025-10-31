@@ -1,4 +1,5 @@
 function contactarIntegrante(id, nombre) {
+    const miNombre = obtenerCookie("user");
     Swal.fire({
         title: 'Contactar Integrante',
         text: `¿Deseas contactar a ${nombre}?`,
@@ -28,6 +29,23 @@ function contactarIntegrante(id, nombre) {
             .then(data => {
                 console.log('Respuesta del servidor:', data);
                 if (data && data.id) {
+                fetch(`${API_BASE_URL}/api/contactar/solicitar-datos`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        miNombre: miNombre,
+                        userId: id
+                    })
+                })
+                .then(res => res.json())
+                .then(infoData => {
+                    console.log('Información solicitada:', infoData);
+                })
+                .catch(err => {
+                    console.error('Error al solicitar información:', err);
+                });
                 Swal.fire(
                     'Enviado',
                     `Se ha enviado la invitación a ${nombre}`,

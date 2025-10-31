@@ -5,6 +5,7 @@ import User from '../models/user.js';
 import Entidad from '../models/entidad.js';
 import { Op } from 'sequelize';
 import { enviarNotificacion } from '../config/socketUtils.js';
+import UsuarioEmpresaCargo from '../models/usuarioEmpresaCargo.js';
 const router = express.Router();
 // Enviar invitación o mensaje usando MySQL
 
@@ -100,27 +101,51 @@ router.get('/mis-contactos/:id', async (req, res) => {
         const id = parseInt(req.params.id);
 
         // Usuarios a los que yo (id) he invitado (soy desdeuserid)
-        const enviados = await Invitacion.findAll({
-            where: { desdeuserid: id },
-            attributes: [],
-            include: [
-                {
-                    model: User,
-                    as: 'paraUser',
-                    attributes: ['id', 'name', 'email', 'telefono'],
+            const enviados = await Invitacion.findAll({
+                where: { desdeuserid: id, verificado: true },
+                attributes: [],
+                include: [
+                    {
+                        model: User,
+                        as: 'paraUser',
+                        attributes: ['id']
+                    }
+                ]
+            });
+
+            // Obtener información de empresa y cargo para los usuarios enviados
+            const idsEnviados = enviados.map(inv => inv.paraUser.id);
+            // console.log('IDs enviados:', idsEnviados);
+            const enviadoCompleto = [];
+            for (const userId of idsEnviados) {
+                // console.log('Buscando usuarioEmpresaCargo para userId:', userId);
+                const usuarioData = await UsuarioEmpresaCargo.findOne({
+                    where: { userId: userId },
                     include: [
                         {
+                            model: User,
+                            attributes: ['id', 'name', 'email', 'telefono']
+                        },
+                        {
                             model: Entidad,
-                            as: 'entidad', // Asegúrate que el alias coincida con tu asociación
-                            attributes: ['razonsocial'], // Elimina esta línea si 'nombre' no existe o da error
-                            where: { UserAdminId: { [Op.col]: 'paraUser.id' } }, // Solo si necesitas filtrar por UserAdminId
+                            as: 'empresa',
+                            attributes: ['id', 'razonSocial'],
                             required: false
                         }
                     ]
-                }
-            ]
-        });
+                });
 
+                // Si no tiene empresa asociada, crear objeto con valores por defecto
+                if (usuarioData && !usuarioData.empresa) {
+                    usuarioData.empresa = {
+                        id: null,
+                        razonSocial: 'Ninguno'
+                    };
+                }
+                if (usuarioData) {
+                    enviadoCompleto.push(usuarioData);
+                }
+            }
         // Usuarios que me han invitado a mí (soy parauserid) y están verificados
         const recibidos = await Invitacion.findAll({
             where: { parauserid: id, verificado: true },
@@ -129,21 +154,154 @@ router.get('/mis-contactos/:id', async (req, res) => {
                 {
                     model: User,
                     as: 'desdeUser',
-                    attributes: ['id', 'name', 'email', 'telefono']
+                    attributes: ['id']
                 }
             ]
         });
 
-        // Extraer solo los datos de usuario
-        const enviadosDatos = enviados.map(inv => inv.paraUser);
-        const recibidosDatos = recibidos.map(inv => inv.desdeUser);
+        // Obtener información de empresa y cargo para los usuarios recibidos
+        const idsRecibidos = recibidos.map(inv => inv.desdeUser.id);
+        // console.log('IDs recibidos:', idsRecibidos);
+        const recibidosDatos = [];
+        for (const userId of idsRecibidos) {
+            // console.log('Buscando usuarioEmpresaCargo para userId:', userId);
+            const usuarioData = await UsuarioEmpresaCargo.findOne({
+                where: { userId: userId, },
+                include: [
+                    {
+                        model: User,
+                        attributes: ['id', 'name', 'email', 'telefono']
+                    },
+                    {
+                        model: Entidad,
+                        as: 'empresa',
+                        attributes: ['id', 'razonSocial'],
+                        required: false
+                    }
+                ]
+            });
+
+            // Si no tiene empresa asociada, crear objeto con valores por defecto
+            if (usuarioData && !usuarioData.empresa) {
+                usuarioData.empresa = {
+                    id: null,
+                    razonSocial: 'Ninguno'
+                };
+            }
+            if (usuarioData) {
+                recibidosDatos.push(usuarioData);
+            }
+        }
 
         res.json({
-            enviados: enviadosDatos,
+            enviados: enviadoCompleto,
             recibidos: recibidosDatos
         });
     } catch (error) {
         res.status(500).json({ error: 'Error al obtener los contactos', details: error.message });
+    }
+});
+
+router.get('/mis-contactos-pendientes/:id', async (req, res) => {
+    try {
+        const id = parseInt(req.params.id);
+
+        // Usuarios a los que yo (id) he invitado (soy desdeuserid)
+        const enviados = await Invitacion.findAll({
+            where: { desdeuserid: id, verificado: false },
+            attributes: [],
+            include: [
+                {
+                    model: User,
+                    as: 'paraUser',
+                    attributes: ['id']
+                }
+            ]
+        });
+
+        // Obtener información de empresa y cargo para los usuarios enviados
+        const idsEnviados = enviados.map(inv => inv.paraUser.id);
+        const enviadoCompleto = [];
+        for (const userId of idsEnviados) {
+            const usuarioData = await UsuarioEmpresaCargo.findOne({
+                where: { userId: userId },
+                include: [
+                    {
+                        model: User,
+                        attributes: ['id', 'name']
+                    },
+                    {
+                        model: Entidad,
+                        as: 'empresa',
+                        attributes: ['id', 'razonSocial'],
+                        required: false
+                    }
+                ]
+            });
+
+            // Si no tiene empresa asociada, crear objeto con valores por defecto
+            if (usuarioData && !usuarioData.empresa) {
+                usuarioData.empresa = {
+                    id: null,
+                    razonSocial: 'Ninguno'
+                };
+            }
+            if (usuarioData) {
+                enviadoCompleto.push(usuarioData);
+            }
+        }
+
+        // Usuarios que me han invitado a mí (soy parauserid) y no están verificados
+        const recibidos = await Invitacion.findAll({
+            where: { parauserid: id, verificado: false },
+            attributes: [],
+            include: [
+                {
+                    model: User,
+                    as: 'desdeUser',
+                    attributes: ['id']
+                }
+            ]
+        });
+
+        // Obtener información de empresa y cargo para los usuarios recibidos
+        const idsRecibidos = recibidos.map(inv => inv.desdeUser.id);
+        const recibidosDatos = [];
+        for (const userId of idsRecibidos) {
+            const usuarioData = await UsuarioEmpresaCargo.findOne({
+                where: { userId: userId },
+                include: [
+                    {
+                        model: User,
+                        attributes: ['id', 'name', 'email', 'telefono']
+                    },
+                    {
+                        model: Entidad,
+                        as: 'empresa',
+                        attributes: ['id', 'razonSocial'],
+                        required: false
+                    }
+                ]
+            });
+
+            // Si no tiene empresa asociada, crear objeto con valores por defecto
+            if (usuarioData && !usuarioData.empresa) {
+                usuarioData.empresa = {
+                    id: null,
+                    razonSocial: 'Ninguno'
+                };
+            }
+            if (usuarioData) {
+                recibidosDatos.push(usuarioData);
+            }
+        }
+
+        res.json({
+            enviados: enviadoCompleto,
+            recibidos: recibidosDatos
+        });
+    } catch (error) {
+        res.status(500).json({ error: 'Error al obtener los contactos pendientes', details: error.message });
     }
 });
 export default router;
