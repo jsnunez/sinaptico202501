@@ -100,15 +100,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Mostrar/ocultar secciones según los botones de filtro
     const filterButtons = document.querySelectorAll('.filter-button');
-    const listadoSection = document.getElementById('listado');
+
     const entidadesSection = document.getElementById('entidades');
     // Manejar clic en el div de directorio
     const directorioDiv = document.getElementById('directorio');
     directorioDiv.addEventListener('click', function() {
-
-        
-      // Mostrar listado de empresas
-        document.getElementById('listado').style.display = 'flex';
+        loadUsers();
 
         document.getElementById('modalDirectorio').style.display = 'block';
  
@@ -127,10 +124,10 @@ document.addEventListener('DOMContentLoaded', function() {
             this.classList.add('active');
             
             if (this.id === 'Todos') {
-                listadoSection.style.display = 'none';
+            
                 entidadesSection.style.display = 'block';
             } else {
-                listadoSection.style.display = 'flex';
+               
                 entidadesSection.style.display = 'none';
                 
                 // Aquí se puede agregar lógica para filtrar las entidades según el tipo
