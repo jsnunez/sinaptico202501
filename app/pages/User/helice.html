@@ -1712,6 +1712,15 @@
 
     <!-- En construccion -->
     <script>
+const directorioDiv = document.getElementById('directorio');
+    directorioDiv.addEventListener('click', function() {
+
+        document.getElementById('modalDirectorio').style.display = 'block';
+ 
+        
+
+        document.getElementById('entidades').style.display = 'none';
+    });
         const toggleViewBtn = document.getElementById('toggleViewBtn');
         const busquedaEntidad = document.getElementById('busquedaEntidad');
         const modalMapa = document.getElementById('modalMapa');
@@ -1729,20 +1738,22 @@
             isMuro = !isMuro;
 
             if (isMuro) {
-                // Mostrar muro / lista
-                busquedaEntidad.style.display = 'block';
-                modalMapa.style.display = 'none';
-                toggleViewBtn.textContent = '🗺️ Mapa';
 
-
-            } else {
-                // Mostrar mapa
+                    // Mostrar mapa
                 busquedaEntidad.style.display = 'none';
                 modalMapa.style.display = 'block';
                 toggleViewBtn.textContent = '🟦 Muro';
                 initializeMap();
                 addColombiaMask();
                 loadUsers();
+          
+
+
+            } else {
+               // Mostrar muro / lista
+                busquedaEntidad.style.display = 'block';
+                modalMapa.style.display = 'none';
+                toggleViewBtn.textContent = '🗺️ Mapa';
 
             }
         });

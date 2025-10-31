@@ -103,16 +103,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const entidadesSection = document.getElementById('entidades');
     // Manejar clic en el div de directorio
-    const directorioDiv = document.getElementById('directorio');
-    directorioDiv.addEventListener('click', function() {
-        loadUsers();
+    // const directorioDiv = document.getElementById('directorio');
+    // directorioDiv.addEventListener('click', function() {
 
-        document.getElementById('modalDirectorio').style.display = 'block';
+    //     document.getElementById('modalDirectorio').style.display = 'block';
  
         
 
-        document.getElementById('entidades').style.display = 'none';
-    });
+    //     document.getElementById('entidades').style.display = 'none';
+    // });
     // Activar el botón "Todos" por defecto
     // document.getElementById('Todos1').classList.add('active');
     
