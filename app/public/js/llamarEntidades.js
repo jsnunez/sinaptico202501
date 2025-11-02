@@ -543,27 +543,17 @@ function loadUsers() {
       usersData = data;
       filteredUsers = [...usersData];
       updateStatistics();
-            populateCityFilter();
-
-      // displayMarkersOnMap();
+      populateCityFilter();
+      //displayMarkersOnMap();
       displayUsersList();
     })
     .catch(error => {
       console.error('❌ Error:', error);
+      console.log('Usando datos de ejemplo debido a un error en la carga de entidades.');
       // Usar datos de ejemplo en caso de error
-      usersData = [...mockUsers];
-      filteredUsers = [...usersData];
-      updateStatistics();
-      displayMarkersOnMap();
-      displayUsersList();
 
-      Swal.fire({
-        icon: 'warning',
-        title: 'Datos de demostración',
-        text: 'Se están mostrando datos de ejemplo. No se pudieron cargar las entidades reales.',
-        timer: 3000,
-        timerProgressBar: true
-      });
+
+
     });
 }
 
@@ -573,16 +563,21 @@ function updateStatistics() {
   document.getElementById('total-companies').textContent = [...new Set(usersData.map(u => u.claseEntidad))].length;
   document.getElementById('total-cities').textContent = [...new Set(usersData.map(u => u.city))].length;
 }
-
 function populateCityFilter() {
-  const cities = [...new Set(usersData.map(u => u.city))].sort();
+  const cities = [...new Set(usersData.map(u => u.city || u.Ciudad?.nombre))].sort();
   const citySelect = document.getElementById('filter-city');
 
+  // ✅ Limpiar opciones anteriores
+  citySelect.innerHTML = '<option value="">Todas las ciudades</option>';
+
+  // ✅ Evitar añadir valores vacíos o repetidos
   cities.forEach(city => {
-    const option = document.createElement('option');
-    option.value = city;
-    option.textContent = city;
-    citySelect.appendChild(option);
+    if (city && city.trim() !== '') {
+      const option = document.createElement('option');
+      option.value = city;
+      option.textContent = city;
+      citySelect.appendChild(option);
+    }
   });
 }
 
@@ -712,6 +707,7 @@ function createPopupContent(user) {
 
 function displayUsersList() {
   const listContent = document.getElementById('users-list-content');
+  console.log('Mostrando lista de usuarios, total:', filteredUsers);
 
   if (filteredUsers.length === 0) {
     listContent.innerHTML = `

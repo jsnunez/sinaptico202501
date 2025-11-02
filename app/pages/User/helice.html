@@ -596,7 +596,7 @@
                     </div>
                     <div class="control-group">
                         <label class="control-label">Filtrar Actividad Economica</label>
-                        <select class="control-select" id="filter-city">
+                        <select class="control-select" id="filter-actividadEconomica">
                             <option value="">Todas las Actividades</option>
                         </select>
                     </div>
@@ -622,6 +622,11 @@
 
 
                     </div>
+
+                </div>
+
+
+                <div class="busquedaEntidad" id="busquedaEntidad">
                     <!-- Lista de usuarios -->
                     <div class="users-list">
                         <h3><i class="fas fa-building"></i> Entidades en el Mapa</h3>
@@ -633,17 +638,6 @@
                         </div>
                     </div>
                 </div>
-
-
-                <div class="busquedaEntidad" id="busquedaEntidad">
-
-
-                    <!-- Contenido principal - Listado -->
-                    <div id="listado">
-                        <!-- Las tarjetas de empresas se cargarán aquí -->
-                    </div>
-                </div>
-
 
 
             </div>
@@ -1248,7 +1242,7 @@
 
         // Toggle entre contactos verificados y en espera
         document.getElementById('btnContactosVerificados').onclick = function () {
-             fetch(`/api/invitacion/mis-contactos/${userIdNotify}`)
+            fetch(`/api/invitacion/mis-contactos/${userIdNotify}`)
                 .then(res => res.json())
                 .then(data => {
                     const tbody = document.getElementById('tablaContactosVerificados');
@@ -1712,51 +1706,49 @@
 
     <!-- En construccion -->
     <script>
-const directorioDiv = document.getElementById('directorio');
-    directorioDiv.addEventListener('click', function() {
+        const directorioDiv = document.getElementById('directorio');
+        if (directorioDiv) {
+            directorioDiv.addEventListener('click', () => {
+                document.getElementById('modalDirectorio').style.display = 'block';
+                document.getElementById('entidades').style.display = 'none';
 
-        document.getElementById('modalDirectorio').style.display = 'block';
- 
-        
+                loadUsers();
+            });
+        }
 
-        document.getElementById('entidades').style.display = 'none';
-    });
         const toggleViewBtn = document.getElementById('toggleViewBtn');
         const busquedaEntidad = document.getElementById('busquedaEntidad');
         const modalMapa = document.getElementById('modalMapa');
 
-
-
+        // Estado inicial: modo muro
+        let isMuro = true;
         busquedaEntidad.style.display = 'block';
         modalMapa.style.display = 'none';
         toggleViewBtn.textContent = '🗺️ Mapa';
-
-        // Estado inicial: modo muro (lista)
-        let isMuro = true;
 
         toggleViewBtn.addEventListener('click', () => {
             isMuro = !isMuro;
 
             if (isMuro) {
-
-                    // Mostrar mapa
-                busquedaEntidad.style.display = 'none';
+                // Mostrar muro
+                busquedaEntidad.style.display = 'block';
+                modalMapa.style.display = 'none';
+                toggleViewBtn.textContent = '🗺️ Mapa';
+                 loadUsers();
+            
+            } else {
+                // Mostrar mapa
+                busquedaEntidad.style.display = 'block';
                 modalMapa.style.display = 'block';
                 toggleViewBtn.textContent = '🟦 Muro';
                 initializeMap();
                 addColombiaMask();
                 loadUsers();
-          
-
-
-            } else {
-               // Mostrar muro / lista
-                busquedaEntidad.style.display = 'block';
-                modalMapa.style.display = 'none';
-                toggleViewBtn.textContent = '🗺️ Mapa';
 
             }
         });
+
+
     </script>
 
 </body>
