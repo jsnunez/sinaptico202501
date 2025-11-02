@@ -150,9 +150,9 @@
             border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            margin: 40px auto;
-            width: 80%;
-            max-width: 80%;
+            /* margin: 40px auto; */
+            width: 50%;
+            max-width: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -602,7 +602,7 @@
                     </div>
 
                 </div>
-                <div id="modalMapa">
+                <div>
 
 
                     <!-- Contenedor del mapa -->
@@ -613,31 +613,32 @@
                             SinAptico
                         </p>
                     </div>
+                    <div id="directorioCompleto" style="  display: flex;   justify-content: space-around;">
+                        <div class="map-container"  id="modalMapa">
 
-                    <div class="map-container">
+                            <div class="map-wrapper">
+                                <div id="mapid"></div>
+                            </div>
 
-                        <div class="map-wrapper">
-                            <div id="mapid"></div>
+
                         </div>
-
-
-                    </div>
-
-                </div>
-
-
-                <div class="busquedaEntidad" id="busquedaEntidad">
-                    <!-- Lista de usuarios -->
-                    <div class="users-list">
-                        <h3><i class="fas fa-building"></i> Entidades en el Mapa</h3>
-                        <div id="users-list-content">
-                            <div class="loading">
-                                <i class="fas fa-spinner"></i>
-                                <p>Cargando entidades...</p>
+                        <div class="busquedaEntidad" id="busquedaEntidad">
+                            <!-- Lista de usuarios -->
+                            <div class="users-list">
+                                <!-- <h3><i class="fas fa-building"></i> Entidades en el Mapa</h3> -->
+                                <div id="users-list-content">
+                                    <div class="loading">
+                                        <i class="fas fa-spinner"></i>
+                                        <p>Cargando entidades...</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
+
+
 
 
             </div>
@@ -1707,21 +1708,24 @@
     <!-- En construccion -->
     <script>
         const directorioDiv = document.getElementById('directorio');
-        if (directorioDiv) {
-            directorioDiv.addEventListener('click', () => {
-                document.getElementById('modalDirectorio').style.display = 'block';
-                document.getElementById('entidades').style.display = 'none';
 
-                loadUsers();
-            });
-        }
 
         const toggleViewBtn = document.getElementById('toggleViewBtn');
         const busquedaEntidad = document.getElementById('busquedaEntidad');
         const modalMapa = document.getElementById('modalMapa');
-
+        if (directorioDiv) {
+            directorioDiv.addEventListener('click', () => {
+                document.getElementById('modalDirectorio').style.display = 'block';
+                document.getElementById('entidades').style.display = 'none';
+                modalMapa.style.display = 'block';
+                toggleViewBtn.textContent = '🟦 Muro';
+                initializeMap();
+                addColombiaMask();
+                loadUsers();
+            });
+        }
         // Estado inicial: modo muro
-        let isMuro = true;
+        let isMuro = false;
         busquedaEntidad.style.display = 'block';
         modalMapa.style.display = 'none';
         toggleViewBtn.textContent = '🗺️ Mapa';
@@ -1730,25 +1734,117 @@
             isMuro = !isMuro;
 
             if (isMuro) {
+                console.log('Cambiando a vista Muro');
                 // Mostrar muro
                 busquedaEntidad.style.display = 'block';
                 modalMapa.style.display = 'none';
                 toggleViewBtn.textContent = '🗺️ Mapa';
-                 loadUsers();
-            
+                // loadUsers();
+                console.log('Cambiando a vista Muro');
+                busquedaEntidad.style.display = 'grid';
+                busquedaEntidad.style.gridTemplateColumns = 'repeat(auto-fill, minmax(280px, 1fr))';
+                busquedaEntidad.style.gap = '20px';
+                busquedaEntidad.style.padding = '20px';
+                
+                // Aplicar estilos de cuadrícula a los elementos user-item
+                const userItems = document.querySelectorAll('.user-item');
+                const usersListContent = document.getElementById('users-list-content');
+                usersListContent.style.gridTemplateColumns = 'repeat(auto-fill, minmax(280px, 1fr))';
+                                usersListContent.style.gap = '20px';
+                                usersListContent.style.padding = '20px';
+                                
+                                busquedaEntidad.style.display = '';
+                                busquedaEntidad.style.gridTemplateColumns = '';
+                                busquedaEntidad.style.gap = '';
+                                busquedaEntidad.style.padding = '';
+                                busquedaEntidad.style.width = '';
+                usersListContent.style.display = 'grid';
+                userItems.forEach(item => {
+                    item.style.display = 'flex';
+                    item.style.flexDirection = 'column';
+                    item.style.padding = '20px';
+                    item.style.border = '1px solid #ecf0f1';
+                    item.style.borderRadius = '12px';
+                    item.style.backgroundColor = 'white';
+                    item.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)';
+                    item.style.transition = 'transform 0.3s, box-shadow 0.3s';
+                    
+                    item.onmouseenter = function() {
+                        this.style.transform = 'translateY(-5px)';
+                        this.style.boxShadow = '0 4px 15px rgba(0,0,0,0.15)';
+                    };
+                    
+                    item.onmouseleave = function() {
+                        this.style.transform = 'translateY(0)';
+                        this.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)';
+                    };
+                });
+                busquedaEntidad.style.width = '100%';
+
             } else {
                 // Mostrar mapa
-                busquedaEntidad.style.display = 'block';
+                console.log('Cambiando a vista Mapa');
+                                busquedaEntidad.style.display = 'block';
+                                busquedaEntidad.style.width = 'auto';
+                                
+                                // Restaurar estilos originales de los user-item
+                                const userItems = document.querySelectorAll('.user-item');
+                                const usersListContent = document.getElementById('users-list-content');
+                                usersListContent.style.display = '';
+                                usersListContent.style.gridTemplateColumns = '';
+                                usersListContent.style.gap = '';
+                                usersListContent.style.padding = '';
+                                
+                                userItems.forEach(item => {
+                                    item.style.display = 'flex';
+                                    item.style.justifyContent = 'space-between';
+                                    item.style.alignItems = 'center';
+                                    item.style.padding = '10px';
+                                    item.style.borderBottom = '1px solid #eee';
+                                    item.style.cursor = 'pointer';
+                                    item.style.flexDirection = '';
+                                    item.style.border = '';
+                                    item.style.borderRadius = '';
+                                    item.style.backgroundColor = '';
+                                    item.style.boxShadow = '';
+                                    item.style.transition = '';
+                                    item.style.transform = '';
+                                    
+                                    item.onmouseenter = null;
+                                    item.onmouseleave = null;
+                                });
                 modalMapa.style.display = 'block';
                 toggleViewBtn.textContent = '🟦 Muro';
-                initializeMap();
-                addColombiaMask();
-                loadUsers();
+
 
             }
         });
 
+ function applyFilters() {
+            const searchTerm = document.getElementById('search-user').value.toLowerCase();
+            const cityFilter = document.getElementById('filter-city').value;
+console.log('Aplicando filtros:', { searchTerm, cityFilter, currentFilter });
 
+            filteredUsers = usersData.filter(user => {
+                // Filtro de tipo
+                const typeMatch = currentFilter === 'all' || user.claseEntidad === currentFilter;
+
+                // Filtro de búsqueda
+                const searchMatch = !searchTerm ||
+                    user.name.toLowerCase().includes(searchTerm) ||
+                    user.email.toLowerCase().includes(searchTerm) ||
+                    user.company.toLowerCase().includes(searchTerm);
+
+                // Filtro de ciudad
+                const cityMatch = !cityFilter || user.city === cityFilter;
+
+                return typeMatch && searchMatch && cityMatch;
+            });
+console.log(`🔍 Filtrando entidades: ${filteredUsers.length} coinciden con los criterios.`);
+
+            displayMarkersOnMap();
+            displayUsersList();
+        }
     </script>
 
 </body>

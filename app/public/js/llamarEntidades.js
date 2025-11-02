@@ -544,7 +544,7 @@ function loadUsers() {
       filteredUsers = [...usersData];
       updateStatistics();
       populateCityFilter();
-      //displayMarkersOnMap();
+      displayMarkersOnMap();
       displayUsersList();
     })
     .catch(error => {
@@ -708,7 +708,7 @@ function createPopupContent(user) {
 function displayUsersList() {
   const listContent = document.getElementById('users-list-content');
   console.log('Mostrando lista de usuarios, total:', filteredUsers);
-
+  focusOnCity(filteredUsers[0].id);
   if (filteredUsers.length === 0) {
     listContent.innerHTML = `
                     <div style="text-align: center; padding: 40px; color: #7f8c8d;">
@@ -796,31 +796,32 @@ function setupEventListeners() {
   });
 }
 
-function applyFilters() {
-  const searchTerm = document.getElementById('search-user').value.toLowerCase();
-  const cityFilter = document.getElementById('filter-city').value;
+ function applyFilters() {
+            const searchTerm = document.getElementById('search-user').value.toLowerCase();
+            const cityFilter = document.getElementById('filter-city').value;
+console.log('Aplicando filtros:', { currentFilter, searchTerm, cityFilter });
+            filteredUsers = usersData.filter(user => {
+                // Filtro de tipo
+                const typeMatch = currentFilter === 'all' || user.claseEntidad === currentFilter;
 
-  filteredUsers = usersData.filter(user => {
-    // Filtro de tipo
-    const typeMatch = currentFilter === 'all' || user.claseEntidad === currentFilter;
+                // Filtro de búsqueda
+                const searchMatch = !searchTerm ||
+                    user.name.toLowerCase().includes(searchTerm) ||
+                    user.email.toLowerCase().includes(searchTerm) ||
+                    user.company.toLowerCase().includes(searchTerm);
 
-    // Filtro de búsqueda
-    const searchMatch = !searchTerm ||
-      user.name.toLowerCase().includes(searchTerm) ||
-      user.email.toLowerCase().includes(searchTerm) ||
-      user.company.toLowerCase().includes(searchTerm);
+                // Filtro de ciudad
+                const cityMatch = !cityFilter || user.city === cityFilter;
 
-    // Filtro de ciudad
-    const cityMatch = !cityFilter || user.city === cityFilter;
+                return typeMatch && searchMatch && cityMatch;
+            });
 
-    return typeMatch && searchMatch && cityMatch;
-  });
-
-  displayMarkersOnMap();
-  displayUsersList();
-}
+            displayMarkersOnMap();
+            displayUsersList();
+        }
 
 function focusOnUser(userId) {
+  console.log('Centrando en usuario ID:', userId);
   const user = usersData.find(u => u.id === userId);
   if (user) {
     map.setView([user.lat, user.lng], 12);
@@ -835,6 +836,23 @@ function focusOnUser(userId) {
     }
   }
 }
+
+function focusOnCity(userId) {
+  console.log('Centrando en usuario ID:', userId);
+  const user = usersData.find(u => u.id === userId);
+  const cityFilter = document.getElementById('filter-city').value;
+  console.log('Ciudad seleccionada:', cityFilter);
+  if (cityFilter == '' ) {
+    map.setView([4.5709, -74.2973], 5);
+    return;
+  }
+  if (user) {
+    map.setView([user.lat, user.lng], 10);
+
+
+  }
+}
+
 
 function highlightUser(userId) {
   // Resaltar usuario en la lista
