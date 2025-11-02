@@ -253,11 +253,25 @@ router.get('/mis-contactos/:id', async (req, res) => {
             });
 
             // Si no tiene empresa asociada, crear objeto con valores por defecto
-            if (usuarioData && !usuarioData.empresa) {
-                usuarioData.empresa = {
-                    id: null,
-                    razonSocial: 'Ninguno'
-                };
+               if (!usuarioData) {
+                const user = await User.findByPk(userId, {
+                                    attributes: ['id', 'name', 'email', 'telefono']
+                                });
+                                
+                                const usuarioDataFallback = {
+                                    userId: userId,
+                                    empresaId: null,
+                                    cargoId: null,
+                                    User: user || { id: userId, name: 'Usuario no encontrado', email: '', telefono: '' },
+                                    empresa: {
+                                        id: null,
+                                        razonSocial: 'ninguna'
+                                    },
+                                    
+                                    
+                                };
+                                recibidosDatos.push(usuarioDataFallback);
+                                continue;
             }
             if (usuarioData) {
                 recibidosDatos.push(usuarioData);
@@ -338,14 +352,17 @@ router.get('/mis-contactos-pendientes/:id', async (req, res) => {
                 }
                 ]
             });
-
             // Obtener información de empresa y cargo para los usuarios recibidos
             const idsRecibidos = recibidos.map(inv => inv.desdeUser.id);
             const invitacionesIdsRecibidos = recibidos.map(inv => inv.id);
+            console.log('Recibidos pendientes:', invitacionesIdsRecibidos);    
+
             const recibidosDatos = [];
             for (let i = 0; i < idsRecibidos.length; i++) {
                 const userId = idsRecibidos[i];
                 const invitacionId = invitacionesIdsRecibidos[i];
+                console.log('Invitación ID para recibido:', userId);
+
                 const usuarioData = await UsuarioEmpresaCargo.findOne({
                 where: { userId: userId },
                 include: [
@@ -363,16 +380,32 @@ router.get('/mis-contactos-pendientes/:id', async (req, res) => {
                 });
 
                 // Si no tiene empresa asociada, crear objeto con valores por defecto
-                if (usuarioData && !usuarioData.empresa) {
-                usuarioData.empresa = {
-                    id: null,
-                    razonSocial: 'Ninguno'
-                };
-                }
-                if (usuarioData) {
+                if (!usuarioData) {
+                const user = await User.findByPk(userId, {
+                                    attributes: ['id', 'name', 'email', 'telefono']
+                                });
+                                
+                                const usuarioDataFallback = {
+                                    id: invitacionId,
+                                    userId: userId,
+                                    empresaId: null,
+                                    cargoId: null,
+                                    User: user || { id: userId, name: 'Usuario no encontrado', email: '', telefono: '' },
+                                    empresa: {
+                                        id: null,
+                                        razonSocial: 'ninguna'
+                                    },
+                                    
+                                        invitacionId: invitacionId
+                                    
+                                };
+                                recibidosDatos.push(usuarioDataFallback);
+                                continue;
+            }
+            if (usuarioData) {
                 usuarioData.dataValues.invitacionId = invitacionId;
                 recibidosDatos.push(usuarioData);
-                }
+            }
             }
 
 
