@@ -139,28 +139,30 @@ function initEntidadesPage() {
             tbody.appendChild(tr);
             return;
         }
+        else {
+            // Iteramos sobre las entidades visibles en esta página
+            entidadesPagina.forEach((entidad) => {
 
-        // Iteramos sobre las entidades visibles en esta página
-        for (const entidad of entidadesPagina) {
-            try {
-                // Obtener el email del administrador
-                const response = await fetch(`${API_BASE_URL}/api/user/email/${entidad.UserAdminId}`);
-                if (!response.ok) throw new Error("Error al obtener el email del usuario administrador");
-                const email = await response.json();
-                entidad.emailAdmin = email;
-            } catch (error) {
-                console.error("Error al obtener email del admin:", error);
-                entidad.emailAdmin = { email: "No disponible" };
-            }
 
-            // Crear la fila
-            const tr = document.createElement("tr");
-            tr.innerHTML = `
+                fetch(`${API_BASE_URL}/api/user/email/${entidad.UserAdminId}`)
+                    .then((response) => {
+                        if (!response.ok) {
+                            throw new Error("Error al obtener el ID del usuario administrador");
+                        }
+                        return response.json();
+                    })
+                    .then((email) => {
+                        emailAdmin = email; // Almacenar el email del admin
+                        entidad.emailAdmin = email; // Guardar el email en la entidad
+                    })
+                    .catch((error) => console.error("Error:", error));                      // Cargar tabla de entidades
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
             <td>
                 ${entidad.razonSocial ?? ''}
                 ${entidad.ubicaciones?.length > 0
-                    ? '<span style="color: green; margin-left: 5px;" title="Tiene ubicación en mapa">📍</span>'
-                    : '<span style="color: #ccc; margin-left: 5px;" title="Sin ubicación en mapa">📍</span>'}
+                        ? '<span style="color: green; margin-left: 5px;" title="Tiene ubicación en mapa">📍</span>'
+                        : '<span style="color: #ccc; margin-left: 5px;" title="Sin ubicación en mapa">📍</span>'}
             </td>
             <td>${entidad.numIdentificacion ?? ''}</td>
             <td>${entidad.contacto?.nombre ?? ''}</td>
@@ -185,12 +187,15 @@ function initEntidadesPage() {
                 </div>
             </td>
         `;
-            tbody.appendChild(tr);
+                tbody.appendChild(tr);
+            });
         }
-let idEntidad = null;
-        // ✅ Agregar event listeners SOLO una vez por renderizado
-        document.querySelectorAll(".ver-integrantes-entidad").forEach((btn) => {
-            btn.addEventListener("click", (e) => {
+
+        let idEntidad = null;
+
+        // ✅ Agregar event listeners (solo una vez)
+        document.querySelectorAll(".ver-integrantes-entidad").forEach(btn => {
+            btn.addEventListener("click", e => {
                 const entidadId = e.currentTarget.dataset.id;
                 idEntidad = entidadId;
                 console.log("Ver integrantes de entidad con ID:", entidadId);
@@ -198,7 +203,7 @@ let idEntidad = null;
                 const modal = document.getElementById("modalVerIntegrantesEntidad");
                 modal.style.display = "block";
 
-                // Llamar a tu función externa
+                // Llamar a la función externa
                 if (typeof fetchSolicitudes === "function") {
                     console.log("⚙️ Llamando a fetchSolicitudes() con entidadId:", entidadId);
                     fetchSolicitudes(entidadId);
@@ -206,186 +211,246 @@ let idEntidad = null;
                     console.error("⚠️ La función fetchSolicitudes() no está disponible.");
                 }
             });
-        }
+        });
 
-        );
-    }
+        const tableBody = document.getElementById("solicitudes-list-body");
 
-    const tableBody = document.getElementById('solicitudes-list-body');
+        async function fetchSolicitudes(idEntidad) {
+            console.log("id entidad", idEntidad);
 
-    async function fetchSolicitudes(idEntidad) {
-        console.log('id entidad', idEntidad);
-        let adminUserId = null;
-     
             try {
-                const response = await fetch('/api/usuarioempresa/empresa/' + idEntidad);
-                if (!response.ok) throw new Error('Error al obtener datos');
+                const response = await fetch(`/api/usuarioempresa/empresa/${idEntidad}`);
+                if (!response.ok) throw new Error("Error al obtener datos");
                 const data = await response.json();
-console.log('Datos de solicitudes recibidos:', data);
-                renderTable(data,idEntidad);
-
+                console.log("Datos de solicitudes recibidos:", data);
+                renderTable(data, idEntidad);
             } catch (error) {
                 tableBody.innerHTML = `<tr><td colspan="4">Error: ${error.message}</td></tr>`;
             }
-
-        
-
-    }
-
-    function renderTable(solicitudes,idEntidad) {
-        console.log('solicitudes', solicitudes);
-        if (!Array.isArray(solicitudes) || solicitudes.length === 0) {
-            tableBody.innerHTML = '<tr><td colspan="4">No hay solicitudes vinculadas.</td></tr>';
-            return;
         }
-        tableBody.innerHTML = solicitudes.map(solicitud => `
-            <tr style="border-bottom:1px solid #e9ecef;">
-         
-            <td style="padding:12px 8px;font-weight:600;color:#2b2f3a;">
-            ${solicitud.User ? solicitud.User.name : ''}
-            </td>
-            <td style="padding:12px 8px;color:#6c757d;">
-            ${solicitud.User ? solicitud.User.email : ''}
-            </td>
-            <td style="padding:12px 8px;">
-            ${solicitud.Cargo ? solicitud.Cargo.nombre : ''}
-            </td>
- <td style="display:flex;justify-content:center;align-items:center;">
-                <!-- Toggle activo para todos -->
-                <button
-                    class="toggle-estado-btn"
-                    data-id="${solicitud.id}"
-                    aria-pressed="${solicitud.estado ? 'true' : 'false'}"
-                    title="${solicitud.estado ? 'Deshabilitar' : 'Habilitar'}"
-                    style="display:inline-flex;align-items:center;gap:10px;border:0;padding:6px 10px;border-radius:999px;cursor:pointer;
-                        background: linear-gradient(180deg, ${solicitud.estado ? '#46d36a' : '#ff8a8a'}, ${solicitud.estado ? '#28a745' : '#dc3545'});
-                        color:#fff;box-shadow:0 2px 6px rgba(43,52,69,0.08);font-weight:600;">
-                    <span style="position:relative;width:44px;height:24px;display:inline-block;border-radius:12px;background:rgba(255,255,255,0.18);flex-shrink:0;">
-                        <span style="position:absolute;top:2px;left:${solicitud.estado ? '22px' : '2px'};width:20px;height:20px;background:#fff;border-radius:50%;
-                            box-shadow:0 2px 4px rgba(0,0,0,0.15);transition:left .18s;"></span>
-                    </span>
-                    <span style="font-size:0.88rem;">${solicitud.estado ? 'Habilitado' : 'Deshabilitado'}</span>
-                </button>
-            </td>
 
-            <td>
-                <!-- Botón eliminar activo para todos -->
-                <button
-                    class="delete-solicitud-btn"
-                    data-id="${solicitud.id}"
-                    title="Eliminar solicitud"
-                    style="
-                        background: transparent;
-                        border: 0;
-                        padding: 6px;
-                        border-radius: 8px;
-                        cursor: pointer;
-                        color: #c92a2a;
-                        display: inline-flex;
-                        align-items: center;
-                        gap: 6px;
-                    ">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                        viewBox="0 0 16 16" aria-hidden="true">
-                        <path d="M5.5 5.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-4a.5.5 0 0 1-.5-.5v-7z"/>
-                        <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9.5A1.5 1.5 0 0 1 11.5 15h-7A1.5 1.5 0 0 1 3 13.5V4H2.5a1 1 0 1 1 0-2h3.1a1 1 0 0 1 .9-.6h2a1 1 0 0 1 .9.6H13.5a1 1 0 0 1 1 1zM5.118 4 5 4.059V13.5a.5.5 0 0 0 .5.5h5a.5.5 0 0 0 .5-.5V4.059L10.882 4H5.118z"/>
-                    </svg>
-                </button>
-            </td>
-            </tr>
-        `).join('');
-
-        // Agregar listeners para los botones toggle
-        document.querySelectorAll('.toggle-estado-btn').forEach(btn => {
-            btn.addEventListener('click', async function () {
-                const id = this.getAttribute('data-id');
-                try {
-                    console.log('Cambiando estado para ID:', id);
-                    const response = await fetch(`/api/usuarioempresa/habilitar/${id}`, {
-                        method: 'PUT'
-                    });
-                    if (!response.ok) throw new Error('No se pudo cambiar el estado');
-                    // Opcional: refrescar la tabla
-
-                    fetchSolicitudes(idEntidad);
-                    console.log('Actualizando tabla ID:', idEntidad);
-            
-                } catch (error) {
-                    alert('Error: ' + error.message);
-                    console.error('Error al cambiar estado:', error);
-                }
-            });
-        });
-    }
-
-    // Delegated handler para botones "Eliminar solicitud"
-    tableBody.addEventListener('click', async (event) => {
-        const btn = event.target.closest('.delete-solicitud-btn');
-        if (!btn) return;
-
-        const id = btn.getAttribute('data-id');
-        if (!id) return;
-
-        const result = await Swal.fire({
-            title: '¿Eliminar solicitud?',
-            text: 'Esta acción no se puede deshacer.',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Sí, eliminar',
-            cancelButtonText: 'Cancelar'
-        });
-
-        if (!result.isConfirmed) return;
-
-        try {
-            btn.disabled = true;
-            btn.style.opacity = '0.6';
-
-            const response = await fetch(`/api/usuarioempresa/${id}`, { method: 'DELETE' });
-            if (!response.ok) {
-                let msg = 'No se pudo eliminar la solicitud';
-                try {
-                    const payload = await response.json();
-                    msg = payload.message || JSON.stringify(payload);
-                } catch (e) {
-                    try { msg = await response.text(); } catch (_) { }
-                }
-                throw new Error(msg);
+        function renderTable(solicitudes, idEntidad) {
+            console.log("solicitudes", solicitudes);
+            if (!Array.isArray(solicitudes) || solicitudes.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="4">No hay solicitudes vinculadas.</td></tr>';
+                return;
             }
 
-            // Remover la fila correspondiente del DOM
-            const row = btn.closest('tr');
-            if (row) row.remove();
+            tableBody.innerHTML = solicitudes.map(solicitud => `
+    <tr style="border-bottom:1px solid #e9ecef;">
+      <td style="padding:12px 8px;font-weight:600;color:#2b2f3a;">
+        ${solicitud.User ? solicitud.User.name : ''}
+      </td>
+      <td style="padding:12px 8px;color:#6c757d;">
+        ${solicitud.User ? solicitud.User.email : ''}
+      </td>
+      <td style="padding:12px 8px;">
+        ${solicitud.Cargo ? solicitud.Cargo.nombre : ''}
+      </td>
+      <td style="display:flex;justify-content:center;align-items:center;">
+        <button
+          class="toggle-estado-btn"
+          data-id="${solicitud.id}"
+          aria-pressed="${solicitud.estado ? 'true' : 'false'}"
+          title="${solicitud.estado ? 'Deshabilitar' : 'Habilitar'}"
+          style="display:inline-flex;align-items:center;gap:10px;border:0;padding:6px 10px;border-radius:999px;cursor:pointer;
+              background: linear-gradient(180deg, ${solicitud.estado ? '#46d36a' : '#ff8a8a'}, ${solicitud.estado ? '#28a745' : '#dc3545'});
+              color:#fff;box-shadow:0 2px 6px rgba(43,52,69,0.08);font-weight:600;">
+          <span style="position:relative;width:44px;height:24px;display:inline-block;border-radius:12px;background:rgba(255,255,255,0.18);flex-shrink:0;">
+              <span style="position:absolute;top:2px;left:${solicitud.estado ? '22px' : '2px'};width:20px;height:20px;background:#fff;border-radius:50%;
+                  box-shadow:0 2px 4px rgba(0,0,0,0.15);transition:left .18s;"></span>
+          </span>
+          <span style="font-size:0.88rem;">${solicitud.estado ? 'Habilitado' : 'Deshabilitado'}</span>
+        </button>
+      </td>
+      <td>
+        <button
+          class="delete-solicitud-btn"
+          data-id="${solicitud.id}"
+          title="Eliminar solicitud"
+          style="background:transparent;border:0;padding:6px;border-radius:8px;cursor:pointer;color:#c92a2a;display:inline-flex;align-items:center;gap:6px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+              viewBox="0 0 16 16" aria-hidden="true">
+              <path d="M5.5 5.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-4a.5.5 0 0 1-.5-.5v-7z"/>
+              <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9.5A1.5 1.5 0 0 1 11.5 15h-7A1.5 1.5 0 0 1 3 13.5V4H2.5a1 1 0 1 1 0-2h3.1a1 1 0 0 1 .9-.6h2a1 1 0 0 1 .9.6H13.5a1 1 0 0 1 1 1zM5.118 4 5 4.059V13.5a.5.5 0 0 0 .5.5h5a.5.5 0 0 0 .5-.5V4.059L10.882 4H5.118z"/>
+          </svg>
+        </button>
+      </td>
+    </tr>
+  `).join('');
 
-            await Swal.fire({
-                title: '¡Eliminado!',
-                text: 'La solicitud ha sido eliminada correctamente.',
-                icon: 'success',
-                timer: 2000,
-                showConfirmButton: false
+            // ✅ Event listener para toggles
+            document.querySelectorAll('.toggle-estado-btn').forEach(btn => {
+                btn.addEventListener('click', async function () {
+                    const id = this.getAttribute('data-id');
+                    try {
+                        console.log('Cambiando estado para ID:', id);
+                        const response = await fetch(`/api/usuarioempresa/habilitar/${id}`, {
+                            method: 'PUT'
+                        });
+                        if (!response.ok) throw new Error('No se pudo cambiar el estado');
+
+                        // Refrescar la tabla
+                        fetchSolicitudes(idEntidad);
+                        console.log('Actualizando tabla ID:', idEntidad);
+                    } catch (error) {
+                        alert('Error: ' + error.message);
+                        console.error('Error al cambiar estado:', error);
+                    }
+                });
             });
-        } catch (error) {
-            await Swal.fire({
-                title: 'Error',
-                text: error.message,
-                icon: 'error',
-                confirmButtonText: 'Aceptar'
-            });
-            btn.disabled = false;
-            btn.style.opacity = '';
         }
-    });
-    // Cerrar modal
-    document.getElementById('cerrarModalVerIntegrantesEntidad').onclick = function () {
-        document.getElementById('modalVerIntegrantesEntidad').style.display = 'none';
-    };
-    document.getElementById('cerrarModalVerIntegrantesEntidadBtn').onclick = function () {
-        document.getElementById('modalVerIntegrantesEntidad').style.display = 'none';
-    };
+
+        // ✅ Delegación para botón eliminar
+        tableBody.addEventListener('click', async event => {
+            const btn = event.target.closest('.delete-solicitud-btn');
+            if (!btn) return;
+
+            const id = btn.getAttribute('data-id');
+            if (!id) return;
+
+            const result = await Swal.fire({
+                title: '¿Eliminar solicitud?',
+                text: 'Esta acción no se puede deshacer.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            });
+
+            if (!result.isConfirmed) return;
+
+            try {
+                btn.disabled = true;
+                btn.style.opacity = '0.6';
+
+                const response = await fetch(`/api/usuarioempresa/${id}`, { method: 'DELETE' });
+                if (!response.ok) throw new Error('No se pudo eliminar la solicitud');
+
+                // Remover la fila
+                const row = btn.closest('tr');
+                if (row) row.remove();
+
+                await Swal.fire({
+                    title: '¡Eliminado!',
+                    text: 'La solicitud ha sido eliminada correctamente.',
+                    icon: 'success',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            } catch (error) {
+                await Swal.fire({
+                    title: 'Error',
+                    text: error.message,
+                    icon: 'error',
+                    confirmButtonText: 'Aceptar'
+                });
+                btn.disabled = false;
+                btn.style.opacity = '';
+            }
+        });
+
+        // ✅ Cerrar modal
+        document.getElementById('cerrarModalVerIntegrantesEntidad').onclick = () => {
+            document.getElementById('modalVerIntegrantesEntidad').style.display = 'none';
+        };
+        document.getElementById('cerrarModalVerIntegrantesEntidadBtn').onclick = () => {
+            document.getElementById('modalVerIntegrantesEntidad').style.display = 'none';
+        };
+
+        renderPaginacion(entidadesList.length, pagina);
+
+        function renderPaginacion(totalItems, paginaActual) {
+            const inicio = (paginaActual - 1) * filasPorPagina;
+            const fin = inicio + filasPorPagina;
+            const filtradas = entidadesList.slice(inicio, fin);
+            const totalPaginas = Math.ceil(totalItems / filasPorPagina);
+
+            const paginacionContainer = document.getElementById("paginacionEntidades");
+            paginacionContainer.innerHTML = "";
+
+            for (let i = 1; i <= totalPaginas; i++) {
+                const btn = document.createElement("button");
+                btn.className = "pagination-button";
+                btn.textContent = i;
+                if (i === paginaActual) {
+                    btn.classList.add("active");
+                }
+                btn.addEventListener("click", () => {
+                    console.log("Pagina: ", i)
+                    paginaActual = i;
+
+                    renderEntidades(entidades.empresas, i);
+                });
+                paginacionContainer.appendChild(btn);
+            }
+        }
 
 
+
+        // Enviar cambio de estado a la base de datos
+        document.querySelectorAll(".toggle-input").forEach((toggle) => {
+            toggle.addEventListener("change", function () {
+                const id = Number.parseInt(this.id.split("-")[1]);
+                const estado = this.checked;
+
+                fetch(`${API_BASE_URL}/api/entidad/cambiarEstado/${id}`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ id, habilitado: estado }),
+                })
+                    .then((response) => {
+                        if (!response.ok) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'Error al cambiar el estado de la entidad',
+                            });
+                            throw new Error("Error al cambiar el estado de la entidad");
+                        }
+                        return response.json();
+                    })
+                    .then((data) => {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Éxito',
+                            text: `El estado de la entidad se ${estado ? 'habilitó' : 'deshabilitó'} correctamente`,
+                        });
+                    })
+                    .catch((error) => {
+                        console.error("Error:", error);
+                        // Revertir el cambio en caso de error
+                        this.checked = !estado;
+                    });
+            });
+        });
+        // Agregar eventos a los botones de acción
+        document.querySelectorAll(".action-icon.edit-full").forEach((btn) => {
+            btn.addEventListener("click", function () {
+                const id = Number.parseInt(this.getAttribute("data-id"))
+                editarEntidadCompleto(id) // Edición completa
+            })
+        })
+
+        document.querySelectorAll(".action-icon.delete").forEach((btn) => {
+            btn.addEventListener("click", function () {
+                const id = Number.parseInt(this.getAttribute("data-id"))
+                confirmarEliminarEntidad(id)
+            })
+        })
+
+        // Agregar eventos a los toggles
+        document.querySelectorAll(".toggle-input").forEach((toggle) => {
+            toggle.addEventListener("change", function () {
+                const id = Number.parseInt(this.id.split("-")[1])
+
+            })
+        })
+    }
 
     // Renderizar entidades iniciales
     renderEntidades(entidades)
@@ -1130,24 +1195,24 @@ console.log('Datos de solicitudes recibidos:', data);
                     const response = await fetch(`${API_BASE_URL}/api/entidad/eliminar/${entidadIdEliminar}`, {
                         method: "DELETE",
                     });
-
+    
                     if (!response.ok) {
                         throw new Error("Error al eliminar la entidad");
                     }
-
+    
                     // Eliminar la entidad del array local
                     const index = entidades.empresas.findIndex((e) => e.id === entidadIdEliminar);
                     if (index !== -1) {
                         entidades.empresas.splice(index, 1);
                         renderEntidades(entidades.empresas);
                     }
-
+    
                     Swal.fire({
                         icon: 'success',
                         title: 'Éxito',
                         text: 'Entidad eliminada correctamente',
                     });
-
+    
                     modalConfirmacion.style.display = "none";
                     entidadIdEliminar = null;
                 } catch (error) {
@@ -1158,11 +1223,12 @@ console.log('Datos de solicitudes recibidos:', data);
                         text: 'Error al eliminar la entidad',
                     });
                 }
-                */
+                  */
             }
         })
     }
 }
+
 
 // Variables globales para el mapa
 let mapaEntidad = null;

@@ -803,14 +803,23 @@ function displayUsersList() {
 }
 
 function setupEventListeners() {
-  // Filtros de tipo de usuario
-  document.querySelectorAll('.filter-btn').forEach(btn => {
-    btn.addEventListener('click', function () {
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      this.classList.add('active');
-      currentFilter = this.dataset.type;
-      applyFilters();
-    });
+
+  // Botón para reiniciar filtros
+  document.getElementById('filter-btn').addEventListener('click', () => {
+    console.log('🔄 Reiniciando todos los filtros...');
+    document.getElementById('search-user').value = '';
+    document.getElementById('filter-dpto').value = '';
+    document.getElementById('filter-city').innerHTML = '<option value="">Todas las ciudades</option>';
+    document.getElementById('filter-claseEntidad').value = '';
+
+    filteredUsers = [...usersData];
+
+    populateDptoFilter();
+    populateCityFilter();
+    populateClaseFilter();
+    displayMarkersOnMap();
+    displayUsersList();
+    map.setView([4.5709, -74.2973], 5);
   });
 
   // Búsqueda por texto
@@ -849,12 +858,17 @@ function setupEventListeners() {
   });
 }
 
+
+
 function applyFilters() {
+
   const searchTerm = document.getElementById('search-user').value.toLowerCase();
   const cityFilter = document.getElementById('filter-city').value;
   const dptoFilter = document.getElementById('filter-dpto').value;
   const claseEntidadFilter = document.getElementById('filter-claseEntidad').value;
   console.log('Aplicando filtros:', { currentFilter, searchTerm, cityFilter });
+
+
   filteredUsers = usersData.filter(user => {
     // Filtro de tipo
     const typeMatch = currentFilter === 'all' || user.claseEntidad === currentFilter;
