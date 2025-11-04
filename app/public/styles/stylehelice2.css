@@ -621,12 +621,13 @@ h2 {
 }
 
 .view-toggle {
-    display: flex;
+ 
     justify-content: right;
     gap: 1rem;
     margin: 1rem auto;
     margin-right: 60px;
 }
+
 
 .btn {
     display: inline-flex;
