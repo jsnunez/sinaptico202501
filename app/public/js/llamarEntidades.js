@@ -88,7 +88,6 @@ function cargarEmpresas(empresas) {
 
 }
 
-
 document.addEventListener('DOMContentLoaded', function () {
   // Abrir modal con info de la empresa
   document.addEventListener('click', function (e) {
@@ -387,6 +386,8 @@ document.addEventListener('DOMContentLoaded', function () {
   checkUserSession();
 });
 
+
+//Bienvenido
 function checkUserSession() {
   const usuario = obtenerCookie("user");
 
@@ -399,6 +400,8 @@ function checkUserSession() {
   }
 }
 
+
+//Obtener Cookie
 function obtenerCookie(name) {
   let cookieValue = null;
   if (document.cookie && document.cookie !== '') {
@@ -427,6 +430,7 @@ function initializeMap() {
   // Personalizar controles
   map.zoomControl.setPosition('topright');
 }
+
 async function addColombiaMask() {
   try {
     // GeoJSON mundial (Natural Earth simplificado)
@@ -489,43 +493,6 @@ async function addColombiaMask() {
   }
 }
 
-// function loadUsersMuro() {
-//   console.log('🔄 Cargando entidades desde la API...');
-//   // Cargar entidades desde la API
-//   fetch(`${API_BASE_URL}/api/ubicacion-entidad/mapa/entidades`)
-//     .then(response => {
-//       console.log('📡 Respuesta de la API:', response.status);
-//       if (!response.ok) {
-//         throw new Error('Error al cargar entidades');
-//       }
-//       return response.json();
-//     })
-//     .then(data => {
-//       console.log('✅ Entidades cargadas:', data);
-//       usersData = data;
-//       filteredUsers = [...usersData];
-//       updateStatistics();
-//       populateCityFilter();
-//       displayUsersList();
-//     })
-//     .catch(error => {
-//       console.error('❌ Error:', error);
-//       // Usar datos de ejemplo en caso de error
-//       usersData = [...mockUsers];
-//       filteredUsers = [...usersData];
-//       updateStatistics();
-//       populateCityFilter();
-//       displayUsersList();
-
-//       Swal.fire({
-//         icon: 'warning',
-//         title: 'Datos de demostración',
-//         text: 'Se están mostrando datos de ejemplo. No se pudieron cargar las entidades reales.',
-//         timer: 3000,
-//         timerProgressBar: true
-//       });
-//     });
-// }
 
 function loadUsers() {
   console.log('🔄 Cargando entidades desde la API...');
@@ -544,6 +511,8 @@ function loadUsers() {
       filteredUsers = [...usersData];
       updateStatistics();
       populateCityFilter();
+      populateDptoFilter();
+      populateClaseFilter();
       displayMarkersOnMap();
       displayUsersList();
     })
@@ -557,29 +526,87 @@ function loadUsers() {
     });
 }
 
+//Actualización de Estadisticas
 function updateStatistics() {
   document.getElementById('total-users').textContent = usersData.length;
   document.getElementById('online-users').textContent = usersData.filter(u => u.verificada).length;
   document.getElementById('total-companies').textContent = [...new Set(usersData.map(u => u.claseEntidad))].length;
   document.getElementById('total-cities').textContent = [...new Set(usersData.map(u => u.city))].length;
 }
-function populateCityFilter() {
-  const cities = [...new Set(usersData.map(u => u.city || u.Ciudad?.nombre))].sort();
-  const citySelect = document.getElementById('filter-city');
 
-  // ✅ Limpiar opciones anteriores
+function populateCityFilter() {
+  const citySelect = document.getElementById('filter-city');
+  const dptoFilter = document.getElementById('filter-dpto').value;
+
+  // Limpiar opciones anteriores
   citySelect.innerHTML = '<option value="">Todas las ciudades</option>';
 
-  // ✅ Evitar añadir valores vacíos o repetidos
-  cities.forEach(city => {
-    if (city && city.trim() !== '') {
+  // Obtener lista de ciudades según el departamento
+  let cities;
+
+  if (dptoFilter === '') {
+    // Si no hay departamento seleccionado → mostrar todas las ciudades
+    cities = [...new Set(usersData.map(u => u.city || u.Ciudad?.nombre))];
+  } else {
+    // Si hay departamento seleccionado → mostrar solo las ciudades que pertenecen a ese departamento
+    cities = [
+      ...new Set(
+        usersData
+          .filter(u => u.departamento === dptoFilter)
+          .map(u => u.city || u.Ciudad?.nombre)
+      )
+    ];
+  }
+
+  // Agregar las opciones filtradas
+  cities
+    .filter(city => city && city.trim() !== '')
+    .sort()
+    .forEach(city => {
       const option = document.createElement('option');
       option.value = city;
       option.textContent = city;
       citySelect.appendChild(option);
+    });
+}
+
+function populateDptoFilter() {
+  const dptos = [...new Set(usersData.map(u => u.departamento))].sort();
+  const dptoSelect = document.getElementById('filter-dpto');
+
+  // ✅ Limpiar opciones anteriores
+  dptoSelect.innerHTML = '<option value="">Todos los Departamentos</option>';
+
+  // ✅ Evitar añadir valores vacíos o repetidos
+  dptos.forEach(dpto => {
+    if (dpto && dpto.trim() !== '') {
+      const option = document.createElement('option');
+      option.value = dpto;
+      option.textContent = dpto;
+      dptoSelect.appendChild(option);
     }
   });
 }
+
+
+function populateClaseFilter() {
+  const clases = [...new Set(usersData.map(u => u.claseEntidad))].sort();
+  const claseSelect = document.getElementById('filter-claseEntidad');
+
+  // ✅ Limpiar opciones anteriores
+  claseSelect.innerHTML = '<option value="">Todas las Clases</option>';
+
+  // ✅ Evitar añadir valores vacíos o repetidos
+  clases.forEach(clases => {
+    if (clases && clases.trim() !== '') {
+      const option = document.createElement('option');
+      option.value = clases;
+      option.textContent = clases;
+      claseSelect.appendChild(option);
+    }
+  });
+}
+
 
 function displayMarkersOnMap() {
   // Limpiar marcadores existentes
@@ -709,6 +736,7 @@ function displayUsersList() {
   const listContent = document.getElementById('users-list-content');
   console.log('Mostrando lista de usuarios, total:', filteredUsers);
   focusOnCity(filteredUsers[0].id);
+  focusOnDpto(filteredUsers[0].id);
   if (filteredUsers.length === 0) {
     listContent.innerHTML = `
                     <div style="text-align: center; padding: 40px; color: #7f8c8d;">
@@ -726,8 +754,8 @@ function displayUsersList() {
       'Estado': '�',
       'Sociedad': '💡'
     };
-console.log('Generando HTML para usuario:', user);
-fetch(`${API_BASE_URL}/api/departamentos/${user.departamentoId}`)
+    console.log('Generando HTML para usuario:', user);
+    fetch(`${API_BASE_URL}/api/departamentos/${user.departamentoId}`)
 
     return `
     <div class="user-item" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #eee; cursor: pointer;">
@@ -772,11 +800,21 @@ function setupEventListeners() {
     });
   });
 
-  // Búsqueda
+  // Búsqueda por texto
   document.getElementById('search-user').addEventListener('input', applyFilters);
 
-  // Filtro de ciudad
+  // Cuando se cambie el departamento → actualizar ciudades y aplicar filtros
+  document.getElementById('filter-dpto').addEventListener('change', () => {
+    populateCityFilter();  // 🔄 actualizar lista de ciudades
+    applyFilters();        // 🔍 aplicar los filtros
+  });
+
+  // Cuando se cambie la ciudad → aplicar filtros directamente
   document.getElementById('filter-city').addEventListener('change', applyFilters);
+
+
+  // Filtro por clase de entidad
+  document.getElementById('filter-claseEntidad').addEventListener('change', applyFilters);
 
   // Cerrar sesión
   document.getElementById('cerrarSesion').addEventListener('click', function () {
@@ -798,29 +836,37 @@ function setupEventListeners() {
   });
 }
 
- function applyFilters() {
-            const searchTerm = document.getElementById('search-user').value.toLowerCase();
-            const cityFilter = document.getElementById('filter-city').value;
-console.log('Aplicando filtros:', { currentFilter, searchTerm, cityFilter });
-            filteredUsers = usersData.filter(user => {
-                // Filtro de tipo
-                const typeMatch = currentFilter === 'all' || user.claseEntidad === currentFilter;
+function applyFilters() {
+  const searchTerm = document.getElementById('search-user').value.toLowerCase();
+  const cityFilter = document.getElementById('filter-city').value;
+  const dptoFilter = document.getElementById('filter-dpto').value;
+  const claseEntidadFilter = document.getElementById('filter-claseEntidad').value;
+  console.log('Aplicando filtros:', { currentFilter, searchTerm, cityFilter });
+  filteredUsers = usersData.filter(user => {
+    // Filtro de tipo
+    const typeMatch = currentFilter === 'all' || user.claseEntidad === currentFilter;
 
-                // Filtro de búsqueda
-                const searchMatch = !searchTerm ||
-                    user.name.toLowerCase().includes(searchTerm) ||
-                    user.email.toLowerCase().includes(searchTerm) ||
-                    user.company.toLowerCase().includes(searchTerm);
+    // Filtro de búsqueda
+    const searchMatch = !searchTerm ||
+      user.name.toLowerCase().includes(searchTerm) ||
+      user.email.toLowerCase().includes(searchTerm) ||
+      user.company.toLowerCase().includes(searchTerm);
 
-                // Filtro de ciudad
-                const cityMatch = !cityFilter || user.city === cityFilter;
+    // Filtro de ciudad
+    const cityMatch = !cityFilter || user.city === cityFilter;
 
-                return typeMatch && searchMatch && cityMatch;
-            });
+    //filtro de departamento
+    const dptoMatch = !dptoFilter || user.departamento === dptoFilter;
 
-            displayMarkersOnMap();
-            displayUsersList();
-        }
+    //filtro de departamento
+    const claseEntidadMatch = !claseEntidadFilter || user.claseEntidad === claseEntidadFilter;
+
+    return typeMatch && searchMatch && cityMatch && dptoMatch && claseEntidadMatch;
+  });
+
+  displayMarkersOnMap();
+  displayUsersList();
+}
 
 function focusOnUser(userId) {
   console.log('Centrando en usuario ID:', userId);
@@ -844,7 +890,39 @@ function focusOnCity(userId) {
   const user = usersData.find(u => u.id === userId);
   const cityFilter = document.getElementById('filter-city').value;
   console.log('Ciudad seleccionada:', cityFilter);
-  if (cityFilter == '' ) {
+  if (cityFilter == '') {
+    map.setView([4.5709, -74.2973], 5);
+    return;
+  }
+  if (user) {
+    map.setView([user.lat, user.lng], 10);
+
+
+  }
+}
+
+function focusOnDpto(userId) {
+  console.log('Centrando en usuario ID:', userId);
+  const user = usersData.find(u => u.id === userId);
+  const dptoFilter = document.getElementById('filter-dpto').value;
+  console.log('Departamento seleccionado:', dptoFilter);
+  if (dptoFilter == '') {
+    map.setView([4.5709, -74.2973], 5);
+    return;
+  }
+  if (user) {
+    map.setView([user.lat, user.lng], 10);
+
+
+  }
+}
+
+function focusOnClaseEntidad(userId) {
+  console.log('Centrando en usuario ID:', userId);
+  const user = usersData.find(u => u.id === userId);
+  const claseEntidadFilter = document.getElementById('filter-claseEntidad').value;
+  console.log('Clase Entidad seleccionada:', claseEntidadFilter);
+  if (claseEntidadFilter == '') {
     map.setView([4.5709, -74.2973], 5);
     return;
   }
