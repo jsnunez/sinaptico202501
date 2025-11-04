@@ -195,7 +195,7 @@ router.get('/mis-contactos/:id', async (req, res) => {
                     include: [
                         {
                             model: User,
-                            attributes: ['id', 'name', 'email', 'telefono']
+                            attributes: ['id', 'name', 'email', 'telefono', 'fotoPerfil']
                         },
                         {
                             model: Entidad,
@@ -241,7 +241,7 @@ router.get('/mis-contactos/:id', async (req, res) => {
                 include: [
                     {
                         model: User,
-                        attributes: ['id', 'name', 'email', 'telefono']
+                        attributes: ['id', 'name', 'email', 'telefono', 'fotoPerfil']
                     },
                     {
                         model: Entidad,

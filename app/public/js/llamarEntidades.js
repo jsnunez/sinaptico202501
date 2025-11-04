@@ -293,6 +293,19 @@ async function llamarIntegrantes(idEntidad) {
 // Abrir modal al hacer clic en la foto de usuario
 
 abrirModalIntegrante = async function (userId) {
+  // Limpiar datos del modal antes de cargar nuevos
+  document.getElementById('MiNombreCompleto').textContent = '';
+  document.getElementById('MiPerfilProfesional').textContent = '';
+  document.getElementById('MiTelefono').textContent = '';
+  document.getElementById('MiUbicacion').textContent = '';
+  document.getElementById('MiCorreo').textContent = '';
+  document.getElementById('MiVinculado').textContent = '';
+  document.getElementById("imagenPerfilIntegrante").src = '/img/sinfoto.jpg';
+  const iframe = document.querySelector('iframe');
+  if (iframe) {
+    iframe.src = '';
+    iframe.style.display = 'none';
+  }
   console.log("ID del integrante:", userId);
   document.getElementById('modalIntegrante').style.display = 'block';
   //Cerrar modal integrante

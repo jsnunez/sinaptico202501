@@ -12,9 +12,9 @@ export const getCargos = async (req, res) => {
 };
 
 // Obtener un cargo por ID
-export const  getCargoById = async (req, res) => {
+export const getCargoById = async (req, res) => {
     try {
-        const cargo = await Cargo.findById(req.params.id);
+        const cargo = await Cargo.findByPk(req.params.id);
         if (!cargo) {
             return res.status(404).json({ message: 'Cargo no encontrado' });
         }

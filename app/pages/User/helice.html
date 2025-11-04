@@ -877,6 +877,7 @@
                 <table style="width:100%;border-collapse:collapse;">
                     <thead>
                         <tr>
+                            <th></th>
                             <th>Nombre</th>
                             <th>Email</th>
                             <th>Entidad</th>
@@ -1187,116 +1188,117 @@
 
     <!-- Mis contactos -->
     <script>
-        document.getElementById('misContactos').onclick = function () {
-            document.getElementById('modalMisContactos').style.display = 'block';
-            fetch(`/api/invitacion/mis-contactos/${userIdNotify}`)
-                .then(res => res.json())
-                .then(data => {
-                    const tbody = document.getElementById('tablaContactosVerificados');
-                    tbody.innerHTML = '';
-                    console.log(data);
-                    // Mostrar contactos recibidos
-                    if (data.recibidos && Array.isArray(data.recibidos) && data.recibidos.length > 0) {
-                        data.recibidos.forEach(contacto => {
+  async function cargarContactos(userId, tbodyId) {
+  const tbody = document.getElementById(tbodyId);
+  tbody.innerHTML = '';
 
-                            console.log(contacto);
+  try {
+    const res = await fetch(`/api/invitacion/mis-contactos/${userId}`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    console.log('mis-contactos =>', data);
 
-                            const tr = document.createElement('tr');
-                            tr.innerHTML = `
-                            <td>${contacto.User.name || ''}</td>
-                            <td>${contacto.User.email || ''}</td>                            
-                            <td>${contacto.empresa.razonSocial || ''}</td>
-                            <td>${contacto.User.telefono || ''}</td>
-                        `;
-                            tbody.appendChild(tr);
-                            console.log(tr);
+    // Cache de cargos para evitar peticiones duplicadas
+    const cargoCache = new Map();
+    const getCargoNombre = async (id) => {
+      if (!id) return 'N/A';
+      if (cargoCache.has(id)) return cargoCache.get(id);
+      try {
+        const r = await fetch(`/api/cargos/${id}`);
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        const d = await r.json();
+        const nombre = d?.nombre ?? 'N/A';
+        cargoCache.set(id, nombre);
+        return nombre;
+      } catch (e) {
+        console.error('Error fetching cargo:', e);
+        return 'N/A';
+      }
+    };
 
-                        });
-                    }
-                    // Mostrar contactos enviados
-                    if (data.enviados && Array.isArray(data.enviados) && data.enviados.length > 0) {
-                        data.enviados.forEach(contacto => {
-                            console.log(contacto);
-                            const tr = document.createElement('tr');
-                            tr.innerHTML = `
-                               <td>${contacto.User.name || ''}</td>
-                            <td>${contacto.User.email || ''}</td>                            
-                            <td>${contacto.empresa.razonSocial || ''}</td>
-                            <td>${contacto.User.telefono || ''}</td>
-                        `;
-                            tbody.appendChild(tr);
-                        });
-                    }
-                    // Si no hay contactos en ninguno
-                    if (
-                        (!data.recibidos || data.recibidos.length === 0) &&
-                        (!data.enviados || data.enviados.length === 0)
-                    ) {
-                        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No hay contactos</td></tr>';
-                    }
-                });
-        };
-        document.getElementById('cerrarModalMisContactos').onclick = function () {
-            document.getElementById('modalMisContactos').style.display = 'none';
-        };
-        document.getElementById('cerrarModalMisContactosBtn').onclick = function () {
-            document.getElementById('modalMisContactos').style.display = 'none';
-        };
+    const pickCargoId = (c) =>
+      c?.cargoId ??
+      c?.empresa?.cargoId ??
+      c?.empresaCargoId ??
+      c?.User?.cargoId ??
+      null;
 
+    const crearFila = (contacto, cargoNombre) => {
+      const tr = document.createElement('tr');
+      const user = contacto?.User ?? {};
+      const empresaNombre = contacto?.empresa?.razonSocial ?? '';
 
-        // Toggle entre contactos verificados y en espera
-        document.getElementById('btnContactosVerificados').onclick = function () {
-            fetch(`/api/invitacion/mis-contactos/${userIdNotify}`)
-                .then(res => res.json())
-                .then(data => {
-                    const tbody = document.getElementById('tablaContactosVerificados');
-                    tbody.innerHTML = '';
-                    console.log(data);
-                    // Mostrar contactos recibidos
-                    if (data.recibidos && Array.isArray(data.recibidos) && data.recibidos.length > 0) {
-                        data.recibidos.forEach(contacto => {
+      tr.innerHTML = `
+      
+        <td style="position:relative;display:inline-block;">
+          <button onclick="abrirModalIntegrante(${user.id})"
+                  style="border:none;background:transparent;cursor:pointer;padding:0;">
+            <img src="photo/${user.fotoPerfil || 'img/sinfoto.jpg'}"
+                 alt="Foto"
+                 style="width:60px;height:60px;border-radius:50%;object-fit:cover;"
+                 onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
+            <i class="bi bi-search"
+               style="position:absolute;right:2px;top:50%;transform:translateY(-50%);
+                      font-size:0.9em;color:#007bff;background:white;
+                      border-radius:50%;padding:3px;"></i>
+          </button>
+        </td>
+        <td>${user.name ?? ''}</td>
+        <td>${user.email ?? ''}</td>
+        <td style="text-align:center;">${empresaNombre}<br>${cargoNombre !== 'N/A' ? cargoNombre : ''}</td>
+        <td>${user.telefono ?? ''}</td>
+      `;
+      return tr;
+    };
 
-                            console.log(contacto);
+    let total = 0;
 
-                            const tr = document.createElement('tr');
-                            tr.innerHTML = `
-                            <td>${contacto.User.name || ''}</td>
-                            <td>${contacto.User.email || ''}</td>                            
-                            <td>${contacto.empresa.razonSocial || ''}</td>
-                            <td>${contacto.User.telefono || ''}</td>
-                        `;
-                            tbody.appendChild(tr);
-                            console.log(tr);
+    const mostrarLista = async (lista) => {
+      for (const contacto of lista) {
+        const cargoId = pickCargoId(contacto);
+        const cargoNombre = await getCargoNombre(cargoId);
+        tbody.appendChild(crearFila(contacto, cargoNombre));
+        total++;
+      }
+    };
 
-                        });
-                    }
-                    // Mostrar contactos enviados
-                    if (data.enviados && Array.isArray(data.enviados) && data.enviados.length > 0) {
-                        data.enviados.forEach(contacto => {
-                            console.log(contacto);
-                            const tr = document.createElement('tr');
-                            tr.innerHTML = `
-                               <td>${contacto.User.name || ''}</td>
-                            <td>${contacto.User.email || ''}</td>                            
-                            <td>${contacto.empresa.razonSocial || ''}</td>
-                            <td>${contacto.User.telefono || ''}</td>
-                        `;
-                            tbody.appendChild(tr);
-                        });
-                    }
-                    // Si no hay contactos en ninguno
-                    if (
-                        (!data.recibidos || data.recibidos.length === 0) &&
-                        (!data.enviados || data.enviados.length === 0)
-                    ) {
-                        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No hay contactos </td></tr>';
-                    }
-                });
-            document.getElementById('tablaVerificados').style.display = 'block';
-            document.getElementById('tablaEspera').style.display = 'none';
-            this.classList.add('active');
-            document.getElementById('btnContactosEspera').classList.remove('active');
-        };
+    if (Array.isArray(data?.recibidos)) await mostrarLista(data.recibidos);
+    if (Array.isArray(data?.enviados)) await mostrarLista(data.enviados);
+
+    if (total === 0) {
+      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No hay contactos</td></tr>';
+    }
+  } catch (err) {
+    console.error(err);
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#b00;">Error al cargar contactos</td></tr>';
+  }
+}
+
+// === EVENTOS ===
+
+// Abrir modal y cargar contactos
+document.getElementById('misContactos').addEventListener('click', async () => {
+  const modal = document.getElementById('modalMisContactos');
+  modal.style.display = 'block';
+  await cargarContactos(userIdNotify, 'tablaContactosVerificados');
+});
+
+// Cerrar modal
+['cerrarModalMisContactos', 'cerrarModalMisContactosBtn'].forEach(id => {
+  document.getElementById(id).onclick = () => {
+    document.getElementById('modalMisContactos').style.display = 'none';
+  };
+});
+
+// Toggle entre contactos verificados y en espera
+document.getElementById('btnContactosVerificados').onclick = async function () {
+  await cargarContactos(userIdNotify, 'tablaContactosVerificados');
+  document.getElementById('tablaVerificados').style.display = 'block';
+  document.getElementById('tablaEspera').style.display = 'none';
+  this.classList.add('active');
+  document.getElementById('btnContactosEspera').classList.remove('active');
+};
+
 
         document.getElementById('btnContactosEspera').onclick = function () {
             document.getElementById('tablaVerificados').style.display = 'none';
