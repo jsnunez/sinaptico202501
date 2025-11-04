@@ -192,16 +192,22 @@ export const obtenerEntidadesParaMapa = async (req, res) => {
         {
           model: Ciudad,
           attributes: ['nombre', 'departamentoId']
-        }
+        },
+        
       ],
+     
       where: {
         habilitado: true
       }
     });
-
+     const departamentos = await Departamento.findAll();
+console.log('Departamentos disponibles:', departamentos);
     // Formatear datos para el mapa
     const entidadesParaMapa = entidades.map(entidad => {
       const ubicacionPrincipal = entidad.ubicaciones[0]; // Tomar la primera ubicación activa
+      
+      // Buscar el departamento por ID
+      const departamento = departamentos.find(d => d.id === entidad.Ciudad?.departamentoId);
       
       return {
         id: entidad.id,
@@ -209,7 +215,7 @@ export const obtenerEntidadesParaMapa = async (req, res) => {
         type: 'entidad',
         logo: entidad.logo,
         actividadEconomica: entidad.actividadEconomica,
-        departamento: entidad.Ciudad ? entidad.Ciudad.departamentoId : 'Colombia',
+        departamento: departamento ? departamento.nombre : 'Colombia',
         company: entidad.razonSocial,
         claseEntidad: entidad.claseEntidad,
         city: entidad.Ciudad ? entidad.Ciudad.nombre : 'Colombia',
