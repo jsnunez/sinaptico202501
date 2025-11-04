@@ -311,6 +311,7 @@ abrirModalIntegrante = async function (userId) {
   //Cerrar modal integrante
   document.getElementById('cerrarModalIntegrante').onclick = function () {
     document.getElementById('modalIntegrante').style.display = 'none';
+    document.getElementById('modalMisContactos').style.display = 'block';
   };
 
   const response = await fetch(`${API_BASE_URL}/api/user/${userId}`);
@@ -1010,3 +1011,139 @@ function clearCookies() {
     document.cookie = `${cookie}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
   });
 }
+
+
+
+function llenarFiltros(lista) {
+  const filterEntidad = document.getElementById('filter-entidad');
+  const filterCargo = document.getElementById('filter-cargo');
+
+  const entidades = [...new Set(lista.map(c => c.empresa?.razonSocial).filter(Boolean))];
+  const cargos = [...new Set(lista.map(c => c._cargoNombre).filter(n => n && n !== 'N/A'))];
+
+  filterEntidad.innerHTML = '<option value="">Todas las entidades</option>';
+  filterCargo.innerHTML = '<option value="">Todos los cargos</option>';
+
+  entidades.forEach(e => {
+    const opt = document.createElement('option');
+    opt.value = e;
+    opt.textContent = e;
+    filterEntidad.appendChild(opt);
+  });
+
+  cargos.forEach(c => {
+    const opt = document.createElement('option');
+    opt.value = c;
+    opt.textContent = c;
+    filterCargo.appendChild(opt);
+  });
+}
+
+function renderTabla(lista) {
+  const tbody = document.getElementById('tablaContactosVerificados');
+  tbody.innerHTML = '';
+
+  if (!lista.length) {
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No hay contactos</td></tr>';
+    return;
+  }
+
+  lista.forEach(contacto => {
+    const user = contacto?.User ?? {};
+    const empresaNombre = contacto?.empresa?.razonSocial ?? '';
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+            <td>
+                <div style="position:relative;width:60px;height:60px;">
+                    <img src="photo/${user.fotoPerfil || 'img/sinfoto.jpg'}" 
+                        alt="Foto" style="width:60px;height:60px;border-radius:50%;object-fit:cover;"
+                        onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
+                    <i class="bi bi-search"
+                       style="position:absolute;bottom:2px;right:2px;font-size:0.9em;color:#007bff;background:white;border-radius:50%;padding:3px;cursor:pointer;"
+                       onclick="abrirModalIntegrante(${user.id})"></i>
+                </div>
+            </td>
+            <td>${user.name ?? ''}</td>
+            <td>${contacto._cargoNombre !== 'N/A' ? contacto._cargoNombre : ''}</td>
+            <td style="text-align:left;">${empresaNombre}</td>
+        `;
+    tbody.appendChild(tr);
+  });
+}
+function renderTabla(lista) {
+  const tbody = document.getElementById('tablaContactosVerificados');
+  tbody.innerHTML = '';
+
+  if (!lista.length) {
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No hay contactos</td></tr>';
+    return;
+  }
+
+  lista.forEach(contacto => {
+    const user = contacto?.User ?? {};
+    const empresaNombre = contacto?.empresa?.razonSocial ?? '';
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+            <td>
+                <div style="position:relative;width:60px;height:60px;">
+                    <img src="photo/${user.fotoPerfil || 'img/sinfoto.jpg'}" 
+                        alt="Foto" style="width:60px;height:60px;border-radius:50%;object-fit:cover;"
+                        onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
+                    <i class="bi bi-search"
+                       style="position:absolute;bottom:2px;right:2px;font-size:0.9em;color:#007bff;background:white;border-radius:50%;padding:3px;cursor:pointer;"
+                       onclick="abrirModalIntegrante(${user.id})"></i>
+                </div>
+            </td>
+            <td>${user.name ?? ''}</td>
+            <td>${contacto._cargoNombre !== 'N/A' ? contacto._cargoNombre : ''}</td>
+            <td style="text-align:left;">${empresaNombre}</td>
+        `;
+    tbody.appendChild(tr);
+  });
+}
+function aplicarFiltros() {
+  const nombreFiltro = document.getElementById('filter-nombre').value.toLowerCase();
+  const entidadFiltro = document.getElementById('filter-entidad').value;
+  const cargoFiltro = document.getElementById('filter-cargo').value;
+
+  const filtrados = listaContactos.filter(c => {
+    const user = c.User ?? {};
+    const empresa = c.empresa?.razonSocial ?? '';
+    const cargo = c._cargoNombre ?? '';
+
+    const matchesNombre =
+      !nombreFiltro ||
+      user.name?.toLowerCase().includes(nombreFiltro) ||
+      empresa.toLowerCase().includes(nombreFiltro);
+    const matchesEntidad = !entidadFiltro || empresa === entidadFiltro;
+    const matchesCargo = !cargoFiltro || cargo === cargoFiltro;
+
+    return matchesNombre && matchesEntidad && matchesCargo;
+  });
+
+  renderTabla(filtrados);
+}
+// Filtros automáticos
+document.getElementById('filter-nombre').addEventListener('input', aplicarFiltros);
+document.getElementById('filter-entidad').addEventListener('change', aplicarFiltros);
+document.getElementById('filter-cargo').addEventListener('change', aplicarFiltros);
+
+// Botón reset
+document.getElementById('filter-contact').addEventListener('click', () => {
+  document.getElementById('filter-nombre').value = '';
+  document.getElementById('filter-entidad').value = '';
+  document.getElementById('filter-cargo').value = '';
+  aplicarFiltros();
+});
+document.getElementById('misContactos').addEventListener('click', () => {
+  const modal = document.getElementById('modalMisContactos');
+  modal.style.display = 'block';
+  cargarContactos(userIdNotify);
+});
+
+// Cerrar modal
+['cerrarModalMisContactos', 'cerrarModalMisContactosBtn'].forEach(id => {
+  document.getElementById(id).onclick = () => {
+    document.getElementById('modalMisContactos').style.display = 'none';
+  };
+});
