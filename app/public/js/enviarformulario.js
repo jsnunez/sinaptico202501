@@ -1,122 +1,106 @@
 document.getElementById('entidad-form').addEventListener('submit', async function (event) {
-    event.preventDefault(); // Prevenir el envío normal del formulario
-    let usuario = getCookie("userId");
-    console.log(usuario)
-    
-    // Validar coordenadas si se proporcionaron
-    const latitud = document.getElementById('latitud').value;
-    const longitud = document.getElementById('longitud').value;
-    
-    if ((latitud && !longitud) || (!latitud && longitud)) {
-        Swal.fire({
-            icon: 'warning',
-            title: 'Coordenadas incompletas',
-            text: 'Si va a especificar una ubicación, debe proporcionar tanto la latitud como la longitud.',
-            confirmButtonText: 'Entendido'
-        });
-        return;
-    }
-    
-    if (latitud && longitud) {
-        const lat = parseFloat(latitud);
-        const lng = parseFloat(longitud);
-        
-        if (isNaN(lat) || isNaN(lng)) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Coordenadas inválidas',
-                text: 'Las coordenadas deben ser números válidos.',
-                confirmButtonText: 'Entendido'
-            });
-            return;
-        }
-        
-        if (lat < -90 || lat > 90 || lng < -180 || lng > 180) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Coordenadas fuera de rango',
-                text: 'La latitud debe estar entre -90 y 90, y la longitud entre -180 y 180.',
-                confirmButtonText: 'Entendido'
-            });
-            return;
-        }
-    }
-    
-    // Crear un objeto FormData con los datos del formulario
-    const formData = new FormData(this);
-    formData.append("UserAdminId", usuario);
-    
-    // Mostrar mensaje de procesamiento
-    Swal.fire({
-        title: 'Creando entidad...',
-        text: 'Por favor espere mientras procesamos la información.',
-        allowOutsideClick: false,
-        showConfirmButton: false,
-        willOpen: () => {
-            Swal.showLoading();
-        }
-    });
-    
-    try {
-        const response = await fetch(`${API_BASE_URL}/api/entidad/crear`, {
-            method: 'POST',
-            body: formData,
-        });
+  event.preventDefault();
 
-        // Si la respuesta es exitosa
-        if (response.ok) {
-            const result = await response.json();
-            let successMessage = 'Entidad creada con éxito.';
-            
-            if (result.ubicacionCreada) {
-                successMessage += ' La ubicación en el mapa también fue registrada.';
-            }
-            
-            Swal.fire({
-                title: '¡Éxito!',
-                text: successMessage,
-                icon: 'success',
-                confirmButtonText: 'Aceptar'
-            });
-            
-            // Limpiar el formulario y cerrar modal
-            document.getElementById('entidad-form').reset();
-            
-            // Limpiar el mapa si existe
-            if (typeof locationMarker !== 'undefined' && locationMarker) {
-                locationMap.removeLayer(locationMarker);
-                locationMarker = null;
-            }
-            
-            // Resetear estilos de coordenadas
-            const latInput = document.getElementById('latitud');
-            const lngInput = document.getElementById('longitud');
-            if (latInput && lngInput) {
-                latInput.style.backgroundColor = '#f5f5f5';
-                latInput.style.border = '1px solid #ddd';
-                lngInput.style.backgroundColor = '#f5f5f5';
-                lngInput.style.border = '1px solid #ddd';
-            }
-            
-            location.reload();
-        } else {
-            const errorData = await response.json();
-            Swal.fire({
-                icon: 'error',
-                title: 'Error al crear la entidad',
-                text: errorData.message || 'Ocurrió un error inesperado',
-                confirmButtonText: 'Entendido'
-            });
-        }
-    } catch (error) {
-        console.error('Error al enviar el formulario', error);
-        Swal.fire({
-            icon: 'error',
-            title: 'Error de conexión',
-            text: 'Hubo un problema al conectar con el servidor. Por favor, intente nuevamente.',
-            confirmButtonText: 'Entendido'
-        });
+  // 1) Valida todos los required del HTML (dirección, selects, etc.)
+  if (!this.reportValidity()) return;
+
+  // 2) Valida coordenadas obligatorias
+  const latInput = document.getElementById('latitud');
+  const lngInput = document.getElementById('longitud');
+
+  // limpia errores previos
+  latInput.setCustomValidity('');
+  lngInput.setCustomValidity('');
+
+  const latStr = latInput.value.trim();
+  const lngStr = lngInput.value.trim();
+
+  // 👉 si quieres que sean obligatorias, corta si están vacías
+  if (!latStr || !lngStr) {
+    if (!latStr) latInput.setCustomValidity('Seleccione un punto en el mapa (latitud obligatoria).');
+    if (!lngStr) lngInput.setCustomValidity('Seleccione un punto en el mapa (longitud obligatoria).');
+    this.reportValidity(); // muestra mensajes nativos
+    Swal.fire({
+      icon: 'warning',
+      title: 'Coordenadas requeridas',
+      text: 'Haga clic en el mapa para establecer latitud y longitud.',
+      confirmButtonText: 'Entendido'
+    });
+    return;
+  }
+
+  // 3) Rango y formato
+  const lat = Number(latStr);
+  const lng = Number(lngStr);
+
+  if (!Number.isFinite(lat) || !Number.isFinite(lng)) {
+    Swal.fire({ icon: 'error', title: 'Coordenadas inválidas', text: 'Use números válidos.' });
+    return;
+  }
+  if (lat < -90 || lat > 90 || lng < -180 || lng > 180) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Coordenadas fuera de rango',
+      text: 'Latitud entre -90 y 90; Longitud entre -180 y 180.'
+    });
+    return;
+  }
+
+  // 4) Si todo OK, continúa con tu envío
+  let usuario = getCookie("userId");
+  const formData = new FormData(this);
+  formData.append("UserAdminId", usuario);
+
+  Swal.fire({
+    title: 'Creando entidad...',
+    text: 'Por favor espere mientras procesamos la información.',
+    allowOutsideClick: false,
+    showConfirmButton: false,
+    willOpen: () => Swal.showLoading()
+  });
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/entidad/crear`, {
+      method: 'POST',
+      body: formData,
+    });
+
+    if (response.ok) {
+      const result = await response.json();
+      let successMessage = 'Entidad creada con éxito.';
+      if (result.ubicacionCreada) successMessage += ' La ubicación en el mapa también fue registrada.';
+
+      await Swal.fire({ title: '¡Éxito!', text: successMessage, icon: 'success', confirmButtonText: 'Aceptar' });
+
+      this.reset();
+
+      if (typeof locationMarker !== 'undefined' && locationMarker) {
+        locationMap.removeLayer(locationMarker);
+        locationMarker = null;
+      }
+
+      const resetStyle = (el) => { el.style.backgroundColor = '#f5f5f5'; el.style.border = '1px solid #ddd'; };
+      resetStyle(latInput); resetStyle(lngInput);
+
+      location.reload();
+    } else {
+      const errorData = await response.json().catch(() => ({}));
+      Swal.fire({
+        icon: 'error',
+        title: 'Error al crear la entidad',
+        text: errorData.message || 'Ocurrió un error inesperado',
+        confirmButtonText: 'Entendido'
+      });
     }
+  } catch (error) {
+    console.error('Error al enviar el formulario', error);
+    Swal.fire({
+      icon: 'error',
+      title: 'Error de conexión',
+      text: 'Hubo un problema al conectar con el servidor. Por favor, intente nuevamente.',
+      confirmButtonText: 'Entendido'
+    });
+  }
 });
 
 /* 

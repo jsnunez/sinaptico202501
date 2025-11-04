@@ -12,6 +12,14 @@ const Departamento = sequelize.define('Departamento', {
     nombre: {
         type: DataTypes.STRING,
         allowNull: false
+    },
+    latitud: {
+        type: DataTypes.DECIMAL(10, 7),
+        allowNull: false
+    },
+    longitud: {
+        type: DataTypes.DECIMAL(10, 7),
+        allowNull: false
     }
 }, {
     tableName: 'departamentos', // Nombre de la tabla en la base de datos

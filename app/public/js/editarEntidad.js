@@ -265,41 +265,46 @@ document.getElementById("editarEntidad").addEventListener("click", async () => {
         </div>
     </div>
 
-    <!-- Datos del contacto -->
-    <div class="form-section">
-        <h4>Datos de Contacto</h4>
-        <div class="input-row">
-            <div class="input-box">
-                <span>Nombre Completo del Contacto</span>
-                <input type="text" id="nombreContacto" name="nombreContacto" placeholder="Ingrese el nombre completo">
-            </div>
-            <div class="input-box">
-                <span>Cargo</span>
-                <select id="cargoPersona" name="cargoPersona" required>
-                    <option value="">Seleccione un cargo</option>
-                </select>
-            </div>
-        </div>
-        
-        <div class="input-row">
-            <div class="input-box">
-                <span>Correo Electrónico del Contacto</span>
-                <input type="email" id="correoContacto" name="correoContacto" placeholder="Ingrese el correo del contacto">
-            </div>
-            <div class="input-box">
-                <span>Teléfono de Contacto</span>
-                <input type="tel" id="telefonoContacto" name="telefonoContacto" placeholder="Ingrese el número de teléfono">
-            </div>
-        </div>
-    </div>
     `;
 
+    // <!-- Datos del contacto -->
+    // <div class="form-section">
+    //     <h4>Datos de Contacto</h4>
+    //     <div class="input-row">
+    //         <div class="input-box">
+    //             <span>Nombre Completo del Contacto</span>
+    //             <input type="text" id="nombreContacto" name="nombreContacto" placeholder="Ingrese el nombre completo">
+    //         </div>
+    //         <div class="input-box">
+    //             <span>Cargo</span>
+    //             <select id="cargoPersona" name="cargoPersona" required>
+    //                 <option value="">Seleccione un cargo</option>
+    //             </select>
+    //         </div>
+    //     </div>
+        
+    //     <div class="input-row">
+    //         <div class="input-box">
+    //             <span>Correo Electrónico del Contacto</span>
+    //             <input type="email" id="correoContacto" name="correoContacto" placeholder="Ingrese el correo del contacto">
+    //         </div>
+    //         <div class="input-box">
+    //             <span>Teléfono de Contacto</span>
+    //             <input type="tel" id="telefonoContacto" name="telefonoContacto" placeholder="Ingrese el número de teléfono">
+    //         </div>
+    //     </div>
+    // </div>
     agregarCargos();
     agregarDepartamentos();
     
     // Ejemplo de cómo usarlo: llamar a esta función cuando se selecciona un departamento
     document.getElementById('departamento').addEventListener('change', (event) => {
-        const departmentId = event.target.value;  // Obtenemos el ID del departamento seleccionado
+       const departmentId = event.target.value;  // Obtenemos el ID del departamento seleccionado
+        const selectedOption = event.target.options[event.target.selectedIndex];
+        const latitud = selectedOption.dataset.latitud;
+        const longitud = selectedOption.dataset.longitud;
+        console.log('Coordenadas seleccionadas - Latitud:', latitud, 'Longitud:', longitud);
+        editMap.setView([latitud, longitud], 8);  // Centrar el mapa en las coordenadas seleccionadas
         if (departmentId) {
             agregarMunicipiosEditar(departmentId);  // Llamamos a la función para cargar los municipios
         }
@@ -512,6 +517,8 @@ async function agregarDepartamentos() {
             const option = document.createElement('option');
             option.value = dep.id;  // Aquí usamos 'id' como el valor del option
             option.textContent = dep.nombre;  // El nombre del departamento será el texto mostrado
+            option.dataset.latitud = dep.latitud;
+            option.dataset.longitud = dep.longitud;
             depSelect.appendChild(option);
         })
         asignarDepartamento();;
@@ -527,12 +534,13 @@ async function agregarDepartamentos() {
 
 async function cargarUsuariosAdmin() {
     try {
-        const response = await fetch(`${API_BASE_URL}/api/user`);
+        const response = await fetch(`${API_BASE_URL}/api/usuarioempresa/empresa/${miEmpresa.id}`);
         if (!response.ok) {
             throw new Error('Error al obtener usuarios');
         }
         
         const usuarios = await response.json();
+        console.log('Usuarios administradores obtenidos:', usuarios);
         const userAdminSelect = document.getElementById('UserAdminId');
         
         if (userAdminSelect && usuarios && usuarios.length > 0) {
@@ -541,8 +549,8 @@ async function cargarUsuariosAdmin() {
             
             usuarios.forEach(usuario => {
                 const option = document.createElement('option');
-                option.value = usuario.id;
-                option.textContent = `${usuario.name} (${usuario.email})`;
+                option.value = usuario.userId;
+                option.textContent = `${usuario.User.name} (${usuario.User.email})`;
                 userAdminSelect.appendChild(option);
             });
             

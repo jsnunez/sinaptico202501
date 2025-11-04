@@ -113,22 +113,22 @@ function cargarFormulario() {
             <!-- Sección de ubicación en mapa -->
             <div class="input-row">
                 <div class="input-box full-width">
-                    <label>Ubicación en el Mapa</label>
-                    <p style="color: #666; font-size: 0.9em; margin: 5px 0;">Haga clic en el mapa para seleccionar la ubicación exacta de su entidad</p>
+                    <label>Ubicación en el Mapa <span style="color: red;">*</span></label>
+                    <p style="color: #666; font-size: 0.9em; margin: 5px 0;">Haga clic en el mapa para seleccionar la ubicación exacta de su entidad (obligatorio)</p>
                     <div id="map-container" style="height: 300px; border: 1px solid #ddd; border-radius: 5px; margin: 10px 0;">
                         <div id="location-map" style="width: 100%; height: 100%;"></div>
                     </div>
                     <div style="display: flex; gap: 10px; margin-top: 10px;">
                         <div style="flex: 1;">
-                            <label for="latitud">Latitud:</label>
-                            <input type="number" id="latitud" name="latitud" step="any" placeholder="Latitud" readonly style="background-color: #f5f5f5;">
+                            <label for="latitud">Latitud: <span style="color: red;">*</span></label>
+                            <input type="number" id="latitud" name="latitud" step="any" placeholder="Latitud" readonly style="background-color: #f5f5f5;" required>
                         </div>
                         <div style="flex: 1;">
-                            <label for="longitud">Longitud:</label>
-                            <input type="number" id="longitud" name="longitud" step="any" placeholder="Longitud" readonly style="background-color: #f5f5f5;">
+                            <label for="longitud">Longitud: <span style="color: red;">*</span></label>
+                            <input type="number" id="longitud" name="longitud" step="any" placeholder="Longitud" readonly style="background-color: #f5f5f5;" required>
                         </div>
                     </div>
-                    <small style="color: #666;">Las coordenadas se establecerán automáticamente al hacer clic en el mapa</small>
+                    <small style="color: #d32f2f; font-weight: bold;">Las coordenadas son obligatorias. Haga clic en el mapa para establecerlas.</small>
                 </div>
             </div>
         </div>
@@ -167,6 +167,11 @@ function cargarFormulario() {
     agregarDepartamentosCrear();
     document.getElementById('departamento').addEventListener('change', (event) => {
         const departmentId = event.target.value;  // Obtenemos el ID del departamento seleccionado
+        const selectedOption = event.target.options[event.target.selectedIndex];
+        const latitud = selectedOption.dataset.latitud;
+        const longitud = selectedOption.dataset.longitud;
+        console.log('Coordenadas seleccionadas - Latitud:', latitud, 'Longitud:', longitud);
+        locationMap.setView([latitud, longitud], 8);  // Centrar el mapa en las coordenadas seleccionadas
         if (departmentId) {
             agregarMunicipios(departmentId);  // Llamamos a la función para cargar los municipios
         }
@@ -258,6 +263,8 @@ async function agregarDepartamentosCrear() {
             // console.log(dep);
             const option = document.createElement('option');
             option.value = dep.id;  // Aquí usamos 'id' como el valor del option
+            option.dataset.latitud = dep.latitud;
+            option.dataset.longitud = dep.longitud;
             option.textContent = dep.nombre;  // El nombre del departamento será el texto mostrado
             depSelect.appendChild(option);
         })
@@ -312,7 +319,7 @@ function initLocationMap() {
     const defaultLng = -73.1227;
 
     // Inicializar el mapa
-    locationMap = L.map('location-map').setView([defaultLat, defaultLng], 13);
+    locationMap = L.map('location-map').setView([defaultLat, defaultLng], 6);
 
     // Agregar tiles de OpenStreetMap
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
