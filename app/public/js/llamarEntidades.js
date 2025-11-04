@@ -726,6 +726,8 @@ function displayUsersList() {
       'Estado': '�',
       'Sociedad': '💡'
     };
+console.log('Generando HTML para usuario:', user);
+fetch(`${API_BASE_URL}/api/departamentos/${user.departamentoId}`)
 
     return `
     <div class="user-item" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #eee; cursor: pointer;">
