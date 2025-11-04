@@ -371,7 +371,7 @@ document.getElementById("editarEntidad").addEventListener("click", async () => {
 
         if (contacto) {
             document.getElementById('nombreContacto').value = contacto.nombre || '';
-            document.getElementById('cargoPersona').value = contacto.cargoId || '';
+            // document.getElementById('cargoPersona').value = contacto.cargoId || '';
             document.getElementById('correoContacto').value = contacto.email || '';
             document.getElementById('telefonoContacto').value = contacto.telefono || '';
         }
@@ -805,11 +805,11 @@ async function actualizarEntidadConUbicacion() {
         formData.append('paginaweb', document.getElementById('paginaweb').value || '');
         formData.append('UserAdminId', document.getElementById('UserAdminId').value);
         
-        // Datos de contacto
-        formData.append('nombreContacto', document.getElementById('nombreContacto').value);
-        formData.append('cargoPersona', document.getElementById('cargoPersona').value);
-        formData.append('correoContacto', document.getElementById('correoContacto').value);
-        formData.append('telefonoContacto', document.getElementById('telefonoContacto').value);
+        // // Datos de contacto
+        // formData.append('nombreContacto', document.getElementById('nombreContacto').value);
+        // formData.append('cargoPersona', document.getElementById('cargoPersona').value);
+        // formData.append('correoContacto', document.getElementById('correoContacto').value);
+        // formData.append('telefonoContacto', document.getElementById('telefonoContacto').value);
         
         // Manejo del logo
         const logoFile = document.getElementById('logo').files[0];
