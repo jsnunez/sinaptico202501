@@ -548,9 +548,9 @@
     </div>
 
     <!-- Contenido principal - Directorio -->
-    <section  id="modalDirectorio" style="display: none;margin: 2rem auto 1rem;" class="main-content">
+    <section id="modalDirectorio" style="display: none;margin: 2rem auto 1rem;" class="main-content">
 
-        <div >
+        <div>
             <div style="display: flex;   justify-content: center;">
 
                 <section class="section-header">
@@ -622,7 +622,8 @@
                 <div>
 
                     <!-- Contenedor del mapa -->
-     <div id="directorioCompleto" style="  display: flex;   justify-content: space-around;">                        <div class="map-container" id="modalMapa">
+                    <div id="directorioCompleto" style="  display: flex;   justify-content: space-around;">
+                        <div class="map-container" id="modalMapa">
 
                             <div class="map-wrapper">
                                 <div id="mapid"></div>
@@ -956,7 +957,6 @@
 
                     <h3 id="tipoEntidad"></h3>
 
-                    <button class="action-button" id="contactarTelBtn" style="margin-left: auto;">Contactar</button>
 
                 </div>
             </div>
@@ -967,18 +967,31 @@
                         <p><strong>Actividad Economica:</strong> </p>
                         <p><span id="descripcionEmpresa"></span></p>
 
+
+                        <p><strong>Ciudad:</strong> </p>
+                        <p><span id="ciudad"></span></p>
+
+
+                        <p><strong>Direccion:</strong> </p>
+                        <p><span id="UbicacionEntidad"></span></p>
+
                         <p><strong>Telefono:</strong>
                             <span id="telefonoEntidad"></span>
                         </p>
 
+                        <p><strong>Email:</strong>
+                            <span id="emailEntidad"></span>
+                        </p>
 
-                        <div class="input-box full-width">
 
-                            <p><strong>Ubicacion:</strong> </p>
-                            <p><span id="UbicacionEntidad"></span></p>
 
-                        </div>
+                        <button class="action-button" id="contactarTelBtn"
+                            style=" width: 10%; min-width: 120px;">Contactar</button>
+                        <p style="font-size: 0.75em; color: #7f8c8d; margin-top: 5px;">
+                            *Haz clic en contactar para ver más datos de contacto
+                        </p>
                     </div>
+
                     <div class="input-box">
                         <p><strong>Redes Sociales</strong> </p>
                         <div class="social-icons">
@@ -1291,7 +1304,7 @@
 
 
         document.getElementById('btnContactosEspera').onclick = function () {
-             document.getElementById('contact-controls').style.display = 'none';
+            document.getElementById('contact-controls').style.display = 'none';
             document.getElementById('tablaVerificados').style.display = 'none';
             document.getElementById('tablaEspera').style.display = 'block';
             this.classList.add('active');

@@ -91,29 +91,33 @@ function cargarEmpresas(empresas) {
 document.addEventListener('DOMContentLoaded', function () {
   // Abrir modal con info de la empresa
   document.addEventListener('click', function (e) {
-    if (e.target && e.target.classList.contains('botonEntidad')) {
+    if (e.target && (e.target.classList.contains('botonEntidad') || e.target.id === 'masInformacion')) {
       console.log(todasLasEmpresas)
 
       const id = e.target.dataset.id;
-      console.log(todasLasEmpresas)
+      // console.log(todasLasEmpresas)
 
       const empresa = todasLasEmpresas.find(emp => emp.id == id);
 
-      console.log(empresa)
+      // console.log(empresa)
 
 
       if (empresa) {
         document.getElementById('modalRazonSocial').textContent = empresa.razonSocial;
         document.getElementById('tipoEntidad').textContent = empresa.claseEntidad;
         document.getElementById('descripcionEmpresa').textContent = empresa.actividadEconomica;
+        document.getElementById('ciudad').textContent = empresa.Ciudad.nombre;
+        document.getElementById('telefonoEntidad').textContent = "********";
         document.getElementById('serviciosAsociados').textContent = empresa.razonSocial;
-        document.getElementById('UbicacionEntidad').textContent = empresa.direccion + ", " + empresa.Ciudad.nombre + ", " + empresa.Ciudad.Departamento.nombre;
+         document.getElementById('UbicacionEntidad').textContent ="*********";
+        // document.getElementById('UbicacionEntidad').textContent = empresa.direccion + ", " + empresa.Ciudad.nombre + ", " + empresa.Ciudad.Departamento.nombre;
+        document.getElementById('emailEntidad').textContent = "********";
         // document.getElementById('contactoEntidad').textContent = empresa.User.name;
-        const telefono = empresa.telefono || '';
-        const telefonoMasked = telefono.length > 4
-          ? telefono.slice(0, 4) + '*'.repeat(telefono.length - 4)
-          : telefono;
-        document.getElementById('telefonoEntidad').textContent = telefonoMasked;
+        // const telefono = empresa.telefono || '';
+        // const telefonoMasked = telefono.length > 4
+        //   ? telefono.slice(0, 4) + '*'.repeat(telefono.length - 4)
+        //   : telefono;
+        // document.getElementById('telefonoEntidad').textContent = telefonoMasked;
         llamarservicios(empresa.id);
         llamarIntegrantes(empresa.id);
 
@@ -131,6 +135,12 @@ document.addEventListener('DOMContentLoaded', function () {
     if (empresa && empresa.telefono) {
       telefono.textContent = empresa.telefono;
     }
+    if (empresa && empresa.direccion) {
+      document.getElementById('UbicacionEntidad').textContent = empresa.direccion ;
+    }
+    if (empresa && empresa.correo) {
+      document.getElementById('emailEntidad').textContent = empresa.correo;
+    }
     let contador = telefono.getAttribute('data-contador') || 0;
     // Hacer PUT para aumentar el contador en el backend
     if (empresa && empresa.id) {
@@ -138,39 +148,39 @@ document.addEventListener('DOMContentLoaded', function () {
         method: 'PUT'
       }).catch(err => console.error('Error al aumentar contador:', err));
     }
-    // Enviar invitación al hacer clic en el botón de contacto
-    const userId = obtenerCookie("userId");
-    const paraUserId = empresa.UserAdminId; // Ajusta según la estructura de tu objeto empresa
-    const mensaje = `Hola, me gustaría ponerme en contacto con ${empresa.razonSocial}`;
-    const telefonoEmpresa = empresa.telefono;
+    // // Enviar invitación al hacer clic en el botón de contacto
+    // const userId = obtenerCookie("userId");
+    // const paraUserId = empresa.UserAdminId; // Ajusta según la estructura de tu objeto empresa
+    // const mensaje = `Hola, me gustaría ponerme en contacto con ${empresa.razonSocial}`;
+    // const telefonoEmpresa = empresa.telefono;
 
-    if (userId && paraUserId) {
-      fetch(`${API_BASE_URL}/api/invitacion`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          desdeuserid: parseInt(userId),
-          parauserid: parseInt(paraUserId),
-          mensaje,
-          telefono: telefonoEmpresa
-        })
-      })
-        .then(res => res.json())
-        .then(data => {
-          console.log('Respuesta del servidor:', data);
-          if (data && data.id) {
-            alert('Invitación enviada correctamente.');
-          } else {
-            alert('No se pudo enviar la invitación: ' + (data.error || 'Error desconocido.'));
-          }
-        })
-        .catch(err => {
-          console.error('Error al enviar invitación:', err);
-          alert('Error al enviar la invitación.');
-        });
-    }
+    // if (userId && paraUserId) {
+    //   fetch(`${API_BASE_URL}/api/invitacion`, {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify({
+    //       desdeuserid: parseInt(userId),
+    //       parauserid: parseInt(paraUserId),
+    //       mensaje,
+    //       telefono: telefonoEmpresa
+    //     })
+    //   })
+    //     .then(res => res.json())
+    //     .then(data => {
+    //       console.log('Respuesta del servidor:', data);
+    //       if (data && data.id) {
+    //         alert('Invitación enviada correctamente.');
+    //       } else {
+    //         alert('No se pudo enviar la invitación: ' + (data.error || 'Error desconocido.'));
+    //       }
+    //     })
+    //     .catch(err => {
+    //       console.error('Error al enviar invitación:', err);
+    //       alert('Error al enviar la invitación.');
+    //     });
+    // }
 
     // telefono.setAttribute('data-contador', contador);
     // let contadorSpan = document.getElementById('contadorContactos');
@@ -700,50 +710,54 @@ function createPopupContent(user) {
   const typeLabels = {
     'Empresa': '🏢 Empresa',
     'Academia': '🎓 Academia',
-    'Estado': '� Estado',
+    'Estado': '🏛️ Estado',
     'Sociedad': '💡 Sociedad'
   };
 
   const statusColor = user.verificada ? '#27ae60' : '#e74c3c';
 
   return `
-                <div class="popup-header">
-                    <div class="popup-name">${user.name}</div>
-                    <div class="popup-role">${typeLabels[user.claseEntidad] || '🏢 Entidad'}</div>
-                </div>
-                <div class="popup-body">
-                    <div class="popup-info">
-                        <span class="popup-label">Tipo:</span>
-                        <span class="popup-value">${user.claseEntidad}</span>
-                    </div>
-                    <div class="popup-info">
-                        <span class="popup-label">Ciudad:</span>
-                        <span class="popup-value">${user.city}</span>
-                    </div>
-                    <div class="popup-info">
-                        <span class="popup-label">Dirección:</span>
-                        <span class="popup-value">${user.direccion || 'No especificada'}</span>
-                    </div>
-                    <div class="popup-info">
-                        <span class="popup-label">Estado:</span>
-                        <span class="popup-value" style="color: ${statusColor}">
-                            ● ${user.verificada ? 'Verificada' : 'Sin verificar'}
-                        </span>
-                    </div>
-                    <div class="popup-info">
-                        <span class="popup-label">Teléfono:</span>
-                        <span class="popup-value">${user.telefono || 'No disponible'}</span>
-                    </div>
-                    <div class="popup-actions">
-                        <button class="popup-btn btn-primary" onclick="contactUser('${user.email}')">
-                            <i class="fas fa-envelope"></i> Contactar
-                        </button>
-                        ${user.website ? `<button class="popup-btn btn-secondary" onclick="window.open('${user.website}', '_blank')">
-                            <i class="fas fa-globe"></i> Web
-                        </button>` : ''}
-                    </div>
-                </div>
-            `;
+          <div class="popup-header">
+            <div class="popup-name">${user.name}</div>
+            <div class="popup-role">${typeLabels[user.claseEntidad] || '🏢 Entidad'}</div>
+          </div>
+          <div class="popup-body">
+            <div class="popup-info">
+              <span class="popup-label">Tipo:</span>
+              <span class="popup-value">${user.claseEntidad}</span>
+            </div>
+            <div class="popup-info">
+              <span class="popup-label">Ciudad:</span>
+              <span class="popup-value">${user.city}</span>
+            </div>
+            <div class="popup-info">
+              <span class="popup-label">Dirección:</span>
+              <span class="popup-value" id="direccion-${user.id}">***</span>
+            </div>
+            <div class="popup-info">
+              <span class="popup-label">Estado:</span>
+              <span class="popup-value" style="color: ${statusColor}">
+                ● ${user.verificada ? 'Verificada' : 'Sin verificar'}
+              </span>
+            </div>
+            <div class="popup-info">
+              <span class="popup-label">Teléfono:</span>
+              <span class="popup-value" id="telefono-${user.id}">***</span>
+            </div>
+            <div class="popup-info">
+              <span class="popup-label">Email:</span>
+              <span class="popup-value" id="email-${user.id}">***</span>
+            </div>
+            <div class="popup-actions">
+              <button class="popup-btn btn-primary" onclick="mostrarContacto(${user.id}, '${user.direccion || 'No especificada'}', '${user.telefono || 'No disponible'}', '${user.email}')">
+                <i class="fas fa-envelope"></i> Contactar
+              </button>
+              <button class="popup-btn btn-secondary botonEntidad" style="margin-bottom: 0;" data-id="${user.id}">
+                Más información
+              </button>
+            </div>
+          </div>
+        `;
 }
 
 function displayUsersList() {
@@ -765,7 +779,7 @@ function displayUsersList() {
     const typeIcons = {
       'Empresa': '🏢',
       'Academia': '🎓',
-      'Estado': '�',
+      'Estado': '🏛️',
       'Sociedad': '💡'
     };
     console.log('Generando HTML para usuario:', user);
@@ -1012,6 +1026,21 @@ function clearCookies() {
   cookies.forEach(cookie => {
     document.cookie = `${cookie}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
   });
+}
+
+function mostrarContacto(userId, direccion, telefono, email) {
+  // Mostrar la información de contacto en el popup
+  document.getElementById(`direccion-${userId}`).textContent = direccion;
+  document.getElementById(`telefono-${userId}`).textContent = telefono;
+  document.getElementById(`email-${userId}`).textContent = email;
+
+  // Opcional: registrar el contacto o enviar notificación
+  const userIdActual = obtenerCookie("userId");
+  if (userIdActual) {
+    fetch(`${API_BASE_URL}/api/entidad/aumentarContadorContacto/${userId}`, {
+      method: 'PUT'
+    }).catch(err => console.error('Error al aumentar contador:', err));
+  }
 }
 
 
