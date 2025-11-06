@@ -1,6 +1,6 @@
 
 :root {
-    --primary-color: #3366CC;
+    --primary-color:#1b3360;
     --secondary-color: #5d8dee;
     --accent-color: #8e2de2;
     --text-color: #3366CC;
@@ -21,5 +21,6 @@
     --transition: all 0.3s ease;
     --yellow: #fbbf24;
     --red: #ef4444;
+    --orange : #FF8200;
   }
   
