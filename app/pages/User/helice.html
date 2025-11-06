@@ -144,7 +144,7 @@
             font-size: 14px;
             font-weight: 500;
             transition: all 0.3s;
-            margin-top: 20px;
+            margin-top: 28px;
         }
 
         .filter-btn.active {
@@ -192,7 +192,6 @@
             border-radius: 12px;
             padding: 20px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            width: 40vw;
         }
 
         .users-list h3 {
@@ -632,7 +631,7 @@
                         </div>
                         <div class="busquedaEntidad" id="busquedaEntidad" style="height: 70vh;">
                             <!-- Lista de usuarios -->
-                            <div class="users-list" style="height: 100%; overflow-y: auto;">
+                            <div class="users-list" style="height: 100%; overflow-y: auto; width: 40vw;" id="users-list">
                                 <!-- <h3><i class="fas fa-building"></i> Entidades en el Mapa</h3> -->
                                 <div id="users-list-content">
                                     <div class="loading">
@@ -923,7 +922,34 @@
                     </tbody>
                 </table>
             </div>
+            <div style="margin: 2rem auto 1rem; ">
+                <!-- Controles de contactos verificados -->
+                <div class="contact-controls" id="contact-controls-espera" style="display: none;">
+                    <div class="control-group">
+                        <label class="control-label">Buscar por nombre</label>
+                        <input type="text" class="control-input" id="filterE-nombre"
+                            placeholder="Nombre o razón Social...">
+                    </div>
 
+                    <div class="control-group">
+                        <label class="control-label">Filtrar Entidad </label>
+                        <select class="control-select" id="filterE-entidad">
+                            <option value="">Todos las entidades</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">Filtrar por cargos</label>
+                        <select class="control-select" id="filterE-cargo">
+                            <option value="">Todos los cargos</option>
+                        </select>
+                    </div>
+
+                    <div class="control-group">
+                        <button class="filter-btn" id="filterE-contact"><i class="bi bi-arrow-clockwise"></i></button>
+                    </div>
+
+                </div>
+            </div>
             <!-- Tabla de contactos en espera -->
             <div id="tablaEspera" style="overflow-x:auto;display:none;">
                 <table style="width:100%;border-collapse:collapse;">
@@ -1080,7 +1106,7 @@
 
                 <div class="modal-actions">
                     <button type="submit" class="modal-button">Guardar Cambios</button>
-                    <button type="button" class="modal-button-secondary" id="cerrarModalEditar">Cancelar</button>
+                    <button type="button" class="modal-button" id="cerrarModalEditar">Cancelar</button>
                 </div>
             </form>
         </div>
@@ -1284,6 +1310,7 @@
             await cargarContactos(userIdNotify, 'tablaContactosVerificados');
             document.getElementById('tablaVerificados').style.display = 'block';
             document.getElementById('contact-controls').style.display = 'flex';
+            document.getElementById('contact-controls-espera').style.display = 'none';
             document.getElementById('tablaEspera').style.display = 'none';
             this.classList.add('active');
             document.getElementById('btnContactosEspera').classList.remove('active');
@@ -1292,6 +1319,7 @@
 
         document.getElementById('btnContactosEspera').onclick = function () {
              document.getElementById('contact-controls').style.display = 'none';
+             document.getElementById('contact-controls-espera').style.display = 'flex';
             document.getElementById('tablaVerificados').style.display = 'none';
             document.getElementById('tablaEspera').style.display = 'block';
             this.classList.add('active');
@@ -1746,9 +1774,12 @@
                 // Aplicar estilos de cuadrícula a los elementos user-item
                 const userItems = document.querySelectorAll('.user-item');
                 const usersListContent = document.getElementById('users-list-content');
+                const usersList= document.getElementById('users-list');
                 usersListContent.style.gridTemplateColumns = 'repeat(auto-fill, minmax(280px, 1fr))';
                 usersListContent.style.gap = '20px';
                 usersListContent.style.padding = '20px';
+
+                usersList.style.width   = '100%';
 
                 busquedaEntidad.style.display = '';
                 busquedaEntidad.style.gridTemplateColumns = '';
@@ -1785,8 +1816,10 @@
                 busquedaEntidad.style.width = 'auto';
 
                 // Restaurar estilos originales de los user-item
+                const usersList= document.getElementById('users-list');
                 const userItems = document.querySelectorAll('.user-item');
                 const usersListContent = document.getElementById('users-list-content');
+                usersList.style.width   = '40vw';  
                 usersListContent.style.display = '';
                 usersListContent.style.gridTemplateColumns = '';
                 usersListContent.style.gap = '';
