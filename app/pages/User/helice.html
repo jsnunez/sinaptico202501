@@ -57,7 +57,7 @@
 
         .stat-card {
             background: white;
-            padding: 20px;
+            padding: 5px;
             border-radius: 10px;
             text-align: center;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -91,7 +91,7 @@
         /* Controles del mapa */
         .map-controls {
             background: #3366CC;
-            padding: 20px;
+            padding: 0px 20px;
             border-radius: 10px;
             margin-bottom: 20px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -115,7 +115,7 @@
 
         .control-input,
         .control-select {
-            padding: 10px;
+            padding: 7px 2px;
             border: 2px solid #ecf0f1;
             border-radius: 6px;
             font-size: 14px;
@@ -135,7 +135,7 @@
         }
 
         .filter-btn {
-            padding: 10px;
+            padding: 7px 5px;
             border: 2px solid #ecf0f1;
             border-radius: 6px;
             background: #ecf0f1;
@@ -144,7 +144,7 @@
             font-size: 14px;
             font-weight: 500;
             transition: all 0.3s;
-            margin-top: 28px;
+            margin-top: 20px;
         }
 
         .filter-btn.active {
@@ -449,7 +449,7 @@
 
     </div>
     <!-- Bienvenida y botones de acción -->
-    <div class="welcome-container">
+    <div class="welcome-container" id="welcome-container">
         <div id="userPhoto" style="position: relative; display: inline-block; cursor: pointer;">
             <img id="imagenPerfil" src="img/sinfoto.jpg" alt="Foto de perfil"
                 onerror="this.onerror=null;this.src='img/sinfoto.jpg';" style="border-radius:50%;object-fit:cover;">
@@ -459,7 +459,7 @@
             </span>
         </div>
 
-        <div class="welcome-text">
+        <div class="welcome-text" id="welcome-text">
             <h2 id="bienvenido">Hola </h2>
             <h1 style="display: none;" id="departamentoPerfilValor"></h1>
             <h1 style="display: none;" id="ciudadPerfilValor"></h1>
@@ -547,14 +547,14 @@
     </div>
 
     <!-- Contenido principal - Directorio -->
-    <section class="main-content" id="modalDirectorio" style="display: none;">
+    <section  id="modalDirectorio" style="display: none;margin: 2rem auto 1rem;" class="main-content">
 
-        <div class="main-content">
+        <div >
             <div style="display: flex;   justify-content: center;">
 
                 <section class="section-header">
 
-                    <h2 style="color: white;"><i class="bi bi-list-task"></i> Directorio SinAptico</h2>
+                    <h2 style="color: white;"><i class="bi bi-list-task"></i> Directorio Synaptico</h2>
                 </section>
 
             </div>
@@ -620,16 +620,8 @@
                 </div>
                 <div>
 
-
                     <!-- Contenedor del mapa -->
-                    <!-- Header del mapa -->
-                    <div class="helix-title">
-                        <h1 class="title">🗺️ Mapa</h1>
-                        <p>Explora la ubicación de empresas, instituciones educativas y organizaciones de la red
-                            SinAptico
-                        </p>
-                    </div>
-                    <div id="directorioCompleto" style="  display: flex;   justify-content: space-around;">
+                    <div id="directorioCompleto" style="  display: flex;">
                         <div class="map-container" id="modalMapa">
 
                             <div class="map-wrapper">
@@ -638,7 +630,7 @@
 
 
                         </div>
-                        <div class="busquedaEntidad" id="busquedaEntidad" style="height: 70vh;">
+                        <div class="busquedaEntidad" id="busquedaEntidad" style="height: 80vh;">
                             <!-- Lista de usuarios -->
                             <div class="users-list" style="height: 100%; overflow-y: auto;">
                                 <!-- <h3><i class="fas fa-building"></i> Entidades en el Mapa</h3> -->
@@ -1721,6 +1713,7 @@
             directorioDiv.addEventListener('click', () => {
                 document.getElementById('modalDirectorio').style.display = 'block';
                 document.getElementById('entidades').style.display = 'none';
+                document.getElementById('welcome-container').style.display = 'none';
                 modalMapa.style.display = 'block';
                 toggleViewBtn.textContent = '🟦 Muro';
                 initializeMap();
