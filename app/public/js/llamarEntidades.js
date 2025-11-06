@@ -748,10 +748,10 @@ function createPopupContent(user) {
 
 function displayUsersList() {
   const listContent = document.getElementById('users-list-content');
+  listContent.innerHTML = ''; // Limpiar contenido previo
   console.log('Mostrando lista de usuarios, total:', filteredUsers);
-  focusOnCity(filteredUsers[0].id);
-  focusOnDpto(filteredUsers[0].id);
-  if (filteredUsers.length === 0) {
+ 
+  if (filteredUsers.length ===0) {
     listContent.innerHTML = `
                     <div style="text-align: center; padding: 40px; color: #7f8c8d;">
                         <i class="fas fa-search" style="font-size: 2em; margin-bottom: 10px;"></i>
@@ -801,6 +801,8 @@ function displayUsersList() {
   }).join('');
 
   listContent.innerHTML = usersHtml;
+   focusOnCity(filteredUsers[0].id);
+  focusOnDpto(filteredUsers[0].id);
 }
 
 function setupEventListeners() {
@@ -872,7 +874,7 @@ function applyFilters() {
 
   filteredUsers = usersData.filter(user => {
     // Filtro de tipo
-    const typeMatch = currentFilter === 'all' || user.claseEntidad === currentFilter;
+    const typeMatch = currentFilter === 'all' ;
 
     // Filtro de búsqueda
     const searchMatch = !searchTerm ||
