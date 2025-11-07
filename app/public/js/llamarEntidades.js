@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('ciudad').textContent = empresa.Ciudad.nombre;
         document.getElementById('telefonoEntidad').textContent = "********";
         document.getElementById('serviciosAsociados').textContent = empresa.razonSocial;
-         document.getElementById('UbicacionEntidad').textContent ="*********";
+        document.getElementById('UbicacionEntidad').textContent = "*********";
         // document.getElementById('UbicacionEntidad').textContent = empresa.direccion + ", " + empresa.Ciudad.nombre + ", " + empresa.Ciudad.Departamento.nombre;
         document.getElementById('emailEntidad').textContent = "********";
         // document.getElementById('contactoEntidad').textContent = empresa.User.name;
@@ -136,7 +136,7 @@ document.addEventListener('DOMContentLoaded', function () {
       telefono.textContent = empresa.telefono;
     }
     if (empresa && empresa.direccion) {
-      document.getElementById('UbicacionEntidad').textContent = empresa.direccion ;
+      document.getElementById('UbicacionEntidad').textContent = empresa.direccion;
     }
     if (empresa && empresa.correo) {
       document.getElementById('emailEntidad').textContent = empresa.correo;
@@ -764,8 +764,8 @@ function displayUsersList() {
   const listContent = document.getElementById('users-list-content');
   listContent.innerHTML = ''; // Limpiar contenido previo
   console.log('Mostrando lista de usuarios, total:', filteredUsers);
- 
-  if (filteredUsers.length ===0) {
+
+  if (filteredUsers.length === 0) {
     listContent.innerHTML = `
                     <div style="text-align: center; padding: 40px; color: #7f8c8d;">
                         <i class="fas fa-search" style="font-size: 2em; margin-bottom: 10px;"></i>
@@ -815,7 +815,7 @@ function displayUsersList() {
   }).join('');
 
   listContent.innerHTML = usersHtml;
-   focusOnCity(filteredUsers[0].id);
+  focusOnCity(filteredUsers[0].id);
   focusOnDpto(filteredUsers[0].id);
 }
 
@@ -888,7 +888,7 @@ function applyFilters() {
 
   filteredUsers = usersData.filter(user => {
     // Filtro de tipo
-    const typeMatch = currentFilter === 'all' ;
+    const typeMatch = currentFilter === 'all';
 
     // Filtro de búsqueda
     const searchMatch = !searchTerm ||
@@ -1085,7 +1085,7 @@ function renderTabla(lista) {
     const tr = document.createElement('tr');
     tr.innerHTML = `
             <td>
-                <div style="position:relative;width:60px;height:60px;">
+                <div style="position:relative;width:60px;height:60px; margin-top:10px;">
                     <img src="photo/${user.fotoPerfil || 'img/sinfoto.jpg'}" 
                         alt="Foto" style="width:60px;height:60px;border-radius:50%;object-fit:cover;"
                         onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
@@ -1147,4 +1147,138 @@ document.getElementById('misContactos').addEventListener('click', () => {
   document.getElementById(id).onclick = () => {
     document.getElementById('modalMisContactos').style.display = 'none';
   };
+});
+
+// Variable global
+let listaContactosEspera = [];
+
+// Función para llenar los filtros de la sección "En Espera"
+function llenarFiltrosEspera(lista) {
+  const filterEntidad = document.getElementById('filterE-entidad');
+  const filterCargo = document.getElementById('filterE-cargo');
+
+  // Extraemos entidades y cargos (si existen)
+  const entidades = [...new Set(lista.map(c => c.empresa?.razonSocial).filter(Boolean))];
+  const cargos = [...new Set(lista.map(c => c._cargoNombre ?? '').filter(c => c && c !== 'N/A'))];
+
+  // Rellenar selects
+  filterEntidad.innerHTML = '<option value="">Todas las entidades</option>';
+  filterCargo.innerHTML = '<option value="">Todos los cargos</option>';
+
+  entidades.forEach(e => {
+    const opt = document.createElement('option');
+    opt.value = e;
+    opt.textContent = e;
+    filterEntidad.appendChild(opt);
+  });
+
+  cargos.forEach(c => {
+    const opt = document.createElement('option');
+    opt.value = c;
+    opt.textContent = c;
+    filterCargo.appendChild(opt);
+  });
+}
+
+function renderTablaEspera(lista) {
+  const tbody = document.getElementById('tablaContactosEspera');
+  tbody.innerHTML = '';
+
+  if (!lista || lista.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No hay contactos</td></tr>';
+    return;
+  }
+
+  lista.forEach(contacto => {
+    // Normalización de campos
+    const user =
+      contacto.User ||
+      contacto.receptor ||
+      contacto.destinatario ||
+      contacto.usuarioDestino ||
+      {};
+    const empresa =
+      contacto.empresa?.razonSocial ||
+      contacto.empresaDestino?.razonSocial ||
+      contacto.Empresa?.razonSocial ||
+      '';
+
+    const nombre = user.name || user.nombre || 'Desconocido';
+    const cargo =
+      contacto._cargoNombre && contacto._cargoNombre !== 'N/A'
+        ? contacto._cargoNombre
+        : 'Sin asignar';
+
+    const acciones =
+      contacto.estado === 'recibido'
+        ? `
+          <button class="filter-btn" style="background-color:#28a745;color:white;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:0.9em;" onclick="aceptarInvitacion(${contacto.invitacionId})">
+            <i class="bi bi-check-circle"></i> Aceptar
+          </button>
+          <button class="filter-btn" style="background-color:#dc3545;color:white;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:0.9em;" onclick="rechazarInvitacion(${contacto.invitacionId})">
+            <i class="bi bi-x-circle"></i> Rechazar
+          </button>`
+        : `
+          <button class="filter-btn" style="background-color:#dc3545;color:white;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:0.9em;" onclick="rechazarInvitacion(${contacto.invitacionId})">
+            <i class="bi bi-x-circle"></i> Cancelar
+          </button>`;
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+                  <td>
+                <div style="position:relative;width:60px;height:60px; margin-top:10px;">
+                    <img src="photo/${user.fotoPerfil || 'img/sinfoto.jpg'}" 
+                        alt="Foto" style="width:60px;height:60px;border-radius:50%;object-fit:cover;"
+                        onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
+                    <i class="bi bi-search"
+                       style="position:absolute;bottom:2px;right:2px;font-size:0.9em;color:#007bff;background:white;border-radius:50%;padding:3px;cursor:pointer;"
+                       onclick="abrirModalIntegrante(${user.id})"></i>
+                </div>
+            </td>
+            <td>${user.name ?? ''}</td>
+      <td style="text-align:center;">${cargo}</td>
+      <td style="text-align:center;">${empresa}</td>
+      <td style="display:flex;gap:8px;justify-content:center;">${acciones}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+
+// Aplicar filtros a contactos en espera
+function aplicarFiltrosEspera() {
+  const nombreFiltro = document.getElementById('filterE-nombre').value.toLowerCase();
+  const entidadFiltro = document.getElementById('filterE-entidad').value;
+  const cargoFiltro = document.getElementById('filterE-cargo').value;
+
+  const filtrados = listaContactosEspera.filter(c => {
+    const user = c.User ?? {};
+    const empresa = c.empresa?.razonSocial ?? '';
+    const cargo = c._cargoNombre ?? '';
+    console.log('Filtrando contacto:', user.name, empresa, cargo);
+
+    const matchesNombre =
+      !nombreFiltro ||
+      user.name?.toLowerCase().includes(nombreFiltro) ||
+      empresa.toLowerCase().includes(nombreFiltro);
+    const matchesEntidad = !entidadFiltro || empresa === entidadFiltro;
+    const matchesCargo = !cargoFiltro || cargo === cargoFiltro;
+
+    return matchesNombre && matchesEntidad && matchesCargo;
+  });
+
+  renderTablaEspera(filtrados);
+}
+
+// Eventos para filtros
+document.getElementById('filterE-nombre').addEventListener('input', aplicarFiltrosEspera);
+document.getElementById('filterE-entidad').addEventListener('change', aplicarFiltrosEspera);
+document.getElementById('filterE-cargo').addEventListener('change', aplicarFiltrosEspera);
+
+// Botón reset
+document.getElementById('filterE-contact').addEventListener('click', () => {
+  document.getElementById('filterE-nombre').value = '';
+  document.getElementById('filterE-entidad').value = '';
+  document.getElementById('filterE-cargo').value = '';
+  aplicarFiltrosEspera();
 });

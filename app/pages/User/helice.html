@@ -77,7 +77,7 @@
         }
 
         .contact-controls {
-            background: #3366CC;
+            background: #1b3360;
             padding: 20px;
             border-radius: 10px;
             margin-bottom: 20px;
@@ -90,7 +90,7 @@
 
         /* Controles del mapa */
         .map-controls {
-            background: #3366CC;
+            background: #1b3360;
             padding: 0px 20px;
             border-radius: 10px;
             margin-bottom: 20px;
@@ -192,7 +192,7 @@
             border-radius: 12px;
             padding: 20px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            
+
         }
 
         .users-list h3 {
@@ -551,7 +551,7 @@
     <section id="modalDirectorio" style="display: none;margin: 2rem auto 1rem;" class="main-content">
 
         <div>
-            <div style="display: flex;   justify-content: center;">
+            <div style="display: flex; justify-content: flex-start;">
 
                 <section class="section-header">
 
@@ -633,7 +633,8 @@
                         </div>
                         <div class="busquedaEntidad" id="busquedaEntidad" style="height: 70vh;">
                             <!-- Lista de usuarios -->
-                            <div class="users-list" style="height: 100%; overflow-y: auto; width: 40vw;" id="users-list">
+                            <div class="users-list" style="height: 100%; overflow-y: auto; width: 40vw;"
+                                id="users-list">
                                 <!-- <h3><i class="fas fa-building"></i> Entidades en el Mapa</h3> -->
                                 <div id="users-list-content">
                                     <div class="loading">
@@ -869,11 +870,11 @@
             <h2>Mis Contactos</h2>
 
             <!-- Toggle para cambiar entre verificados y en espera -->
-            <div style="text-align:center;margin:20px 0;">
-                <button class="filter-btn active" id="btnContactosVerificados">
+            <div style="text-align:center;margin:20px 0; display: flex;justify-content: center">
+                <button class="tag active" id="btnContactosVerificados">
                     Verificados
                 </button>
-                <button class="filter-btn" id="btnContactosEspera">
+                <button class="tag" id="btnContactosEspera">
                     En Espera
                 </button>
             </div>
@@ -921,7 +922,7 @@
                     </thead>
                     <tbody id="tablaContactosVerificados">
                         <!-- Los contactos verificados se cargarán aquí -->
-                                <tr id="contactos-loading">
+                        <tr id="contactos-loading">
                             <td colspan="4" style="text-align:center;padding:40px;">
                                 <i class="fas fa-spinner fa-spin" style="font-size:2em;color:#3498db;"></i>
                                 <p style="margin-top:10px;color:#7f8c8d;">Cargando contactos...</p>
@@ -961,18 +962,20 @@
                 </div>
             </div>
             <!-- Tabla de contactos en espera -->
-            <div id="tablaEspera" style="overflow-x:auto;display:none;height: 40vh;"">
-                <table style="width:100%;border-collapse:collapse;">
+            <div id="tablaEspera" style="overflow-x:auto;display:none;height: 40vh;">
+                <table style=" width:100%;border-collapse:collapse;">
                     <thead>
                         <tr>
                             <th>Nombre</th>
+                            <th>Nombre</th>
+                            <th>Cargo</th>
                             <th>Entidad</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody id="tablaContactosEspera">
                         <!-- Los contactos en espera se cargarán aquí -->
-                                <tr id="contactos-loading">
+                        <tr id="contactos-loading">
                             <td colspan="4" style="text-align:center;padding:40px;">
                                 <i class="fas fa-spinner fa-spin" style="font-size:2em;color:#3498db;"></i>
                                 <p style="margin-top:10px;color:#7f8c8d;">Cargando contactos...</p>
@@ -1337,7 +1340,7 @@
 
         // Toggle entre contactos verificados y en espera
         document.getElementById('btnContactosVerificados').onclick = async function () {
-            
+
             document.getElementById('tablaVerificados').style.display = 'block';
             document.getElementById('contact-controls').style.display = 'flex';
             document.getElementById('contact-controls-espera').style.display = 'none';
@@ -1349,8 +1352,8 @@
 
 
         document.getElementById('btnContactosEspera').onclick = function () {
-             document.getElementById('contact-controls').style.display = 'none';
-             document.getElementById('contact-controls-espera').style.display = 'flex';
+            document.getElementById('contact-controls').style.display = 'none';
+            document.getElementById('contact-controls-espera').style.display = 'flex';
             document.getElementById('tablaVerificados').style.display = 'none';
             document.getElementById('tablaEspera').style.display = 'block';
             this.classList.add('active');
@@ -1359,58 +1362,55 @@
             // Cargar contactos en espera
             fetch(`/api/invitacion/mis-contactos-pendientes/${userIdNotify}`)
                 .then(res => res.json())
-                .then(data => {
+                .then(async data => {
                     const tbody = document.getElementById('tablaContactosEspera');
                     tbody.innerHTML = '';
-                    console.log(data);
-                    // Mostrar contactos recibidos
-                    if (data.recibidos && Array.isArray(data.recibidos) && data.recibidos.length > 0) {
-                        data.recibidos.forEach(contacto => {
 
-                            console.log(contacto);
+                    // ==== Función para obtener nombre del cargo ====
+                    const cargoCache = new Map();
+                    const getCargoNombre = async (id) => {
+                        if (!id) return 'Sin asignar';
+                        if (cargoCache.has(id)) return cargoCache.get(id);
+                        try {
+                            const r = await fetch(`/api/cargos/${id}`);
+                            if (!r.ok) throw new Error(`HTTP ${r.status}`);
+                            const d = await r.json();
+                            const nombre = d?.nombre ?? 'Sin asignar';
+                            cargoCache.set(id, nombre);
+                            return nombre;
+                        } catch {
+                            return 'Sin asignar';
+                        }
+                    };
 
-                            const tr = document.createElement('tr');
-                            tr.innerHTML = `
-                            <td style="text-align:center;">${contacto.User.name || ''}</td>
-                            <td style="text-align:center;">${contacto.empresa.razonSocial || ''}</td>
-                            <td style="display:flex;gap:8px;justify-content:center;">
-                                <button class="filter-btn" style="background-color:#28a745;color:white;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:0.9em;" onclick="aceptarInvitacion(${contacto.invitacionId})">
-                                    <i class="bi bi-check-circle"></i> Aceptar
-                                </button>
-                                <button class="filter-btn" style="background-color:#dc3545;color:white;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:0.9em;" onclick="rechazarInvitacion(${contacto.invitacionId})">
-                                    <i class="bi bi-x-circle"></i> Rechazar
-                                </button>
-                            </td>
-                            </td>
-                        `;
-                            tbody.appendChild(tr);
-                            console.log(tr);
+                    // ==== Unificamos listas ====
+                    listaContactosEspera = [];
 
-                        });
+                    if (data.recibidos && Array.isArray(data.recibidos)) {
+                        for (const c of data.recibidos) {
+                            const cargoNombre = await getCargoNombre(c.cargoId ?? c.User?.cargoId ?? null);
+                            listaContactosEspera.push({ ...c, estado: 'recibido', _cargoNombre: cargoNombre });
+                        }
                     }
-                    // Mostrar contactos enviados
-                    if (data.enviados && Array.isArray(data.enviados) && data.enviados.length > 0) {
-                        data.enviados.forEach(contacto => {
-                            console.log(contacto);
-                            const tr = document.createElement('tr');
-                            tr.innerHTML = `
-                            <td style="text-align:center;">${contacto.User.name || ''}</td>
-                            <td style="text-align:center;">${contacto.empresa.razonSocial || ''}</td>
-                             <td style="text-align:center;">
-                                <button class="filter-btn" style="background-color:#dc3545;color:white;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:0.9em;" onclick="rechazarInvitacion(${contacto.invitacionId})">
-                                    <i class="bi bi-x-circle"></i> Cancelar
-                                </button>
-                            </td>
-                        `;
-                            tbody.appendChild(tr);
-                        });
+
+                    if (data.enviados && Array.isArray(data.enviados)) {
+                        for (const c of data.enviados) {
+                            const cargoNombre = await getCargoNombre(c.cargoId ?? c.User?.cargoId ?? null);
+                            listaContactosEspera.push({ ...c, estado: 'enviado', _cargoNombre: cargoNombre });
+                        }
                     }
-                    // Función para aceptar invitación
+
+                    // ==== Llenar filtros ====
+                    llenarFiltrosEspera(listaContactosEspera);
+                    aplicarFiltrosEspera();
+
+
+                    // ==== Funciones de acción ====
                     window.aceptarInvitacion = async function (invitacionId) {
                         try {
                             const res = await fetch(`/api/invitacion/${invitacionId}/verificar`, {
                                 method: 'POST',
-                                headers: { 'Content-Type': 'application/json' }
+                                headers: { 'Content-Type': 'application/json' },
                             });
                             const data = await res.json();
                             if (data.ok) {
@@ -1419,28 +1419,20 @@
                                     title: 'Invitación aceptada',
                                     text: 'El contacto ha sido agregado exitosamente',
                                     timer: 1500,
-                                    showConfirmButton: false
+                                    showConfirmButton: false,
                                 });
-                                // Recargar la tabla de contactos en espera
                                 document.getElementById('btnContactosEspera').click();
-                            } else {
-                                throw new Error(data.message || 'Error al aceptar invitación');
-                            }
+                            } else throw new Error(data.message || 'Error al aceptar invitación');
                         } catch (error) {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Error',
-                                text: error.message
-                            });
+                            Swal.fire({ icon: 'error', title: 'Error', text: error.message });
                         }
                     };
 
-                    // Función para rechazar/cancelar invitación
                     window.rechazarInvitacion = async function (invitacionId) {
                         try {
                             const res = await fetch(`/api/invitacion/${invitacionId}/rechazar`, {
                                 method: 'POST',
-                                headers: { 'Content-Type': 'application/json' }
+                                headers: { 'Content-Type': 'application/json' },
                             });
                             const data = await res.json();
                             if (data.ok) {
@@ -1449,29 +1441,21 @@
                                     title: 'Invitación cancelada',
                                     text: 'La invitación ha sido rechazada',
                                     timer: 1500,
-                                    showConfirmButton: false
+                                    showConfirmButton: false,
                                 });
-                                // Recargar la tabla de contactos en espera
                                 document.getElementById('btnContactosEspera').click();
-                            } else {
-                                throw new Error(data.message || 'Error al rechazar invitación');
-                            }
+                            } else throw new Error(data.message || 'Error al rechazar invitación');
                         } catch (error) {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Error',
-                                text: error.message
-                            });
+                            Swal.fire({ icon: 'error', title: 'Error', text: error.message });
                         }
                     };
-                    // Si no hay contactos en ninguno
-                    if (
-                        (!data.recibidos || data.recibidos.length === 0) &&
-                        (!data.enviados || data.enviados.length === 0)
-                    ) {
-                        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No hay contactos</td></tr>';
-                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    document.getElementById('tablaContactosEspera').innerHTML =
+                        '<tr><td colspan="5" style="text-align:center;color:#b00;">Error al cargar contactos en espera</td></tr>';
                 });
+
         };
         document.getElementById('cerrarModalMisContactos').onclick = function () {
             document.getElementById('modalMisContactos').style.display = 'none';
@@ -1805,12 +1789,12 @@
                 // Aplicar estilos de cuadrícula a los elementos user-item
                 const userItems = document.querySelectorAll('.user-item');
                 const usersListContent = document.getElementById('users-list-content');
-                const usersList= document.getElementById('users-list');
+                const usersList = document.getElementById('users-list');
                 usersListContent.style.gridTemplateColumns = 'repeat(auto-fill, minmax(280px, 1fr))';
                 usersListContent.style.gap = '20px';
                 usersListContent.style.padding = '20px';
 
-                usersList.style.width   = '100%';
+                usersList.style.width = '100%';
 
                 busquedaEntidad.style.display = '';
                 busquedaEntidad.style.gridTemplateColumns = '';
@@ -1847,10 +1831,10 @@
                 busquedaEntidad.style.width = 'auto';
 
                 // Restaurar estilos originales de los user-item
-                const usersList= document.getElementById('users-list');
+                const usersList = document.getElementById('users-list');
                 const userItems = document.querySelectorAll('.user-item');
                 const usersListContent = document.getElementById('users-list-content');
-                usersList.style.width   = '40vw';  
+                usersList.style.width = '40vw';
                 usersListContent.style.display = '';
                 usersListContent.style.gridTemplateColumns = '';
                 usersListContent.style.gap = '';
