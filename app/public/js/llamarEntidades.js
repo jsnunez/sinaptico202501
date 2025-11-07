@@ -1085,7 +1085,7 @@ function renderTabla(lista) {
     const tr = document.createElement('tr');
     tr.innerHTML = `
             <td>
-                <div style="position:relative;width:60px;height:60px;">
+                <div style="position:relative;width:60px;height:60px; margin-top:10px;">
                     <img src="photo/${user.fotoPerfil || 'img/sinfoto.jpg'}" 
                         alt="Foto" style="width:60px;height:60px;border-radius:50%;object-fit:cover;"
                         onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
@@ -1226,7 +1226,7 @@ function renderTablaEspera(lista) {
     const tr = document.createElement('tr');
     tr.innerHTML = `
                   <td>
-                <div style="position:relative;width:60px;height:60px;">
+                <div style="position:relative;width:60px;height:60px; margin-top:10px;">
                     <img src="photo/${user.fotoPerfil || 'img/sinfoto.jpg'}" 
                         alt="Foto" style="width:60px;height:60px;border-radius:50%;object-fit:cover;"
                         onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
