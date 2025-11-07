@@ -283,7 +283,7 @@ const sidePanel = document.getElementById('side-panel');
           
           path.addEventListener('mouseenter', function() {
         if (this !== selectedPath) {
-          this.style.fill = 'var(--yellow)';
+          this.style.fill = 'var(--select-btn)';
         }
         
         // Mostrar nombre del departamento al pasar el mouse
@@ -307,7 +307,7 @@ const sidePanel = document.getElementById('side-panel');
            actualizarLogosSlider(departamento);
         // Marcar el nuevo departamento como seleccionado
         selectedPath = this;
-        this.style.fill = 'var(--yellow)';
+        this.style.fill = 'var(--select-btn)';
         
         // Swal.fire({
         //   icon: 'info',
