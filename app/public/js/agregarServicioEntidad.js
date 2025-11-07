@@ -2,6 +2,7 @@ function abrirModalAgregarServicio() {
     document.getElementById("myModalAsignarServicio").style.display = "flex";
     llamarMisServicios(idEntidad);
 }
+
 const inputServicio = document.getElementById('descripcionServicio');
 const formulario = document.getElementById('servicio-form-crear');
 
