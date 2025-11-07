@@ -61,7 +61,7 @@
             border-radius: 10px;
             text-align: center;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            border-left: 4px solid #3498db;
+            border-left: 4px solid var(--naranja-color);
         }
 
         .stat-number {
@@ -690,6 +690,51 @@
                     </div>
                 </div>
             </div>
+             <div class="card">
+                <div class="card-inner" onclick="window.location.href='/proyectos'">
+                    <div class="card-front">
+                        <div class="card-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-calendar-date-fill"
+                                viewBox="0 0 16 16">
+                                <path
+                                    d="M4 .5a.5.5 0 0 0-1 0V1H2a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-1 0V1H4zm5.402 9.746c.625 0 1.184-.484 1.184-1.18 0-.832-.527-1.23-1.16-1.23-.586 0-1.168.387-1.168 1.21 0 .817.543 1.2 1.144 1.2" />
+                                <path
+                                    d="M16 14V5H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2m-6.664-1.21c-1.11 0-1.656-.767-1.703-1.407h.683c.043.37.387.82 1.051.82.844 0 1.301-.848 1.305-2.164h-.027c-.153.414-.637.79-1.383.79-.852 0-1.676-.61-1.676-1.77 0-1.137.871-1.809 1.797-1.809 1.172 0 1.953.734 1.953 2.668 0 1.805-.742 2.871-2 2.871zm-2.89-5.435v5.332H5.77V8.079h-.012c-.29.156-.883.52-1.258.777V8.16a13 13 0 0 1 1.313-.805h.632z" />
+                            </svg>
+                        </div>
+                        <h3 class="card-title">Proyectos</h3>
+                        <p class="card-text">Explora iniciativas y proyectos colaborativos en desarrollo dentro de nuestro ecosistema.</p>
+                    </div>
+                    <div class="card-back">
+                        <h3 class="card-title">Ver Contenido</h3>
+                        <p class="card-text">Descubre proyectos en curso y oportunidades de colaboración e innovación.</p>
+
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-inner" onclick="window.location.href='/innovacion'">
+                    <div class="card-front">
+                        <div class="card-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-lightbulb-fill"
+                                viewBox="0 0 16 16">
+                                <path
+                                    d="M2 6a6 6 0 1 1 10.174 4.31c-.203.196-.359.4-.453.619l-.762 1.769A.5.5 0 0 1 10.5 13h-5a.5.5 0 0 1-.46-.302l-.761-1.77a2 2 0 0 0-.453-.618A5.98 5.98 0 0 1 2 6m3 8.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1l-.224.447a1 1 0 0 1-.894.553H6.618a1 1 0 0 1-.894-.553L5.5 15a.5.5 0 0 1-.5-.5" />
+                            </svg>
+                        </div>
+                        <h3 class="card-title">Oferta Regional</h3>
+                        <p class="card-text">Conecta con empresas que buscan soluciones innovadoras a desafíos
+                            reales.
+                        </p>
+                    </div>
+                    <div class="card-back">
+                        <h3 class="card-title">Ver Contenido</h3>
+                        <p class="card-text">Descubre retos abiertos y propón soluciones que generen impacto.</p>
+
+
+                    </div>
+                </div>
+            </div>
 
             <!-- Academia Card -->
             <div class="card">
@@ -745,7 +790,7 @@
 
             <!-- Innovación Card -->
             <div class="card">
-                <div class="card-inner" onclick="window.location.href='/eventos'">
+                <div class="card-inner" onclick="window.location.href='/convocatorias'">
                     <div class="card-front">
                         <div class="card-icon">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-calendar-date-fill"
@@ -756,7 +801,7 @@
                                     d="M16 14V5H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2m-6.664-1.21c-1.11 0-1.656-.767-1.703-1.407h.683c.043.37.387.82 1.051.82.844 0 1.301-.848 1.305-2.164h-.027c-.153.414-.637.79-1.383.79-.852 0-1.676-.61-1.676-1.77 0-1.137.871-1.809 1.797-1.809 1.172 0 1.953.734 1.953 2.668 0 1.805-.742 2.871-2 2.871zm-2.89-5.435v5.332H5.77V8.079h-.012c-.29.156-.883.52-1.258.777V8.16a13 13 0 0 1 1.313-.805h.632z" />
                             </svg>
                         </div>
-                        <h3 class="card-title">Eventos y Convocatorias</h3>
+                        <h3 class="card-title">Convocatorias</h3>
                         <p class="card-text">Infórmate sobre eventos, talleres y oportunidades de participación en
                             nuestro ecosistema.</p>
                     </div>
@@ -768,6 +813,7 @@
                     </div>
                 </div>
             </div>
+           
         </div>
 
         <!-- Contadores -->
@@ -911,7 +957,7 @@
             <!-- Tabla de contactos verificados -->
             <div id="tablaVerificados" style="overflow-x:auto; height: 40vh;">
                 <table style="width:100%;border-collapse:collapse; text-align: left;">
-                    <thead >
+                    <thead>
                         <tr>
                             <th></th>
                             <th>Nombre</th>
@@ -973,10 +1019,11 @@
                             <th style="text-align: center;">Acciones</th>
                         </tr>
                     </thead>
-                    <tbody id="tablaContactosEspera" >
+                    <tbody id="tablaContactosEspera">
                         <!-- Los contactos en espera se cargarán aquí -->
+                        <tr></tr>
                         <tr id="contactos-loading">
-                            <td colspan="4" style="text-align:center;justify-content: center;">
+                            <td colspan="5" style="text-align:center;justify-content: center;">
                                 <i class="fas fa-spinner fa-spin" style="font-size:2em;color:#3498db;"></i>
                                 <p style="margin-top:10px;color:#7f8c8d;">Cargando contactos...</p>
                             </td>

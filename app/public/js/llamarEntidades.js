@@ -1254,9 +1254,7 @@ function renderTablaEspera(lista) {
                     <img src="photo/${user.fotoPerfil || 'img/sinfoto.jpg'}"  class="imagenPerfil"
                         alt="Foto" style="width:60px;height:60px;border-radius:50%;object-fit:cover;"
                         onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
-                    <i class="bi bi-search"
-                       style="position:absolute;bottom:2px;right:2px;font-size:0.9em;color:#1b3360;background:white;border-radius:50%;padding:3px;cursor:pointer;"
-                       onclick="abrirModalIntegrante(${user.id})"></i>
+                    
                 </div>
             </td>
             <td>${user.name ?? ''}</td>
