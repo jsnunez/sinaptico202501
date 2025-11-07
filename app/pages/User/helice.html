@@ -420,7 +420,7 @@
     <header class="header">
         <div onclick="window.location.href='/helice'">
             <!-- <span class="logo-icon">⚡</span> -->
-            <span class="logo-text logo">SINAPTICO</span>
+            <img src="/img/logo1.png" alt="SINAPTICO" class="logo" style="height:8vh;">
         </div>
         <nav class="nav">
             <button class="nav-button pulse" onclick="window.location.href='/helice'">Hélice</button>
@@ -455,8 +455,8 @@
             <img id="imagenPerfil" src="img/sinfoto.jpg" alt="Foto de perfil"
                 onerror="this.onerror=null;this.src='img/sinfoto.jpg';" style="border-radius:50%;object-fit:cover;">
             <span
-                style="position: absolute; bottom: 8px; right: 8px; background: #fff; border-radius: 50%; padding: 4px;">
-                <i class="bi bi-pencil-fill" style="font-size: 1.2em; color: #007bff;"></i>
+                style="position: absolute; bottom: 8px; right: 8px; background: #fff; border-radius: 50%; padding: 4px; border-color: var(--naranja-color);">
+                <i class="bi bi-pencil-fill" style="font-size: 1.2em; color: var(--primary-color);"></i>
             </span>
         </div>
 
@@ -475,7 +475,7 @@
                 <span class="button-icon">+</span> Vincular entidad
             </button>
             <button class="action-button" id="editarEntidad" style="display: none;">
-                <span class="button-icon">✏️</span> Editar entidad
+                <i class="bi bi-pencil-fill"></i> Editar entidad
             </button>
             <button class="action-button" id="verIntegrantesEntidad" style="display: none;">
                 <span class="button-icon"><i class="bi bi-person-lines-fill"></i></span> Integrantes

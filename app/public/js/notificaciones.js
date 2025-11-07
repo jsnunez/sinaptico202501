@@ -50,12 +50,12 @@ iconoNotif.onclick = async function() {
             div.innerHTML = '<em>No hay notificaciones</em>';
         } else {
             div.innerHTML = noVerificadas.map(n => `
-                      <div id="notif-div-${n.desdeuserid}" style='color:#333; background:#f8f9fa;padding:12px;margin:8px;border:2px solid #007bff;border-radius:8px;box-shadow:0 2px 4px rgba(0,123,255,0.1);'>
+                      <div id="notif-div-${n.desdeuserid}" style='color:#333; background:#f8f9fa;padding:12px;margin:8px;border:2px solid var(--primary-color);border-radius:8px;box-shadow:0 2px 4px rgba(0,123,255,0.1);'>
                         <div style="margin-bottom:8px;">
-                        <b style="color:#007bff;">De:</b> <span style="color:#333;">${n.desdeUser.name}</span>
+                        <b style="color:var(--primary-color);">De:</b> <span style="color:color:#666;";">${n.desdeUser.name}</span>
                         </div>
                         <div style="margin-bottom:10px;">
-                        <b style="color:#007bff;">Mensaje:</b> <span style="color:#666;">${n.mensaje}</span>
+                        <b style="color:var(--primary-color);">Mensaje:</b> <span style="color:#666;">${n.mensaje}</span>
                         </div>
                         <div style="display:flex;gap:8px;justify-content:flex-end;">
                         <button class="filter-btn" style="background-color:#28a745;color:white;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:0.9em;" onclick="aceptarInvitacion(${n.desdeuserid})">

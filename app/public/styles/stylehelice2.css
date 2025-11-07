@@ -33,9 +33,9 @@ body {
 
 /* Encabezado */
 .header {
-    background: var(--background-color);
+    background: var(--primary-color);
     color: var(--text-color);
-    padding: 1.5rem 5%;
+    padding: 0.5rem 5%;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -71,7 +71,7 @@ body {
 }
 
 .nav-button {
-    background-color: var(--text-color);
+    background-color: var(--naranja-color);
     color: var(--light-text);
     border: none;
     border-radius: 10px;
@@ -119,7 +119,13 @@ body {
 }
 
 #imagenPerfil:hover {
-    box-shadow: 0 0 0 3px var(--primary-color);
+    box-shadow: 0 0 0 3px var(--naranja-color);
+    transform: scale(1.1);
+    transition: var(--transition);
+}
+
+#imagenPerfilSecundaria:hover {
+    box-shadow: 0 0 0 3px var(--naranja-color);
     transform: scale(1.1);
     transition: var(--transition);
 }
@@ -254,8 +260,22 @@ h2 {
 
 
 }
-
 .action-button {
+        margin-bottom: 1vh;
+
+    background-color: var(--naranja-color);
+    color: var(--light-text);
+    border: none;
+    border-radius: 50px;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+
+/* 
     margin-bottom: 1vh;
     display: flex;
     align-items: center;
@@ -267,13 +287,15 @@ h2 {
     font-size: 0.9rem;
     font-weight: 500;
     cursor: pointer;
-    transition: var(--transition);
-    box-shadow: 0 4px 10px rgba(142, 45, 226, 0.3);
+        transition: var(--transition); */
+
+    /* box-shadow: 0 4px 10px rgba(142, 45, 226, 0.3); */
 }
 
 .action-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(142, 45, 226, 0.4);
+    transform: translateY(-3px);
+    background: var(--select-btn);
+    /* box-shadow: 0 6px 15px rgba(48, 45, 226, 0.4); */
 }
 
 .button-icon {
