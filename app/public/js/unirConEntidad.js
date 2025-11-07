@@ -65,7 +65,6 @@ document.getElementById("unirEmpresa").addEventListener("click", async (e) => {
     try {
         const verificarResponse = await fetch(`/api/entidad/verificar-user-admin/${empresaId}`);
         const verificarData = await verificarResponse.json();
-        alert(verificarData.success);
         if (verificarData.success) {
             try {
                 const response = await fetch('/api/usuarioempresa', {
@@ -84,10 +83,11 @@ document.getElementById("unirEmpresa").addEventListener("click", async (e) => {
                         text: 'Tu información ha sido guardada correctamente. Espera que el administrador de la empresa te acepte',
                         icon: 'success',
                         confirmButtonText: 'Entendido'
+                    }).then(() => {
+                        document.getElementById('modalUnirme').style.display = 'none';
+                        window.location.reload();
                     });
 
-                    document.getElementById('modalUnirme').style.display = 'none';
-                    window.location.reload();
                 } else {
                     console.error('Error al enviar los datos:', response.statusText);
                     alert('Hubo un error al realizar la unión.');

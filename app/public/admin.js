@@ -198,7 +198,7 @@ document.addEventListener("DOMContentLoaded", async function () {
           `Hola ${nombreUsuario}.\n ${usuarioData[0].Cargo.nombre} de ${usuarioData[0].empresa.razonSocial} 
            ${usuarioData[0].estado == 1 ? "Estado:✅." : "Estamos Confirmando Tu Información ⏳"}`;
         document.getElementById("vincularEntidad").style.display = "none";
-        document.getElementById("misAsociados").style.display = "block";
+        document.getElementById("misAsociados").style.display = usuarioData[0].estado == 1 ? "block" : "none";
         await fetchMisAsociados(usuarioData[0].empresaId);
     
 

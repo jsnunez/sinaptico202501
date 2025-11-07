@@ -266,20 +266,20 @@ async function llamarIntegrantes(idEntidad) {
       if (integrantes.length > 0) {
         integrantes.forEach(integrante => {
           console.log(integrante.fotoPerfil);
-          integrantesHTML += `
+            integrantesHTML += `
               <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px;">
-                <div style="display: flex; align-items: center; gap: 10px;">
-                  <div style="position: relative; width: 50px; height: 50px; cursor: pointer;" id="verIntegrante${integrante.id}" >
-                    <img src="/photo/${integrante.fotoPerfil}" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
-                    <span style="position: absolute; bottom: 0; right: 0; background: #fff; border-radius: 50%; padding: 2px;">
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <div style="position: relative; width: 50px; height: 50px; cursor: pointer;" id="verIntegrante${integrante.id}" >
+                <img src="/photo/${integrante.fotoPerfil}" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
+                <span style="position: absolute; bottom: 0; right: 0; background: #fff; border-radius: 50%; padding: 2px;">
 
-                    </span>
-                  </div>
-                  <p style="margin: 0;">${integrante.nombre} - ${integrante.rol}</p>
+                </span>
                 </div>
-                <button class="btn btn-sm btn-primary" onclick="contactarIntegrante(${integrante.id}, '${integrante.nombre.replace(/'/g, "\\'")}')">
-                  <i class="bi bi-telephone"></i> Contactar
-                </button>
+                <p style="margin: 0;">${integrante.nombre} - ${integrante.rol}</p>
+              </div>
+              <button class="btn btn-sm btn-primary" onclick="contactarIntegrante(${integrante.id}, '${integrante.nombre.replace(/'/g, "\\'")}')">
+                <i class="bi bi-telephone" style="margin-right: 5px;"></i>Contactar
+              </button>
               </div>
             `;
         });
@@ -1080,7 +1080,7 @@ function renderTabla(lista) {
       <td colspan="5" style="text-align:center;">
         <div style="text-align: center; padding: 40px; color: #7f8c8d;">
           <i class="fas fa-search" style="font-size: 2em; margin-bottom: 10px;"></i>
-          <p>No se encontraron entidades con los filtros seleccionados</p>
+          <p>No se encontraron usuarios con los filtros seleccionados</p>
         </div>
       </td>
     </tr>
@@ -1205,7 +1205,7 @@ function renderTablaEspera(lista) {
       <td colspan="5" style="text-align:center;">
         <div style="text-align: center; padding: 40px; color: #7f8c8d;">
           <i class="fas fa-search" style="font-size: 2em; margin-bottom: 10px;"></i>
-          <p>No se encontraron entidades con los filtros seleccionados</p>
+          <p>No se encontraron usuarios con los filtros seleccionados</p>
         </div>
       </td>
     </tr>
