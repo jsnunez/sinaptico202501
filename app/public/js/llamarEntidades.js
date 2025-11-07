@@ -1075,7 +1075,16 @@ function renderTabla(lista) {
   tbody.innerHTML = '';
 
   if (!lista.length) {
-    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No hay contactos</td></tr>';
+    tbody.innerHTML = `
+    <tr>
+      <td colspan="5" style="text-align:center;">
+        <div style="text-align: center; padding: 40px; color: #7f8c8d;">
+          <i class="fas fa-search" style="font-size: 2em; margin-bottom: 10px;"></i>
+          <p>No se encontraron entidades con los filtros seleccionados</p>
+        </div>
+      </td>
+    </tr>
+  `;
     return;
   }
 
@@ -1085,14 +1094,20 @@ function renderTabla(lista) {
     const tr = document.createElement('tr');
     tr.innerHTML = `
             <td>
-                <div style="position:relative;width:60px;height:60px; margin-top:10px;">
-                    <img src="photo/${user.fotoPerfil || 'img/sinfoto.jpg'}" 
-                        alt="Foto" style="width:60px;height:60px;border-radius:50%;object-fit:cover;"
-                        onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
-                    <i class="bi bi-search"
-                       style="position:absolute;bottom:2px;right:2px;font-size:0.9em;color:#007bff;background:white;border-radius:50%;padding:3px;cursor:pointer;"
-                       onclick="abrirModalIntegrante(${user.id})"></i>
-                </div>
+              <div style="position: relative; width: 60px; height: 60px; margin-top: 10px; margin-left: 10px;">
+                <img src="photo/${user.fotoPerfil || 'img/sinfoto.jpg'}"
+                    alt="Foto"
+                    class="imagenPerfil"
+                    style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover;"
+                    onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
+
+                <i class="bi bi-search"
+                  style="position: absolute; bottom: 3px; right: 3px; font-size: 0.9em; 
+                          color: #1b3360; background: white; border-radius: 50%; 
+                          padding: 4px; cursor: pointer; box-shadow: 0 0 3px rgba(0,0,0,0.2);"
+                  onclick="abrirModalIntegrante(${user.id})"></i>
+              </div>
+
             </td>
             <td>${user.name ?? ''}</td>
             <td>${contacto._cargoNombre !== 'N/A' ? contacto._cargoNombre : ''}</td>
@@ -1184,8 +1199,17 @@ function renderTablaEspera(lista) {
   const tbody = document.getElementById('tablaContactosEspera');
   tbody.innerHTML = '';
 
-  if (!lista || lista.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No hay contactos</td></tr>';
+  if (!lista.length) {
+    tbody.innerHTML = `
+    <tr>
+      <td colspan="5" style="text-align:center;">
+        <div style="text-align: center; padding: 40px; color: #7f8c8d;">
+          <i class="fas fa-search" style="font-size: 2em; margin-bottom: 10px;"></i>
+          <p>No se encontraron entidades con los filtros seleccionados</p>
+        </div>
+      </td>
+    </tr>
+  `;
     return;
   }
 
@@ -1212,32 +1236,32 @@ function renderTablaEspera(lista) {
     const acciones =
       contacto.estado === 'recibido'
         ? `
-          <button class="filter-btn" style="background-color:#28a745;color:white;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:0.9em;" onclick="aceptarInvitacion(${contacto.invitacionId})">
+          <button class="filter-btn" style="background-color:#00833d;color:white;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:0.9em;" onclick="aceptarInvitacion(${contacto.invitacionId})">
             <i class="bi bi-check-circle"></i> Aceptar
           </button>
-          <button class="filter-btn" style="background-color:#dc3545;color:white;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:0.9em;" onclick="rechazarInvitacion(${contacto.invitacionId})">
+          <button class="filter-btn" style="background-color:#d12b3b;color:white;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:0.9em;" onclick="rechazarInvitacion(${contacto.invitacionId})">
             <i class="bi bi-x-circle"></i> Rechazar
           </button>`
         : `
-          <button class="filter-btn" style="background-color:#dc3545;color:white;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:0.9em;" onclick="rechazarInvitacion(${contacto.invitacionId})">
+          <button class="filter-btn" style="background-color:#d12b3b;color:white;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:0.9em;" onclick="rechazarInvitacion(${contacto.invitacionId})">
             <i class="bi bi-x-circle"></i> Cancelar
           </button>`;
 
     const tr = document.createElement('tr');
     tr.innerHTML = `
                   <td>
-                <div style="position:relative;width:60px;height:60px; margin-top:10px;">
-                    <img src="photo/${user.fotoPerfil || 'img/sinfoto.jpg'}" 
+                <div style="position:relative;width:60px;height:60px; margin-top:10px;text-align: left; margin-left:10px;">
+                    <img src="photo/${user.fotoPerfil || 'img/sinfoto.jpg'}"  class="imagenPerfil"
                         alt="Foto" style="width:60px;height:60px;border-radius:50%;object-fit:cover;"
                         onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
                     <i class="bi bi-search"
-                       style="position:absolute;bottom:2px;right:2px;font-size:0.9em;color:#007bff;background:white;border-radius:50%;padding:3px;cursor:pointer;"
+                       style="position:absolute;bottom:2px;right:2px;font-size:0.9em;color:#1b3360;background:white;border-radius:50%;padding:3px;cursor:pointer;"
                        onclick="abrirModalIntegrante(${user.id})"></i>
                 </div>
             </td>
             <td>${user.name ?? ''}</td>
-      <td style="text-align:center;">${cargo}</td>
-      <td style="text-align:center;">${empresa}</td>
+      <td style=" text-align: left;">${cargo}</td>
+      <td style=" text-align: left;">${empresa}</td>
       <td style="display:flex;gap:8px;justify-content:center;">${acciones}</td>
     `;
     tbody.appendChild(tr);
