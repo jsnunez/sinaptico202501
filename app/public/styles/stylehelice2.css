@@ -118,6 +118,12 @@ body {
     outline: none;
 }
 
+.imagenPerfil:hover {
+    box-shadow: 0 0 0 3px var(--primary-color);
+    transform: scale(1.1);
+    transition: var(--transition);
+}
+
 #imagenPerfil:hover {
     box-shadow: 0 0 0 3px var(--naranja-color);
     transform: scale(1.1);
@@ -696,7 +702,7 @@ h2 {
     width: 100%;
     padding: 0.8rem;
     margin-top: 1.5rem;
-    background: var(--gradient-1);
+    background: var(--orange);
     color: white;
     border: none;
     border-radius: 8px;
@@ -707,7 +713,7 @@ h2 {
 }
 
 .modal-button:hover {
-    background: var(--gradient-2);
+    background: var(--hover-btn);
     transform: translateY(-2px);
 }
 
@@ -1168,6 +1174,7 @@ form {
     font-size: 1.25rem;
 }
 
+
 .tag {
     display: inline-flex;
     align-items: center;
@@ -1175,7 +1182,7 @@ form {
     border-radius: 9999px;
     font-size: 0.75rem;
     background-color: white;
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--primary-color);
     cursor: pointer;
     transition: var(--transition);
 }

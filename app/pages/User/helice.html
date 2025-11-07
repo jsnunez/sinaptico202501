@@ -867,14 +867,14 @@
     <div id="modalMisContactos" class="modal">
         <div class="modal-content" style="max-width:900px;">
             <span class="close" id="cerrarModalMisContactos">&times;</span>
-            <h2>Mis Contactos</h2>
+            <h2 class="modal-header" style="text-align: center;">Mis Contactos</h2>
 
             <!-- Toggle para cambiar entre verificados y en espera -->
             <div style="text-align:center;margin:20px 0; display: flex;justify-content: center">
                 <button class="tag active" id="btnContactosVerificados">
                     Verificados
                 </button>
-                <button class="tag" id="btnContactosEspera">
+                <button class="tag" id="btnContactosEspera" style="margin-left: 5px;">
                     En Espera
                 </button>
             </div>
@@ -910,8 +910,8 @@
 
             <!-- Tabla de contactos verificados -->
             <div id="tablaVerificados" style="overflow-x:auto; height: 40vh;">
-                <table style="width:100%;border-collapse:collapse;">
-                    <thead>
+                <table style="width:100%;border-collapse:collapse; text-align: left;">
+                    <thead >
                         <tr>
                             <th></th>
                             <th>Nombre</th>
@@ -962,21 +962,21 @@
                 </div>
             </div>
             <!-- Tabla de contactos en espera -->
-            <div id="tablaEspera" style="overflow-x:auto;display:none;height: 40vh;">
+            <div id="tablaEspera" style="overflow-x:auto;display:none;height: 40vh; align-items: center;">
                 <table style=" width:100%;border-collapse:collapse;">
-                    <thead>
+                    <thead style="text-align: left">
                         <tr>
-                            <th>Nombre</th>
+                            <th></th>
                             <th>Nombre</th>
                             <th>Cargo</th>
                             <th>Entidad</th>
-                            <th>Acciones</th>
+                            <th style="text-align: center;">Acciones</th>
                         </tr>
                     </thead>
-                    <tbody id="tablaContactosEspera">
+                    <tbody id="tablaContactosEspera" >
                         <!-- Los contactos en espera se cargarán aquí -->
                         <tr id="contactos-loading">
-                            <td colspan="4" style="text-align:center;padding:40px;">
+                            <td colspan="4" style="text-align:center;justify-content: center;">
                                 <i class="fas fa-spinner fa-spin" style="font-size:2em;color:#3498db;"></i>
                                 <p style="margin-top:10px;color:#7f8c8d;">Cargando contactos...</p>
                             </td>
