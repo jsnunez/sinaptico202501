@@ -1,16 +1,17 @@
 
 :root {
     --primary-color:#1b3360;
-    --secondary-color: #3963b1;
+    --secondary-color: #0f2655;
     --accent-color: #8e2de2;
     --naranja-color: #FF8200;
     --text-color: #3366CC;
     --select-btn: #ffa444;
     --text-description:#000;
+    --title: #141e42;
     --light-text: #fff;
     --light-color:#fff;
-    --gray-color: #6c757d;
-    --background-color: #f8f9fa;
+    --gray-color: #848c92;
+    --background-color: #f2f2f4;
     --card-bg: #ffffff;
     --synapse-color-1: #6e48aa;
     --synapse-color-2: #9d50bb;
@@ -24,5 +25,6 @@
     --red: #ef4444;
     --orange : #FF8200;
     --hover-btn: #ffa84b;
+    --blue: #90b8f8;
   }
   

@@ -174,18 +174,18 @@ document.addEventListener("DOMContentLoaded", async function () {
     if (data.success && data.entidad && data.entidad.UserAdminId) {
       idEntidad = data.entidad.id;
 
-      const estado = data.entidad.habilitado == 1 ? "Estado:✅" : "Estamos Confirmando Tu Información ⏳";
-
+      const estado = data.entidad.habilitado == 1 ? "Estado: Activo" : "Estamos Confirmando Tu Información.";
       document.getElementById("crearEntidad").style.display = "none";
       document.getElementById("editarEntidad").style.display = data.entidad.habilitado == 1 ? "block" : "none";
       document.getElementById("asignarServicio").style.display = data.entidad.habilitado == 1 ? "block" : "none";
       document.getElementById("vincularEntidad").style.display = "none";
       document.getElementById("verIntegrantesEntidad").style.display = data.entidad.habilitado == 1 ? "block" : "none";
       document.getElementById('bienvenido').innerText =
-        `Hola ${nombreUsuario}.\nAdministrador de ${data.entidad.razonSocial}.\n ${estado}`;
+        `${nombreUsuario} - Administrador de ${data.entidad.razonSocial}.\n`;
+      document.getElementById('bienvenido').innerHTML += 
+        `<button style="background: white; border-radius: 20px; border: 1px solid var(--primary-color); padding: 5px 12px;">${estado}</button>`;
       document.getElementById("solicitudes").style.display = "block";
       await fetchSolicitudes(idEntidad);
-
 
     } else {
       //  idEntidad = data.entidad.id;
