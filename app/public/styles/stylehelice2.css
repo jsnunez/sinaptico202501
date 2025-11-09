@@ -310,6 +310,7 @@ h2 {
     display: flex;
     gap: 1rem;
     flex-wrap: wrap;
+        justify-content: flex-end;
 }
 
 .action-button:hover {
