@@ -599,7 +599,7 @@ align-items: center;
 }
 #mapa svg path {
 
-  fill: var(--text-color);
+  fill: #7e9fe1;
 }
 
 
