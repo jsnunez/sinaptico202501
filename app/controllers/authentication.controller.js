@@ -56,7 +56,7 @@ async function login(req, res) {
   try {
     // Buscar al usuario por el email en la base de datos
     const usuarioAResvisar = await User.findOne({ where: { email } });
-
+console.log(usuarioAResvisar)
     if (!usuarioAResvisar) {
       return res.status(400).send({ status: "Error", message: "Usuario no encontrado" });
     }
@@ -91,10 +91,13 @@ async function login(req, res) {
       res.send({ status: "ok", message: "Usuario logueado", redirect: "/helice", idusuario: usuarioAResvisar.id });
     } else if (usuarioAResvisar.rol === 3) {
       res.send({ status: "ok", message: "Usuario logueado", redirect: "/dashboard", idusuario: usuarioAResvisar.id });
-    } 
+    }
     else if (usuarioAResvisar.rol === 4) {
       res.send({ status: "ok", message: "Usuario logueado", redirect: "/supervisor", idusuario: usuarioAResvisar.id });
-    } else {
+    } else if (usuarioAResvisar.rol === 5) {
+      res.send({ status: "ok", message: "Usuario logueado", redirect: "/dashboardCRCI", idusuario: usuarioAResvisar.id });
+    }
+    else {
       res.status(403).send({ status: "Error", message: "Acceso denegado" });
     }
 
@@ -112,7 +115,7 @@ async function recuperarPassword(req, res) {
     const user = await User.findOne({ where: { email } });
 
     if (!user) {
-      return res.json({status: "ok", message: 'Correo no encontrado' });
+      return res.json({ status: "ok", message: 'Correo no encontrado' });
     }
 
 
@@ -121,7 +124,7 @@ async function recuperarPassword(req, res) {
     await User.update({ resetToken, resetTokenExpires }, { where: { email } });
     console.log(resetToken)
     const resetLink = `${process.env.FRONTEND_URL}reestablecerpass?token=${resetToken}`;
-//--- enviar correo de recuperacion de contraseña ---//
+    //--- enviar correo de recuperacion de contraseña ---//
 
     const transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
@@ -167,7 +170,7 @@ async function reestablecerPassword(req, res) {
   try {
     // Verificar el token
     const decoded = jsonwebtoken.verify(token, process.env.JWT_SECRET);
-console.log(decoded);
+    console.log(decoded);
     // Buscar al usuario por el ID del token
     const user = await User.findOne({ where: { id: decoded.id, resetToken: token } });
 

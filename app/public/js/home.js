@@ -51,6 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!res.ok) throw new Error(data.message || "Correo o contraseña incorrectos");
 
         const redirectTo = data.redirect || "/";
+        console.log(redirectTo);
         await Swal.fire({
           title: "¡Bienvenido!",
           text: "Inicio de sesión exitoso.",
@@ -120,15 +121,16 @@ document.addEventListener("DOMContentLoaded", () => {
           body: JSON.stringify({ email, password })
         });
         const loginData = await safeJson(loginRes);
+        
         if (!loginRes.ok) throw new Error(loginData.message || "Correo o contraseña incorrectos");
 
-        await Swal.fire({ title: "¡Bienvenido!", text: "Inicio de sesión exitoso.", icon: "success" });
+        await Swal.fire({ title: "¡Bienvenido!", text: "Inicio de sesión exitosoq.", icon: "success" });
         window.location.href = loginData.redirect || "/";
       
       } catch (error) {
         Swal.fire({
           title: "Error",
-          text: `No se pudo registrar: ${error.message}`,
+          text: `No se pudo registrar: ${error.message} `,
           icon: "error",
           confirmButtonText: "Entendido"
         });

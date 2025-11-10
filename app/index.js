@@ -79,6 +79,8 @@ app.post('/upload', upload.single('logo'), (req, res) => {
 // Rutas HTML públicas
 app.get('/', authorization.soloPublico, (req, res) => res.sendFile(path.join(__dirname, 'pages/home.html')));
 app.get('/supervisor', authorization.soloSupervisor, (req, res) => res.sendFile(path.join(__dirname, 'pages/supervisores/dashboardSupervisores.html')));
+app.get('/dashboardCRCI', authorization.soloCRCI, (req, res) => res.sendFile(path.join(__dirname, 'pages/CRCI/dashboard.html')));
+app.get('/loginCRCI', authorization.soloPublico, (req, res) => res.sendFile(path.join(__dirname, 'pages/loginCRCI.html')));
 
 app.get('/register', authorization.soloPublico, (req, res) => res.sendFile(path.join(__dirname, 'pages/register.html')));
 app.get('/reestablecerpass', authorization.soloPublico, (req, res) => res.sendFile(path.join(__dirname, 'pages/restablecer.html')));

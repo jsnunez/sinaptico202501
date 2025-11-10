@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sinaptico - Login</title>
+
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="styles/colores.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+    <header >
+          <div class="header">
+            <!-- <span class="logo-icon">⚡</span> -->
+            <img src="/img/logo1.png" alt="SINAPTICO" class="logo" style="height:8vh;">
+            <button class="nav-button-inicio" onclick="inicioSesion()">Ingresa</button>
+
+        </div>
+        <nav class="nav">
+            <button class="nav-button pulse" onclick="window.location.href='/helice'">Inicio</button>
+            <button class="nav-button " onclick="mensajeRegistrar()">Servicios</button>
+            <button class="nav-button " onclick="mensajeRegistrar()">Retos</button>
+            
+        </nav>
+    </header>
+
+   
+
+            <div class="modal-content">
+                <!-- TU PANEL ACTUAL PEGADO AQUÍ -->
+                <div class="auth-panel">
+                    <div class="auth-container">
+                        <div class="auth-header">
+    <img src="/logos/logo2.png" alt="SINAPTICO" class="intro-title" style="max-width: 300px; height: 10vh;">                        </div>
+
+                        <div class="tabs">
+                            <div class="tab-header" style="grid-template-columns: 1fr 0fr; cursor: default;">
+
+                                <div class="tab-trigger active" style="cursor: default;" data-tab="login">Iniciar Sesión</div>
+                            </div>
+
+                                
+                               
+                                    <form id="loginForm">
+                                        <div class="form-group">
+                                            <label for="email">Email</label>
+                                            <input type="email" id="email" placeholder="name@example.com" required>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="password-header">
+                                                <label for="password">Contraseña</label>
+                                                <a id="recuperarPass" class="forgot-password">¿olvidaste tu
+                                                    contraseña?</a>
+                                            </div>
+                                            <input type="password" id="password" required>
+                                        </div>
+
+                                        <button type="submit" class="btn btn-primary">Conectar</button>
+
+                                        <p class="error escondido">Error al iniciar sesión</p>
+
+
+                                    </form>
+                            
+
+        </div>
+
+        <script src="/js/home.js"></script>
+        <script src="/js/login.js"></script>
+        <script src="/js/config.js"></script>
+
+
+</body>
+
+
+</html>
