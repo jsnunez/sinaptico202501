@@ -786,32 +786,59 @@ function displayUsersList() {
     fetch(`${API_BASE_URL}/api/departamentos/${user.departamentoId}`)
 
     return `
-    <div class="user-item" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #eee; cursor: pointer;">
-          <div  onclick="focusOnUser(${user.id})" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #eee; cursor: pointer;">
-                 <img src="/logos/${user.logo}" alt="Logo Empresa" class="card-icon" onerror="this.onerror=null;this.src='/img/sinfoto.jpg';" style="margin-right: 10px;  border-radius: 5px;">
-
-                <div class="user-info">
-                    <div class="user-name">${typeIcons[user.claseEntidad] || '🏢'} ${user.name}</div>
-                    <div class="user-details">${user.actividadEconomica} • ${user.claseEntidad}</div>
-                    <div class="user-details">${user.departamento} • ${user.city}</div>
-                </div>
-
-          </div>
-                    <div class="">
-                          <div class="user-status ${user.verificada ? 'status-online' : 'status-offline'}" style="margin-bottom: 10px;">
-                              ${user.verificada ? 'Verificada' : 'Sin verificar'}
-                          </div>
-                          <button class="botonEntidad " data-id="${user.id}">
-                            Más información
-                          </button>
-                    </div>
+    <div class="user-item" style="display: flex; justify-content: space-between; align-items: flex-start; padding: 10px; border-bottom: 1px solid #eee; cursor: pointer;">
+        <div  onclick="focusOnUser(${user.id})" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #eee; cursor: pointer;">
           
+
+          <div class="user-info">
+            <div class="user-name">${user.name}</div>
+            <div class="user-details">${typeIcons[user.claseEntidad] || '🏢'} ${user.claseEntidad} - ${user.departamento} • ${user.city}</div>
+            <div class="user-details"></div>
+            <button class="botonEntidad" data-id="${user.id}">
+                Más información
+                </button>
+          </div>
+
+        </div>
+            <div class="">
+                <div class="user-status ${user.verificada ? 'status-online' : 'status-offline'}" style="margin-bottom: 10px; display: flex; align-items: center; gap: 5px;">
+                  ${user.verificada ? '<i class="bi bi-check-circle"></i>' : '<i class="bi bi-hourglass-split"></i>'}
+                  ${user.verificada ? 'Verificada' : 'Pendiente'}
+                </div>
+                
+            </div>
+        
     </div>    
     
 
 
-          `;
+        `;
+// return `
+//     <div class="user-item" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #eee; cursor: pointer;">
+//           <div  onclick="focusOnUser(${user.id})" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #eee; cursor: pointer;">
+//                  <img src="/logos/${user.logo}" alt="Logo Empresa" class="card-icon" onerror="this.onerror=null;this.src='/img/sinfoto.jpg';" style="margin-right: 10px;  border-radius: 5px;">
 
+//                 <div class="user-info">
+//                     <div class="user-name">${typeIcons[user.claseEntidad] || '🏢'} ${user.name}</div>
+//                     <div class="user-details">${user.actividadEconomica} • ${user.claseEntidad}</div>
+//                     <div class="user-details">${user.departamento} • ${user.city}</div>
+//                 </div>
+
+//           </div>
+//                     <div class="">
+//                           <div class="user-status ${user.verificada ? 'status-online' : 'status-offline'}" style="margin-bottom: 10px;">
+//                               ${user.verificada ? 'Verificada' : 'Sin verificar'}
+//                           </div>
+//                           <button class="botonEntidad " data-id="${user.id}">
+//                             Más información
+//                           </button>
+//                     </div>
+          
+//     </div>    
+    
+
+
+//           `;
   }).join('');
 
   listContent.innerHTML = usersHtml;

@@ -15,7 +15,16 @@ async function actualizarContadorNotificaciones() {
   console.log(data);
   const pendientes = data.filter(n => !n.verificado).length;
   const icono = document.getElementById('icono-notif');
-  icono.innerHTML = `🔔 <span id="notificaciones" style='background:red;color:white;border-radius:50%;padding:2px 7px;font-size:0.9em;'>${pendientes}</span>`;
+  icono.innerHTML = `<i class="bi bi-bell" style="color:white;"></i> <span id="notificaciones" style='   position:absolute;
+            top:-5px;
+            right:-15px;
+            background:red;
+            color:white;
+            border-radius:50%;
+            padding:2px 6px;
+            font-size:0.7em;
+            line-height:1;
+        ">;'>${pendientes}</span>`;
 }
 
 // Modificar verNotificaciones para mostrar detalles

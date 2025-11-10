@@ -3,7 +3,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
+    font-family: "Inter", sans-serif;
 }
 
 
@@ -66,16 +66,19 @@ body {
 
 .nav {
     display: flex;
-    gap: 1rem;
     align-items: center;
+    background-color: var(--secondary-color);
+    padding: 0rem 5%;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 10;
 }
 
 .nav-button {
-    background-color: var(--naranja-color);
+    background-color: var(--secondary-color);
     color: var(--light-text);
     border: none;
-    border-radius: 10px;
-    padding: 0.75rem 1.5rem;
+    padding: 0rem 1.5rem;
     font-size: 0.9rem;
     font-weight: 500;
     cursor: pointer;
@@ -87,7 +90,8 @@ body {
 }
 
 .nav-button:hover {
-    background-color: var(--select-btn);
+    background-color: var(--orange);
+    border-radius: 20px;
     transform: translateY(-2px);
 }
 
@@ -98,7 +102,7 @@ body {
     left: 50%;
     width: 5px;
     height: 5px;
-    background: rgba(255, 255, 255, 0.7);
+    background-color: var(--naranja-color);
     opacity: 0;
     border-radius: 100%;
     transform: scale(1, 1) translate(-50%);
@@ -107,7 +111,14 @@ body {
 
 .nav-button.pulse:hover::after {
     animation: ripple 1s ease-out;
+
 }
+
+.nav-button.pulse {
+border-radius: 20px;
+    background-color: var(--naranja-color);
+}
+
 
 .imagenPerfil {
     border-radius: 50%;
@@ -180,7 +191,7 @@ body {
 
 /* Hover de los enlaces */
 .dropdown-menu a:hover {
-    background: var(--select-btn, #444);
+    background: var(--blue, #444);
 }
 
 /* Clase que lo muestra */
@@ -206,7 +217,7 @@ body {
 .welcome-container {
     max-width: 90%;
     margin: 2rem auto 1rem;
-    padding: 2rem;
+    padding: 0 20px;
     background-color: var(--card-bg);
     border-radius: 15px;
     box-shadow: var(--shadow);
@@ -235,7 +246,7 @@ body {
 .tittle,
 h2 {
 
-    color: var(--primary-color);
+    color: var(--title);
 
 }
 
@@ -249,35 +260,36 @@ h2 {
     margin-bottom: 1vh;
     display: flex;
     align-items: center;
-    background: var(--gradient-2);
-    color: white;
-    border: none;
-    border-radius: 50px;
+    background: white;
+    color: black;
+    border: 1px solid #ddd;
+    border-radius: 11px;
     padding: 0.5rem 1rem;
     font-size: 0.9rem;
     font-weight: 500;
     cursor: pointer;
     transition: var(--transition);
-    box-shadow: 0 4px 10px rgba(142, 45, 226, 0.3);
+    box-shadow: none;
 
 
 }
-.action-button {
-        margin-bottom: 1vh;
 
-    background-color: var(--naranja-color);
-    color: var(--light-text);
+.action-button {
+    margin-bottom: 1vh;
+   
+    color: var(--text-description);
     border: none;
-    border-radius: 50px;
-    padding: 0.75rem 1.5rem;
+    border-radius: 10px;
+    padding: 0.5rem 1.5rem;
     font-size: 0.9rem;
     font-weight: 500;
     cursor: pointer;
     transition: var(--transition);
     position: relative;
     overflow: hidden;
+    border: 1px solid var(--primary-color);
 
-/* 
+    /* 
     margin-bottom: 1vh;
     display: flex;
     align-items: center;
@@ -293,10 +305,12 @@ h2 {
 
     /* box-shadow: 0 4px 10px rgba(142, 45, 226, 0.3); */
 }
+
 .action-buttons {
     display: flex;
     gap: 1rem;
     flex-wrap: wrap;
+        justify-content: flex-end;
 }
 
 .action-button:hover {
@@ -388,6 +402,10 @@ h2 {
     color: var(--text-description);
     max-width: 600px;
     margin: 0 auto;
+}
+
+.welcome-text p {
+    color: #6d6f72;
 }
 
 /* Tarjetas */
@@ -713,6 +731,26 @@ h2 {
     transition: var(--transition);
 }
 
+.modal-button-secondary {
+    display: block;
+    width: 100%;
+    padding: 0.8rem;
+    margin-top: 1.5rem;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.modal-button-secondary:hover {
+    background: var(--secondary-color);
+    transform: translateY(-2px);
+}
+
 .modal-button:hover {
     background: var(--hover-btn);
     transform: translateY(-2px);
@@ -992,8 +1030,8 @@ form {
 }
 
 #userPhoto img {
-    height: 100%;
-    width: 100%;
+    height: 80px;
+    width: 80px;
     border-radius: 50%;
     object-fit: cover;
     display: block;

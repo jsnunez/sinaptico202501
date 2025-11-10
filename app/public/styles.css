@@ -105,7 +105,6 @@ align-items: flex-start;
     justify-content: center;
     margin-left: 10vw;
     padding: 2rem;
-    background: var(--background-color);
     color: var(--primary-color);
   }
   .imgDepartamento{
@@ -504,7 +503,6 @@ display: flex;}
   .main-content {
     max-width: 80%;
     margin: 0 auto 2rem;
-    background-color: var(--background-color);
     border-radius: 15px;
 }
 
