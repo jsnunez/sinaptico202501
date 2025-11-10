@@ -789,7 +789,7 @@ function displayUsersList() {
     <div class="user-item" style="display: flex; justify-content: space-between; align-items: flex-start; padding: 10px; border-bottom: 1px solid #eee; cursor: pointer;">
         <div  onclick="focusOnUser(${user.id})" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #eee; cursor: pointer;">
           
-
+ <img src="/logos/${user.logo}" alt="Logo Empresa" class="card-icon" onerror="this.onerror=null;this.src='/img/sinfoto.jpg';" style="margin-right: 10px;  border-radius: 5px;">
           <div class="user-info">
             <div class="user-name">${user.name}</div>
             <div class="user-details">${typeIcons[user.claseEntidad] || '🏢'} ${user.claseEntidad} - ${user.departamento} • ${user.city}</div>
