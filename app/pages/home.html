@@ -18,8 +18,8 @@
 </head>
 
 <body>
-    <header >
-          <div class="header">
+    <header>
+        <div class="header">
             <!-- <span class="logo-icon">⚡</span> -->
             <img src="/img/logo1.png" alt="SINAPTICO" class="logo" style="height:8vh;">
             <button class="nav-button-inicio" onclick="inicioSesion()">Ingresa</button>
@@ -29,7 +29,7 @@
             <button class="nav-button pulse" onclick="window.location.href='/helice'">Inicio</button>
             <button class="nav-button " onclick="mensajeRegistrar()">Servicios</button>
             <button class="nav-button " onclick="mensajeRegistrar()">Retos</button>
-            
+
         </nav>
     </header>
 
@@ -92,62 +92,61 @@
             </div>
 
             <style>
-            .logos-slider {
-                width: 100%;
-                overflow: hidden;
-                padding: 2rem 0;
-                background: transparent;
-            }
-
-            .logos-track {
-                display: flex;
-                animation: scroll 30s linear infinite;
-                gap: 3rem;
-                width: max-content;
-            }
-
-            .logo-slide {
-                flex-shrink: 0;
-                width: 150px;
-                height: 80px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                background: white;
-                border-radius: 8px;
-                padding: 1rem;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            }
-
-            .logo-slide img {
-                max-width: 100%;
-                max-height: 100%;
-                object-fit: contain;
-                filter: grayscale(10%);
-                transition: filter 0.3s ease;
-            }
-
-            .logo-slide:hover img {
-                filter: grayscale(0%);
-            }
-
-            @keyframes scroll {
-                0% {
-                    transform: translateX(0);
+                .logos-slider {
+                    width: 100%;
+                    overflow: hidden;
+                    padding: 2rem 0;
+                    background: transparent;
                 }
-                100% {
-                    transform: translateX(-50%);
-                }
-            }
 
-            .logos-slider:hover .logos-track {
-                animation-play-state: paused;
-            }
+                .logos-track {
+                    display: flex;
+                    animation: scroll 30s linear infinite;
+                    gap: 3rem;
+                    width: max-content;
+                }
+
+                .logo-slide {
+                    flex-shrink: 0;
+                    width: 150px;
+                    height: 80px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    background: white;
+                    border-radius: 8px;
+                    padding: 1rem;
+                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+                }
+
+                .logo-slide img {
+                    max-width: 100%;
+                    max-height: 100%;
+                    object-fit: contain;
+                    filter: grayscale(10%);
+                    transition: filter 0.3s ease;
+                }
+
+                .logo-slide:hover img {
+                    filter: grayscale(0%);
+                }
+
+                @keyframes scroll {
+                    0% {
+                        transform: translateX(0);
+                    }
+
+                    100% {
+                        transform: translateX(-50%);
+                    }
+                }
+
+                .logos-slider:hover .logos-track {
+                    animation-play-state: paused;
+                }
             </style>
 
         </div>
-
-
 
 
         <div class="imgDepartamento" id="mapa">
@@ -307,6 +306,32 @@
             </div>
         </div>
 
+        <div class="main-content">
+        <div class="stats-title">
+            <h3>Nuestros Aliados</h3>
+            <p></p>
+        </div>
+            <div class="socios-container">
+            <div class="loginEntidades">
+                <img src="/img/logoCRCI.png" alt="CRCI" class="logoEntidad" style="height:8vh;">
+                <b>CRCI</b>
+            </div>
+            <div class="loginEntidades">
+                <img src="/img/logoCSbN.webp" alt="SbN" class="logoEntidad" style="height:8vh;">
+                <b>Cluster SbN</b>
+            </div>
+            <div class="loginEntidades">
+                <img src="/img/logoCEnergia.jpg" alt="CEnergia" class="logoEntidad" style="height:8vh;">
+                <b>Cluster Energía</b>
+            </div>
+            <div class="loginEntidades">
+                <img src="/img/logoCODECTI.png" alt="CODECTI" class="logoEntidad" style="height:8vh;">
+                <b>CODECTI</b>
+            </div>
+            </div>
+
+        </div>
+
         <div id="authModal" class="modal">
             <div class="modal-content">
                 <!-- TU PANEL ACTUAL PEGADO AQUÍ -->
@@ -381,7 +406,8 @@
                                                     style="width: 16px; height: 16px; margin-top: 2px;">
                                                 <div style="margin-left: 8px;">
                                                     Autorizo el tratamiento de mis datos personales según la
-                                                    <a href="documents/politicas_cpc.pdf" target="_blank">política de tratamiento de
+                                                    <a href="documents/politicas_cpc.pdf" target="_blank">política de
+                                                        tratamiento de
                                                         datos</a>.
                                                 </div>
                                             </div>

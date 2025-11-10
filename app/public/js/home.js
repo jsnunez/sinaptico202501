@@ -248,6 +248,17 @@ const sidePanel = document.getElementById('side-panel');
 // });
 
 
+ function mensajeAdministrador() {
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Comunicate con el administrador',
+                    showCancelButton: true,
+          
+                    cancelButtonText: 'Cerrar'
+                });
+
+            }
+
  function mensajeRegistrar() {
                 Swal.fire({
                     icon: 'info',
