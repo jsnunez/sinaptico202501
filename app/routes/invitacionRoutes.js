@@ -65,7 +65,7 @@ router.get('/:id', async (req, res) => {
     try {
         const id = parseInt(req.params.id);
         const notificaciones = await Invitacion.findAll({
-            attributes: ['desdeuserid', 'mensaje', 'telefono', 'verificado'],
+            attributes: ['desdeuserid', 'mensaje', 'id', 'verificado'],
             where: { parauserid: id },
             include: [
                 {

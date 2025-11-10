@@ -56,7 +56,7 @@ iconoNotif.onclick = async function() {
         console.log(data);
         const noVerificadas = data.filter(n => !n.verificado);
         if (noVerificadas.length === 0) {
-            div.innerHTML = '<em>No hay notificaciones</em>';
+            div.innerHTML = '<h3 style="color:#666;">No hay notificaciones</h3>';
         } else {
             div.innerHTML = noVerificadas.map(n => `
                       <div id="notif-div-${n.desdeuserid}" style='color:#333; background:#f8f9fa;padding:12px;margin:8px;border:2px solid var(--primary-color);border-radius:8px;box-shadow:0 2px 4px rgba(0,123,255,0.1);'>
@@ -67,10 +67,10 @@ iconoNotif.onclick = async function() {
                         <b style="color:var(--primary-color);">Mensaje:</b> <span style="color:#666;">${n.mensaje}</span>
                         </div>
                         <div style="display:flex;gap:8px;justify-content:flex-end;">
-                        <button class="filter-btn" style="background-color:#28a745;color:white;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:0.9em;" onclick="aceptarInvitacion(${n.desdeuserid})">
+                        <button class="filter-btn" style="background-color:#28a745;color:white;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:0.9em;" onclick="aceptarInvitacion(${n.id})">
                           <i class="bi bi-check-circle"></i> Aceptar
                         </button>
-                        <button class="filter-btn" style="background-color:#dc3545;color:white;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:0.9em;" onclick="rechazarInvitacion(${n.desdeuserid})">
+                        <button class="filter-btn" style="background-color:#dc3545;color:white;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:0.9em;" onclick="rechazarInvitacion(${n.id})">
                           <i class="bi bi-x-circle"></i> Rechazar
                         </button>
                         </div>
@@ -95,43 +95,49 @@ iconoNotif.onclick = async function() {
     }
 };
 
-window.aceptarInvitacion = async function(de) {
-  const res = await fetch(`${API_BASE_URL}/api/invitacion/verificar`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ de, para: userIdNotify })
-  });
-  // Enviar solicitud para compartir información
-  await fetch(`${API_BASE_URL}/api/contactar/compartir`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ de: userIdNotify, para: de })
-  });
-  const data = await res.json();
-  if (data.ok) {
-    // Eliminar la notificación visualmente
-    const notifDiv = document.getElementById('notif-div-' + de);
-    if (notifDiv) notifDiv.remove();
-    actualizarContadorNotificaciones();
-    // Agregar a la lista de personas que me han enviado solicitudes
-    agregarPersonaSolicitante(de);
-  }
-};
+window.aceptarInvitacion = async function (invitacionId) {
+                        try {
+                            const res = await fetch(`/api/invitacion/${invitacionId}/verificar`, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                            });
+                            const data = await res.json();
+                            if (data.ok) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Invitación aceptada',
+                                    text: 'El contacto ha sido agregado exitosamente',
+                                    timer: 1500,
+                                    showConfirmButton: false,
+                                });
+                                document.getElementById('btnContactosEspera').click();
+                            } else throw new Error(data.message || 'Error al aceptar invitación');
+                        } catch (error) {
+                            Swal.fire({ icon: 'error', title: 'Error', text: error.message });
+                        }
+                    };
 
-window.rechazarInvitacion = async function(de) {
-  const res = await fetch(`${API_BASE_URL}/api/invitacion/rechazar`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ de, para: userIdNotify })
-  });
-  const data = await res.json();
-  if (data.ok) {
-    // Eliminar la notificación visualmente
-    const notifDiv = document.getElementById('notif-div-' + de);
-    if (notifDiv) notifDiv.remove();
-    actualizarContadorNotificaciones();
-  }
-};
+                    window.rechazarInvitacion = async function (invitacionId) {
+                        try {
+                            const res = await fetch(`/api/invitacion/${invitacionId}/rechazar`, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                            });
+                            const data = await res.json();
+                            if (data.ok) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Invitación cancelada',
+                                    text: 'La invitación ha sido rechazada',
+                                    timer: 1500,
+                                    showConfirmButton: false,
+                                });
+                                document.getElementById('btnContactosEspera').click();
+                            } else throw new Error(data.message || 'Error al rechazar invitación');
+                        } catch (error) {
+                            Swal.fire({ icon: 'error', title: 'Error', text: error.message });
+                        }
+                    };
 
 // Al cargar la página, ocultar el div de notificaciones
 window.onload = function() {
