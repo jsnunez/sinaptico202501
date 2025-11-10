@@ -273,7 +273,11 @@ h2 {
 
 
 }
-
+.botonEntidad:hover {
+    transform: translateY(-3px);
+    background: var(--gray-color);
+    box-shadow: 0 6px 15px rgba(48, 45, 226, 0.4);
+}
 .action-button {
     margin-bottom: 1vh;
    
