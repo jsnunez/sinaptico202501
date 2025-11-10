@@ -213,6 +213,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       } else {
         document.getElementById('bienvenido').innerText =
           `Hola ${nombreUsuario}, no estás unido a ninguna entidad.`;
+             document.getElementById('nombreUsuarioHeader').innerHTML = `${nombreUsuario} <i class="bi bi-chevron-down"></i>`;
         document.getElementById("crearEntidad").style.display = "block";
       }
     }
