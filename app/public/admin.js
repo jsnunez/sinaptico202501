@@ -210,9 +210,8 @@ document.addEventListener("DOMContentLoaded", async function () {
 
       } else {
         document.getElementById('bienvenido').innerText =
-          `${nombreUsuario}, no estás unido a ninguna entidad.`;
-          `Hola ${nombreUsuario}, no estás unido a ninguna entidad.`;
-             document.getElementById('nombreUsuarioHeader').innerHTML = `${nombreUsuario} <i class="bi bi-chevron-down"></i>`;
+          `${nombreUsuario.toUpperCase()}, no estás unido a ninguna entidad.`;
+        document.getElementById('nombreUsuarioHeader').innerHTML = `${nombreUsuario.toUpperCase()} <i class="bi bi-chevron-down"></i>`;
         document.getElementById("crearEntidad").style.display = "block";
       }
     }
