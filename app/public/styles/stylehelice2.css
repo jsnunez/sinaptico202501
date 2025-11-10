@@ -1147,7 +1147,8 @@ form {
 
 .input-box input,
 .input-box select,
-.input-box textarea {
+.input-box textarea,
+.input-add-cargo input {
     padding: 8px 12px;
     border: 1px solid #ddd;
     border-radius: 4px;
