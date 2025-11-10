@@ -195,15 +195,13 @@ document.addEventListener("DOMContentLoaded", async function () {
       console.log(usuarioData)
 
       if (usuarioData.length > 0) {
-      
+        const estado = usuarioData[0].estado == 1 ? "Estado: Activo" : "Estamos Confirmando Tu Información. ";
         document.getElementById('bienvenido').innerText =
-          `Hola ${nombreUsuario}.\n ${usuarioData[0].Cargo.nombre} de ${usuarioData[0].empresa.razonSocial} 
-           ${usuarioData[0].estado == 1 ? "Estado:✅." : "Estamos Confirmando Tu Información ⏳"}`;
+          `${nombreUsuario} - ${usuarioData[0].Cargo.nombre} de ${usuarioData[0].empresa.razonSocial}.\n`;
+        document.getElementById('bienvenido').innerHTML +=
+          `<button style="background: white; border-radius: 20px; border: 1px solid var(--primary-color); padding: 5px 12px;">${estado}</button>`;
 
-
-           
         document.getElementById("vincularEntidad").style.display = "none";
-
         document.getElementById('nombreUsuarioHeader').innerHTML = `${nombreUsuario} <i class="bi bi-chevron-down"></i>`;
 
         document.getElementById("misAsociados").style.display = usuarioData[0].estado == 1 ? "block" : "none";
@@ -212,6 +210,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
       } else {
         document.getElementById('bienvenido').innerText =
+          `${nombreUsuario}, no estás unido a ninguna entidad.`;
           `Hola ${nombreUsuario}, no estás unido a ninguna entidad.`;
              document.getElementById('nombreUsuarioHeader').innerHTML = `${nombreUsuario} <i class="bi bi-chevron-down"></i>`;
         document.getElementById("crearEntidad").style.display = "block";
