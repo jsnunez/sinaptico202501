@@ -289,6 +289,37 @@ const sidePanel = document.getElementById('side-panel');
         // Mostrar nombre del departamento al pasar el mouse
         const departamento = this.getAttribute('id') || this.getAttribute('data-name') || this.getAttribute('title') || 'Departamento';
         this.setAttribute('title', departamento);
+        // Crear o actualizar tooltip
+        let tooltip = document.getElementById('map-tooltip');
+        if (!tooltip) {
+          tooltip = document.createElement('div');
+          tooltip.id = 'map-tooltip';
+          tooltip.style.position = 'absolute';
+          tooltip.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+          tooltip.style.color = 'white';
+          tooltip.style.padding = '8px 12px';
+          tooltip.style.borderRadius = '4px';
+          tooltip.style.pointerEvents = 'none';
+          tooltip.style.zIndex = '1000';
+          tooltip.style.fontSize = '14px';
+          tooltip.style.display = 'none';
+          document.body.appendChild(tooltip);
+        }
+
+        // Mostrar tooltip
+        tooltip.textContent = this.getAttribute('data-name') || departamento;
+        tooltip.style.display = 'block';
+
+        // Actualizar posición del tooltip siguiendo el mouse
+        const updateTooltipPosition = (e) => {
+          tooltip.style.left = (e.pageX + 15) + 'px';
+          tooltip.style.top = (e.pageY + 15) + 'px';
+        };
+
+        this.addEventListener('mousemove', updateTooltipPosition);
+
+        // Guardar referencia para remover en mouseleave
+        this._tooltipHandler = updateTooltipPosition;
           });
           
           path.addEventListener('mouseleave', function() {
