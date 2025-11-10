@@ -2,6 +2,7 @@ import express from 'express';
 import Proyectos from '../models/proyectos.js';
 import User from '../models/user.js';
 import Entidad from '../models/entidad.js';
+import AliadosProyectosAplicados from '../models/aliadosProyectosApliacdos.js';
 
 const router = express.Router();
 
@@ -57,7 +58,19 @@ export const getProyectoById = async (req, res) => {
 export const createProyecto = async (req, res) => {
     try {
         const nuevoProyecto = await Proyectos.create(req.body);
-        res.status(201).json(nuevoProyecto);
+          res.status(201).json(nuevoProyecto);
+        // Crear registros de aliados aplicados si vienen en el body
+        if (req.body.postulacion && Array.isArray(req.body.postulacion)) {
+            console.log('Creando aliados aplicados:', req.body.postulacion);
+            for (const aliadoId of req.body.postulacion) {
+            await AliadosProyectosAplicados.create({
+                proyectoId: nuevoProyecto.id,
+                aliadoProyectoId: aliadoId
+            });
+            }
+        }
+      
+        console.log('Proyecto creado:', req.body);
     } catch (error) {
         res.status(400).json({ error: error.message });
     }

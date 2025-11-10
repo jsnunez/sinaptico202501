@@ -23,6 +23,7 @@ import UbicacionEntidadRoutes from "./ubicacionEntidadRoutes.js"; // Importar la
 import Proyectos from "./proyectosRoutes.js"; // Importar las rutas de Proyectos
 import Contactar from "./contactar.Routes.js"; // Importar las rutas de Contactar
 import mapa from "./mapa.Routes.js"; // Importar las rutas de Mapa
+import AliadosProyectos from "./aliadosProyectos.Routes.js";
 const router = express.Router();
 
 router.use('/entidad', entidadRoutes);
@@ -49,4 +50,5 @@ router.use('/ubicacion-entidad', UbicacionEntidadRoutes); // Rutas de ubicación
 router.use('/proyectos', Proyectos); // Rutas de proyectos
 router.use('/contactar', Contactar); // Rutas de contactar
 router.use('/mapa', mapa); // Rutas de mapa
+router.use('/aliados-proyectos', AliadosProyectos); // Rutas de aliados y proyectos
 export default router;
