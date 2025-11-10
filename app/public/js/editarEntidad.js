@@ -63,6 +63,7 @@ document.getElementById("editarEntidad").addEventListener("click", async () => {
     userDetailsContainer.innerHTML = `
     <!-- Datos básicos de la entidad -->
     <div class="form-section">
+    
         <h4>Información Básica</h4>
         <input type="hidden" id="ID" name="ID">
         

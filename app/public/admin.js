@@ -33,7 +33,7 @@ document.getElementById("directorio").addEventListener("click", () => {
 //   entidades.style.display = "none";
 //   var listado = document.getElementById("listado");
 //   listado.style.display = "flex";
- 
+
 //   cargarEmpresas(todasLasEmpresas);
 
 // })
@@ -182,10 +182,10 @@ document.addEventListener("DOMContentLoaded", async function () {
       document.getElementById("verIntegrantesEntidad").style.display = data.entidad.habilitado == 1 ? "block" : "none";
       document.getElementById('bienvenido').innerText =
         `${nombreUsuario} - Administrador de ${data.entidad.razonSocial}.\n`;
-      document.getElementById('bienvenido').innerHTML += 
+      document.getElementById('bienvenido').innerHTML +=
         `<button style="background: white; border-radius: 20px; border: 1px solid var(--primary-color); padding: 5px 12px;">${estado}</button>`;
       document.getElementById("solicitudes").style.display = "block";
-    document.getElementById('nombreUsuarioHeader').innerHTML= `${nombreUsuario} <i class="bi bi-chevron-down"></i>`;
+      document.getElementById('nombreUsuarioHeader').innerHTML = `${nombreUsuario} <i class="bi bi-chevron-down"></i>`;
       await fetchSolicitudes(idEntidad);
 
     } else {
@@ -195,15 +195,20 @@ document.addEventListener("DOMContentLoaded", async function () {
       console.log(usuarioData)
 
       if (usuarioData.length > 0) {
+      
         document.getElementById('bienvenido').innerText =
           `Hola ${nombreUsuario}.\n ${usuarioData[0].Cargo.nombre} de ${usuarioData[0].empresa.razonSocial} 
            ${usuarioData[0].estado == 1 ? "Estado:✅." : "Estamos Confirmando Tu Información ⏳"}`;
+
+
+           
         document.getElementById("vincularEntidad").style.display = "none";
-            document.getElementById('nombreUsuarioHeader').innerHTML= `${nombreUsuario} <i class="bi bi-chevron-down"></i>`;
+
+        document.getElementById('nombreUsuarioHeader').innerHTML = `${nombreUsuario} <i class="bi bi-chevron-down"></i>`;
 
         document.getElementById("misAsociados").style.display = usuarioData[0].estado == 1 ? "block" : "none";
         await fetchMisAsociados(usuarioData[0].empresaId);
-    
+
 
       } else {
         document.getElementById('bienvenido').innerText =

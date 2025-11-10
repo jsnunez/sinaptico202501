@@ -68,7 +68,7 @@ body {
     display: flex;
     align-items: center;
     background-color: var(--secondary-color);
-    padding: 0rem 5%;
+    padding: 0.5rem 5%;
     align-items: center;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     z-index: 10;
@@ -315,7 +315,7 @@ h2 {
 
 .action-button:hover {
     transform: translateY(-3px);
-    background: var(--select-btn);
+    background: var(--gray-color);
     /* box-shadow: 0 6px 15px rgba(48, 45, 226, 0.4); */
 }
 
@@ -413,11 +413,11 @@ h2 {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 2rem;
-    margin-bottom: 3rem;
+    margin-bottom: 1.5rem;
 }
 
 .card {
-    height: 350px;
+    height: 250px;
     perspective: 1000px;
     cursor: pointer;
 }
@@ -463,8 +463,8 @@ h2 {
 }
 
 .card-icon {
-    width: 80px;
-    height: 80px;
+    width: 40px;
+    height: 40px;
     margin-bottom: 1.5rem;
     color: var(--primary-color);
     display: flex;
@@ -637,6 +637,7 @@ h2 {
     border-radius: 15px;
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
     animation: modalFadeIn 0.3s;
+    height: fit-content;
 }
 
 .modal-header {
@@ -827,7 +828,14 @@ form {
     outline: none;
     box-shadow: 0 0 0 2px rgba(110, 72, 170, 0.1);
 }
+.input-service::placeholder {
+  padding-left: 20px; /* Añade 20px de margen a la izquierda del texto placeholder */
+  color: #999; /* Opcional: cambia el color para que sea más claro */
+}
 
+.input-service::before {
+  border-color: var(--primary-color);
+}
 /* Overlay */
 .overlay {
     position: fixed;
@@ -995,6 +1003,12 @@ form {
     margin-right: 0.5rem;
     cursor: pointer;
     transition: var(--transition);
+    
+}
+.action-icons{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .action-icon:hover {
@@ -1003,7 +1017,7 @@ form {
 }
 
 .action-icon.edit:hover {
-    background-color: #17a2b8;
+    background-color: var(--blue);
 }
 
 .action-icon.delete:hover {
@@ -1072,7 +1086,7 @@ form {
 
     border-collapse: collapse;
     margin-top: 1rem;
-    background-color: rgb(242, 248, 252);
+
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
