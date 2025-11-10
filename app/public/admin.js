@@ -218,7 +218,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 // cargar datos usuario
 async function cargarDatosUsuario(userId) {
-  const response = await fetch(`${API_BASE_URL}/api/user/${userId}`);
+  const response = await fetch(`/api/user/${userId}`);
   const data = await response.json();
 
   document.getElementById("imagenPerfil").src = data.fotoPerfil ? "photo/" + data.fotoPerfil : "photo/sinfoto.jpg";

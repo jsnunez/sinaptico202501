@@ -46,7 +46,7 @@ async function testCrearEntidadConUbicacion() {
     });
     
     try {
-        const response = await fetch('http://localhost:4000/api/entidad/crear', {
+        const response = await fetch('/api/entidad/crear', {
             method: 'POST',
             body: formData
         });
