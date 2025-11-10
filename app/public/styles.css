@@ -704,6 +704,7 @@ align-items: center;
     position: relative;
     box-shadow: 0 10px 20px rgba(110, 72, 170, 0.2);
     border: 3px solid var(--secondary-color);
+    cursor: pointer;
 }
 
 .logoEntidad{
