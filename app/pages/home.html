@@ -10,24 +10,26 @@
     <link rel="stylesheet" href="styles/colores.css">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
         rel="stylesheet">
-
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
-    <header class="header">
-          <div >
+    <header >
+          <div class="header">
             <!-- <span class="logo-icon">⚡</span> -->
             <img src="/img/logo1.png" alt="SINAPTICO" class="logo" style="height:8vh;">
+            <button class="nav-button-inicio" onclick="inicioSesion()">Ingresa</button>
+
         </div>
         <nav class="nav">
             <button class="nav-button pulse" onclick="window.location.href='/helice'">Inicio</button>
-            <button class="nav-button pulse" onclick="mensajeRegistrar()">Servicios</button>
-            <button class="nav-button pulse" onclick="mensajeRegistrar()">Retos</button>
-            <button class="nav-button pulse" onclick="inicioSesion()">Ingresa</button>
-
+            <button class="nav-button " onclick="mensajeRegistrar()">Servicios</button>
+            <button class="nav-button " onclick="mensajeRegistrar()">Retos</button>
+            
         </nav>
     </header>
 
