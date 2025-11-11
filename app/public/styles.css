@@ -413,7 +413,7 @@ text-align: start;
   }
   
   .btn-primary {
-    background-color: var(--text-color);
+    background-color: var(--primary-color);
     color: white;
   }
   

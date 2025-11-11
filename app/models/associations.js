@@ -21,6 +21,8 @@ import UsuarioVideos from './usuarioVideos.js'; // Asegúrate de que la ruta sea
 import Invitacion from './invitaciones.js';
 import UbicacionEntidad from './ubicacionEntidad.js'; 
 import Proyectos from './proyectos.js';
+import AliadosProyectos from './aliadosProyectos.js';
+import AliadosProyectosAplicados from './aliadosProyectosApliacdos.js';
 
 // Definir todas las asociaciones aquí
 
@@ -108,4 +110,6 @@ export default () => {
   Invitacion.sync();
   UbicacionEntidad.sync(); 
   Proyectos.sync();
+  AliadosProyectos.sync();
+  AliadosProyectosAplicados.sync();
 };
