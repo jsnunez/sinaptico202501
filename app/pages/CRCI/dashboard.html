@@ -514,23 +514,24 @@
         console.log('Entidad ID seleccionada:', entidadId);
 
         // Cargar proyectos por entidad o propios
-        const resProy = await fetch(`/api/proyectos/entidadomis/${userId}/${entidadId}`);
+        const resProy = await fetch(`/api/aliados-proyectos-aplicados/postulado/1`);
         const dataProy = await resProy.json();
-        console.log('Proyectos cargados:', dataProy);
+        // console.log('Proyectos cargados:', dataProy);
         const tbody = document.getElementById('cuerpoTablaPostulaciones');
         if (tbody) {
           tbody.innerHTML = '';
           if (Array.isArray(dataProy) && dataProy.length > 0) {
             dataProy.forEach(proyecto => {
+              console.log(proyecto)
               const tr = document.createElement('tr');
               tr.innerHTML = `
-              <td>${proyecto.id || ''}</td>
-              <td>${proyecto.nombrePPI || ''}</td>
-              <td>${proyecto.objetivo || ''}</td>
-              <td>${proyecto.entidad?.razonSocial ? proyecto.entidad.razonSocial : 'Independiente'}</td>
-              <td>${proyecto.usuarioLider?.name || ''}</td>
-              <td>${proyecto.duracionPPI || ''}</td>
-              <td>${proyecto.fasePPI || ''}</td>
+              <td>${proyecto.proyecto.id || ''}</td>
+              <td>${proyecto.proyecto.nombrePPI || ''}</td>
+              <td>${proyecto.proyecto.objetivo || ''}</td>
+              <td>${proyecto.proyecto.entidad?.razonSocial ? proyecto.proyecto.entidad.razonSocial : 'Independiente'}</td>
+              <td>${proyecto.proyecto.usuarioLider.name || ''}</td>
+              <td>${proyecto.proyecto.duracionPPI || ''}</td>
+              <td>${proyecto.proyecto.fasePPI || ''}</td>
               <td>
                 <button class="action-button" onclick="verMasProyecto(${proyecto.id})" style="justify-content:center;">
                 <i class="bi bi-clipboard-fill"></i>
@@ -1002,9 +1003,9 @@
   </script>
 
   <!-- Scripts -->
-
+<!-- 
   <script src="/js/notificaciones.js"></script>
-  <script src="/js/websocket.js"></script>
+  <script src="/js/websocket.js"></script> -->
   <!-- <script src="/js/cargarProyectos.js"></script> -->
 
   <!--Menú desplegables-->
