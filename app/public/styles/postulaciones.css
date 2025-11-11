@@ -31,11 +31,12 @@ body {
     height: 100%;
 }
 
+
 /* Encabezado */
 .header {
-    background: var(--background-color);
+    background: var(--primary-color);
     color: var(--text-color);
-    padding: 1.5rem 5%;
+    padding: 0.5rem 5%;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -66,28 +67,32 @@ body {
 
 .nav {
     display: flex;
-    gap: 1rem;
     align-items: center;
+    background-color: var(--secondary-color);
+    padding: 0.5rem 5%;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 10;
 }
 
 .nav-button {
-    background-color: var(--text-color);
+    background-color: var(--secondary-color);
     color: var(--light-text);
     border: none;
-    border-radius: 10px;
-    padding: 0.75rem 1.5rem;
+    padding: 0rem 1.5rem;
     font-size: 0.9rem;
     font-weight: 500;
     cursor: pointer;
     transition: var(--transition);
     position: relative;
     overflow: hidden;
-    height: min-content;
+    height: 40px;
 
 }
 
 .nav-button:hover {
-    background-color: var(--select-btn);
+    background-color: var(--orange);
+    border-radius: 20px;
     transform: translateY(-2px);
 }
 
@@ -98,7 +103,7 @@ body {
     left: 50%;
     width: 5px;
     height: 5px;
-    background: rgba(255, 255, 255, 0.7);
+    background-color: var(--naranja-color);
     opacity: 0;
     border-radius: 100%;
     transform: scale(1, 1) translate(-50%);
@@ -107,6 +112,12 @@ body {
 
 .nav-button.pulse:hover::after {
     animation: ripple 1s ease-out;
+
+}
+
+.nav-button.pulse {
+    border-radius: 20px;
+    background-color: var(--naranja-color);
 }
 
 .imagenPerfil {
@@ -214,18 +225,49 @@ body {
 }
 
 /* Filtros */
-.filter-container {
-    max-width: 100%;
-    margin: 0 auto 1.5rem;
-    padding: 1rem 2rem;
-    background: var(--gradient-1);
-    border-radius: 15px;
+
+
+.proyecto-controls {
+    margin-left: 2vw;
+    margin-right: 2vw;
+    background: var(--light-text);
+
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     display: flex;
-    justify-content: space-between;
     flex-wrap: wrap;
-    gap: 0.5rem;
-    box-shadow: var(--shadow);
+    gap: 15px;
+    align-items: flex-end;
 }
+
+.control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.control-label {
+    font-size: 0.9em;
+    font-weight: 600;
+    color: var(--text-description);
+}
+
+.control-input,
+.control-select {
+    padding: 7px 2px;
+    border: 2px solid #ecf0f1;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: border-color 0.3s;
+}
+
+.control-input:focus,
+.control-select:focus {
+    outline: none;
+    border-color: #3498db;
+}
+
 
 .filter-input {
     background: var(--background-color);
@@ -238,6 +280,29 @@ body {
     flex: 1;
     min-width: 250px;
     max-width: 500px;
+}
+
+.filter-btn {
+    padding: 7px 5px;
+    border: 2px solid #ecf0f1;
+    border-radius: 6px;
+    background: #ecf0f1;
+    color: #2c3e50;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s;
+    margin-top: 28px;
+}
+
+.filter-btn.active {
+    background: #3498db;
+    color: white;
+}
+
+.filter-btn:hover {
+    background: #3498db;
+    color: white;
 }
 
 .filter-button {
@@ -627,7 +692,7 @@ form {
 
 .input-box {
     margin-bottom: 1rem;
-   
+
 }
 
 .input-box span {
@@ -646,7 +711,7 @@ form {
     border-radius: 8px;
     font-size: 0.9rem;
     transition: var(--transition);
-    
+
 }
 
 .input-box input:focus,
@@ -1360,47 +1425,6 @@ td {
 }
 
 
-.nav {
-    display: flex;
-    gap: 1rem;
-}
-
-.nav-button {
-    background-color: var(--text-color);
-    color: var(--light-text);
-    border: none;
-    border-radius: 10px;
-    padding: 0.75rem 1.5rem;
-    font-size: 0.9rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: var(--transition);
-    position: relative;
-    overflow: hidden;
-}
-
-.nav-button:hover {
-    background-color: var(--select-btn);
-    transform: translateY(-2px);
-}
-
-.nav-button.pulse::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 5px;
-    height: 5px;
-    background: rgba(255, 255, 255, 0.7);
-    opacity: 0;
-    border-radius: 100%;
-    transform: scale(1, 1) translate(-50%);
-    transform-origin: 50% 50%;
-}
-
-.nav-button.pulse:hover::after {
-    animation: ripple 1s ease-out;
-}
 
 .imagenPerfil {
     border-radius: 50%;
@@ -1483,4 +1507,10 @@ h2 {
 
 .form-section p {
     text-align: justify;
+}
+#page-spinner-overlay .spinner-text {
+    color: #333;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
 }

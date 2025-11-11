@@ -23,52 +23,52 @@
 
 <body>
   <!-- Encabezado -->
-  <header class="header">
-    <div onclick="window.location.href='/helice'" class="logo">
-      <!-- <span class="logo-icon">⚡</span> -->
-      <span class="logo-text">SINAPTICO</span>
-    </div>
-    <nav class="nav">
-      <button class="nav-button pulse" onclick="window.location.href='/helice'">Hélice</button>
-      <button class="nav-button pulse" onclick="window.location.href='/proyectos'">Proyectos</button>
-      <button class="nav-button pulse" onclick="window.location.href='/innovacion'">Innovación</button>
-
-      <button class="nav-button pulse" onclick="window.location.href='/Conocimiento'">Conocimiento</button>
-      <button class="nav-button pulse" onclick="window.location.href='/convocatorias'">Convocatorias</button>
-
-      <button class="nav-button pulse" onclick="window.location.href='/eventos'">Eventos</button>
-
-      <button class="nav-button pulse" onclick="window.location.href='/mapa-usuarios'">Mapa</button>
-      <div style="position:fixed;top:10px;right:20px;z-index:1000;font-size:1.5em;cursor:pointer;">
-        <span id="icono-notif">🔔 <span
-            style='background:red;color:white;border-radius:50%;padding:2px 7px;font-size:0.9em;'>0</span></span>
+  <header>
+    <div class="header">
+      <div onclick="window.location.href='/helice'">
+        <!-- <span class="logo-icon">⚡</span> -->
+        <img src="/img/logo1.png" alt="SINAPTICO" class="logo" style="height:8vh;">
       </div>
-      <div class="notificaciones" id="notificaciones"></div>
+      <div style="display: flex; align-items: center; gap: 20px;">
+        <div style="font-size:1.5em;cursor:pointer;">
+          <span id="icono-notif">🔔 <span
+              style='background:red;color:white;border-radius:50%;padding:2px 7px;font-size:0.9em;'>0</span></span>
+        </div>
+        <div class="notificaciones" id="notificaciones"></div>
 
-      <!-- <button class="nav-button pulse" id="cerrarSesion">Cerrar sesión</button> -->
-      <!-- Botón con menú desplegable -->
-      <div class="dropdown">
-        <button class=" " id="userMenuBtn">
-          <div id="userPhoto ">
-            <img class="imagenPerfil" id="imagenPerfilSecundaria" src="img/sinfoto.jpg" alt="Foto de perfil"
-              onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
+
+        <div class="dropdown">
+          <button id="userMenuBtn" style="display: flex; align-items: center;">
+            <div id="userPhoto ">
+              <img class="imagenPerfil" id="imagenPerfilSecundaria" src="img/sinfoto.jpg" alt="Foto de perfil"
+                onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
+
+            </div>
+            <h3 id="nombreUsuarioHeader" style="color:white; margin-left:10px;">Usuario <i
+                class="bi bi-chevron-down"></i> </h3>
+          </button>
+
+          <div class="dropdown-menu" id="userMenu">
+            <a href="/perfil">Perfil</a>
+            <a href="/perfilEntidad">Empresa</a>
+            <a href="#" id="cerrarSesion">Cerrar sesión</a>
           </div>
-
-        </button>
-
-        <div class="dropdown-menu" id="userMenu">
-          <a href="/perfil">Perfil</a>
-          <a href="/configuracion">Configuración</a>
-          <a href="#" id="cerrarSesion">Cerrar sesión</a>
         </div>
       </div>
+    </div>
+    <nav class="nav">
+      <button class="nav-button pulse" onclick="window.location.href='/dashboardCRCI'" id="inicio">Inicio</button>
+      <button class="nav-button" onclick="window.location.href='/dashboardCRCI'">Proyectos</button>
+
+
     </nav>
   </header>
-   <!-- Spinner de carga de página -->
-    <div id="page-spinner-overlay" aria-hidden="true" role="status" aria-label="Cargando">
-        <div class="spinner" aria-hidden="true"></div>
-        <div class="spinner-text">Cargando...</div>
-    </div>
+
+  <!-- Spinner de carga de página -->
+  <div id="page-spinner-overlay" aria-hidden="true" role="status" aria-label="Cargando">
+    <div class="spinner" aria-hidden="true"></div>
+    <div class="spinner-text">Cargando...</div>
+  </div>
   <!-- Bienvenida y botones de acción -->
   <div style="display: none;" class="welcome-container">
     <div id="userPhoto">
@@ -340,15 +340,42 @@
     <div style="display: flex;   justify-content: space-between;">
       <h2 class="title" id="misProyectos">Proyectos de </h2>
       </h2>
-      <button class="action-button" id="postulaciones">
-        <span class="button-icon"><i class="bi bi-lightbulb-fill " style="color: rgb(255, 248, 148);"></i></span>Nueva
-        Idea de Proyecto
-      </button>
+
     </div>
 
     <!-- Filtros -->
-    <div class="filter-container">
-      <input type="text" id="buscarMisProyectos" placeholder="Buscar tus proyectos..." class="filter-input">
+    <div class="proyecto-controls">
+      <div style="width: 75%; display: flex; flex-wrap: wrap; gap: 10px;">
+      <div class="control-group">
+        <label class="control-label">Buscar entidad</label>
+        <input type="text" id="buscarMisProyectos" placeholder="Buscar tus proyectos..." class="control-input">
+      </div>
+      <div class="control-group">
+        <label class="control-label">Filtrar por Entidad </label>
+        <select class="control-select" id="filter-entidad">
+          <option value="">Todas la Entidades</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Filtrar por Responsable</label>
+        <select class="control-select" id="filter-responsable">
+          <option value="">Responsables</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Filtrar por Estado</label>
+        <select class="control-select" id="filter-estado">
+          <option value="">Selecciona el estado</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <button class="filter-btn" id="filter-contact"><i class="bi bi-arrow-clockwise"></i></button>
+      </div>
+      </div>
+      <button class="action-button" id="postulaciones"  style="display: flex; margin-left: 6vw;">
+        <span class="button-icon"><i class="bi bi-lightbulb-fill " style="color: rgb(255, 248, 148); "></i></span>Nueva
+        Idea de Proyecto
+      </button>
     </div>
 
     <!-- Tabla de Mis Proyectos -->
@@ -976,7 +1003,7 @@
 
   <!-- Scripts -->
 
-    <script src="/js/notificaciones.js"></script>
+  <script src="/js/notificaciones.js"></script>
   <script src="/js/websocket.js"></script>
   <!-- <script src="/js/cargarProyectos.js"></script> -->
 
@@ -997,34 +1024,34 @@
     });
   </script>
 
-      <script>
-        (function () {
-            // Garantiza que el overlay permanezca al menos 5s desde que se ejecuta este script.
-            const MIN_MS = 3000;
-            const overlay = document.getElementById('page-spinner-overlay');
-            if (!overlay) return;
+  <script>
+    (function () {
+      // Garantiza que el overlay permanezca al menos 5s desde que se ejecuta este script.
+      const MIN_MS = 3000;
+      const overlay = document.getElementById('page-spinner-overlay');
+      if (!overlay) return;
 
-            // Si ya pasó más de MIN_MS desde la navegación start, aun así mostramos el overlay breve
-            const start = performance.timing ? performance.timing.navigationStart : Date.now();
-            const now = Date.now();
-            const elapsed = Math.max(0, now - start);
-            const remaining = Math.max(0, MIN_MS - elapsed);
+      // Si ya pasó más de MIN_MS desde la navegación start, aun así mostramos el overlay breve
+      const start = performance.timing ? performance.timing.navigationStart : Date.now();
+      const now = Date.now();
+      const elapsed = Math.max(0, now - start);
+      const remaining = Math.max(0, MIN_MS - elapsed);
 
-            // Evita interacción mientras existe el overlay
-            document.documentElement.style.overflow = 'hidden';
-            document.body.style.overflow = 'hidden';
+      // Evita interacción mientras existe el overlay
+      document.documentElement.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden';
 
-            setTimeout(() => {
-                overlay.style.opacity = '0';
-                // permitir scroll cuando hide completo
-                setTimeout(() => {
-                    if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
-                    document.documentElement.style.overflow = '';
-                    document.body.style.overflow = '';
-                }, 420);
-            }, remaining);
-        })();
-    </script>
+      setTimeout(() => {
+        overlay.style.opacity = '0';
+        // permitir scroll cuando hide completo
+        setTimeout(() => {
+          if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
+          document.documentElement.style.overflow = '';
+          document.body.style.overflow = '';
+        }, 420);
+      }, remaining);
+    })();
+  </script>
 </body>
 
 </html>
