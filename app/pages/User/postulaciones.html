@@ -454,7 +454,9 @@
 
       </tbody>
     </table>
-    <div id="paginacionEntidades" class="pagination"></div>
+
+    <div id="paginador" style="margin-top:15px; text-align:center;"></div>
+
 
 
   </div>
@@ -1087,6 +1089,55 @@
   </script>
   <script>
 
+    // =========================
+    // Paginación
+    // =========================
+    let paginaActual = 1;
+    const itemsPorPagina = 5;
+    let listaFiltrada = []; // para mantener los resultados actuales
+
+    function mostrarPaginador(lista) {
+      const paginadorDiv = document.getElementById('paginador');
+      if (!paginadorDiv) return;
+
+      const totalPaginas = Math.ceil(lista.length / itemsPorPagina);
+      if (totalPaginas <= 1) {
+        paginadorDiv.innerHTML = '';
+        return;
+      }
+
+      let botones = '';
+      for (let i = 1; i <= totalPaginas; i++) {
+        botones += `
+      <button 
+        class="btn-pagina ${i === paginaActual ? 'activo' : ''}" 
+        onclick="cambiarPagina(${i})">
+        ${i}
+      </button>
+    `;
+      }
+
+      paginadorDiv.innerHTML = `
+    <button class="btn-pagina" onclick="cambiarPagina(${paginaActual - 1})" ${paginaActual === 1 ? 'disabled' : ''}>« Anterior</button>
+    ${botones}
+    <button class="btn-pagina" onclick="cambiarPagina(${paginaActual + 1})" ${paginaActual === totalPaginas ? 'disabled' : ''}>Siguiente »</button>
+  `;
+    }
+
+    function cambiarPagina(nuevaPagina) {
+      const totalPaginas = Math.ceil(listaFiltrada.length / itemsPorPagina);
+      if (nuevaPagina < 1 || nuevaPagina > totalPaginas) return;
+      paginaActual = nuevaPagina;
+      renderizarPagina();
+    }
+
+    function renderizarPagina() {
+      const inicio = (paginaActual - 1) * itemsPorPagina;
+      const fin = inicio + itemsPorPagina;
+      const pagina = listaFiltrada.slice(inicio, fin);
+      mostrarProyectos(pagina);
+      mostrarPaginador(listaFiltrada);
+    }
 
     // Variables globales
     // =========================
@@ -1121,7 +1172,9 @@
         const dataProy = await resProy.json();
         proyectosCargados = Array.isArray(dataProy) ? dataProy : [];
         console.log("✅ Proyectos cargados:", proyectosCargados);
-        mostrarProyectos(proyectosCargados);
+        listaFiltrada = proyectosCargados;
+        paginaActual = 1;
+        renderizarPagina();
         llenarFiltros(proyectosCargados);
       } catch (err) {
         console.error("❌ Error cargando proyectos:", err);
@@ -1228,7 +1281,10 @@
       });
 
       console.log("📊 Proyectos filtrados:", filtrados);
-      mostrarProyectos(filtrados);
+      listaFiltrada = filtrados;
+      paginaActual = 1;
+      renderizarPagina();
+
     }
 
     // =========================
@@ -1245,7 +1301,10 @@
       document.getElementById('filter-responsable').value = '';
       document.getElementById('filter-estado').value = '';
       document.getElementById('filter-postulado').value = '';
-      mostrarProyectos(proyectosCargados);
+      listaFiltrada = proyectosCargados;
+      paginaActual = 1;
+      renderizarPagina();
+
     });
   </script>
 
