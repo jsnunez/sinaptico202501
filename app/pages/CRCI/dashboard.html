@@ -353,15 +353,15 @@
           <input type="text" id="buscarMisProyectos" placeholder="Buscar tus proyectos..." class="control-input">
         </div>
         <div class="control-group">
-          <label class="control-label">Responsable</label>
+          <label class="control-label">Lider del PPI</label>
           <select class="control-select" id="filter-responsable">
             <option value="">Todos los responsables</option>
           </select>
         </div>
         <div class="control-group">
-          <label class="control-label">Estado</label>
+          <label class="control-label">Fase del PPI</label>
           <select class="control-select" id="filter-estado">
-            <option value="">Selecciona el estado</option>
+            <option value="">Selecciona la fase</option>
           </select>
         </div>
         <div class="control-group">
@@ -1168,8 +1168,8 @@
       const responsableSelect = document.getElementById('filter-responsable');
       const estadoSelect = document.getElementById('filter-estado');
 
-      responsableSelect.innerHTML = '<option value="">Responsables</option>';
-      estadoSelect.innerHTML = '<option value="">Selecciona el estado</option>';
+      responsableSelect.innerHTML = '<option value="">Todos los responsables</option>';
+      estadoSelect.innerHTML = '<option value="">Selecciona la fase</option>';
       duracionSelect.innerHTML = '<option value="">Selecciona el rango</option>';
 
       const responsables = [...new Set(
