@@ -345,6 +345,7 @@
 
     <!-- Filtros -->
     <div class="proyecto-controls">
+      <div style="width: 75%; display: flex; flex-wrap: wrap; gap: 10px;">
       <div class="control-group">
         <label class="control-label">Buscar entidad</label>
         <input type="text" id="buscarMisProyectos" placeholder="Buscar tus proyectos..." class="control-input">
@@ -358,20 +359,21 @@
       <div class="control-group">
         <label class="control-label">Filtrar por Responsable</label>
         <select class="control-select" id="filter-responsable">
-          <option value="">Todos</option>
+          <option value="">Responsables</option>
         </select>
       </div>
       <div class="control-group">
         <label class="control-label">Filtrar por Estado</label>
         <select class="control-select" id="filter-estado">
-          <option value="">Todos</option>
+          <option value="">Selecciona el estado</option>
         </select>
       </div>
       <div class="control-group">
         <button class="filter-btn" id="filter-contact"><i class="bi bi-arrow-clockwise"></i></button>
       </div>
-      <button class="action-button" id="postulaciones">
-        <span class="button-icon"><i class="bi bi-lightbulb-fill " style="color: rgb(255, 248, 148);"></i></span>Nueva
+      </div>
+      <button class="action-button" id="postulaciones"  style="display: flex; margin-left: 6vw;">
+        <span class="button-icon"><i class="bi bi-lightbulb-fill " style="color: rgb(255, 248, 148); "></i></span>Nueva
         Idea de Proyecto
       </button>
     </div>
