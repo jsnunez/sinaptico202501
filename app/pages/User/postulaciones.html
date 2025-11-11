@@ -59,7 +59,7 @@
     </div>
     <nav class="nav">
       <button class="nav-button" onclick="window.location.href='/helice'" id="inicio">Inicio</button>
-      <button class="nav-button" onclick="window.location.href='/helice'" id="directorioButton" >Directorio</button>
+      <button class="nav-button" onclick="window.location.href='/helice'" id="directorioButton">Directorio</button>
 
       <button class="nav-button pulse" onclick="window.location.href='/proyectos'">Proyectos</button>
       <button class="nav-button" onclick="window.location.href='/innovacion'">Innovación</button>
@@ -179,12 +179,11 @@
       <!-- Información General del PPI -->
       <div class="form-section">
         <div class="input-box full-width">
-           <h3 class="section-title">Entidad a la que postula</h3>
+          <h3 class="section-title">Entidad a la que postula</h3>
         </div>
         <label for="convocatorias">Seleccione la entidad donde deseea postular su idea (opcional)</label>
-        
-        <div id="convocatorias-list"
-          style="display: flex; gap:20px">
+
+        <div id="convocatorias-list" style="display: flex; gap:20px">
           <!-- Checkboxes will be added here -->
         </div>
 
@@ -591,13 +590,13 @@
               <td>${proyecto.entidad?.razonSocial ? proyecto.entidad.razonSocial : 'Independiente'}</td>
               <td>
                 <div style="display:flex; flex-direction:column; gap:4px;">
-                  ${proyecto.aliadosAplicados && proyecto.aliadosAplicados.length > 0 
-                    ? proyecto.aliadosAplicados.map(a => 
-                        `<span style="display:inline-block; background:#e8f4f8; border:1px solid #b3d9e6; border-radius:4px; padding:4px 8px; font-size:0.9em;">
+                  ${proyecto.aliadosAplicados && proyecto.aliadosAplicados.length > 0
+                  ? proyecto.aliadosAplicados.map(a =>
+                    `<span style="display:inline-block; background:#e8f4f8; border:1px solid #b3d9e6; border-radius:4px; padding:4px 8px; font-size:0.9em;">
                           ID: ${a?.id || 'N/A'} - ${a.aliadoProyecto?.nombreAliado || 'N/A'}
                         </span>`
-                      ).join('') 
-                    : '<span style="color:#999;">Sin postulaciones</span>'}
+                  ).join('')
+                  : '<span style="color:#999;">Sin postulaciones</span>'}
                 </div>
               </td>
               <td>${proyecto.usuarioLider?.name || ''}</td>
@@ -1124,123 +1123,162 @@
       }, remaining);
     })();
   </script>
+<script>
 
-  <script>
+  // Variables globales
+  // =========================
+  let proyectosCargados = [];
+  let entidadId = null; 
 
 
-function llenarFiltros(lista) {
-  const filterEntidad = document.getElementById('filter-entidad');
-  const filterCargo = document.getElementById('filter-cargo');
+  document.addEventListener("DOMContentLoaded", async () => {
 
-  const entidades = [...new Set(lista.map(c => c.empresa?.razonSocial).filter(Boolean))];
-  const cargos = [...new Set(lista.map(c => c._cargoNombre).filter(n => n && n !== 'N/A'))];
+    const inputEntidad = document.getElementById('nombreEntidad');
+    if (inputEntidad) entidadId = inputEntidad.value || 'null';
 
-  filterEntidad.innerHTML = '<option value="">Todas las entidades</option>';
-  filterCargo.innerHTML = '<option value="">Todos los cargos</option>';
+    if (typeof userId === "undefined" || !userId) {
+      const uid = obtenerCookie("userId");
+      if (uid) userId = uid;
+    }
 
-  entidades.forEach(e => {
-    const opt = document.createElement('option');
-    opt.value = e;
-    opt.textContent = e;
-    filterEntidad.appendChild(opt);
+    await cargarProyectos(); //cargamos los proyectos
   });
 
-  cargos.forEach(c => {
-    const opt = document.createElement('option');
-    opt.value = c;
-    opt.textContent = c;
-    filterCargo.appendChild(opt);
-  });
-}
+  // =========================
+  // Cargar proyectos
+  // =========================
+  async function cargarProyectos() {
+    try {
+      const resProy = await fetch(`/api/proyectos/entidadomis/${userId}/${entidadId}`);
+      const dataProy = await resProy.json();
 
-function renderTabla(lista) {
-  const tbody = document.getElementById('tablaContactosVerificados');
-  tbody.innerHTML = '';
+      proyectosCargados = Array.isArray(dataProy) ? dataProy : [];
+      console.log("✅ Proyectos cargados:", proyectosCargados);
 
-  if (!lista.length) {
-    tbody.innerHTML = `
-    <tr>
-      <td colspan="5" style="text-align:center;">
-        <div style="text-align: center; padding: 40px; color: #7f8c8d;">
-          <i class="fas fa-search" style="font-size: 2em; margin-bottom: 10px;"></i>
-          <p>No se encontraron usuarios con los filtros seleccionados</p>
-        </div>
-      </td>
-    </tr>
-  `;
-    return;
+      mostrarProyectos(proyectosCargados);
+      llenarFiltros(proyectosCargados);
+    } catch (err) {
+      console.error("❌ Error cargando proyectos:", err);
+    }
   }
 
-  lista.forEach(contacto => {
-    const user = contacto?.User ?? {};
-    const empresaNombre = contacto?.empresa?.razonSocial ?? '';
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-            <td>
-              <div style="position: relative; width: 60px; height: 60px; margin-top: 10px; margin-left: 10px;">
-                <img src="photo/${user.fotoPerfil || 'img/sinfoto.jpg'}"
-                    alt="Foto"
-                    class="imagenPerfil"
-                    style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover;"
-                    onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
+  // =========================
+  // Renderizar tabla
+  // =========================
+  function mostrarProyectos(lista) {
+    const tbody = document.getElementById('cuerpoTablaPostulaciones');
+    if (!tbody) return;
 
-                <i class="bi bi-search"
-                  style="position: absolute; bottom: 3px; right: 3px; font-size: 0.9em; 
-                          color: #1b3360; background: white; border-radius: 50%; 
-                          padding: 4px; cursor: pointer; box-shadow: 0 0 3px rgba(0,0,0,0.2);"
-                  onclick="abrirModalIntegrante(${user.id})"></i>
-              </div>
+    if (!lista.length) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="9" style="text-align:center; color:#777;">No hay proyectos encontrados</td>
+        </tr>`;
+      return;
+    }
 
-            </td>
-            <td>${user.name ?? ''}</td>
-            <td>${contacto._cargoNombre !== 'N/A' ? contacto._cargoNombre : ''}</td>
-            <td style="text-align:left;">${empresaNombre}</td>
-        `;
-    tbody.appendChild(tr);
+    tbody.innerHTML = '';
+    lista.forEach(proyecto => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${proyecto.id || ''}</td>
+        <td>${proyecto.nombrePPI || ''}</td>
+        <td>${proyecto.objetivo || ''}</td>
+        <td>${proyecto.entidad?.razonSocial || 'Independiente'}</td>
+        <td>
+          <div style="display:flex; flex-direction:column; gap:4px;">
+            ${
+              proyecto.aliadosAplicados?.length
+                ? proyecto.aliadosAplicados.map(a => 
+                    `<span style="display:inline-block; background:#e8f4f8; border:1px solid #b3d9e6; border-radius:4px; padding:4px 8px; font-size:0.9em;">
+                      ID: ${a?.id || 'N/A'} - ${a.aliadoProyecto?.nombreAliado || 'N/A'}
+                    </span>`
+                  ).join('')
+                : '<span style="color:#999;">Sin postulaciones</span>'
+            }
+          </div>
+        </td>
+        <td>${proyecto.usuarioLider?.name || ''}</td>
+        <td>${proyecto.duracionPPI || ''}</td>
+        <td>${proyecto.fasePPI || ''}</td>
+        <td>
+          <button class="action-button" onclick="verMasProyecto(${proyecto.id})" style="justify-content:center;">
+            <i class="bi bi-clipboard-fill"></i>
+          </button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  // =========================
+  // Llenar selects de filtros
+  // =========================
+  function llenarFiltros(data) {
+    const responsableSelect = document.getElementById('filter-responsable');
+    const estadoSelect = document.getElementById('filter-estado');
+    const postuladoSelect = document.getElementById('filter-postulado');
+
+    responsableSelect.innerHTML = '<option value="">Responsables</option>';
+    estadoSelect.innerHTML = '<option value="">Selecciona el estado</option>';
+    postuladoSelect.innerHTML = '<option value="">Selecciona la entidad</option>';
+
+    const responsables = [...new Set(data.map(p => p.usuarioLider?.name).filter(Boolean))];
+    const estados = [...new Set(data.map(p => p.fasePPI).filter(Boolean))];
+    const postulados = [...new Set(
+      data.flatMap(p => (p.aliadosAplicados || []).map(a => a.aliadoProyecto?.nombreAliado)).filter(Boolean)
+    )];
+
+    responsables.forEach(r => responsableSelect.insertAdjacentHTML('beforeend', `<option value="${r}">${r}</option>`));
+    estados.forEach(e => estadoSelect.insertAdjacentHTML('beforeend', `<option value="${e}">${e}</option>`));
+    postulados.forEach(p => postuladoSelect.insertAdjacentHTML('beforeend', `<option value="${p}">${p}</option>`));
+  }
+
+  // =========================
+  // Aplicar filtros
+  // =========================
+  function aplicarFiltros() {
+    const texto = document.getElementById('buscarMisProyectos').value.toLowerCase();
+    const responsable = document.getElementById('filter-responsable').value;
+    const estado = document.getElementById('filter-estado').value;
+    const postulado = document.getElementById('filter-postulado').value;
+
+    const filtrados = proyectosCargados.filter(p => {
+      const coincideTexto =
+        !texto ||
+        p.nombrePPI?.toLowerCase().includes(texto) ||
+        p.objetivo?.toLowerCase().includes(texto) ||
+        p.entidad?.razonSocial?.toLowerCase().includes(texto);
+
+      const coincideResponsable = !responsable || p.usuarioLider?.name === responsable;
+      const coincideEstado = !estado || p.fasePPI === estado;
+      const coincidePostulado = !postulado || (p.aliadosAplicados || []).some(a => a.aliadoProyecto?.nombreAliado === postulado);
+
+      return coincideTexto && coincideResponsable && coincideEstado && coincidePostulado;
+    });
+
+    console.log("📊 Proyectos filtrados:", filtrados);
+    mostrarProyectos(filtrados);
+  }
+
+  // =========================
+  // Eventos de filtros
+  // =========================
+  document.getElementById('buscarMisProyectos').addEventListener('input', aplicarFiltros);
+  document.getElementById('filter-responsable').addEventListener('change', aplicarFiltros);
+  document.getElementById('filter-estado').addEventListener('change', aplicarFiltros);
+  document.getElementById('filter-postulado').addEventListener('change', aplicarFiltros);
+
+  // Botón limpiar
+  document.getElementById('filter-misIdeas').addEventListener('click', () => {
+    document.getElementById('buscarMisProyectos').value = '';
+    document.getElementById('filter-responsable').value = '';
+    document.getElementById('filter-estado').value = '';
+    document.getElementById('filter-postulado').value = '';
+    mostrarProyectos(proyectosCargados);
   });
-}
+</script>
 
-function aplicarFiltros() {
-  const proyectoFiltro = document.getElementById('buscarMisProyectos').value.toLowerCase();
-  const estadoFiltro = document.getElementById('filter-estado').value;
-  const cargoFiltro = document.getElementById('filter-responsable').value;
-  const posturladoFiltro = document.getElementById('filter-postulado').value;
-
-  const filtrados = listaContactos.filter(c => {
-    const user = c.User ?? {};
-    const empresa = c.empresa?.razonSocial ?? '';
-    const cargo = c._cargoNombre ?? '';
-
-    const matchesProyecto =
-      !proyectoFiltro ||
-      user.name?.toLowerCase().includes(proyectoFiltro) ||
-      empresa.toLowerCase().includes(proyectoFiltro);
-
-    const matchesEstado = !estadoFiltro || empresa === estadoFiltro;
-    const matchesCargo = !cargoFiltro || cargo === cargoFiltro;
-
-    return matchesProyecto && matchesEstado && matchesCargo;
-  });
-
-  renderTabla(filtrados);
-}
-// Filtros automáticos
-document.getElementById('buscarMisProyectos').addEventListener('input', aplicarFiltros);
-document.getElementById('filter-responsable').addEventListener('change', aplicarFiltros);
-document.getElementById('filter-estado').addEventListener('change', aplicarFiltros);
-document.getElementById('filter-postulado').addEventListener('change', aplicarFiltros);
-
-
-// Botón reset
-document.getElementById('filter-misIdeas').addEventListener('click', () => {
-  document.getElementById('buscarMisProyectos').value = '';
-  document.getElementById('filter-estado').value = '';
-  document.getElementById('filter-postulado').value = '';
-  document.getElementById('filter-responsable').value = '';
-  aplicarFiltros();
-});
-
-  </script>
 </body>
 
 </html>
