@@ -246,10 +246,7 @@ body {
 
 
 .proyecto-controls {
-    margin-left: 2vw;
-    margin-right: 2vw;
     background: var(--light-text);
-
     border-radius: 10px;
     margin-bottom: 20px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -257,6 +254,8 @@ body {
     flex-wrap: wrap;
     gap: 15px;
     align-items: flex-end;
+    padding: 10px;
+    justify-content: space-between
 }
 
 .control-group {

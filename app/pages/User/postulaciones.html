@@ -402,7 +402,7 @@
 
     <!-- Filtros -->
     <div class="proyecto-controls">
-      <div style="width: 75%; display: flex; flex-wrap: wrap; gap: 10px;">
+      <div style="display: flex; flex-wrap: wrap; gap: 10px;">
         <div class="control-group">
           <label class="control-label">Buscar proyecto</label>
           <input type="text" id="buscarMisProyectos" placeholder="Buscar tus proyectos..." class="control-input">
@@ -429,7 +429,7 @@
           <button class="filter-btn" id="filter-misIdeas"><i class="bi bi-arrow-clockwise"></i></button>
         </div>
       </div>
-      <button class="action-button" id="postulaciones" style="display: block; margin-left: 10vw;">
+      <button class="action-button" id="postulaciones" style="display: block; ">
         <span class="button-icon"><i class="bi bi-lightbulb-fill "></i></span>
         Nueva idea PPI
       </button>
@@ -1111,6 +1111,123 @@
         }, 420);
       }, remaining);
     })();
+  </script>
+
+  <script>
+
+
+function llenarFiltros(lista) {
+  const filterEntidad = document.getElementById('filter-entidad');
+  const filterCargo = document.getElementById('filter-cargo');
+
+  const entidades = [...new Set(lista.map(c => c.empresa?.razonSocial).filter(Boolean))];
+  const cargos = [...new Set(lista.map(c => c._cargoNombre).filter(n => n && n !== 'N/A'))];
+
+  filterEntidad.innerHTML = '<option value="">Todas las entidades</option>';
+  filterCargo.innerHTML = '<option value="">Todos los cargos</option>';
+
+  entidades.forEach(e => {
+    const opt = document.createElement('option');
+    opt.value = e;
+    opt.textContent = e;
+    filterEntidad.appendChild(opt);
+  });
+
+  cargos.forEach(c => {
+    const opt = document.createElement('option');
+    opt.value = c;
+    opt.textContent = c;
+    filterCargo.appendChild(opt);
+  });
+}
+
+function renderTabla(lista) {
+  const tbody = document.getElementById('tablaContactosVerificados');
+  tbody.innerHTML = '';
+
+  if (!lista.length) {
+    tbody.innerHTML = `
+    <tr>
+      <td colspan="5" style="text-align:center;">
+        <div style="text-align: center; padding: 40px; color: #7f8c8d;">
+          <i class="fas fa-search" style="font-size: 2em; margin-bottom: 10px;"></i>
+          <p>No se encontraron usuarios con los filtros seleccionados</p>
+        </div>
+      </td>
+    </tr>
+  `;
+    return;
+  }
+
+  lista.forEach(contacto => {
+    const user = contacto?.User ?? {};
+    const empresaNombre = contacto?.empresa?.razonSocial ?? '';
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+            <td>
+              <div style="position: relative; width: 60px; height: 60px; margin-top: 10px; margin-left: 10px;">
+                <img src="photo/${user.fotoPerfil || 'img/sinfoto.jpg'}"
+                    alt="Foto"
+                    class="imagenPerfil"
+                    style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover;"
+                    onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
+
+                <i class="bi bi-search"
+                  style="position: absolute; bottom: 3px; right: 3px; font-size: 0.9em; 
+                          color: #1b3360; background: white; border-radius: 50%; 
+                          padding: 4px; cursor: pointer; box-shadow: 0 0 3px rgba(0,0,0,0.2);"
+                  onclick="abrirModalIntegrante(${user.id})"></i>
+              </div>
+
+            </td>
+            <td>${user.name ?? ''}</td>
+            <td>${contacto._cargoNombre !== 'N/A' ? contacto._cargoNombre : ''}</td>
+            <td style="text-align:left;">${empresaNombre}</td>
+        `;
+    tbody.appendChild(tr);
+  });
+}
+
+function aplicarFiltros() {
+  const proyectoFiltro = document.getElementById('buscarMisProyectos').value.toLowerCase();
+  const estadoFiltro = document.getElementById('filter-estado').value;
+  const cargoFiltro = document.getElementById('filter-responsable').value;
+  const posturladoFiltro = document.getElementById('filter-postulado').value;
+
+  const filtrados = listaContactos.filter(c => {
+    const user = c.User ?? {};
+    const empresa = c.empresa?.razonSocial ?? '';
+    const cargo = c._cargoNombre ?? '';
+
+    const matchesProyecto =
+      !proyectoFiltro ||
+      user.name?.toLowerCase().includes(proyectoFiltro) ||
+      empresa.toLowerCase().includes(proyectoFiltro);
+
+    const matchesEstado = !estadoFiltro || empresa === estadoFiltro;
+    const matchesCargo = !cargoFiltro || cargo === cargoFiltro;
+
+    return matchesProyecto && matchesEstado && matchesCargo;
+  });
+
+  renderTabla(filtrados);
+}
+// Filtros automáticos
+document.getElementById('buscarMisProyectos').addEventListener('input', aplicarFiltros);
+document.getElementById('filter-responsable').addEventListener('change', aplicarFiltros);
+document.getElementById('filter-estado').addEventListener('change', aplicarFiltros);
+document.getElementById('filter-postulado').addEventListener('change', aplicarFiltros);
+
+
+// Botón reset
+document.getElementById('filter-misIdeas').addEventListener('click', () => {
+  document.getElementById('buscarMisProyectos').value = '';
+  document.getElementById('filter-estado').value = '';
+  document.getElementById('filter-postulado').value = '';
+  document.getElementById('filter-responsable').value = '';
+  aplicarFiltros();
+});
+
   </script>
 </body>
 
