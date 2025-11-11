@@ -200,6 +200,20 @@ body {
 
 .action-button {
     margin-bottom: 1vh;
+    color: var(--text-description);
+    border: none;
+    border-radius: 10px;
+    padding: 0.5rem 1.5rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--primary-color);
+
+    /* 
+    margin-bottom: 1vh;
     display: flex;
     align-items: center;
     background: var(--gradient-2);
@@ -210,19 +224,23 @@ body {
     font-size: 0.9rem;
     font-weight: 500;
     cursor: pointer;
-    transition: var(--transition);
-    box-shadow: 0 4px 10px rgba(142, 45, 226, 0.3);
+        transition: var(--transition); */
+
+    /* box-shadow: 0 4px 10px rgba(142, 45, 226, 0.3); */
 }
 
+
 .action-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(142, 45, 226, 0.4);
+    transform: translateY(-3px);
+    background: var(--gray-color);
+    /* box-shadow: 0 6px 15px rgba(48, 45, 226, 0.4); */
 }
 
 .button-icon {
     margin-right: 0.5rem;
     font-size: 1.1rem;
 }
+
 
 /* Filtros */
 
@@ -901,7 +919,7 @@ td {
 .data-table th {
     background-color: var(--primary-color);
     font-weight: 600;
-    color: var(--yellow);
+    color: var(--light-text);
     padding: 1rem;
     text-align: left;
     border-bottom: 1px solid #eee;
@@ -1508,6 +1526,7 @@ h2 {
 .form-section p {
     text-align: justify;
 }
+
 #page-spinner-overlay .spinner-text {
     color: #333;
     font-family: inherit;
