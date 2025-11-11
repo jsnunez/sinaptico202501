@@ -717,28 +717,23 @@ svg path:hover {
 .loginEntidades {
   width: 300px;
   height: 200px;
-background: linear-gradient(
-  to bottom,
-  var(--secondary-color) 33%,
-  white 33%
-);
+
   border-radius: 10%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   color: var(--primary-color);
-  position: relative;
-  box-shadow: 0 10px 20px rgba(110, 72, 170, 0.2);
-  border: 3px solid var(--secondary-color);
+  text-align: center;
+ 
   cursor: pointer;
 }
 
 .logoEntidad {
-  width: 100px;
-  height: 100px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
-
+  background-color: #ffffff;
   border: 3px solid var(--secondary-color);
 
 }
@@ -749,9 +744,12 @@ background: linear-gradient(
   gap: 1.5rem;
   flex-wrap: wrap;
   margin-top: 1rem;
-  
+
 }
 
 .socios-container b {
   font-size: 2.5rex;
+}
+.socios-container p {
+  font-size: 1.9rex;
 }
