@@ -30,11 +30,11 @@
         <img src="/img/logo1.png" alt="SINAPTICO" class="logo" style="height:8vh;">
       </div>
       <div style="display: flex; align-items: center; gap: 20px;">
-        <div style="font-size:1.5em;cursor:pointer;">
+        <!-- <div style="font-size:1.5em;cursor:pointer;">
           <span id="icono-notif">🔔 <span
               style='background:red;color:white;border-radius:50%;padding:2px 7px;font-size:0.9em;'>0</span></span>
         </div>
-        <div class="notificaciones" id="notificaciones"></div>
+        <div class="notificaciones" id="notificaciones"></div> -->
 
 
         <div class="dropdown">
@@ -44,13 +44,13 @@
                 onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
 
             </div>
-            <h3 id="nombreUsuarioHeader" style="color:white; margin-left:10px;">Usuario <i
+            <h3 id="nombreUsuarioHeader" style="color:white; margin-left:10px;">CRCI <i
                 class="bi bi-chevron-down"></i> </h3>
           </button>
 
           <div class="dropdown-menu" id="userMenu">
-            <a href="/perfil">Perfil</a>
-            <a href="/perfilEntidad">Empresa</a>
+            <!-- <a href="/perfil">Perfil</a>
+            <a href="/perfilEntidad">Empresa</a> -->
             <a href="#" id="cerrarSesion">Cerrar sesión</a>
           </div>
         </div>
@@ -390,6 +390,7 @@
           <th>Duración</th>
           <th>Estado</th>
           <th>Ver</th>
+          <th>Acciones</th>
         </tr>
       </thead>
       <tbody id="cuerpoTablaPostulaciones">
@@ -488,7 +489,7 @@
 
         const tituloProyectos = document.getElementById('misProyectos');
         if (tituloProyectos && dataUser?.name) {
-          tituloProyectos.innerText = `Proyectos de ${dataUser.name}`;
+          tituloProyectos.innerText = `Proyectos de apliacados a CRCI`;
         }
         document.getElementById("imagenPerfilSecundaria").src = dataUser.fotoPerfil ? "photo/" + dataUser.fotoPerfil : "photo/sinfoto.jpg";
 
@@ -535,6 +536,11 @@
               <td>
                 <button class="action-button" onclick="verMasProyecto(${proyecto.id})" style="justify-content:center;">
                 <i class="bi bi-clipboard-fill"></i>
+                </button>
+              </td>
+              <td>
+                <button class="action-button" onclick="evaluarProyecto(${proyecto.id})" style="justify-content:center;">
+                  <i class="bi bi-star-fill"></i> Evaluar
                 </button>
               </td>
             `;
@@ -1052,6 +1058,16 @@
         }, 420);
       }, remaining);
     })();
+
+
+    function evaluarProyecto(proyectoId) {
+      Swal.fire({
+        title: 'En construcción',
+        text: 'La funcionalidad de evaluación de proyectos estará disponible próximamente.',
+        icon: 'info',
+        confirmButtonText: 'Entendido'
+      });
+    }
   </script>
 </body>
 
