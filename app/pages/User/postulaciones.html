@@ -548,7 +548,9 @@
         const tituloProyectos = document.getElementById('misProyectos');
         if (tituloProyectos && dataUser?.name) {
           tituloProyectos.innerText = `Proyectos de ${dataUser.name}`;
+          document.getElementById('nombreUsuarioHeader').innerText = ` ${dataUser.name.split(" ")[0]}`;
         }
+
         document.getElementById("imagenPerfilSecundaria").src = dataUser.fotoPerfil ? "photo/" + dataUser.fotoPerfil : "photo/sinfoto.jpg";
 
         if (dataUser?.fotoPerfil) {
@@ -587,7 +589,17 @@
               <td>${proyecto.nombrePPI || ''}</td>
               <td>${proyecto.objetivo || ''}</td>
               <td>${proyecto.entidad?.razonSocial ? proyecto.entidad.razonSocial : 'Independiente'}</td>
-              <td>${proyecto.id || ''}</td>
+              <td>
+                <div style="display:flex; flex-direction:column; gap:4px;">
+                  ${proyecto.aliadosAplicados && proyecto.aliadosAplicados.length > 0 
+                    ? proyecto.aliadosAplicados.map(a => 
+                        `<span style="display:inline-block; background:#e8f4f8; border:1px solid #b3d9e6; border-radius:4px; padding:4px 8px; font-size:0.9em;">
+                          ID: ${a?.id || 'N/A'} - ${a.aliadoProyecto?.nombreAliado || 'N/A'}
+                        </span>`
+                      ).join('') 
+                    : '<span style="color:#999;">Sin postulaciones</span>'}
+                </div>
+              </td>
               <td>${proyecto.usuarioLider?.name || ''}</td>
               <td>${proyecto.duracionPPI || ''}</td>
               <td>${proyecto.fasePPI || ''}</td>

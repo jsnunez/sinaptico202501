@@ -104,6 +104,7 @@ export const deleteProyecto = async (req, res) => {
 };
 // Importa Op desde sequelize
 import { Op } from 'sequelize';
+import AliadosProyectos from '../models/aliadosProyectos.js';
 // o en CommonJS:
 // const { Op } = require('sequelize');
 
@@ -126,12 +127,29 @@ export const getProyectosDeMiEntidadOCreadosPorMi = async (req, res) => {
     const proyectos = await Proyectos.findAll({
       where: { [Op.or]: orConds },
       include: [
-        { model: User, as: 'usuario' },
-           // Usuario líder del proyecto (userLiderId)
-        { model: User, as: 'usuarioLider' },
-        { model: Entidad, as: 'entidad' }
+        { model: User, as: 'usuario',attributes: ['name'] },
+        { model: User, as: 'usuarioLider',attributes: ['name'] },
+        { model: Entidad, as: 'entidad',attributes: ['razonSocial'] }
       ],
       order: [['createdAt', 'DESC']]
+    });
+
+    // Consulta los aliados aplicados por separado
+    const proyectosIds = proyectos.map(p => p.id);
+    const aliadosAplicados = await AliadosProyectosAplicados.findAll({
+      where: { proyectoId: proyectosIds },
+      include: [{
+        model: AliadosProyectos,
+        as: 'aliadoProyecto',
+        attributes: ['nombreAliado']
+      }]
+    });
+
+    // Agregar los aliados a cada proyecto
+    proyectos.forEach(proyecto => {
+      proyecto.dataValues.aliadosAplicados = aliadosAplicados.filter(
+        a => a.proyectoId === proyecto.id
+      );
     });
 
     // En vez de 404, devolvemos lista vacía
