@@ -735,9 +735,28 @@ svg path:hover {
   border-radius: 50%;
   background-color: #ffffff;
   border: 3px solid var(--secondary-color);
-
+  z-index: 10000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
 }
 
+.loginEntidades img{
+  width: 80%;
+  height: 80%;
+  object-fit: contain;
+}
+
+
+            .loginEntidades p {
+            min-height: 3em;
+            }
+.loginEntidades:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transform: translateY(-5px);
+  transition: all 0.3s ease;
+}
 .socios-container {
   display: flex;
   justify-content: center;
