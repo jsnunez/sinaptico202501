@@ -725,7 +725,7 @@ svg path:hover {
   align-items: center;
   color: var(--primary-color);
   text-align: center;
- 
+
   cursor: pointer;
 }
 
@@ -742,21 +742,23 @@ svg path:hover {
   overflow: hidden;
 }
 
-.loginEntidades img{
+.loginEntidades img {
   width: 80%;
   height: 80%;
   object-fit: contain;
 }
 
 
-            .loginEntidades p {
-            min-height: 3em;
-            }
+.loginEntidades p {
+  min-height: 3em;
+}
+
 .loginEntidades:hover {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   transform: translateY(-5px);
   transition: all 0.3s ease;
 }
+
 .socios-container {
   display: flex;
   justify-content: center;
@@ -769,6 +771,7 @@ svg path:hover {
 .socios-container b {
   font-size: 2.5rex;
 }
+
 .socios-container p {
   font-size: 1.9rex;
 }

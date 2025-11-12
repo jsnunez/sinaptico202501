@@ -92,38 +92,32 @@ document.addEventListener('DOMContentLoaded', function () {
   // Abrir modal con info de la empresa
   document.addEventListener('click', function (e) {
     if (e.target && (e.target.classList.contains('botonEntidad') || e.target.id === 'masInformacion')) {
-      console.log(todasLasEmpresas)
-
       const id = e.target.dataset.id;
-      // console.log(todasLasEmpresas)
-
-      const empresa = todasLasEmpresas.find(emp => emp.id == id);
-
-      // console.log(empresa)
-
-
-      if (empresa) {
-        document.getElementById('modalRazonSocial').textContent = empresa.razonSocial;
-        document.getElementById('tipoEntidad').textContent = empresa.claseEntidad;
-        document.getElementById('descripcionEmpresa').textContent = empresa.actividadEconomica;
-        document.getElementById('ciudad').textContent = empresa.Ciudad.nombre;
-        document.getElementById('telefonoEntidad').textContent = "********";
-        document.getElementById('serviciosAsociados').textContent = empresa.razonSocial;
-        document.getElementById('UbicacionEntidad').textContent = "*********";
-        // document.getElementById('UbicacionEntidad').textContent = empresa.direccion + ", " + empresa.Ciudad.nombre + ", " + empresa.Ciudad.Departamento.nombre;
-        document.getElementById('emailEntidad').textContent = "********";
-        // document.getElementById('contactoEntidad').textContent = empresa.User.name;
-        // const telefono = empresa.telefono || '';
-        // const telefonoMasked = telefono.length > 4
-        //   ? telefono.slice(0, 4) + '*'.repeat(telefono.length - 4)
-        //   : telefono;
-        // document.getElementById('telefonoEntidad').textContent = telefonoMasked;
-        llamarservicios(empresa.id);
-        llamarIntegrantes(empresa.id);
-
-        document.getElementById('empresaModal').style.display = 'block';
-      }
+      window.location.href = `/perfilEntidad?id=${id}`;
     }
+
+    //   if (empresa) {
+    //     document.getElementById('modalRazonSocial').textContent = empresa.razonSocial;
+    //     document.getElementById('tipoEntidad').textContent = empresa.claseEntidad;
+    //     document.getElementById('descripcionEmpresa').textContent = empresa.actividadEconomica;
+    //     document.getElementById('ciudad').textContent = empresa.Ciudad.nombre;
+    //     document.getElementById('telefonoEntidad').textContent = "********";
+    //     document.getElementById('serviciosAsociados').textContent = empresa.razonSocial;
+    //     document.getElementById('UbicacionEntidad').textContent = "*********";
+    //     // document.getElementById('UbicacionEntidad').textContent = empresa.direccion + ", " + empresa.Ciudad.nombre + ", " + empresa.Ciudad.Departamento.nombre;
+    //     document.getElementById('emailEntidad').textContent = "********";
+    //     // document.getElementById('contactoEntidad').textContent = empresa.User.name;
+    //     // const telefono = empresa.telefono || '';
+    //     // const telefonoMasked = telefono.length > 4
+    //     //   ? telefono.slice(0, 4) + '*'.repeat(telefono.length - 4)
+    //     //   : telefono;
+    //     // document.getElementById('telefonoEntidad').textContent = telefonoMasked;
+    //     llamarservicios(empresa.id);
+    //     llamarIntegrantes(empresa.id);
+
+    //     document.getElementById('empresaModal').style.display = 'block';
+    //   }
+
 
 
 
@@ -205,194 +199,6 @@ document.addEventListener('DOMContentLoaded', function () {
   };
 });
 
-async function llamarservicios(idEntidad) {
-
-  let url = `${API_BASE_URL}/api/servicio/entidad/${idEntidad}`;
-  let data = await fetch(url);
-  let datos = await data.json();
-  console.log(datos);
-  if (datos.success) {
-    let servicios = datos.servicios;
-    let serviciosHTML = '<ul>';
-    servicios.forEach(servicio => {
-      serviciosHTML += `<li>${servicio.descripcion}</li>`;
-    });
-    serviciosHTML += '</ul>';
-    document.getElementById('serviciosAsociados').innerHTML = serviciosHTML;
-  } else {
-    console.log(datos.mensaje || 'No se encontraron servicios.');
-  }
-}
-
-async function llamarIntegrantes(idEntidad) {
-  const url = `${API_BASE_URL}/api/usuarioempresa/empresa/${idEntidad}`;
-  try {
-    const response = await fetch(url);
-    const datos = await response.json();
-    console.log(datos);
-
-    if (Array.isArray(datos) && datos.length > 0) {
-
-      // Adaptar datos para estructura esperada por el resto del código
-      const integrantes = datos
-        .filter(item => item.estado) // Solo los activos
-        .map(item => ({
-          id: item.User?.id,
-          nombre: item.User?.name || 'Sin nombre',
-          rol: item.Cargo?.nombre || 'Sin rol',
-          fotoPerfil: item.User?.fotoPerfil || 'sinfoto.jpg'
-        }));
-
-      let integrantesHTML = '<div style="display: block;">';
-
-      // if (integrantes.length > 0) {
-      //   integrantes.forEach(integrante => {
-      //     console.log(integrante.fotoPerfil);
-      //     integrantesHTML += `
-      //         <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
-      //           <div style="position: relative; width: 50px; height: 50px; cursor: pointer;" id="verIntegrante${integrante.id}" onclick="abrirModalIntegrante(${integrante.id})">
-      //             <img src="/photo/${integrante.fotoPerfil}" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
-      //             <span style="position: absolute; bottom: 0; right: 0; background: #fff; border-radius: 50%; padding: 2px;">
-      //               <i class="bi bi-search" style="font-size: 1em; color: var(--primary-color);"></i>
-      //             </span>
-      //           </div>
-      //           <p style="margin: 0;">${integrante.nombre} - ${integrante.rol}</p>
-      //           <button class="btn btn-sm btn-primary" onclick="contactarIntegrante(${integrante.id}, '${integrante.nombre.replace(/'/g, "\\'")}')">
-      //             <i class="bi bi-telephone"></i> Contactar
-      //           </button>
-      //         </div>
-      //       `;
-      //   });
-      if (integrantes.length > 0) {
-        integrantes.forEach(integrante => {
-          console.log(integrante.fotoPerfil);
-            integrantesHTML += `
-              <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px;">
-              <div style="display: flex; align-items: center; gap: 10px;">
-                <div style="position: relative; width: 50px; height: 50px; cursor: pointer;" id="verIntegrante${integrante.id}" >
-                <img src="/photo/${integrante.fotoPerfil}" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
-                <span style="position: absolute; bottom: 0; right: 0; background: #fff; border-radius: 50%; padding: 2px;">
-
-                </span>
-                </div>
-                <p style="margin: 0;">${integrante.nombre} - ${integrante.rol}</p>
-              </div>
-              <button class="btn btn-sm btn-primary" onclick="contactarIntegrante(${integrante.id}, '${integrante.nombre.replace(/'/g, "\\'")}')">
-                <i class="bi bi-telephone" style="margin-right: 5px;"></i>Contactar
-              </button>
-              </div>
-            `;
-        });
-      } else {
-        integrantesHTML += '<div>Sin ningún integrante</div>';
-      }
-
-      integrantesHTML += '</div>';
-
-      document.getElementById('integrantesAsociados').innerHTML = integrantesHTML;
-
-    } else {
-      document.getElementById('integrantesAsociados').innerHTML = 'No se encontraron integrantes.';
-    }
-  } catch (error) {
-    console.error('Error al obtener integrantes:', error);
-    document.getElementById('integrantesAsociados').innerHTML = 'Error al cargar integrantes.';
-  }
-}
-
-// Abrir modal al hacer clic en la foto de usuario
-
-abrirModalIntegrante = async function (userId) {
-  // Limpiar datos del modal antes de cargar nuevos
-  document.getElementById('MiNombreCompleto').textContent = '';
-  document.getElementById('MiPerfilProfesional').textContent = '';
-  document.getElementById('MiTelefono').textContent = '';
-  document.getElementById('MiUbicacion').textContent = '';
-  document.getElementById('MiCorreo').textContent = '';
-  document.getElementById('MiVinculado').textContent = '';
-  document.getElementById("imagenPerfilIntegrante").src = '/img/sinfoto.jpg';
-  const iframe = document.querySelector('iframe');
-  if (iframe) {
-    iframe.src = '';
-    iframe.style.display = 'none';
-  }
-  console.log("ID del integrante:", userId);
-  document.getElementById('modalIntegrante').style.display = 'block';
-  //Cerrar modal integrante
-  document.getElementById('cerrarModalIntegrante').onclick = function () {
-    document.getElementById('modalIntegrante').style.display = 'none';
-    document.getElementById('modalMisContactos').style.display = 'block';
-  };
-
-  const response = await fetch(`${API_BASE_URL}/api/user/${userId}`);
-  const data = await response.json();
-  console.log(data);
-
-  try {
-    if (!userId) return;
-
-    const res = await fetch(`/api/user/${userId}`);
-    if (!res.ok) throw new Error('No se pudo obtener el perfil');
-    const data = await res.json();
-    console.log(data);
-    // Coloca los datos en los elementos correspondientes
-    document.getElementById('MiNombreCompleto').textContent = data.name || '';
-    document.getElementById('MiPerfilProfesional').textContent = data.perfilProfesional || '';
-    document.getElementById('MiTelefono').textContent = data.telefono || '';
-    document.getElementById('MiUbicacion').textContent = data.ciudad.nombre + ' - ' + data.ciudad.departamento.nombre || '';
-    document.getElementById('MiCorreo').textContent = data.email || '';
-    document.getElementById("imagenPerfilIntegrante").src = data.fotoPerfil ? "photo/" + data.fotoPerfil : "photo/sinfoto.jpg";
-
-
-    if (data.ciudadId) {
-      try {
-        const resp = await fetch(`/api/ciudades/ciudad/${data.ciudadId}`);
-        const ciudadData = await resp.json();
-        document.getElementById("departamentoPerfilValor").innerHTML = ciudadData.ciudad.departamentoId || '';
-      } catch (err) {
-        document.getElementById("departamentoPerfilValor").innerHTML = '';
-        console.error('Error al consultar el departamento:', err);
-      }
-    } else {
-      document.getElementById("departamentoPerfilValor").innerHTML = '';
-    }
-
-    document.getElementById("ciudadPerfilValor").innerHTML = data.ciudadId || '';
-
-    // Si tienes la URL del CV PDF (usando data.enlaceHojaDeVida)
-    if (data.enlaceHojaDeVida) {
-      const iframe = document.querySelector('iframe');
-      if (iframe) {
-        iframe.src = "CV/" + data.enlaceHojaDeVida;
-        iframe.style.display = 'block';
-      }
-    }
-
-  } catch (err) {
-    console.error('Error cargando datos de usuario:', err);
-  }
-
-  // Verificar si hay una entidad asociada al usuario
-  try {
-    const entidadRes = await fetch(`/api/entidad/verificar-entidad/${userId}`);
-    if (entidadRes.ok) {
-      const entidadData = await entidadRes.json();
-      console.log('Entidad asociada:', entidadData.success);
-      // Si hay entidad asociada, muestra el nombre, si no, muestra "Sin entidad asociada"
-      if (entidadData.success) {
-        console.log('Entidad asociada:', entidadData.entidad.razonSocial);
-        var entidadNombre = entidadData.entidad.razonSocial;
-      } else {
-        console.log('Entidad asociada: Sin entidad asociada');
-        var entidadNombre = "Sin entidad asociada";
-      }
-      // Busca la celda correspondiente y actualiza el texto
-      document.getElementById('MiVinculado').textContent = entidadNombre;
-    }
-  } catch (e) {
-    console.error('Error verificando entidad asociada:', e);
-  }
-}
 
 
 // Variables globales
@@ -813,32 +619,32 @@ function displayUsersList() {
 
 
         `;
-// return `
-//     <div class="user-item" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #eee; cursor: pointer;">
-//           <div  onclick="focusOnUser(${user.id})" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #eee; cursor: pointer;">
-//                  <img src="/logos/${user.logo}" alt="Logo Empresa" class="card-icon" onerror="this.onerror=null;this.src='/img/sinfoto.jpg';" style="margin-right: 10px;  border-radius: 5px;">
+    // return `
+    //     <div class="user-item" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #eee; cursor: pointer;">
+    //           <div  onclick="focusOnUser(${user.id})" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #eee; cursor: pointer;">
+    //                  <img src="/logos/${user.logo}" alt="Logo Empresa" class="card-icon" onerror="this.onerror=null;this.src='/img/sinfoto.jpg';" style="margin-right: 10px;  border-radius: 5px;">
 
-//                 <div class="user-info">
-//                     <div class="user-name">${typeIcons[user.claseEntidad] || '🏢'} ${user.name}</div>
-//                     <div class="user-details">${user.actividadEconomica} • ${user.claseEntidad}</div>
-//                     <div class="user-details">${user.departamento} • ${user.city}</div>
-//                 </div>
+    //                 <div class="user-info">
+    //                     <div class="user-name">${typeIcons[user.claseEntidad] || '🏢'} ${user.name}</div>
+    //                     <div class="user-details">${user.actividadEconomica} • ${user.claseEntidad}</div>
+    //                     <div class="user-details">${user.departamento} • ${user.city}</div>
+    //                 </div>
 
-//           </div>
-//                     <div class="">
-//                           <div class="user-status ${user.verificada ? 'status-online' : 'status-offline'}" style="margin-bottom: 10px;">
-//                               ${user.verificada ? 'Verificada' : 'Sin verificar'}
-//                           </div>
-//                           <button class="botonEntidad " data-id="${user.id}">
-//                             Más información
-//                           </button>
-//                     </div>
-          
-//     </div>    
-    
+    //           </div>
+    //                     <div class="">
+    //                           <div class="user-status ${user.verificada ? 'status-online' : 'status-offline'}" style="margin-bottom: 10px;">
+    //                               ${user.verificada ? 'Verificada' : 'Sin verificar'}
+    //                           </div>
+    //                           <button class="botonEntidad " data-id="${user.id}">
+    //                             Más información
+    //                           </button>
+    //                     </div>
+
+    //     </div>    
 
 
-//           `;
+
+    //           `;
   }).join('');
 
   listContent.innerHTML = usersHtml;
