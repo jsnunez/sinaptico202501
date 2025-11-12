@@ -8,17 +8,37 @@ dotenv.config();
 
 async function soloUser(req, res, next) {
   const logueado = await revisarCookie(req);
-  if (logueado) return next();
-  console.log("incia sesion")
-  return res.redirect("/")
+ if (logueado) {
+    const cookieJWT = req.headers.cookie.split("; ").find(cookie => cookie.startsWith("jwt=")).slice(4);
+    const decodificada = jsonwebtoken.verify(cookieJWT, process.env.JWT_SECRET);
+    const usuarioAResvisar = await User.findOne({ where: { email: decodificada.email } });
+    
+    if (usuarioAResvisar) {
+      if (usuarioAResvisar.rol === 3 || usuarioAResvisar.rol === 1  ) {
+        return next();   
+      } else if (usuarioAResvisar.rol === 5) {
+        return res.redirect("/dashboardCRCI");
+      }
+    }
+  }
 }
 
 async function soloPublico(req, res, next) {
   const logueado = await revisarCookie(req);
-  if (!logueado) return next();
-  console.log("no incia sesion")
-
-  return res.redirect("/helice")
+  if (logueado) {
+    const cookieJWT = req.headers.cookie.split("; ").find(cookie => cookie.startsWith("jwt=")).slice(4);
+    const decodificada = jsonwebtoken.verify(cookieJWT, process.env.JWT_SECRET);
+    const usuarioAResvisar = await User.findOne({ where: { email: decodificada.email } });
+    
+    if (usuarioAResvisar) {
+      if (usuarioAResvisar.rol === 3) {
+        return res.redirect("/helice");
+      } else if (usuarioAResvisar.rol === 5) {
+        return res.redirect("/dashboardCRCI");
+      }
+    }
+  }
+  return next();
 }
 
 async function revisarCookie(req) {
@@ -65,7 +85,7 @@ async function soloCRCI(req, res, next) {
   const logueado = await revisarCookie(req);
   if (!logueado) {
     console.log("Inicia sesión");
-    return res.redirect("/");
+    return res.redirect("/dashboardCRCI");
   }
 
   const cookieJWT = req.headers.cookie.split("; ").find(cookie => cookie.startsWith("jwt=")).slice(4);

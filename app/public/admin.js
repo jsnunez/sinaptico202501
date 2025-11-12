@@ -22,10 +22,7 @@ document.getElementById("cerrarSesion").addEventListener("click", () => {
   });
 });
 
-document.getElementById("directorio").addEventListener("click", () => {
 
-
-})
 
 
 // document.getElementById("Todos1").addEventListener("click", () => {
