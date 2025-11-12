@@ -407,15 +407,15 @@
           <input type="text" id="buscarMisProyectos" placeholder="Buscar tus proyectos..." class="control-input">
         </div>
         <div class="control-group">
-          <label class="control-label">Responsable</label>
+          <label class="control-label">Lider del PPI</label>
           <select class="control-select" id="filter-responsable">
-            <option value="">Responsables</option>
+            <option value="">Todos los responsables</option>
           </select>
         </div>
         <div class="control-group">
-          <label class="control-label">Estado</label>
+          <label class="control-label">Fase del PPI</label>
           <select class="control-select" id="filter-estado">
-            <option value="">Selecciona el estado</option>
+            <option value="">Selecciona la fase</option>
           </select>
         </div>
         <div class="control-group">
@@ -454,7 +454,9 @@
 
       </tbody>
     </table>
-    <div id="paginacionEntidades" class="pagination"></div>
+
+    <div id="paginador" style="margin-top:15px; text-align:center;"></div>
+
 
 
   </div>
@@ -573,45 +575,7 @@
 
         console.log('Entidad ID seleccionada:', entidadId);
 
-        // Cargar proyectos por entidad o propios
-        const resProy = await fetch(`/api/proyectos/entidadomis/${userId}/${entidadId}`);
-        const dataProy = await resProy.json();
-        console.log('Proyectos cargados:', dataProy);
-        const tbody = document.getElementById('cuerpoTablaPostulaciones');
-        if (tbody) {
-          tbody.innerHTML = '';
-          if (Array.isArray(dataProy) && dataProy.length > 0) {
-            dataProy.forEach(proyecto => {
-              const tr = document.createElement('tr');
-              tr.innerHTML = `
-              <td>${proyecto.id || ''}</td>
-              <td>${proyecto.nombrePPI || ''}</td>
-              <td>${proyecto.objetivo || ''}</td>
-              <td>${proyecto.entidad?.razonSocial ? proyecto.entidad.razonSocial : 'Independiente'}</td>
-              <td>
-                <div style="display:flex; flex-direction:column; gap:4px;">
-                  ${proyecto.aliadosAplicados && proyecto.aliadosAplicados.length > 0
-                  ? proyecto.aliadosAplicados.map(a =>
-                    `<span style="display:inline-block; background:#e8f4f8; border:1px solid #b3d9e6; border-radius:4px; padding:4px 8px; font-size:0.9em;">
-                          ID: ${a?.id || 'N/A'} - ${a.aliadoProyecto?.nombreAliado || 'N/A'}
-                        </span>`
-                  ).join('')
-                  : '<span style="color:#999;">Sin postulaciones</span>'}
-                </div>
-              </td>
-              <td>${proyecto.usuarioLider?.name || ''}</td>
-              <td>${proyecto.duracionPPI || ''}</td>
-              <td>${proyecto.fasePPI || ''}</td>
-              <td>
-                <button class="action-button" onclick="verMasProyecto(${proyecto.id})" style="justify-content:center;">
-                <i class="bi bi-clipboard-fill"></i>
-                </button>
-              </td>
-            `;
-              tbody.appendChild(tr);
-            });
-          }
-        }
+
       } catch (err) {
         console.error('Error inicializando la vista:', err);
       }
@@ -1123,79 +1087,133 @@
       }, remaining);
     })();
   </script>
-<script>
+  <script>
 
-  // Variables globales
-  // =========================
-  let proyectosCargados = [];
-  let entidadId = null; 
+    // =========================
+    // Paginación
+    // =========================
+    let paginaActual = 1;
+    const itemsPorPagina = 5;
+    let listaFiltrada = []; // para mantener los resultados actuales
 
+    function mostrarPaginador(lista) {
+      const paginadorDiv = document.getElementById('paginador');
+      if (!paginadorDiv) return;
 
-  document.addEventListener("DOMContentLoaded", async () => {
+      const totalPaginas = Math.ceil(lista.length / itemsPorPagina);
+      if (totalPaginas <= 1) {
+        paginadorDiv.innerHTML = '';
+        return;
+      }
 
-    const inputEntidad = document.getElementById('nombreEntidad');
-    if (inputEntidad) entidadId = inputEntidad.value || 'null';
+      let botones = '';
+      for (let i = 1; i <= totalPaginas; i++) {
+        botones += `
+      <button 
+        class="btn-pagina ${i === paginaActual ? 'activo' : ''}" 
+        onclick="cambiarPagina(${i})">
+        ${i}
+      </button>
+    `;
+      }
 
-    if (typeof userId === "undefined" || !userId) {
-      const uid = obtenerCookie("userId");
-      if (uid) userId = uid;
+      paginadorDiv.innerHTML = `
+    <button class="btn-pagina" onclick="cambiarPagina(${paginaActual - 1})" ${paginaActual === 1 ? 'disabled' : ''}>« Anterior</button>
+    ${botones}
+    <button class="btn-pagina" onclick="cambiarPagina(${paginaActual + 1})" ${paginaActual === totalPaginas ? 'disabled' : ''}>Siguiente »</button>
+  `;
     }
 
-    await cargarProyectos(); //cargamos los proyectos
-  });
-
-  // =========================
-  // Cargar proyectos
-  // =========================
-  async function cargarProyectos() {
-    try {
-      const resProy = await fetch(`/api/proyectos/entidadomis/${userId}/${entidadId}`);
-      const dataProy = await resProy.json();
-
-      proyectosCargados = Array.isArray(dataProy) ? dataProy : [];
-      console.log("✅ Proyectos cargados:", proyectosCargados);
-
-      mostrarProyectos(proyectosCargados);
-      llenarFiltros(proyectosCargados);
-    } catch (err) {
-      console.error("❌ Error cargando proyectos:", err);
+    function cambiarPagina(nuevaPagina) {
+      const totalPaginas = Math.ceil(listaFiltrada.length / itemsPorPagina);
+      if (nuevaPagina < 1 || nuevaPagina > totalPaginas) return;
+      paginaActual = nuevaPagina;
+      renderizarPagina();
     }
-  }
 
-  // =========================
-  // Renderizar tabla
-  // =========================
-  function mostrarProyectos(lista) {
-    const tbody = document.getElementById('cuerpoTablaPostulaciones');
-    if (!tbody) return;
+    function renderizarPagina() {
+      const inicio = (paginaActual - 1) * itemsPorPagina;
+      const fin = inicio + itemsPorPagina;
+      const pagina = listaFiltrada.slice(inicio, fin);
+      mostrarProyectos(pagina);
+      mostrarPaginador(listaFiltrada);
+    }
 
-    if (!lista.length) {
-      tbody.innerHTML = `
+    // Variables globales
+    // =========================
+    let proyectosCargados = [];
+    let entidadId = null;
+
+
+    document.addEventListener("DOMContentLoaded", async () => {
+
+
+      const resUE = await fetch(`/api/usuarioempresa/user/${userId}`);
+      const dataUE = await resUE.json();
+
+      if (Array.isArray(dataUE) && dataUE.length > 0 && dataUE[0].empresa) {
+        entidadId = dataUE[0].empresa.id;
+      } else {
+        entidadId = 'null';
+      }
+
+
+      console.log('Entidad ID seleccionada:', entidadId);
+
+      await cargarProyectos(); //cargamos los proyectos
+    });
+
+    // =========================
+    // Cargar proyectos
+    // =========================
+    async function cargarProyectos() {
+      try {
+        const resProy = await fetch(`/api/proyectos/entidadomis/${userId}/${entidadId}`);
+        const dataProy = await resProy.json();
+        proyectosCargados = Array.isArray(dataProy) ? dataProy : [];
+        console.log("✅ Proyectos cargados:", proyectosCargados);
+        listaFiltrada = proyectosCargados;
+        paginaActual = 1;
+        renderizarPagina();
+        llenarFiltros(proyectosCargados);
+      } catch (err) {
+        console.error("❌ Error cargando proyectos:", err);
+      }
+    }
+
+    // =========================
+    // Renderizar tabla
+    // =========================
+    function mostrarProyectos(lista) {
+      const tbody = document.getElementById('cuerpoTablaPostulaciones');
+      if (!tbody) return;
+
+      if (!lista.length) {
+        tbody.innerHTML = `
         <tr>
           <td colspan="9" style="text-align:center; color:#777;">No hay proyectos encontrados</td>
         </tr>`;
-      return;
-    }
+        return;
+      }
 
-    tbody.innerHTML = '';
-    lista.forEach(proyecto => {
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
+      tbody.innerHTML = '';
+      lista.forEach(proyecto => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
         <td>${proyecto.id || ''}</td>
         <td>${proyecto.nombrePPI || ''}</td>
         <td>${proyecto.objetivo || ''}</td>
         <td>${proyecto.entidad?.razonSocial || 'Independiente'}</td>
         <td>
           <div style="display:flex; flex-direction:column; gap:4px;">
-            ${
-              proyecto.aliadosAplicados?.length
-                ? proyecto.aliadosAplicados.map(a => 
-                    `<span style="display:inline-block; background:#e8f4f8; border:1px solid #b3d9e6; border-radius:4px; padding:4px 8px; font-size:0.9em;">
+            ${proyecto.aliadosAplicados?.length
+            ? proyecto.aliadosAplicados.map(a =>
+              `<span style="display:inline-block; background:#e8f4f8; border:1px solid #b3d9e6; border-radius:4px; padding:4px 8px; font-size:0.9em;">
                       ID: ${a?.id || 'N/A'} - ${a.aliadoProyecto?.nombreAliado || 'N/A'}
                     </span>`
-                  ).join('')
-                : '<span style="color:#999;">Sin postulaciones</span>'
-            }
+            ).join('')
+            : '<span style="color:#999;">Sin postulaciones</span>'
+          }
           </div>
         </td>
         <td>${proyecto.usuarioLider?.name || ''}</td>
@@ -1207,77 +1225,88 @@
           </button>
         </td>
       `;
-      tbody.appendChild(tr);
+        tbody.appendChild(tr);
+      });
+    }
+
+    // =========================
+    // Llenar selects de filtros
+    // =========================
+    function llenarFiltros(data) {
+      console.log("llenar filtro", data)
+
+      const responsableSelect = document.getElementById('filter-responsable');
+      const estadoSelect = document.getElementById('filter-estado');
+      const postuladoSelect = document.getElementById('filter-postulado');
+
+      responsableSelect.innerHTML = '<option value="">Responsables</option>';
+      estadoSelect.innerHTML = '<option value="">Selecciona el estado</option>';
+      postuladoSelect.innerHTML = '<option value="">Selecciona la entidad</option>';
+
+      const responsables = [...new Set(
+        data.map(p => p.usuarioLider?.name || "Sin responsable")
+      )];
+
+      const estados = [...new Set(data.map(p => p.fasePPI).filter(Boolean))];
+      const postulados = [...new Set(
+        data.flatMap(p => (p.aliadosAplicados || []).map(a => a.aliadoProyecto?.nombreAliado)).filter(Boolean)
+      )];
+
+      responsables.forEach(r => responsableSelect.insertAdjacentHTML('beforeend', `<option value="${r}">${r}</option>`));
+      estados.forEach(e => estadoSelect.insertAdjacentHTML('beforeend', `<option value="${e}">${e}</option>`));
+      postulados.forEach(p => postuladoSelect.insertAdjacentHTML('beforeend', `<option value="${p}">${p}</option>`));
+    }
+
+    // =========================
+    // Aplicar filtros
+    // =========================
+    function aplicarFiltros() {
+      const texto = document.getElementById('buscarMisProyectos').value.toLowerCase();
+      const responsable = document.getElementById('filter-responsable').value;
+      const estado = document.getElementById('filter-estado').value;
+      const postulado = document.getElementById('filter-postulado').value;
+
+      const filtrados = proyectosCargados.filter(p => {
+        const coincideTexto =
+          !texto ||
+          p.nombrePPI?.toLowerCase().includes(texto) ||
+          p.objetivo?.toLowerCase().includes(texto) ||
+          p.entidad?.razonSocial?.toLowerCase().includes(texto);
+
+        const coincideResponsable = !responsable || p.usuarioLider?.name === responsable;
+        const coincideEstado = !estado || p.fasePPI === estado;
+        const coincidePostulado = !postulado || (p.aliadosAplicados || []).some(a => a.aliadoProyecto?.nombreAliado === postulado);
+
+        return coincideTexto && coincideResponsable && coincideEstado && coincidePostulado;
+      });
+
+      console.log("📊 Proyectos filtrados:", filtrados);
+      listaFiltrada = filtrados;
+      paginaActual = 1;
+      renderizarPagina();
+
+    }
+
+    // =========================
+    // Eventos de filtros
+    // =========================
+    document.getElementById('buscarMisProyectos').addEventListener('input', aplicarFiltros);
+    document.getElementById('filter-responsable').addEventListener('change', aplicarFiltros);
+    document.getElementById('filter-estado').addEventListener('change', aplicarFiltros);
+    document.getElementById('filter-postulado').addEventListener('change', aplicarFiltros);
+
+    // Botón limpiar
+    document.getElementById('filter-misIdeas').addEventListener('click', () => {
+      document.getElementById('buscarMisProyectos').value = '';
+      document.getElementById('filter-responsable').value = '';
+      document.getElementById('filter-estado').value = '';
+      document.getElementById('filter-postulado').value = '';
+      listaFiltrada = proyectosCargados;
+      paginaActual = 1;
+      renderizarPagina();
+
     });
-  }
-
-  // =========================
-  // Llenar selects de filtros
-  // =========================
-  function llenarFiltros(data) {
-    const responsableSelect = document.getElementById('filter-responsable');
-    const estadoSelect = document.getElementById('filter-estado');
-    const postuladoSelect = document.getElementById('filter-postulado');
-
-    responsableSelect.innerHTML = '<option value="">Responsables</option>';
-    estadoSelect.innerHTML = '<option value="">Selecciona el estado</option>';
-    postuladoSelect.innerHTML = '<option value="">Selecciona la entidad</option>';
-
-    const responsables = [...new Set(data.map(p => p.usuarioLider?.name).filter(Boolean))];
-    const estados = [...new Set(data.map(p => p.fasePPI).filter(Boolean))];
-    const postulados = [...new Set(
-      data.flatMap(p => (p.aliadosAplicados || []).map(a => a.aliadoProyecto?.nombreAliado)).filter(Boolean)
-    )];
-
-    responsables.forEach(r => responsableSelect.insertAdjacentHTML('beforeend', `<option value="${r}">${r}</option>`));
-    estados.forEach(e => estadoSelect.insertAdjacentHTML('beforeend', `<option value="${e}">${e}</option>`));
-    postulados.forEach(p => postuladoSelect.insertAdjacentHTML('beforeend', `<option value="${p}">${p}</option>`));
-  }
-
-  // =========================
-  // Aplicar filtros
-  // =========================
-  function aplicarFiltros() {
-    const texto = document.getElementById('buscarMisProyectos').value.toLowerCase();
-    const responsable = document.getElementById('filter-responsable').value;
-    const estado = document.getElementById('filter-estado').value;
-    const postulado = document.getElementById('filter-postulado').value;
-
-    const filtrados = proyectosCargados.filter(p => {
-      const coincideTexto =
-        !texto ||
-        p.nombrePPI?.toLowerCase().includes(texto) ||
-        p.objetivo?.toLowerCase().includes(texto) ||
-        p.entidad?.razonSocial?.toLowerCase().includes(texto);
-
-      const coincideResponsable = !responsable || p.usuarioLider?.name === responsable;
-      const coincideEstado = !estado || p.fasePPI === estado;
-      const coincidePostulado = !postulado || (p.aliadosAplicados || []).some(a => a.aliadoProyecto?.nombreAliado === postulado);
-
-      return coincideTexto && coincideResponsable && coincideEstado && coincidePostulado;
-    });
-
-    console.log("📊 Proyectos filtrados:", filtrados);
-    mostrarProyectos(filtrados);
-  }
-
-  // =========================
-  // Eventos de filtros
-  // =========================
-  document.getElementById('buscarMisProyectos').addEventListener('input', aplicarFiltros);
-  document.getElementById('filter-responsable').addEventListener('change', aplicarFiltros);
-  document.getElementById('filter-estado').addEventListener('change', aplicarFiltros);
-  document.getElementById('filter-postulado').addEventListener('change', aplicarFiltros);
-
-  // Botón limpiar
-  document.getElementById('filter-misIdeas').addEventListener('click', () => {
-    document.getElementById('buscarMisProyectos').value = '';
-    document.getElementById('filter-responsable').value = '';
-    document.getElementById('filter-estado').value = '';
-    document.getElementById('filter-postulado').value = '';
-    mostrarProyectos(proyectosCargados);
-  });
-</script>
+  </script>
 
 </body>
 
