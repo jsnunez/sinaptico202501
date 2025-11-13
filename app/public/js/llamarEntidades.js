@@ -96,30 +96,6 @@ document.addEventListener('DOMContentLoaded', function () {
       window.location.href = `/perfilEntidad?id=${id}`;
     }
 
-    //   if (empresa) {
-    //     document.getElementById('modalRazonSocial').textContent = empresa.razonSocial;
-    //     document.getElementById('tipoEntidad').textContent = empresa.claseEntidad;
-    //     document.getElementById('descripcionEmpresa').textContent = empresa.actividadEconomica;
-    //     document.getElementById('ciudad').textContent = empresa.Ciudad.nombre;
-    //     document.getElementById('telefonoEntidad').textContent = "********";
-    //     document.getElementById('serviciosAsociados').textContent = empresa.razonSocial;
-    //     document.getElementById('UbicacionEntidad').textContent = "*********";
-    //     // document.getElementById('UbicacionEntidad').textContent = empresa.direccion + ", " + empresa.Ciudad.nombre + ", " + empresa.Ciudad.Departamento.nombre;
-    //     document.getElementById('emailEntidad').textContent = "********";
-    //     // document.getElementById('contactoEntidad').textContent = empresa.User.name;
-    //     // const telefono = empresa.telefono || '';
-    //     // const telefonoMasked = telefono.length > 4
-    //     //   ? telefono.slice(0, 4) + '*'.repeat(telefono.length - 4)
-    //     //   : telefono;
-    //     // document.getElementById('telefonoEntidad').textContent = telefonoMasked;
-    //     llamarservicios(empresa.id);
-    //     llamarIntegrantes(empresa.id);
-
-    //     document.getElementById('empresaModal').style.display = 'block';
-    //   }
-
-
-
   });
 
 
@@ -864,19 +840,14 @@ function renderTabla(lista) {
     const tr = document.createElement('tr');
     tr.innerHTML = `
             <td>
-              <div style="position: relative; width: 60px; height: 60px; margin-top: 10px; margin-left: 10px;">
-                <img src="photo/${user.fotoPerfil || 'img/sinfoto.jpg'}"
-                    alt="Foto"
-                    class="imagenPerfil"
-                    style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover;"
-                    onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
-
-                <i class="bi bi-search"
-                  style="position: absolute; bottom: 3px; right: 3px; font-size: 0.9em; 
-                          color: #1b3360; background: white; border-radius: 50%; 
-                          padding: 4px; cursor: pointer; box-shadow: 0 0 3px rgba(0,0,0,0.2);"
-                  onclick="abrirModalIntegrante(${user.id})"></i>
-              </div>
+                  <div style="position:relative;width:60px;height:60px;">
+                    <img src="photo/${user.fotoPerfil || 'img/sinfoto.jpg'}" 
+                        alt="Foto" style="width:60px;height:60px;border-radius:50%;object-fit:cover;"
+                        onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
+                    <i class="bi bi-search"
+                      style="position:absolute;bottom:2px;right:2px;font-size:0.9em;color:#007bff;background:white;border-radius:50%;padding:3px;cursor:pointer;"
+                      onclick="window.location.href = '/perfilUser?id=${user.id}'"></i>
+                  </div>
 
             </td>
             <td>${user.name ?? ''}</td>

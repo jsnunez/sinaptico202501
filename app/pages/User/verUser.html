@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SINAPTICO</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
+
+    <link rel="stylesheet" href="styles/colores.css">
+    <link rel="stylesheet" href="styles/stylehelice2.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Leaflet.js para mapas -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+
+</head>
+
+<body>
+    <!-- Fondo de animación neuronal -->
+    <div class="neural-background">
+        <canvas id="neuralCanvas"></canvas>
+    </div>
+
+    <!-- Encabezado -->
+    <header>
+        <div class="header">
+            <div onclick="window.location.href='/helice'">
+                <!-- <span class="logo-icon">⚡</span> -->
+                <img src="/img/logo1.png" alt="SINAPTICO" class="logo" style="height:8vh;">
+            </div>
+            <div style="display: flex; align-items: center; gap: 20px;">
+                <div style="font-size:1.5em;cursor:pointer;">
+                    <span id="icono-notif">🔔 <span
+                            style='background:red;color:white;border-radius:50%;padding:2px 7px;font-size:0.9em;'>0</span></span>
+                </div>
+                <div class="notificaciones" id="notificaciones"></div>
+
+
+                <div class="dropdown">
+                    <button id="userMenuBtn" style="display: flex; align-items: center;">
+                        <div id="userPhoto ">
+                            <img class="imagenPerfil" id="imagenPerfilSecundaria" src="img/sinfoto.jpg"
+                                alt="Foto de perfil" onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
+
+                        </div>
+                        <h3 id="nombreUsuarioHeader" style="color:white; margin-left:10px;">Usuario <i
+                                class="bi bi-chevron-down"></i> </h3>
+                    </button>
+
+                    <div class="dropdown-menu" id="userMenu">
+                        <a href="/perfil">Perfil</a>
+                        <a href="/perfilEntidad">Empresa</a>
+                        <a href="#" id="cerrarSesion">Cerrar sesión</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <nav class="nav">
+            <button class="nav-button pulse" onclick="window.location.href='/helice'" id="inicio">Inicio</button>
+            <button class="nav-button" onclick="window.location.href='/directorio'">Directorio</button>
+
+            <button class="nav-button" onclick="window.location.href='/proyectos'">Proyectos</button>
+            <button class="nav-button" onclick="window.location.href='/innovacion'">Innovación</button>
+
+            <button class="nav-button" onclick="window.location.href='/Conocimiento'">Conocimiento</button>
+            <button class="nav-button" onclick="window.location.href='/convocatorias'">Convocatorias</button>
+
+            <button class="nav-button" onclick="window.location.href='/eventos'">Eventos</button>
+
+        </nav>
+    </header>
+
+
+    <div id="modalIntegrante" >
+        <div  style="max-width:900px;">
+
+            <h2 class="tittle" style="text-align: center;">Datos Generales del Integrante</h2>
+            <div class="form-section ">
+                <div class="input-box">
+                    <table class="table-perfil">
+                        <tr>
+                            <td>
+                                <div>
+                                    <img id="imagenPerfilIntegrante" src="img/sinfoto.jpg" alt="Foto de perfil"
+                                        style="width: 10vh; height: 10vb; border-radius: 50%; object-fit: cover;"
+                                        onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
+                                </div>
+
+                            </td>
+                            <td id="">
+                                <h3 id="MiNombreCompleto" style="text-transform: capitalize;"></h3>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>Perfil Profesional:</strong></td>
+                            <td id="MiPerfilProfesional"></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Teléfono:</strong></td>
+                            <td id="MiTelefono"></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Ubicación:</strong></td>
+                            <td id="MiUbicacion"></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Correo Electrónico:</strong></td>
+                            <td id="MiCorreo"></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Vinculado a:</strong></td>
+                            <td id="MiVinculado"></td>
+                        </tr>
+                    </table>
+                </div>
+                <br>
+
+
+            </div>
+            <div class="form-section ">
+                <div class="input-box">
+                    <h2 class="tittle" style="text-align: center;">Hoja de Vida</h2>
+                    <iframe src="" width="100%" height="700px" style="display:none;"></iframe>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Scripts -->
+
+    <script src="js/notificaciones.js"></script>
+    <script src="/js/websocket.js"></script>
+    <script src="/js/config.js"></script>
+<script>
+    // Obtener el ID del usuario desde la URL
+    function obtenerUserIdDesdeURL() {
+        const params = new URLSearchParams(window.location.search);
+        return params.get("id"); // Ejemplo: /perfilEntidad?id=23 → retorna "23"
+    }
+
+    // Cargar la información del usuario directamente en la página
+    async function cargarPerfilUsuario(userId) {
+        try {
+            if (!userId) {
+                console.warn("No se proporcionó un ID de usuario en la URL.");
+                return;
+            }
+
+            console.log("Cargando perfil del usuario:", userId);
+
+            // Limpiar los campos antes de cargar
+            document.getElementById('MiNombreCompleto').textContent = '';
+            document.getElementById('MiPerfilProfesional').textContent = '';
+            document.getElementById('MiTelefono').textContent = '';
+            document.getElementById('MiUbicacion').textContent = '';
+            document.getElementById('MiCorreo').textContent = '';
+            document.getElementById('MiVinculado').textContent = '';
+            document.getElementById("imagenPerfilIntegrante").src = '/img/sinfoto.jpg';
+
+            const iframe = document.querySelector('iframe');
+            if (iframe) {
+                iframe.src = '';
+                iframe.style.display = 'none';
+            }
+
+            // Obtener datos del usuario
+            const res = await fetch(`/api/user/${userId}`);
+            if (!res.ok) throw new Error('No se pudo obtener el perfil');
+            const data = await res.json();
+            console.log("Datos del usuario:", data);
+
+            // Asignar valores a los elementos del DOM
+            document.getElementById('MiNombreCompleto').textContent = data.name || '';
+            document.getElementById('MiPerfilProfesional').textContent = data.perfilProfesional || '';
+            document.getElementById('MiTelefono').textContent = data.telefono || '';
+            document.getElementById('MiUbicacion').textContent =
+                data.ciudad?.nombre && data.ciudad?.departamento?.nombre
+                    ? `${data.ciudad.nombre} - ${data.ciudad.departamento.nombre}`
+                    : '';
+            document.getElementById('MiCorreo').textContent = data.email || '';
+            document.getElementById("imagenPerfilIntegrante").src =
+                data.fotoPerfil ? "photo/" + data.fotoPerfil : "photo/sinfoto.jpg";
+
+            // Si existe un PDF (hoja de vida)
+            if (data.enlaceHojaDeVida) {
+                const iframe = document.querySelector('iframe');
+                if (iframe) {
+                    iframe.src = "CV/" + data.enlaceHojaDeVida;
+                    iframe.style.display = 'block';
+                }
+            }
+
+            // Verificar si hay entidad asociada al usuario
+            try {
+                const entidadRes = await fetch(`/api/entidad/verificar-entidad/${userId}`);
+                if (entidadRes.ok) {
+                    const entidadData = await entidadRes.json();
+                    const entidadNombre = entidadData.success
+                        ? entidadData.entidad.razonSocial
+                        : "Sin entidad asociada";
+
+                    document.getElementById('MiVinculado').textContent = entidadNombre;
+                }
+            } catch (e) {
+                console.error('Error verificando entidad asociada:', e);
+            }
+
+        } catch (err) {
+            console.error('Error cargando datos de usuario:', err);
+        }
+    }
+
+    // Cargar lista de empresas habilitadas (si aplica en tu página)
+    let todasLasEmpresas = [];
+
+    document.addEventListener("DOMContentLoaded", async function () {
+        // 1️⃣ Obtener el ID desde la URL
+        const userId = obtenerUserIdDesdeURL();
+
+        // 2️⃣ Cargar perfil automáticamente
+        if (userId) {
+            await cargarPerfilUsuario(userId);
+        }
+
+        // 3️⃣ (Opcional) Cargar empresas si tu página lo requiere
+        fetch(`${API_BASE_URL}/api/entidad/entidadHabilitadas`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success && data.empresas.length > 0) {
+                    todasLasEmpresas = data.empresas;
+                    cargarEmpresas(data.empresas);
+                } else {
+                    console.log(data.mensaje || 'No hay empresas habilitadas.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    });
+</script>
+
+</body>
