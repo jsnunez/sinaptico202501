@@ -169,7 +169,7 @@
                 <div id="serviciosAsociados" class="servicios-container">
                     <div id="page-spinner-overlay">
                         <div class="spinner"></div>
-                        <p class="spinner-text">Cargando servicios...</p>
+                        <p class="spinner-text">Cargando...</p>
                     </div>
                 </div>
             </div>
@@ -195,8 +195,6 @@
 
 
 
-    <script src="js/perfilEntidad.js"></script>
-    <!-- Scripts -->
 
     <script src="js/notificaciones.js"></script>
     <script src="/js/websocket.js"></script>
@@ -232,7 +230,7 @@
                     // Contacto principal
                     const contacto = entidad.Contactos?.[0] || entidad.User || {};
                     document.getElementById('telefonoEntidad').textContent = "*********" || 'No disponible';
-                    document.getElementById('emailEntidad').textContent = "*********"  || 'No disponible';
+                    document.getElementById('emailEntidad').textContent = "*********" || 'No disponible';
 
                     // Cargar servicios e integrantes
                     llamarservicios(idEntidad);
@@ -282,78 +280,78 @@
                     `<p style="color:#b00;">Error al cargar los servicios.</p>`;
             }
         }
-async function llamarIntegrantes(idEntidad) {
-    const url = `${API_BASE_URL}/api/usuarioempresa/empresa/${idEntidad}`;
+        async function llamarIntegrantes(idEntidad) {
+            const url = `${API_BASE_URL}/api/usuarioempresa/empresa/${idEntidad}`;
 
-    try {
-        const response = await fetch(url);
-        const datos = await response.json();
+            try {
+                const response = await fetch(url);
+                const datos = await response.json();
 
-        if (!Array.isArray(datos) || datos.length === 0) {
-            document.getElementById('integrantesAsociados').innerHTML = `
+                if (!Array.isArray(datos) || datos.length === 0) {
+                    document.getElementById('integrantesAsociados').innerHTML = `
                 <div style="text-align: center; padding: 40px; color: #7f8c8d;">
                     No se encontraron Integrantes.
                 </div>`;
-            return;
+                    return;
+                }
+
+                // Filtramos e info de integrantes
+                const integrantes = datos
+                    .filter(item => item.estado)
+                    .map(item => ({
+                        id: item.User?.id,
+                        nombre: item.User?.name || 'Sin nombre',
+                        rol: item.Cargo?.nombre || 'Sin rol',
+                        fotoPerfil: item.User?.fotoPerfil || 'sinfoto.jpg'
+                    }));
+
+                // Construir tarjetas
+                const container = document.getElementById('integrantesAsociados');
+                container.innerHTML = '';
+                integrantes.forEach(i => container.appendChild(crearTarjeta(i)));
+                // Duplicar contenido para loop infinito
+                integrantes.forEach(i => container.appendChild(crearTarjeta(i)));
+
+                // Variables de animación
+                let isHovering = false;
+                let currentOffset = 0;
+                const speedNormal = 0.5;
+                const speedHover = 0.1;
+
+                function animate() {
+                    const speed = isHovering ? speedHover : speedNormal;
+                    currentOffset -= speed;
+                    // Si se mueve todo el contenido duplicado, reiniciamos
+                    const totalWidth = container.scrollWidth / 2;
+                    if (Math.abs(currentOffset) >= totalWidth) currentOffset = 0;
+                    container.style.transform = `translateX(${currentOffset}px)`;
+                    requestAnimationFrame(animate);
+                }
+                requestAnimationFrame(animate);
+
+                // Hover sobre el contenedor para pausar/centrar
+                container.querySelectorAll('.integrante-card').forEach(card => {
+                    card.addEventListener('mouseenter', () => { isHovering = true; });
+                    card.addEventListener('mouseleave', () => { isHovering = false; });
+                });
+
+                // Botones de carrusel
+                const btnPrev = document.querySelector('.btn-carrusel.prev');
+                const btnNext = document.querySelector('.btn-carrusel.next');
+
+                btnPrev.addEventListener('click', () => { currentOffset += 150; });
+                btnNext.addEventListener('click', () => { currentOffset -= 150; });
+
+            } catch (error) {
+                console.error('Error al obtener integrantes:', error);
+                document.getElementById('integrantesAsociados').innerHTML = 'Error al cargar integrantes.';
+            }
         }
 
-        // Filtramos e info de integrantes
-        const integrantes = datos
-            .filter(item => item.estado)
-            .map(item => ({
-                id: item.User?.id,
-                nombre: item.User?.name || 'Sin nombre',
-                rol: item.Cargo?.nombre || 'Sin rol',
-                fotoPerfil: item.User?.fotoPerfil || 'sinfoto.jpg'
-            }));
-
-        // Construir tarjetas
-        const container = document.getElementById('integrantesAsociados');
-        container.innerHTML = '';
-        integrantes.forEach(i => container.appendChild(crearTarjeta(i)));
-        // Duplicar contenido para loop infinito
-        integrantes.forEach(i => container.appendChild(crearTarjeta(i)));
-
-        // Variables de animación
-        let isHovering = false;
-        let currentOffset = 0;
-        const speedNormal = 0.5;
-        const speedHover = 0.1;
-
-        function animate() {
-            const speed = isHovering ? speedHover : speedNormal;
-            currentOffset -= speed;
-            // Si se mueve todo el contenido duplicado, reiniciamos
-            const totalWidth = container.scrollWidth / 2;
-            if (Math.abs(currentOffset) >= totalWidth) currentOffset = 0;
-            container.style.transform = `translateX(${currentOffset}px)`;
-            requestAnimationFrame(animate);
-        }
-        requestAnimationFrame(animate);
-
-        // Hover sobre el contenedor para pausar/centrar
-        container.querySelectorAll('.integrante-card').forEach(card => {
-            card.addEventListener('mouseenter', () => { isHovering = true; });
-            card.addEventListener('mouseleave', () => { isHovering = false; });
-        });
-
-        // Botones de carrusel
-        const btnPrev = document.querySelector('.btn-carrusel.prev');
-        const btnNext = document.querySelector('.btn-carrusel.next');
-
-        btnPrev.addEventListener('click', () => { currentOffset += 150; });
-        btnNext.addEventListener('click', () => { currentOffset -= 150; });
-
-    } catch (error) {
-        console.error('Error al obtener integrantes:', error);
-        document.getElementById('integrantesAsociados').innerHTML = 'Error al cargar integrantes.';
-    }
-}
-
-function crearTarjeta(integrante) {
-    const div = document.createElement('div');
-    div.className = 'integrante-card';
-    div.innerHTML = `
+        function crearTarjeta(integrante) {
+            const div = document.createElement('div');
+            div.className = 'integrante-card';
+            div.innerHTML = `
         <img src="/photo/${integrante.fotoPerfil}" alt="${integrante.nombre}" class="integrante-foto">
         <p class="integrante-nombre">${integrante.nombre}</p>
         <p class="integrante-rol">${integrante.rol}</p>
@@ -361,10 +359,8 @@ function crearTarjeta(integrante) {
             <i class="bi bi-telephone"></i> Contactar
         </button>
     `;
-    return div;
-}
-
-
+            return div;
+        }
 
         // Abrir modal al hacer clic en la foto de usuario
 
@@ -471,7 +467,7 @@ function crearTarjeta(integrante) {
                         // Llamamos a la función para cargar las empresas
                         todasLasEmpresas = data.empresas; // Guardar todas
 
-                        cargarEmpresas(data.empresas);
+
                     } else {
                         console.log(data.mensaje || 'No hay empresas habilitadas.');
                     }
@@ -544,47 +540,10 @@ function crearTarjeta(integrante) {
         };
 
     </script>
-
-
-    <!-- Menú desplegable -->
+    <!--Menú desplegables-->
     <script>
         const userMenuBtn = document.getElementById("userMenuBtn");
         const dropdown = userMenuBtn.closest(".dropdown");
-
-        function obtenerCookie(nombre) {
-            const nombreCookie = `${nombre}=`;
-            const cookies = document.cookie.split(';');
-            for (let i = 0; i < cookies.length; i++) {
-                let cookie = cookies[i].trim();
-                if (cookie.indexOf(nombreCookie) === 0) {
-                    return cookie.substring(nombreCookie.length, cookie.length);
-                }
-            }
-            return null;
-        }
-
-        // const userId = obtenerCookie("userId");
-
-        // const usuario = obtenerCookie("user");
-
-
-        // let cleanedStr = decodeURIComponent(usuario.replace(/%20/g, " "));
-        // let nombreUsuario = cleanedStr.split(" ")[0];
-
-        // async function cargarDatosUsuario(userId) {
-        //     console.log("isss", userId)
-        //     const response = await fetch(`${API_BASE_URL}/api/user/${userId}`);
-        //     const data = await response.json();
-
-        //     document.getElementById("imagenPerfilSecundaria").src = data.fotoPerfil ? "photo/" + data.fotoPerfil : "photo/sinfoto.jpg";
-
-        //     document.getElementById('nombreUsuarioHeader').innerHTML = `${nombreUsuario} <i class="bi bi-chevron-down"></i>`;
-
-
-        //     console.log(data);
-        //     return data;
-        // }
-
 
         // Mostrar / ocultar el menú al hacer clic
         userMenuBtn.addEventListener("click", (event) => {
@@ -597,49 +556,244 @@ function crearTarjeta(integrante) {
             dropdown.classList.remove("show");
         });
     </script>
-    <style>
-        /* Spinner overlay */
-        #page-spinner-overlay {
-            position: fixed;
-            inset: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            background: rgba(255, 255, 255, 0.95);
-            z-index: 99999;
-            transition: opacity .4s ease;
-            -webkit-backdrop-filter: blur(2px);
-            backdrop-filter: blur(2px);
+    <!-- Utilidades-->
+    <script>
+        // =========================
+        // Utilidades
+        // =========================
+        function obtenerCookie(nombre) {
+            const nombreCookie = `${nombre}=`;
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                let cookie = cookies[i].trim();
+                if (cookie.indexOf(nombreCookie) === 0) {
+                    return cookie.substring(nombreCookie.length, cookie.length);
+                }
+            }
+            return null;
         }
 
-        /* Circular spinner */
-        #page-spinner-overlay .spinner {
-            width: 64px;
-            height: 64px;
-            border-radius: 50%;
-            border: 6px solid rgba(0, 0, 0, 0.08);
-            border-top-color: #007bff;
-            animation: spin 1s linear infinite;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+        const userId = obtenerCookie("userId");
+
+        // =========================
+        // Inicialización de usuario (nombre, foto) y carga de proyectos
+        // =========================
+        (async () => {
+            try {
+                // Cargar usuario (para cabecera y foto)
+                const resUser = await fetch(`/api/user/${userId}`);
+                const dataUser = await resUser.json();
+
+                if (dataUser?.name) {
+                    document.getElementById('nombreUsuarioHeader').innerText = ` ${dataUser.name.split(" ")[0]}`;
+                }
+
+                document.getElementById("imagenPerfilSecundaria").src = dataUser.fotoPerfil ? "photo/" + dataUser.fotoPerfil : "photo/sinfoto.jpg";
+
+                if (dataUser?.fotoPerfil) {
+                    const img = document.getElementById('imagenPerfil');
+                    if (img) img.src = dataUser.fotoPerfil;
+                }
+
+                // Determinar entidad y setear input nombreEntidad
+                let entidadId = null;
+                const resUE = await fetch(`/api/usuarioempresa/user/${userId}`);
+                const dataUE = await resUE.json();
+
+                if (Array.isArray(dataUE) && dataUE.length > 0 && dataUE[0].empresa) {
+                    entidadId = dataUE[0].empresa.id;
+                } else {
+                    entidadId = 'null';
+                }
+
+                const inputEntidad = document.getElementById('nombreEntidad');
+                if (inputEntidad) inputEntidad.value = entidadId;
+
+                console.log('Entidad ID seleccionada:', entidadId);
+
+
+            } catch (err) {
+                console.error('Error inicializando la vista:', err);
+            }
+        })();
+
+        // =========================
+        // Cerrar modal de postulaciones
+        // =========================
+        const btnCerrar = document.getElementById('cerrarModalPostulaciones');
+        if (btnCerrar) {
+            btnCerrar.onclick = function () {
+                const modal = document.getElementById('modalPostulaciones');
+                if (modal) modal.style.display = 'none';
+            };
         }
 
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
+        // =========================
+        // Helpers para renderizar select de Líder
+        // =========================
+        async function renderLiderEmpresa(empresaId) {
+            const nombreLiderInput = document.getElementById('nombreLider');
+            const correoLiderInput = document.getElementById('correoLider');
+            const telefonoLiderInput = document.getElementById('telefonoLider');
+
+            const selectLider = document.createElement('select');
+            selectLider.id = 'nombreLider';
+            selectLider.name = 'nombreLider';
+            selectLider.required = true;
+
+            const res = await fetch(`/api/usuarioempresa/empresa/${empresaId}`);
+            const data = await res.json();
+
+            (data || []).forEach(item => {
+                const option = document.createElement('option');
+                option.value = item.User.id;
+                option.text = `${item.User.name} (${item.Cargo?.nombre || 'Sin cargo'})`;
+
+                option.dataset.email = item.User.email || '';
+                option.dataset.telefono = item.User.telefono || '';
+                selectLider.appendChild(option);
+            });
+
+            // Seleccionar el primero y actualizar campos
+            if (selectLider.options.length > 0) {
+                const selectedOption = selectLider.options[0];
+                if (correoLiderInput) correoLiderInput.value = selectedOption.dataset.email || '';
+                if (telefonoLiderInput) telefonoLiderInput.value = selectedOption.dataset.telefono || '';
+            } else {
+                if (correoLiderInput) correoLiderInput.value = '';
+                if (telefonoLiderInput) telefonoLiderInput.value = '';
+            }
+
+            // Cambiar correo y teléfono al cambiar líder
+            selectLider.onchange = function () {
+                const selectedOption = selectLider.options[selectLider.selectedIndex];
+                if (correoLiderInput) correoLiderInput.value = selectedOption.dataset.email || '';
+                if (telefonoLiderInput) telefonoLiderInput.value = selectedOption.dataset.telefono || '';
+            };
+
+            if (nombreLiderInput && nombreLiderInput.parentNode) {
+                nombreLiderInput.parentNode.replaceChild(selectLider, nombreLiderInput);
+            } else {
+                // Si no existe el input a reemplazar, intenta anexar en un contenedor conocido
+                const cont = document.getElementById('contenedorLider') || document.body;
+                cont.appendChild(selectLider);
             }
         }
 
-        /* Texto opcional */
-        #page-spinner-overlay .spinner-text {
-            color: #333;
-            font-family: inherit;
-            font-size: 14px;
-            font-weight: 500;
-        }
-    </style>
+        async function renderLiderIndependiente() {
+            const nombreLiderInput = document.getElementById('nombreLider');
+            const correoLiderInput = document.getElementById('correoLider');
+            const telefonoLiderInput = document.getElementById('telefonoLider');
 
+            const selectLider = document.createElement('select');
+            selectLider.id = 'nombreLider';
+            selectLider.name = 'nombreLider';
+            selectLider.required = true;
+
+            const uid = obtenerCookie("userId");
+            const resUser = await fetch(`/api/user/${uid}`);
+            const user = await resUser.json();
+
+            const optionUsuario = document.createElement('option');
+            optionUsuario.value = uid;
+
+            // Tomar nombre desde #bienvenido si existe ("Hola Nombre")
+
+            optionUsuario.dataset.name = user.name || '';
+            optionUsuario.dataset.email = user.email || '';
+            optionUsuario.dataset.telefono = user.telefono || '';
+            selectLider.appendChild(optionUsuario);
+            optionUsuario.text = user.name || 'Usuario Actual';
+
+            // Rellenar inputs con datos del usuario
+            if (nombreLiderInput) nombreLiderInput.value = user.name || '';
+            if (correoLiderInput) correoLiderInput.value = user.email || '';
+            if (telefonoLiderInput) telefonoLiderInput.value = user.telefono || '';
+
+            // Listener (aunque solo haya uno)
+            selectLider.onchange = function () {
+
+                const selectedOption = selectLider.options[selectLider.selectedIndex];
+                if (correoLiderInput) correoLiderInput.value = selectedOption.dataset.email || '';
+                if (telefonoLiderInput) telefonoLiderInput.value = selectedOption.dataset.telefono || '';
+            };
+
+            if (nombreLiderInput && nombreLiderInput.parentNode) {
+                nombreLiderInput.parentNode.replaceChild(selectLider, nombreLiderInput);
+            } else {
+                const cont = document.getElementById('contenedorLider') || document.body;
+                cont.appendChild(selectLider);
+            }
+        }
+
+        // =========================
+        // Listeners de cambio
+        // =========================
+        // Cambiar líderes al cambiar el select de entidad (nombreEntidad)
+        document.addEventListener('change', async function (e) {
+            if (e.target && e.target.id === 'nombreEntidad') {
+                const empresaId = e.target.value;
+                if (empresaId && empresaId !== "null") {
+                    await renderLiderEmpresa(empresaId);
+                } else {
+                    await renderLiderIndependiente();
+                }
+            }
+        });
+
+        // Cambiar correo y teléfono al cambiar líder (nombreLider), incluso si no cambia la entidad
+        document.addEventListener('change', function (e) {
+            if (e.target && e.target.id === 'nombreLider') {
+                const selectedOption = e.target.options[e.target.selectedIndex];
+                const correoLiderInput = document.getElementById('correoLider');
+                const telefonoLiderInput = document.getElementById('telefonoLider');
+                if (correoLiderInput) correoLiderInput.value = selectedOption.dataset.email || '';
+                if (telefonoLiderInput) telefonoLiderInput.value = selectedOption.dataset.telefono || '';
+            }
+        });
+
+        // =========================
+        // (Opcional) Si deseas forzar que al inicio se renderice el líder acorde al valor cargado de nombreEntidad
+        // =========================
+        window.addEventListener('DOMContentLoaded', async () => {
+            const inputEntidad = document.getElementById('nombreEntidad');
+            if (inputEntidad) {
+                if (inputEntidad.value && inputEntidad.value !== 'null') {
+                    await renderLiderEmpresa(inputEntidad.value);
+                } else {
+                    await renderLiderIndependiente();
+                }
+            }
+        });
+    </script>
+    <script>
+        (function () {
+            // Garantiza que el overlay permanezca al menos 5s desde que se ejecuta este script.
+            const MIN_MS = 3000;
+            const overlay = document.getElementById('page-spinner-overlay');
+            if (!overlay) return;
+
+            // Si ya pasó más de MIN_MS desde la navegación start, aun así mostramos el overlay breve
+            const start = performance.timing ? performance.timing.navigationStart : Date.now();
+            const now = Date.now();
+            const elapsed = Math.max(0, now - start);
+            const remaining = Math.max(0, MIN_MS - elapsed);
+
+            // Evita interacción mientras existe el overlay
+            document.documentElement.style.overflow = 'hidden';
+            document.body.style.overflow = 'hidden';
+
+            setTimeout(() => {
+                overlay.style.opacity = '0';
+                // permitir scroll cuando hide completo
+                setTimeout(() => {
+                    if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
+                    document.documentElement.style.overflow = '';
+                    document.body.style.overflow = '';
+                }, 420);
+            }, remaining);
+        })();
+    </script>
 
 </body>
 

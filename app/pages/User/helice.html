@@ -699,7 +699,8 @@
         <div class="cards-container">
             <!-- Estado Card -->
             <div id="" onclick="window.location.href='/directorio'" class="card">
- <div class="card-inner" >                    <div class="card-front">
+                <div class="card-inner">
+                    <div class="card-front">
                         <div class="card-icon">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-person-fill"
                                 viewBox="0 0 16 16">
@@ -1149,48 +1150,62 @@
                 <div class="modal-header">
                     <h3>Crear Nuevo Servicio</h3>
                 </div>
-                <label for="nombreServicio" style="font-weight: 600; color: #2c3e50; margin-bottom: 8px; display: block;">Nombre del Servicio:</label>
-                <input type="text" id="nombreServicio" name="nombreServicio" maxlength="30" required
-                    class="input-service"
-                    style="width: 100%; height: 60px; border-radius: 10px; border: 1px solid #9b9b9b; margin-bottom: 15px;"
-                    placeholder="Nombre del servicio, máximo 30 caracteres">
+                <div class="input-row">
+                    <div class="input-box">
+                        <label for="nombreServicio"
+                            style="font-weight: 600; color: #2c3e50; margin-bottom: 8px; display: block;">Nombre del
+                            Servicio:</label>
 
-                <label for="descripcionServicio" style="font-weight: 600; color: #2c3e50; margin-bottom: 8px; display: block;">Descripción del Servicio:</label>
-                <input type="text" id="descripcionServicio" name="descripcionServicio" maxlength="50" required
-                    class="input-service"
-                    style="width: 100%; height: 60px; border-radius: 10px; border: 1px solid #9b9b9b;"
-                    placeholder="Descripción, máximo 50 caracteres">
-                    <div style="margin-top: 15px;">
-                        <label for="nombreLiderServicio" style="font-weight: 600; color: #2c3e50; margin-bottom: 8px; display: block;">Líder del Servicio:</label>
-                        <select id="nombreLiderServicio" name="nombreLiderServicio" required
+                        <input type="text" id="nombreServicio" name="nombreServicio" maxlength="30" required
                             class="input-service"
-                            style="width: 100%; height: 60px; border-radius: 10px; border: 1px solid #9b9b9b; margin-bottom: 15px;">
+                            style="width: 100%; height: 60px; border-radius: 5px; border: 1px solid #9b9b9b; margin-bottom: 15px; padding: 10px;"
+                            placeholder="Nombre del servicio, máximo 30 caracteres">
+
+                    </div>
+                    <div class="input-box">
+                        <label for="descripcionServicio"
+                            style="font-weight: 600; color: #2c3e50; margin-bottom: 8px; display: block;">Descripción
+                            del
+                            Servicio:</label>
+                        <input type="text" id="descripcionServicio" name="descripcionServicio" maxlength="50" required
+                            class="input-service"
+                            style="width: 100%; height: 60px; border-radius: 5px; border: 1px solid #9b9b9b; padding: 10px;"
+                            placeholder="Descripción, máximo 50 caracteres">
+                    </div>
+                </div>
+                <div class="input-row">
+                    <div class="input-box">
+                        <label for="nombreLiderServicio"
+                            style="font-weight: 600; color: #2c3e50; margin-bottom: 8px; display: block;">Líder del
+                            Servicio:</label>
+                        <select id="nombreLiderServicio" name="nombreLiderServicio" required>
                             <option value="">Seleccione un líder</option>
                         </select>
                     </div>
-                
-                <div style="margin-top: 15px;">
-                    <label for="iconoServicio" style="font-weight: 600; color: #2c3e50; margin-bottom: 8px; display: block;">Icono del Servicio:</label>
-                    <select id="iconoServicio" name="iconoServicio" required
-                        class="input-service"
-                        style="width: 100%; height: 60px; border-radius: 10px; border: 1px solid #9b9b9b; margin-bottom: 15px;">
-                        <option value="">Seleccione un icono</option>
-                        <option value="bi-briefcase">💼 Negocios</option>
-                        <option value="bi-lightbulb">💡 Innovación</option>
-                        <option value="bi-graph-up">📈 Crecimiento</option>
-                        <option value="bi-people">👥 Equipo</option>
-                        <option value="bi-gear">⚙️ Configuración</option>
-                        <option value="bi-shield-check">🛡️ Seguridad</option>
-                        <option value="bi-chat-dots">💬 Comunicación</option>
-                        <option value="bi-laptop">💻 Tecnología</option>
-                        <option value="bi-book">📚 Educación</option>
-                        <option value="bi-trophy">🏆 Logros</option>
-                        <option value="bi-heart">❤️ Salud</option>
-                        <option value="bi-cart">🛒 Ventas</option>
-                        <option value="bi-globe">🌍 Global</option>
-                        <option value="bi-star">⭐ Premium</option>
-                        <option value="bi-camera">📷 Multimedia</option>
-                    </select>
+
+                    <div class="input-box">
+                        <label for="iconoServicio"
+                            style="font-weight: 600; color: #2c3e50; margin-bottom: 8px; display: block;">Icono del
+                            Servicio:</label>
+                        <select id="iconoServicio" name="iconoServicio" required>
+                            <option value="">Seleccione un icono</option>
+                            <option value="bi-briefcase">💼 Negocios</option>
+                            <option value="bi-lightbulb">💡 Innovación</option>
+                            <option value="bi-graph-up">📈 Crecimiento</option>
+                            <option value="bi-people">👥 Equipo</option>
+                            <option value="bi-gear">⚙️ Configuración</option>
+                            <option value="bi-shield-check">🛡️ Seguridad</option>
+                            <option value="bi-chat-dots">💬 Comunicación</option>
+                            <option value="bi-laptop">💻 Tecnología</option>
+                            <option value="bi-book">📚 Educación</option>
+                            <option value="bi-trophy">🏆 Logros</option>
+                            <option value="bi-heart">❤️ Salud</option>
+                            <option value="bi-cart">🛒 Ventas</option>
+                            <option value="bi-globe">🌍 Global</option>
+                            <option value="bi-star">⭐ Premium</option>
+                            <option value="bi-camera">📷 Multimedia</option>
+                        </select>
+                    </div>
                 </div>
 
                 <button type="submit" class="modal-button">Crear Servicio</button>
