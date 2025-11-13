@@ -166,7 +166,12 @@
                     </section>
 
                 </div>
-                <div id="serviciosAsociados" class="servicios-container"></div>
+                <div id="serviciosAsociados" class="servicios-container">
+                    <div id="page-spinner-overlay">
+                        <div class="spinner"></div>
+                        <p class="spinner-text">Cargando servicios...</p>
+                    </div>
+                </div>
             </div>
 
             <div style="display: flex; justify-content: center; margin-bottom: 20px; margin-top: 20px;">
@@ -226,8 +231,8 @@
 
                     // Contacto principal
                     const contacto = entidad.Contactos?.[0] || entidad.User || {};
-                    document.getElementById('telefonoEntidad').textContent = contacto.telefono || 'No disponible';
-                    document.getElementById('emailEntidad').textContent = contacto.email || 'No disponible';
+                    document.getElementById('telefonoEntidad').textContent = "*********" || 'No disponible';
+                    document.getElementById('emailEntidad').textContent = "*********"  || 'No disponible';
 
                     // Cargar servicios e integrantes
                     llamarservicios(idEntidad);
@@ -255,15 +260,13 @@
                         html += `
                     <div class="servicio-card">
                         <div class="servicio-header">
-                            <div class="servicio-icono">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                    <path d="M12 2L2 7l10 5 10-5-10-5zm0 7.19L5.47 7 12 4.81 18.53 7 12 9.19zM2 17l10 5 10-5v-2l-10 5-10-5v2z"/>
-                                </svg>
+                            <div class="servicio-icono" style="font-size: 2em;">
+                                <i class="bi ${servicio.icono}"></i>
                             </div>
                            
                         </div>
                         <div class="servicio-info">
-                             <div class="servicio-titulo">Titulo</div>
+                             <div class="servicio-titulo">${servicio.nombre}</div>
                         <div class="servicio-descripcion">${servicio.descripcion}</div>
                         </div>
                     </div>

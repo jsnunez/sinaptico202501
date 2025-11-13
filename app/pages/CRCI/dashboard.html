@@ -25,7 +25,7 @@
   <!-- Encabezado -->
   <header>
     <div class="header">
-      <div onclick="window.location.href='/helice'">
+      <div onclick="window.location.href='/'">
         <!-- <span class="logo-icon">⚡</span> -->
         <img src="/img/logo1.png" alt="SINAPTICO" class="logo" style="height:8vh;">
       </div>
@@ -534,12 +534,12 @@
               <td>${proyecto.proyecto.duracionPPI || ''}</td>
               <td>${proyecto.proyecto.fasePPI || ''}</td>
               <td>
-                <button class="action-button" onclick="verMasProyecto(${proyecto.id})" style="justify-content:center;">
+                <button class="action-button" onclick="verMasProyecto(${proyecto.proyecto.id})" style="justify-content:center;">
                 <i class="bi bi-clipboard-fill"></i>
                 </button>
               </td>
               <td>
-                <button class="action-button" onclick="evaluarProyecto(${proyecto.id})" style="justify-content:center;">
+                <button class="action-button" onclick="evaluarProyecto(${proyecto.proyecto.id})" style="justify-content:center;">
                   <i class="bi bi-star-fill"></i> Evaluar
                 </button>
               </td>
@@ -744,10 +744,10 @@
                             <h4 class="section-title">Información General</h4>
                             <!-- nombres científicos -->
 
-                            <p><b>Objetivo </b> ${proyecto.objetivo || ''}</p>
-                            <p><b>Problema:</b> ${proyecto.necesidadProblema || ''}</p>
-                            <p><b>Impactos:</b> ${proyecto.impactos || ''}</p>
-                            <p><b>Objetivos específicos:</b> ${proyecto.objetivosEspecificos || ''}</p>
+                            <p><b>Objetivo: </b><br> ${proyecto.objetivo || ''}</p>
+                            <p><b>Problema:</b> ${(proyecto.necesidadProblema || '').replace(/(\d+\.)/g, '<br>$1')}</p>
+                            <p><b>Impactos:</b> ${(proyecto.impactos || '').replace(/(\d+\.)/g, '<br>$1')}</p>
+                            <p><b>Objetivos específicos:</b><br> ${(proyecto.objetivosEspecificos || '').replace(/(\d+\.)/g, '<br>$1')}</p>
                         </div>
              
                         <div class="form-section">

@@ -1300,7 +1300,7 @@ margin-bottom: 1rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
-
+border-radius: 15px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     transition: all 0.3s ease;
 }
