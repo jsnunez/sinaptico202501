@@ -150,7 +150,7 @@
                 </div>
             </div>
 
-            <div >
+            <div>
                 <h1 style="text-align: center;">Servicios </h1>
                 <div id="serviciosAsociados" class="servicios-container"></div>
             </div>
@@ -170,6 +170,7 @@
     <script src="js/notificaciones.js"></script>
     <script src="/js/websocket.js"></script>
     <script src="/js/config.js"></script>
+    <script src="/js/enviarInvitacion.js"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
@@ -213,19 +214,19 @@
                 alert('Error al cargar la información de la entidad');
             }
         });
-async function llamarservicios(idEntidad) {
-    try {
-        const url = `${API_BASE_URL}/api/servicio/entidad/${idEntidad}`;
-        const data = await fetch(url);
-        const datos = await data.json();
+        async function llamarservicios(idEntidad) {
+            try {
+                const url = `${API_BASE_URL}/api/servicio/entidad/${idEntidad}`;
+                const data = await fetch(url);
+                const datos = await data.json();
 
-        const contenedor = document.getElementById('serviciosAsociados');
-        contenedor.innerHTML = '';
+                const contenedor = document.getElementById('serviciosAsociados');
+                contenedor.innerHTML = '';
 
-        if (datos.success && datos.servicios.length > 0) {
-            let html = '';
-            datos.servicios.forEach(servicio => {
-                html += `
+                if (datos.success && datos.servicios.length > 0) {
+                    let html = '';
+                    datos.servicios.forEach(servicio => {
+                        html += `
                     <div class="servicio-card">
                         <div class="servicio-header">
                             <div class="servicio-icono">
@@ -238,17 +239,17 @@ async function llamarservicios(idEntidad) {
                         <div class="servicio-descripcion">${servicio.descripcion}</div>
                     </div>
                 `;
-            });
-            contenedor.innerHTML = html;
-        } else {
-            contenedor.innerHTML = `<p style="color:#666;">No se encontraron servicios.</p>`;
+                    });
+                    contenedor.innerHTML = html;
+                } else {
+                    contenedor.innerHTML = `<div style="text-align: center; padding: 40px; color: #7f8c8d;">No se encontraron servicios.</div>`;
+                }
+            } catch (error) {
+                console.error('Error al obtener los servicios:', error);
+                document.getElementById('serviciosAsociados').innerHTML =
+                    `<p style="color:#b00;">Error al cargar los servicios.</p>`;
+            }
         }
-    } catch (error) {
-        console.error('Error al obtener los servicios:', error);
-        document.getElementById('serviciosAsociados').innerHTML =
-            `<p style="color:#b00;">Error al cargar los servicios.</p>`;
-    }
-}
 
         async function llamarIntegrantes(idEntidad) {
             const url = `${API_BASE_URL}/api/usuarioempresa/empresa/${idEntidad}`;
@@ -290,7 +291,7 @@ async function llamarservicios(idEntidad) {
                     integrantesHTML += '</div>';
                     document.getElementById('integrantesAsociados').innerHTML = integrantesHTML;
                 } else {
-                    document.getElementById('integrantesAsociados').innerHTML = 'No se encontraron integrantes.';
+                    document.getElementById('integrantesAsociados').innerHTML = `<div style="text-align: center; padding: 40px; color: #7f8c8d;">No se encontraron Integrantes.</div>`;
                 }
             } catch (error) {
                 console.error('Error al obtener integrantes:', error);
@@ -393,6 +394,89 @@ async function llamarservicios(idEntidad) {
             }
         }
 
+        let todasLasEmpresas = [];
+
+        document.addEventListener("DOMContentLoaded", function () {
+            // Realizar la petición para obtener las empresas
+            fetch(`${API_BASE_URL}/api/entidad/entidadHabilitadas`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success && data.empresas.length > 0) {
+                        // Llamamos a la función para cargar las empresas
+                        todasLasEmpresas = data.empresas; // Guardar todas
+
+                        cargarEmpresas(data.empresas);
+                    } else {
+                        console.log(data.mensaje || 'No hay empresas habilitadas.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+        document.getElementById('contactarTelBtn').onclick = function () {
+            const telefono = document.getElementById('telefonoEntidad');
+            const empresa = todasLasEmpresas.find(emp => emp.razonSocial === document.getElementById('modalRazonSocial').textContent);
+            if (empresa && empresa.telefono) {
+                telefono.textContent = empresa.telefono;
+            }
+            if (empresa && empresa.direccion) {
+                document.getElementById('UbicacionEntidad').textContent = empresa.direccion;
+            }
+            if (empresa && empresa.correo) {
+                document.getElementById('emailEntidad').textContent = empresa.correo;
+            }
+            let contador = telefono.getAttribute('data-contador') || 0;
+            // Hacer PUT para aumentar el contador en el backend
+            if (empresa && empresa.id) {
+                fetch(`${API_BASE_URL}/api/entidad/aumentarContadorContacto/${empresa.id}`, {
+                    method: 'PUT'
+                }).catch(err => console.error('Error al aumentar contador:', err));
+            }
+            // // Enviar invitación al hacer clic en el botón de contacto
+            // const userId = obtenerCookie("userId");
+            // const paraUserId = empresa.UserAdminId; // Ajusta según la estructura de tu objeto empresa
+            // const mensaje = `Hola, me gustaría ponerme en contacto con ${empresa.razonSocial}`;
+            // const telefonoEmpresa = empresa.telefono;
+
+            // if (userId && paraUserId) {
+            //   fetch(`${API_BASE_URL}/api/invitacion`, {
+            //     method: 'POST',
+            //     headers: {
+            //       'Content-Type': 'application/json'
+            //     },
+            //     body: JSON.stringify({
+            //       desdeuserid: parseInt(userId),
+            //       parauserid: parseInt(paraUserId),
+            //       mensaje,
+            //       telefono: telefonoEmpresa
+            //     })
+            //   })
+            //     .then(res => res.json())
+            //     .then(data => {
+            //       console.log('Respuesta del servidor:', data);
+            //       if (data && data.id) {
+            //         alert('Invitación enviada correctamente.');
+            //       } else {
+            //         alert('No se pudo enviar la invitación: ' + (data.error || 'Error desconocido.'));
+            //       }
+            //     })
+            //     .catch(err => {
+            //       console.error('Error al enviar invitación:', err);
+            //       alert('Error al enviar la invitación.');
+            //     });
+            // }
+
+            // telefono.setAttribute('data-contador', contador);
+            // let contadorSpan = document.getElementById('contadorContactos');
+            // if (!contadorSpan) {
+            //   contadorSpan = document.createElement('span');
+            //   contadorSpan.id = 'contadorContactos';
+            //   telefono.parentNode.appendChild(contadorSpan);
+            // }
+            // contadorSpan.textContent = ` (Contactado ${contador} veces)`;
+        };
+
     </script>
 
     <!-- Menú desplegable -->
@@ -445,6 +529,77 @@ async function llamarservicios(idEntidad) {
         document.addEventListener("click", () => {
             dropdown.classList.remove("show");
         });
+    </script>
+        <style>
+        /* Spinner overlay */
+        #page-spinner-overlay {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.95);
+            z-index: 99999;
+            transition: opacity .4s ease;
+            -webkit-backdrop-filter: blur(2px);
+            backdrop-filter: blur(2px);
+        }
+
+        /* Circular spinner */
+        #page-spinner-overlay .spinner {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            border: 6px solid rgba(0, 0, 0, 0.08);
+            border-top-color: #007bff;
+            animation: spin 1s linear infinite;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Texto opcional */
+        #page-spinner-overlay .spinner-text {
+            color: #333;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 500;
+        }
+    </style>
+
+    <script>
+        (function () {
+            // Garantiza que el overlay permanezca al menos 5s desde que se ejecuta este script.
+            const MIN_MS = 2000;
+            const overlay = document.getElementById('page-spinner-overlay');
+            if (!overlay) return;
+
+            // Si ya pasó más de MIN_MS desde la navegación start, aun así mostramos el overlay breve
+            const start = performance.timing ? performance.timing.navigationStart : Date.now();
+            const now = Date.now();
+            const elapsed = Math.max(0, now - start);
+            const remaining = Math.max(0, MIN_MS - elapsed);
+
+            // Evita interacción mientras existe el overlay
+            document.documentElement.style.overflow = 'hidden';
+            document.body.style.overflow = 'hidden';
+
+            setTimeout(() => {
+                overlay.style.opacity = '0';
+                // permitir scroll cuando hide completo
+                setTimeout(() => {
+                    if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
+                    document.documentElement.style.overflow = '';
+                    document.body.style.overflow = '';
+                }, 420);
+            }, remaining);
+        })();
     </script>
 </body>
 

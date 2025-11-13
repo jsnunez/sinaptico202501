@@ -120,83 +120,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-
   });
 
-  document.getElementById('contactarTelBtn').onclick = function () {
-    const telefono = document.getElementById('telefonoEntidad');
-    const empresa = todasLasEmpresas.find(emp => emp.razonSocial === document.getElementById('modalRazonSocial').textContent);
-    if (empresa && empresa.telefono) {
-      telefono.textContent = empresa.telefono;
-    }
-    if (empresa && empresa.direccion) {
-      document.getElementById('UbicacionEntidad').textContent = empresa.direccion;
-    }
-    if (empresa && empresa.correo) {
-      document.getElementById('emailEntidad').textContent = empresa.correo;
-    }
-    let contador = telefono.getAttribute('data-contador') || 0;
-    // Hacer PUT para aumentar el contador en el backend
-    if (empresa && empresa.id) {
-      fetch(`${API_BASE_URL}/api/entidad/aumentarContadorContacto/${empresa.id}`, {
-        method: 'PUT'
-      }).catch(err => console.error('Error al aumentar contador:', err));
-    }
-    // // Enviar invitación al hacer clic en el botón de contacto
-    // const userId = obtenerCookie("userId");
-    // const paraUserId = empresa.UserAdminId; // Ajusta según la estructura de tu objeto empresa
-    // const mensaje = `Hola, me gustaría ponerme en contacto con ${empresa.razonSocial}`;
-    // const telefonoEmpresa = empresa.telefono;
 
-    // if (userId && paraUserId) {
-    //   fetch(`${API_BASE_URL}/api/invitacion`, {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify({
-    //       desdeuserid: parseInt(userId),
-    //       parauserid: parseInt(paraUserId),
-    //       mensaje,
-    //       telefono: telefonoEmpresa
-    //     })
-    //   })
-    //     .then(res => res.json())
-    //     .then(data => {
-    //       console.log('Respuesta del servidor:', data);
-    //       if (data && data.id) {
-    //         alert('Invitación enviada correctamente.');
-    //       } else {
-    //         alert('No se pudo enviar la invitación: ' + (data.error || 'Error desconocido.'));
-    //       }
-    //     })
-    //     .catch(err => {
-    //       console.error('Error al enviar invitación:', err);
-    //       alert('Error al enviar la invitación.');
-    //     });
-    // }
+  // // Cerrar modal al hacer click en la X
+  // document.querySelector('.close').onclick = function () {
+  //   document.getElementById('empresaModal').style.display = 'none';
+  // };
 
-    // telefono.setAttribute('data-contador', contador);
-    // let contadorSpan = document.getElementById('contadorContactos');
-    // if (!contadorSpan) {
-    //   contadorSpan = document.createElement('span');
-    //   contadorSpan.id = 'contadorContactos';
-    //   telefono.parentNode.appendChild(contadorSpan);
-    // }
-    // contadorSpan.textContent = ` (Contactado ${contador} veces)`;
-  };
-
-  // Cerrar modal al hacer click en la X
-  document.querySelector('.close').onclick = function () {
-    document.getElementById('empresaModal').style.display = 'none';
-  };
-
-  // Cerrar modal si se hace click fuera del contenido
-  window.onclick = function (event) {
-    if (event.target === document.getElementById('empresaModal')) {
-      document.getElementById('empresaModal').style.display = 'none';
-    }
-  };
+  // // Cerrar modal si se hace click fuera del contenido
+  // window.onclick = function (event) {
+  //   if (event.target === document.getElementById('empresaModal')) {
+  //     document.getElementById('empresaModal').style.display = 'none';
+  //   }
+  // };
 });
 
 
