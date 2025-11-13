@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SINAPTICO</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
+
+    <link rel="stylesheet" href="styles/colores.css">
+    <link rel="stylesheet" href="styles/stylehelice2.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Leaflet.js para mapas -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+
+
+    <!-- Encabezado -->
+    <header>
+        <div class="header">
+            <div onclick="window.location.href='/helice'">
+                <!-- <span class="logo-icon">⚡</span> -->
+                <img src="/img/logo1.png" alt="SINAPTICO" class="logo" style="height:8vh;">
+            </div>
+            <div style="display: flex; align-items: center; gap: 20px;">
+                <div style="font-size:1.5em;cursor:pointer;">
+                    <span id="icono-notif">🔔 <span
+                            style='background:red;color:white;border-radius:50%;padding:2px 7px;font-size:0.9em;'>0</span></span>
+                </div>
+                <div class="notificaciones" id="notificaciones"></div>
+
+
+                <div class="dropdown">
+                    <button id="userMenuBtn" style="display: flex; align-items: center;">
+                        <div id="userPhoto ">
+                            <img class="imagenPerfil" id="imagenPerfilSecundaria" src="img/sinfoto.jpg"
+                                alt="Foto de perfil" onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
+
+                        </div>
+                        <h3 id="nombreUsuarioHeader" style="color:white; margin-left:10px;">Usuario <i
+                                class="bi bi-chevron-down"></i> </h3>
+                    </button>
+
+                    <div class="dropdown-menu" id="userMenu">
+                        <a href="/perfil">Perfil</a>
+                        <a href="/perfilEntidad">Empresa</a>
+                        <a href="#" id="cerrarSesion">Cerrar sesión</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <nav class="nav">
+            <button class="nav-button pulse" onclick="window.location.href='/helice'" id="inicio">Inicio</button>
+            <button class="nav-button" id="directorioButton">Directorio</button>
+
+            <button class="nav-button" onclick="window.location.href='/proyectos'">Proyectos</button>
+            <button class="nav-button" onclick="window.location.href='/innovacion'">Innovación</button>
+
+            <button class="nav-button" onclick="window.location.href='/Conocimiento'">Conocimiento</button>
+            <button class="nav-button" onclick="window.location.href='/convocatorias'">Convocatorias</button>
+
+            <button class="nav-button" onclick="window.location.href='/eventos'">Eventos</button>
+
+        </nav>
+    </header>
+
+
+    <!-- Modal Empresa -->
+    <div id="empresaModal" class="main-content" style="margin-top: 3rem;">
+        <div class="" id="infoEmpresas">
+
+            <div class="modal-info">
+                <div style="display: flex;">
+                    <img src="/logos/${user.logo}" alt="Logo Empresa" class="card-icon" id="logo-perfilEntidad"
+                        onerror="this.onerror=null;this.src='/img/sinlogo.jpg';"
+                        style="margin-right: 10px; width: 200px; height: 200px; border-radius: 5px;">
+                    <div style="display: flex;flex-direction: column; justify-content: center; "
+                        class="informacionGeneral">
+                        <h1 class="tittle" id="modalRazonSocial"></h1>
+
+                        <p><a id="tipoEntidad"></a> - <span id="descripcionEmpresa"></span></p>
+                        <p> <i class="bi bi-geo-alt-fill"></i> <span id="UbicacionEntidad"></span> <a id="ciudad">
+                            </a>
+                            - <a id="departamento"></a></p>
+
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="about-section">
+
+
+                <div class="info-container">
+
+                    <div class="info-card mision">
+                        <h4>Misión</h4>
+                        <p>
+                            Impulsar la transformación digital ofreciendo soluciones tecnológicas innovadoras que
+                            optimicen los procesos, mejoren la productividad y generen valor sostenible para
+                            nuestros
+                            clientes.
+                        </p>
+                    </div>
+
+                    <div class="info-card vision">
+                        <h4>Visión</h4>
+                        <p>
+                            Ser líderes en el desarrollo tecnológico, reconocidos por nuestra capacidad de
+                            innovación,
+                            excelencia y compromiso con el progreso digital de las organizaciones a nivel global.
+                        </p>
+                    </div>
+                    <div class="info-card vision">
+                        <h4>Conocenos</h4>
+                        <p>
+                        <div class="social-icons">
+                            <a href="https://facebook.com" target="_blank"><i class="bi bi-facebook"></i></i></a>
+                            <a href="https://instagram.com" target="_blank"><i class="bi bi-instagram"></i></a>
+                            <a href="https://www.cpcoriente.org/servicios" target="_blank"><i
+                                    class="bi bi-link-45deg"></i></a>
+
+                        </div>
+
+                        <button class="action-button" id="contactarTelBtn"
+                            style=" min-width: 120px; ">Contactar</button>
+                        <p style="font-size: 0.75em; color: #7f8c8d; margin-top: 5px;">
+                            *Haz clic en contactar para ver más datos de contacto
+                        </p>
+                        <p><b>Telefono: </b> <span id="telefonoEntidad"></span></p>
+                        <p><b>Email: </b><span id="emailEntidad"></span></p>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <h1 style="text-align: center;">Servicios </h1>
+                <div id="serviciosAsociados" class="servicios-container"></div>
+            </div>
+
+            <h1 class="helix-title">Integrantes </h1>
+            <div id="integrantesAsociados" class="integrantes-container"></div>
+
+
+        </div>
+    </div>
+
+
+
+    <script src="js/perfilEntidad.js"></script>
+    <!-- Scripts -->
+
+    <script src="js/notificaciones.js"></script>
+    <script src="/js/websocket.js"></script>
+    <script src="/js/config.js"></script>
+    <script src="/js/enviarInvitacion.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const params = new URLSearchParams(window.location.search);
+            const idEntidad = params.get('id');
+            if (!idEntidad) return;
+
+            try {
+                const response = await fetch(`/api/entidad/${idEntidad}`);
+                const data = await response.json();
+
+                if (data.success) {
+                    const entidad = data.entidad;
+                    console.log("empresas recibidas", entidad);
+                    document.getElementById('modalRazonSocial').textContent = entidad.razonSocial || '';
+                    document.getElementById('tipoEntidad').textContent = entidad.claseEntidad || '';
+                    document.getElementById('descripcionEmpresa').textContent = entidad.actividadEconomica || '';
+                    document.getElementById('ciudad').textContent = entidad.ciudad?.nombre || '';
+                    document.getElementById('departamento').textContent = entidad.ciudad?.departamento?.nombre || '';
+                    document.getElementById("logo-perfilEntidad").src = entidad.logo ? "logos/" + entidad.logo : "img/sinlogo.jpg";
+                    // Si tienes ubicaciones
+                    if (entidad.ubicaciones?.length > 0) {
+                        document.getElementById('UbicacionEntidad').textContent = entidad.ubicaciones[0].direccionCompleta || '';
+                    } else {
+                        document.getElementById('UbicacionEntidad').textContent = 'Sin dirección registrada';
+                    }
+
+                    // Contacto principal
+                    const contacto = entidad.Contactos?.[0] || entidad.User || {};
+                    document.getElementById('telefonoEntidad').textContent = contacto.telefono || 'No disponible';
+                    document.getElementById('emailEntidad').textContent = contacto.email || 'No disponible';
+
+                    // Cargar servicios e integrantes
+                    llamarservicios(idEntidad);
+                    llamarIntegrantes(idEntidad);
+                } else {
+                    alert('Entidad no encontrada');
+                }
+            } catch (err) {
+                console.error('Error al obtener entidad:', err);
+                alert('Error al cargar la información de la entidad');
+            }
+        });
+        async function llamarservicios(idEntidad) {
+            try {
+                const url = `${API_BASE_URL}/api/servicio/entidad/${idEntidad}`;
+                const data = await fetch(url);
+                const datos = await data.json();
+
+                const contenedor = document.getElementById('serviciosAsociados');
+                contenedor.innerHTML = '';
+
+                if (datos.success && datos.servicios.length > 0) {
+                    let html = '';
+                    datos.servicios.forEach(servicio => {
+                        html += `
+                    <div class="servicio-card">
+                        <div class="servicio-header">
+                            <div class="servicio-icono">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                    <path d="M12 2L2 7l10 5 10-5-10-5zm0 7.19L5.47 7 12 4.81 18.53 7 12 9.19zM2 17l10 5 10-5v-2l-10 5-10-5v2z"/>
+                                </svg>
+                            </div>
+                            <strong class="servicio-titulo">Titulo </strong>
+                        </div>
+                        <div class="servicio-descripcion">${servicio.descripcion}</div>
+                    </div>
+                `;
+                    });
+                    contenedor.innerHTML = html;
+                } else {
+                    contenedor.innerHTML = `<div style="text-align: center; padding: 40px; color: #7f8c8d;">No se encontraron servicios.</div>`;
+                }
+            } catch (error) {
+                console.error('Error al obtener los servicios:', error);
+                document.getElementById('serviciosAsociados').innerHTML =
+                    `<p style="color:#b00;">Error al cargar los servicios.</p>`;
+            }
+        }
+
+        async function llamarIntegrantes(idEntidad) {
+            const url = `${API_BASE_URL}/api/usuarioempresa/empresa/${idEntidad}`;
+
+            try {
+                const response = await fetch(url);
+                const datos = await response.json();
+                console.log(datos);
+
+                if (Array.isArray(datos) && datos.length > 0) {
+                    const integrantes = datos
+                        .filter(item => item.estado)
+                        .map(item => ({
+                            id: item.User?.id,
+                            nombre: item.User?.name || 'Sin nombre',
+                            rol: item.Cargo?.nombre || 'Sin rol',
+                            fotoPerfil: item.User?.fotoPerfil || 'sinfoto.jpg'
+                        }));
+
+                    let integrantesHTML = '<div class="integrantes-container">';
+
+                    if (integrantes.length > 0) {
+                        integrantes.forEach(integrante => {
+                            integrantesHTML += `
+                        <div class="integrante-card">
+                            <img src="/photo/${integrante.fotoPerfil}" alt="${integrante.nombre}" class="integrante-foto">
+                            <p class="integrante-nombre">${integrante.nombre}</p>
+                            <p class="integrante-rol">${integrante.rol}</p>
+                            <button class="btn-contactar action-button" onclick="contactarIntegrante(${integrante.id}, '${integrante.nombre.replace(/'/g, "\\'")}')">
+                                <i class="bi bi-telephone"></i> Contactar
+                            </button>
+                        </div>
+                    `;
+                        });
+                    } else {
+                        integrantesHTML += '<div>Sin ningún integrante</div>';
+                    }
+
+                    integrantesHTML += '</div>';
+                    document.getElementById('integrantesAsociados').innerHTML = integrantesHTML;
+                } else {
+                    document.getElementById('integrantesAsociados').innerHTML = `<div style="text-align: center; padding: 40px; color: #7f8c8d;">No se encontraron Integrantes.</div>`;
+                }
+            } catch (error) {
+                console.error('Error al obtener integrantes:', error);
+                document.getElementById('integrantesAsociados').innerHTML = 'Error al cargar integrantes.';
+            }
+        }
+
+
+        // Abrir modal al hacer clic en la foto de usuario
+
+        abrirModalIntegrante = async function (userId) {
+            // Limpiar datos del modal antes de cargar nuevos
+            document.getElementById('MiNombreCompleto').textContent = '';
+            document.getElementById('MiPerfilProfesional').textContent = '';
+            document.getElementById('MiTelefono').textContent = '';
+            document.getElementById('MiUbicacion').textContent = '';
+            document.getElementById('MiCorreo').textContent = '';
+            document.getElementById('MiVinculado').textContent = '';
+            document.getElementById("imagenPerfilIntegrante").src = '/img/sinfoto.jpg';
+            const iframe = document.querySelector('iframe');
+            if (iframe) {
+                iframe.src = '';
+                iframe.style.display = 'none';
+            }
+            console.log("ID del integrante:", userId);
+            document.getElementById('modalIntegrante').style.display = 'block';
+            //Cerrar modal integrante
+            document.getElementById('cerrarModalIntegrante').onclick = function () {
+                document.getElementById('modalIntegrante').style.display = 'none';
+                document.getElementById('modalMisContactos').style.display = 'block';
+            };
+
+            const response = await fetch(`${API_BASE_URL}/api/user/${userId}`);
+            const data = await response.json();
+            console.log(data);
+
+            try {
+                if (!userId) return;
+
+                const res = await fetch(`/api/user/${userId}`);
+                if (!res.ok) throw new Error('No se pudo obtener el perfil');
+                const data = await res.json();
+                console.log(data);
+                // Coloca los datos en los elementos correspondientes
+                document.getElementById('MiNombreCompleto').textContent = data.name || '';
+                document.getElementById('MiPerfilProfesional').textContent = data.perfilProfesional || '';
+                document.getElementById('MiTelefono').textContent = data.telefono || '';
+                document.getElementById('MiUbicacion').textContent = data.ciudad.nombre + ' - ' + data.ciudad.departamento.nombre || '';
+                document.getElementById('MiCorreo').textContent = data.email || '';
+                document.getElementById("imagenPerfilIntegrante").src = data.fotoPerfil ? "photo/" + data.fotoPerfil : "photo/sinfoto.jpg";
+
+
+                if (data.ciudadId) {
+                    try {
+                        const resp = await fetch(`/api/ciudades/ciudad/${data.ciudadId}`);
+                        const ciudadData = await resp.json();
+                        document.getElementById("departamentoPerfilValor").innerHTML = ciudadData.ciudad.departamentoId || '';
+                    } catch (err) {
+                        document.getElementById("departamentoPerfilValor").innerHTML = '';
+                        console.error('Error al consultar el departamento:', err);
+                    }
+                } else {
+                    document.getElementById("departamentoPerfilValor").innerHTML = '';
+                }
+
+                document.getElementById("ciudadPerfilValor").innerHTML = data.ciudadId || '';
+
+                // Si tienes la URL del CV PDF (usando data.enlaceHojaDeVida)
+                if (data.enlaceHojaDeVida) {
+                    const iframe = document.querySelector('iframe');
+                    if (iframe) {
+                        iframe.src = "CV/" + data.enlaceHojaDeVida;
+                        iframe.style.display = 'block';
+                    }
+                }
+
+            } catch (err) {
+                console.error('Error cargando datos de usuario:', err);
+            }
+
+            // Verificar si hay una entidad asociada al usuario
+            try {
+                const entidadRes = await fetch(`/api/entidad/verificar-entidad/${userId}`);
+                if (entidadRes.ok) {
+                    const entidadData = await entidadRes.json();
+                    console.log('Entidad asociada:', entidadData.success);
+                    // Si hay entidad asociada, muestra el nombre, si no, muestra "Sin entidad asociada"
+                    if (entidadData.success) {
+                        console.log('Entidad asociada:', entidadData.entidad.razonSocial);
+                        var entidadNombre = entidadData.entidad.razonSocial;
+                    } else {
+                        console.log('Entidad asociada: Sin entidad asociada');
+                        var entidadNombre = "Sin entidad asociada";
+                    }
+                    // Busca la celda correspondiente y actualiza el texto
+                    document.getElementById('MiVinculado').textContent = entidadNombre;
+                }
+            } catch (e) {
+                console.error('Error verificando entidad asociada:', e);
+            }
+        }
+
+        let todasLasEmpresas = [];
+
+        document.addEventListener("DOMContentLoaded", function () {
+            // Realizar la petición para obtener las empresas
+            fetch(`${API_BASE_URL}/api/entidad/entidadHabilitadas`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success && data.empresas.length > 0) {
+                        // Llamamos a la función para cargar las empresas
+                        todasLasEmpresas = data.empresas; // Guardar todas
+
+                        cargarEmpresas(data.empresas);
+                    } else {
+                        console.log(data.mensaje || 'No hay empresas habilitadas.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+        document.getElementById('contactarTelBtn').onclick = function () {
+            const telefono = document.getElementById('telefonoEntidad');
+            const empresa = todasLasEmpresas.find(emp => emp.razonSocial === document.getElementById('modalRazonSocial').textContent);
+            if (empresa && empresa.telefono) {
+                telefono.textContent = empresa.telefono;
+            }
+            if (empresa && empresa.direccion) {
+                document.getElementById('UbicacionEntidad').textContent = empresa.direccion;
+            }
+            if (empresa && empresa.correo) {
+                document.getElementById('emailEntidad').textContent = empresa.correo;
+            }
+            let contador = telefono.getAttribute('data-contador') || 0;
+            // Hacer PUT para aumentar el contador en el backend
+            if (empresa && empresa.id) {
+                fetch(`${API_BASE_URL}/api/entidad/aumentarContadorContacto/${empresa.id}`, {
+                    method: 'PUT'
+                }).catch(err => console.error('Error al aumentar contador:', err));
+            }
+            // // Enviar invitación al hacer clic en el botón de contacto
+            // const userId = obtenerCookie("userId");
+            // const paraUserId = empresa.UserAdminId; // Ajusta según la estructura de tu objeto empresa
+            // const mensaje = `Hola, me gustaría ponerme en contacto con ${empresa.razonSocial}`;
+            // const telefonoEmpresa = empresa.telefono;
+
+            // if (userId && paraUserId) {
+            //   fetch(`${API_BASE_URL}/api/invitacion`, {
+            //     method: 'POST',
+            //     headers: {
+            //       'Content-Type': 'application/json'
+            //     },
+            //     body: JSON.stringify({
+            //       desdeuserid: parseInt(userId),
+            //       parauserid: parseInt(paraUserId),
+            //       mensaje,
+            //       telefono: telefonoEmpresa
+            //     })
+            //   })
+            //     .then(res => res.json())
+            //     .then(data => {
+            //       console.log('Respuesta del servidor:', data);
+            //       if (data && data.id) {
+            //         alert('Invitación enviada correctamente.');
+            //       } else {
+            //         alert('No se pudo enviar la invitación: ' + (data.error || 'Error desconocido.'));
+            //       }
+            //     })
+            //     .catch(err => {
+            //       console.error('Error al enviar invitación:', err);
+            //       alert('Error al enviar la invitación.');
+            //     });
+            // }
+
+            // telefono.setAttribute('data-contador', contador);
+            // let contadorSpan = document.getElementById('contadorContactos');
+            // if (!contadorSpan) {
+            //   contadorSpan = document.createElement('span');
+            //   contadorSpan.id = 'contadorContactos';
+            //   telefono.parentNode.appendChild(contadorSpan);
+            // }
+            // contadorSpan.textContent = ` (Contactado ${contador} veces)`;
+        };
+
+    </script>
+
+    <!-- Menú desplegable -->
+    <script>
+        const userMenuBtn = document.getElementById("userMenuBtn");
+        const dropdown = userMenuBtn.closest(".dropdown");
+
+        function obtenerCookie(nombre) {
+            const nombreCookie = `${nombre}=`;
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                let cookie = cookies[i].trim();
+                if (cookie.indexOf(nombreCookie) === 0) {
+                    return cookie.substring(nombreCookie.length, cookie.length);
+                }
+            }
+            return null;
+        }
+
+        // const userId = obtenerCookie("userId");
+
+        // const usuario = obtenerCookie("user");
+
+
+        // let cleanedStr = decodeURIComponent(usuario.replace(/%20/g, " "));
+        // let nombreUsuario = cleanedStr.split(" ")[0];
+
+        // async function cargarDatosUsuario(userId) {
+        //     console.log("isss", userId)
+        //     const response = await fetch(`${API_BASE_URL}/api/user/${userId}`);
+        //     const data = await response.json();
+
+        //     document.getElementById("imagenPerfilSecundaria").src = data.fotoPerfil ? "photo/" + data.fotoPerfil : "photo/sinfoto.jpg";
+
+        //     document.getElementById('nombreUsuarioHeader').innerHTML = `${nombreUsuario} <i class="bi bi-chevron-down"></i>`;
+
+
+        //     console.log(data);
+        //     return data;
+        // }
+
+
+        // Mostrar / ocultar el menú al hacer clic
+        userMenuBtn.addEventListener("click", (event) => {
+            event.stopPropagation(); // evita que el clic cierre inmediatamente el menú
+            dropdown.classList.toggle("show");
+        });
+
+        // Cerrar el menú si haces clic fuera
+        document.addEventListener("click", () => {
+            dropdown.classList.remove("show");
+        });
+    </script>
+        <style>
+        /* Spinner overlay */
+        #page-spinner-overlay {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.95);
+            z-index: 99999;
+            transition: opacity .4s ease;
+            -webkit-backdrop-filter: blur(2px);
+            backdrop-filter: blur(2px);
+        }
+
+        /* Circular spinner */
+        #page-spinner-overlay .spinner {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            border: 6px solid rgba(0, 0, 0, 0.08);
+            border-top-color: #007bff;
+            animation: spin 1s linear infinite;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Texto opcional */
+        #page-spinner-overlay .spinner-text {
+            color: #333;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 500;
+        }
+    </style>
+
+    <script>
+        (function () {
+            // Garantiza que el overlay permanezca al menos 5s desde que se ejecuta este script.
+            const MIN_MS = 2000;
+            const overlay = document.getElementById('page-spinner-overlay');
+            if (!overlay) return;
+
+            // Si ya pasó más de MIN_MS desde la navegación start, aun así mostramos el overlay breve
+            const start = performance.timing ? performance.timing.navigationStart : Date.now();
+            const now = Date.now();
+            const elapsed = Math.max(0, now - start);
+            const remaining = Math.max(0, MIN_MS - elapsed);
+
+            // Evita interacción mientras existe el overlay
+            document.documentElement.style.overflow = 'hidden';
+            document.body.style.overflow = 'hidden';
+
+            setTimeout(() => {
+                overlay.style.opacity = '0';
+                // permitir scroll cuando hide completo
+                setTimeout(() => {
+                    if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
+                    document.documentElement.style.overflow = '';
+                    document.body.style.overflow = '';
+                }, 420);
+            }, remaining);
+        })();
+    </script>
+</body>
+
+</html>

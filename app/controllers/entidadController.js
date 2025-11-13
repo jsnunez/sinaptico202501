@@ -707,3 +707,64 @@ export const getUserAdminId = async (req, res) => {
     });
   }
 };
+
+export const obtenerEntidadPorId = async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    console.log('🔍 Obteniendo entidad por id:', id);
+
+    const entidad = await Entidad.findByPk(id, {
+      include: [
+        {
+          model: Contacto,
+          required: false,
+          attributes: ['id', 'nombre', 'telefono', 'email', 'cargoId']
+        },
+        {
+          model: Ciudad,
+          as: 'ciudad',
+          required: false,
+          attributes: ['id', 'nombre', 'departamentoId'],
+          include: [
+            {
+              model: Departamento,
+              as: 'departamento',
+              required: false,
+              attributes: ['id', 'nombre']
+            }
+          ]
+        },
+        {
+          model: UbicacionEntidad,
+          as: 'ubicaciones',
+          required: false,
+          attributes: ['id', 'latitud', 'longitud', 'direccionCompleta', 'activa', 'verificada']
+        },
+        {
+          model: User,
+          required: false
+        }
+      ]
+    });
+
+    if (!entidad) {
+      return res.status(404).json({
+        success: false,
+        mensaje: 'Entidad no encontrada'
+      });
+    }
+
+    return res.json({
+      success: true,
+      entidad
+    });
+  } catch (error) {
+    console.error('❌ Error al obtener entidad por id:', error);
+    return res.status(500).json({
+      success: false,
+      mensaje: 'Hubo un error al obtener la entidad',
+      error: error.message
+    });
+  }
+};
