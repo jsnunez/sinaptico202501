@@ -106,7 +106,14 @@
             </div>
             <div class="about-section">
 
+                <div style="display: flex; justify-content: center; margin-bottom: 20px;">
 
+                    <section class="servicios-header">
+
+                        <h2 style="color: white;"> Nosotros</h2>
+                    </section>
+
+                </div>
                 <div class="info-container">
 
                     <div class="info-card mision">
@@ -151,13 +158,32 @@
             </div>
 
             <div>
-                <h1 style="text-align: center;">Servicios </h1>
+                <div style="display: flex; justify-content: center; margin-bottom: 20px;">
+
+                    <section class="servicios-header">
+
+                        <h2 style="color: white;"><i class="bi bi-list-task"></i> Servicios</h2>
+                    </section>
+
+                </div>
                 <div id="serviciosAsociados" class="servicios-container"></div>
             </div>
 
-            <h1 class="helix-title">Integrantes </h1>
-            <div id="integrantesAsociados" class="integrantes-container"></div>
+            <div style="display: flex; justify-content: center; margin-bottom: 20px; margin-top: 20px;">
 
+                <section class="integrantes-header">
+
+                    <h2 style="color: white;"><i class="bi bi-person-lines-fill"></i> Integrantes</h2>
+                </section>
+
+            </div>
+            <div class="integrantes-wrapper">
+                <button class="btn-carrusel prev"><i class="bi bi-chevron-left"></i></button>
+
+                <div id="integrantesAsociados" class="integrantes-container"></div>
+
+                <button class="btn-carrusel next"><i class="bi bi-chevron-right"></i></button>
+            </div>
 
         </div>
     </div>
@@ -234,9 +260,12 @@
                                     <path d="M12 2L2 7l10 5 10-5-10-5zm0 7.19L5.47 7 12 4.81 18.53 7 12 9.19zM2 17l10 5 10-5v-2l-10 5-10-5v2z"/>
                                 </svg>
                             </div>
-                            <strong class="servicio-titulo">Titulo </strong>
+                           
                         </div>
+                        <div class="servicio-info">
+                             <div class="servicio-titulo">Titulo</div>
                         <div class="servicio-descripcion">${servicio.descripcion}</div>
+                        </div>
                     </div>
                 `;
                     });
@@ -250,54 +279,88 @@
                     `<p style="color:#b00;">Error al cargar los servicios.</p>`;
             }
         }
+async function llamarIntegrantes(idEntidad) {
+    const url = `${API_BASE_URL}/api/usuarioempresa/empresa/${idEntidad}`;
 
-        async function llamarIntegrantes(idEntidad) {
-            const url = `${API_BASE_URL}/api/usuarioempresa/empresa/${idEntidad}`;
+    try {
+        const response = await fetch(url);
+        const datos = await response.json();
 
-            try {
-                const response = await fetch(url);
-                const datos = await response.json();
-                console.log(datos);
-
-                if (Array.isArray(datos) && datos.length > 0) {
-                    const integrantes = datos
-                        .filter(item => item.estado)
-                        .map(item => ({
-                            id: item.User?.id,
-                            nombre: item.User?.name || 'Sin nombre',
-                            rol: item.Cargo?.nombre || 'Sin rol',
-                            fotoPerfil: item.User?.fotoPerfil || 'sinfoto.jpg'
-                        }));
-
-                    let integrantesHTML = '<div class="integrantes-container">';
-
-                    if (integrantes.length > 0) {
-                        integrantes.forEach(integrante => {
-                            integrantesHTML += `
-                        <div class="integrante-card">
-                            <img src="/photo/${integrante.fotoPerfil}" alt="${integrante.nombre}" class="integrante-foto">
-                            <p class="integrante-nombre">${integrante.nombre}</p>
-                            <p class="integrante-rol">${integrante.rol}</p>
-                            <button class="btn-contactar action-button" onclick="contactarIntegrante(${integrante.id}, '${integrante.nombre.replace(/'/g, "\\'")}')">
-                                <i class="bi bi-telephone"></i> Contactar
-                            </button>
-                        </div>
-                    `;
-                        });
-                    } else {
-                        integrantesHTML += '<div>Sin ningún integrante</div>';
-                    }
-
-                    integrantesHTML += '</div>';
-                    document.getElementById('integrantesAsociados').innerHTML = integrantesHTML;
-                } else {
-                    document.getElementById('integrantesAsociados').innerHTML = `<div style="text-align: center; padding: 40px; color: #7f8c8d;">No se encontraron Integrantes.</div>`;
-                }
-            } catch (error) {
-                console.error('Error al obtener integrantes:', error);
-                document.getElementById('integrantesAsociados').innerHTML = 'Error al cargar integrantes.';
-            }
+        if (!Array.isArray(datos) || datos.length === 0) {
+            document.getElementById('integrantesAsociados').innerHTML = `
+                <div style="text-align: center; padding: 40px; color: #7f8c8d;">
+                    No se encontraron Integrantes.
+                </div>`;
+            return;
         }
+
+        // Filtramos e info de integrantes
+        const integrantes = datos
+            .filter(item => item.estado)
+            .map(item => ({
+                id: item.User?.id,
+                nombre: item.User?.name || 'Sin nombre',
+                rol: item.Cargo?.nombre || 'Sin rol',
+                fotoPerfil: item.User?.fotoPerfil || 'sinfoto.jpg'
+            }));
+
+        // Construir tarjetas
+        const container = document.getElementById('integrantesAsociados');
+        container.innerHTML = '';
+        integrantes.forEach(i => container.appendChild(crearTarjeta(i)));
+        // Duplicar contenido para loop infinito
+        integrantes.forEach(i => container.appendChild(crearTarjeta(i)));
+
+        // Variables de animación
+        let isHovering = false;
+        let currentOffset = 0;
+        const speedNormal = 0.5;
+        const speedHover = 0.1;
+
+        function animate() {
+            const speed = isHovering ? speedHover : speedNormal;
+            currentOffset -= speed;
+            // Si se mueve todo el contenido duplicado, reiniciamos
+            const totalWidth = container.scrollWidth / 2;
+            if (Math.abs(currentOffset) >= totalWidth) currentOffset = 0;
+            container.style.transform = `translateX(${currentOffset}px)`;
+            requestAnimationFrame(animate);
+        }
+        requestAnimationFrame(animate);
+
+        // Hover sobre el contenedor para pausar/centrar
+        container.querySelectorAll('.integrante-card').forEach(card => {
+            card.addEventListener('mouseenter', () => { isHovering = true; });
+            card.addEventListener('mouseleave', () => { isHovering = false; });
+        });
+
+        // Botones de carrusel
+        const btnPrev = document.querySelector('.btn-carrusel.prev');
+        const btnNext = document.querySelector('.btn-carrusel.next');
+
+        btnPrev.addEventListener('click', () => { currentOffset += 150; });
+        btnNext.addEventListener('click', () => { currentOffset -= 150; });
+
+    } catch (error) {
+        console.error('Error al obtener integrantes:', error);
+        document.getElementById('integrantesAsociados').innerHTML = 'Error al cargar integrantes.';
+    }
+}
+
+function crearTarjeta(integrante) {
+    const div = document.createElement('div');
+    div.className = 'integrante-card';
+    div.innerHTML = `
+        <img src="/photo/${integrante.fotoPerfil}" alt="${integrante.nombre}" class="integrante-foto">
+        <p class="integrante-nombre">${integrante.nombre}</p>
+        <p class="integrante-rol">${integrante.rol}</p>
+        <button class="btn-contactar action-button" onclick="contactarIntegrante(${integrante.id}, '${integrante.nombre.replace(/'/g, "\\'")}')">
+            <i class="bi bi-telephone"></i> Contactar
+        </button>
+    `;
+    return div;
+}
+
 
 
         // Abrir modal al hacer clic en la foto de usuario
@@ -479,6 +542,7 @@
 
     </script>
 
+
     <!-- Menú desplegable -->
     <script>
         const userMenuBtn = document.getElementById("userMenuBtn");
@@ -530,7 +594,7 @@
             dropdown.classList.remove("show");
         });
     </script>
-        <style>
+    <style>
         /* Spinner overlay */
         #page-spinner-overlay {
             position: fixed;
@@ -573,34 +637,7 @@
         }
     </style>
 
-    <script>
-        (function () {
-            // Garantiza que el overlay permanezca al menos 5s desde que se ejecuta este script.
-            const MIN_MS = 2000;
-            const overlay = document.getElementById('page-spinner-overlay');
-            if (!overlay) return;
 
-            // Si ya pasó más de MIN_MS desde la navegación start, aun así mostramos el overlay breve
-            const start = performance.timing ? performance.timing.navigationStart : Date.now();
-            const now = Date.now();
-            const elapsed = Math.max(0, now - start);
-            const remaining = Math.max(0, MIN_MS - elapsed);
-
-            // Evita interacción mientras existe el overlay
-            document.documentElement.style.overflow = 'hidden';
-            document.body.style.overflow = 'hidden';
-
-            setTimeout(() => {
-                overlay.style.opacity = '0';
-                // permitir scroll cuando hide completo
-                setTimeout(() => {
-                    if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
-                    document.documentElement.style.overflow = '';
-                    document.body.style.overflow = '';
-                }, 420);
-            }, remaining);
-        })();
-    </script>
 </body>
 
 </html>
