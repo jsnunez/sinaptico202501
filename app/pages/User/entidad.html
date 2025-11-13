@@ -82,20 +82,21 @@
 
 
     <!-- Modal Empresa -->
-    <div id="empresaModal" >
+    <div id="empresaModal" class="main-content" style="margin-top: 3rem;">
         <div class="" id="infoEmpresas">
-<div style="  background-color: white;
-            "> 
+
             <div class="modal-info">
                 <div style="display: flex;">
                     <img src="/logos/${user.logo}" alt="Logo Empresa" class="card-icon" id="logo-perfilEntidad"
                         onerror="this.onerror=null;this.src='/img/sinlogo.jpg';"
                         style="margin-right: 10px; width: 200px; height: 200px; border-radius: 5px;">
-                    <div style="display: flex;flex-direction: column; justify-content: center; " class="informacionGeneral">
-                        <h1 class="tittle" id="modalRazonSocial" ></h1>
+                    <div style="display: flex;flex-direction: column; justify-content: center; "
+                        class="informacionGeneral">
+                        <h1 class="tittle" id="modalRazonSocial"></h1>
 
                         <p><a id="tipoEntidad"></a> - <span id="descripcionEmpresa"></span></p>
-                        <p> <i class="bi bi-geo-alt-fill"></i> <span id="UbicacionEntidad"></span> <a id="ciudad"> </a>
+                        <p> <i class="bi bi-geo-alt-fill"></i> <span id="UbicacionEntidad"></span> <a id="ciudad">
+                            </a>
                             - <a id="departamento"></a></p>
 
 
@@ -112,7 +113,8 @@
                         <h4>Misión</h4>
                         <p>
                             Impulsar la transformación digital ofreciendo soluciones tecnológicas innovadoras que
-                            optimicen los procesos, mejoren la productividad y generen valor sostenible para nuestros
+                            optimicen los procesos, mejoren la productividad y generen valor sostenible para
+                            nuestros
                             clientes.
                         </p>
                     </div>
@@ -120,7 +122,8 @@
                     <div class="info-card vision">
                         <h4>Visión</h4>
                         <p>
-                            Ser líderes en el desarrollo tecnológico, reconocidos por nuestra capacidad de innovación,
+                            Ser líderes en el desarrollo tecnológico, reconocidos por nuestra capacidad de
+                            innovación,
                             excelencia y compromiso con el progreso digital de las organizaciones a nivel global.
                         </p>
                     </div>
@@ -146,20 +149,15 @@
                     </div>
                 </div>
             </div>
-</div>
 
-            <div style="  background-color: rgba(255, 165, 0, 0.6);
-            padding: 1%;">
-                <h1 style="color: white;text-align: center;">Servicios </h1>
+            <div >
+                <h1 style="text-align: center;">Servicios </h1>
                 <div id="serviciosAsociados" class="servicios-container"></div>
-
             </div>
-            <div style="  background-color: white;
-            padding: 1%;">
-                <h1 class="helix-title">Integrantes </h1>
 
-                <div id="integrantesAsociados" class="integrantes-container"></div>
-            </div>
+            <h1 class="helix-title">Integrantes </h1>
+            <div id="integrantesAsociados" class="integrantes-container"></div>
+
 
         </div>
     </div>
@@ -215,39 +213,43 @@
                 alert('Error al cargar la información de la entidad');
             }
         });
-        async function llamarservicios(idEntidad) {
-            try {
-                const url = `${API_BASE_URL}/api/servicio/entidad/${idEntidad}`;
-                const data = await fetch(url);
-                const datos = await data.json();
+async function llamarservicios(idEntidad) {
+    try {
+        const url = `${API_BASE_URL}/api/servicio/entidad/${idEntidad}`;
+        const data = await fetch(url);
+        const datos = await data.json();
 
-                const contenedor = document.getElementById('serviciosAsociados');
-                contenedor.innerHTML = '';
+        const contenedor = document.getElementById('serviciosAsociados');
+        contenedor.innerHTML = '';
 
-                if (datos.success && datos.servicios.length > 0) {
-                    let html = '';
-                    datos.servicios.forEach(servicio => {
-                        html += `
+        if (datos.success && datos.servicios.length > 0) {
+            let html = '';
+            datos.servicios.forEach(servicio => {
+                html += `
                     <div class="servicio-card">
-                        <div class="servicio-icono">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                <path d="M12 2L2 7l10 5 10-5-10-5zm0 7.19L5.47 7 12 4.81 18.53 7 12 9.19zM2 17l10 5 10-5v-2l-10 5-10-5v2z"/>
-                            </svg>
+                        <div class="servicio-header">
+                            <div class="servicio-icono">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                    <path d="M12 2L2 7l10 5 10-5-10-5zm0 7.19L5.47 7 12 4.81 18.53 7 12 9.19zM2 17l10 5 10-5v-2l-10 5-10-5v2z"/>
+                                </svg>
+                            </div>
+                            <strong class="servicio-titulo">Titulo </strong>
                         </div>
                         <div class="servicio-descripcion">${servicio.descripcion}</div>
                     </div>
                 `;
-                    });
-                    contenedor.innerHTML = html;
-                } else {
-                    contenedor.innerHTML = `<p style="color:#666;">No se encontraron servicios.</p>`;
-                }
-            } catch (error) {
-                console.error('Error al obtener los servicios:', error);
-                document.getElementById('serviciosAsociados').innerHTML =
-                    `<p style="color:#b00;">Error al cargar los servicios.</p>`;
-            }
+            });
+            contenedor.innerHTML = html;
+        } else {
+            contenedor.innerHTML = `<p style="color:#666;">No se encontraron servicios.</p>`;
         }
+    } catch (error) {
+        console.error('Error al obtener los servicios:', error);
+        document.getElementById('serviciosAsociados').innerHTML =
+            `<p style="color:#b00;">Error al cargar los servicios.</p>`;
+    }
+}
+
         async function llamarIntegrantes(idEntidad) {
             const url = `${API_BASE_URL}/api/usuarioempresa/empresa/${idEntidad}`;
 

@@ -115,7 +115,7 @@ body {
 }
 
 .nav-button.pulse {
-border-radius: 20px;
+    border-radius: 20px;
     background-color: var(--naranja-color);
 }
 
@@ -273,14 +273,16 @@ h2 {
 
 
 }
+
 .botonEntidad:hover {
     transform: translateY(-3px);
     background: var(--gray-color);
     box-shadow: 0 6px 15px rgba(48, 45, 226, 0.4);
 }
+
 .action-button {
     margin-bottom: 1vh;
-   
+
     color: var(--text-description);
     border: none;
     border-radius: 10px;
@@ -314,7 +316,7 @@ h2 {
     display: flex;
     gap: 1rem;
     flex-wrap: wrap;
-        justify-content: flex-end;
+    justify-content: flex-end;
 }
 
 .action-button:hover {
@@ -835,14 +837,18 @@ form {
     outline: none;
     box-shadow: 0 0 0 2px rgba(110, 72, 170, 0.1);
 }
+
 .input-service::placeholder {
-  padding-left: 20px; /* Añade 20px de margen a la izquierda del texto placeholder */
-  color: #999; /* Opcional: cambia el color para que sea más claro */
+    padding-left: 20px;
+    /* Añade 20px de margen a la izquierda del texto placeholder */
+    color: #999;
+    /* Opcional: cambia el color para que sea más claro */
 }
 
 .input-service::before {
-  border-color: var(--primary-color);
+    border-color: var(--primary-color);
 }
+
 /* Overlay */
 .overlay {
     position: fixed;
@@ -1010,9 +1016,10 @@ form {
     margin-right: 0.5rem;
     cursor: pointer;
     transition: var(--transition);
-    
+
 }
-.action-icons{
+
+.action-icons {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -1108,11 +1115,11 @@ form {
     color: var(--text-description);
 }
 
-.social-icons a{
+.social-icons a {
     font-size: 2rem;
     text-align: center;
     color: var(--light-text);
-   
+
 }
 
 
@@ -1259,90 +1266,87 @@ form {
 .about-section {
 
 
-  padding: 3rem 1rem;
-  
-  text-align: center;
-  backdrop-filter: blur(5px);
+    padding: 3rem 1rem;
+
+    text-align: center;
+    backdrop-filter: blur(5px);
 }
 
 
 /* Título */
 .section-title h3 {
-  font-size: 2rem;
-  margin-bottom: 2rem;
-  color: #080808;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    color: #080808;
 }
 
 /* Contenedor de tarjetas */
 .info-container {
-  display: flex;
-  justify-content: center;
-  align-items: stretch;
-  gap: 2rem;
-  flex-wrap: wrap;
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    gap: 2rem;
+    flex-wrap: wrap;
 }
 
 /* Tarjetas */
 .info-card {
-  background-color: var(--primary-color); /* azul sólido */
-  color: #ffffff;
-  width: 400px;
-  height: auto;
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+    background-color: var(--primary-color);
+    /* azul sólido */
+    color: #ffffff;
+    width: 450px;
+    height: auto;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
 }
 
 .info-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.4);
+    transform: translateY(-8px);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.4);
 }
 
 /* Títulos de tarjeta */
 .info-card h4 {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-  border-bottom: 2px solid var(--secondary-color);
-  display: inline-block;
-  padding-bottom: 0.3rem;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid var(--secondary-color);
+    display: inline-block;
+    padding-bottom: 0.3rem;
 }
 
 /* Texto */
 .info-card p {
-  font-size: 1rem;
-  line-height: 1.6;
+    font-size: 1rem;
+    line-height: 1.6;
     text-align: justify;
 }
 
 /* Texto */
 .info-card a {
-  text-align: center;
+    text-align: center;
 
-  padding: 5px;
+    padding: 5px;
 }
 
 .servicios-container {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(5, 240px); /* 5 columnas fijas de 240px */
     gap: 30px;
-    max-width: 1600px;
-    margin: 60px auto;
-    justify-items: center;
-
+    justify-content: center; /* centra las columnas en el contenedor */
+    max-width: 100%; /* evita que limite el ancho total */
+    margin: 0 auto; /* centra el grid dentro del contenedor padre */
 }
 
+
 .servicio-card {
-    background-color: #fff;
-    border: 1px solid #e0e0e0;
-    border-radius: 12px;
     width: 240px;
     height: 240px;
     padding: 25px 20px;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.08);
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -1352,7 +1356,7 @@ form {
 
 .servicio-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+
 }
 
 .servicio-icono {
@@ -1371,6 +1375,19 @@ form {
     height: 28px;
     fill: #7a7a7a;
 }
+.servicio-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.servicio-titulo {
+    font-weight: bold;
+    color: #333;
+    font-size: 16px;
+}
+
 
 .servicio-descripcion {
     color: #333;
@@ -1396,27 +1413,31 @@ form {
     color: #333;
 }
 
-@media (max-width: 1500px) {
+@media (max-width: 1300px) {
     .servicios-container {
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(3, 240px);
     }
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 800px) {
     .servicios-container {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, 240px);
     }
 }
 
 .integrantes-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(5, 220px);
     gap: 30px;
-    justify-items: center;
-    max-width: 1300px;
-    margin: 50px auto;
+    justify-content: center; /* centra las columnas */
+    margin: 0 auto; /* centra el grid dentro del body o su contenedor padre */
+    padding: 0 20px; /* deja márgenes internos para evitar que pegue a los bordes */
+    box-sizing: border-box;
+    max-width: calc((220px * 5) + (30px * 4) + 40px); /* limita el ancho total + padding */
 }
 
+
+/* Tarjeta de integrante */
 .integrante-card {
     background: linear-gradient(180deg, #ffffff 0%, #f8f8f8 100%);
     border: 1px solid #e2e2e2;
@@ -1424,7 +1445,7 @@ form {
     width: 220px;
     padding: 25px 20px;
     text-align: center;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
     transition: transform 0.25s ease, box-shadow 0.25s ease;
     display: flex;
     flex-direction: column;
@@ -1434,9 +1455,10 @@ form {
 
 .integrante-card:hover {
     transform: translateY(-6px);
-    box-shadow: 0 8px 18px rgba(0,0,0,0.12);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
 }
 
+/* Imagen */
 .integrante-foto {
     width: 95px;
     height: 95px;
@@ -1448,7 +1470,7 @@ form {
 }
 
 .integrante-card:hover .integrante-foto {
-    border-color: #d4b68c; /* un toque dorado neutro */
+    border-color: #d4b68c;
 }
 
 .integrante-nombre {
@@ -1464,6 +1486,7 @@ form {
     margin-bottom: 15px;
 }
 
+/* Botón */
 .btn-contactar {
     background: linear-gradient(90deg, #6a9ff8, #547ff5);
     color: #fff;
@@ -1489,20 +1512,20 @@ form {
 }
 
 /* Responsivo */
-@media (max-width: 1200px) {
+@media (max-width: 1300px) {
     .integrantes-container {
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(3, 220px);
     }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 800px) {
     .integrantes-container {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, 220px);
     }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 500px) {
     .integrantes-container {
-        grid-template-columns: 1fr;
+        grid-template-columns: 220px;
     }
 }
