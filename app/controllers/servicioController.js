@@ -1,10 +1,11 @@
 import Servicio from "../models/servicio.js"
+import User from "../models/user.js";
 
 // Crear un nuevo cargo
 export const crearServicio = async (req, res) => {
     try {
         const newServicio = new Servicio(req.body);
-        // console.log(req.body)
+        console.log(req.body)
         const savedServicio = await newServicio.save();
         res.status(201).json(savedServicio);
     } catch (error) {
@@ -13,15 +14,17 @@ export const crearServicio = async (req, res) => {
 };
 
 export const getServicioById = async (req, res) => {
-    try {
-        const servicio = await Servicio.findById(req.params.id);
-        if (!servicio) {
-            return res.status(404).json({ message: 'Servicio no encontrado' });
-        }
-        res.json(servicio);
-    } catch (error) {
-        res.status(500).json({ message: 'Error al buscar el servicio', error });
+  try {
+    const servicio = await Servicio.findByPk(req.params.id);
+    if (!servicio) {
+      return res.status(404).json({ message: 'Servicio no encontrado' });
     }
+    const user = await User.findByPk(servicio.liderId);
+    servicio.dataValues.lider = user ? user.name : null;
+    res.json(servicio);
+  } catch (error) {
+    res.status(500).json({ message: 'Error al buscar el servicio', error });
+  }
 };
 
 
@@ -30,7 +33,13 @@ export const getServicioByIdEntidad = async (req, res) => {
       // Contar las entidades que tienen claseEntidad igual a 'empresa'
       const servicios = await Servicio.findAll({
         where: { entidadId: req.params.id },
+        
       });
+      
+      for (const servicio of servicios) {
+        const user = await User.findByPk(servicio.liderId);
+        servicio.dataValues.lider = user ? user.name : null;
+      }
   
       return res.json({
         success: true,
@@ -66,10 +75,12 @@ export const getServicioByIdEntidad = async (req, res) => {
       if (!servicio) {
         return res.status(404).json({ message: 'Servicio no encontrado' });
       }
-  
-      const {descripcion } = req.body;
+  const { nombre, descripcion, icono, liderId } = req.body;
 
-      servicio.descripcion = descripcion;
+  if (nombre !== undefined) servicio.nombre = nombre;
+  if (descripcion !== undefined) servicio.descripcion = descripcion;
+  if (icono !== undefined) servicio.icono = icono;
+  if (liderId !== undefined) servicio.liderId = liderId;
 
   
       await servicio.save();

@@ -1529,3 +1529,8 @@ margin-bottom: 1rem;
         grid-template-columns: 220px;
     }
 }
+
+
+#myModalAsignarServicio .modal-content {
+    max-width: 70vw;
+}
