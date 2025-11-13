@@ -13,19 +13,20 @@ function renderTabla(lista) {
     const empresaNombre = contacto?.empresa?.razonSocial ?? '';
     const tr = document.createElement('tr');
     tr.innerHTML = `
-            <td>
+              <td>
                 <div style="position:relative;width:60px;height:60px;">
-                    <img src="photo/${user.fotoPerfil || 'img/sinfoto.jpg'}" 
-                        alt="Foto" style="width:60px;height:60px;border-radius:50%;object-fit:cover;"
-                        onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
-                    <i class="bi bi-search"
-                       style="position:absolute;bottom:2px;right:2px;font-size:0.9em;color:#007bff;background:white;border-radius:50%;padding:3px;cursor:pointer;"
-                       onclick="abrirModalIntegrante(${user.id})"></i>
+                  <img src="photo/${user.fotoPerfil || 'img/sinfoto.jpg'}" 
+                      alt="Foto" style="width:60px;height:60px;border-radius:50%;object-fit:cover;"
+                      onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
+                  <i class="bi bi-search"
+                    style="position:absolute;bottom:2px;right:2px;font-size:0.9em;color:#007bff;background:white;border-radius:50%;padding:3px;cursor:pointer;"
+                    onclick="window.location.href = '/perfilEntidad?id=${user.id}'"></i>
                 </div>
-            </td>
-            <td>${user.name ?? ''}</td>
-            <td>${contacto._cargoNombre !== 'N/A' ? contacto._cargoNombre : ''}</td>
-            <td style="text-align:left;">${empresaNombre}</td>
+              </td>
+              <td>${user.name ?? ''}</td>
+              <td>${contacto._cargoNombre !== 'N/A' ? contacto._cargoNombre : ''}</td>
+              <td style="text-align:left;">${empresaNombre}</td>
+
         `;
     tbody.appendChild(tr);
   });
