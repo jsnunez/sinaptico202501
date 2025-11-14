@@ -451,7 +451,7 @@
                     </button>
 
                     <div class="dropdown-menu" id="userMenu">
-                        <a href="/perfil">Perfil</a>
+                        <a class="perfilUser" id="perfilUser">Perfil</a>
                         <a href="/perfilEntidad">Empresa</a>
                         <a href="#" id="cerrarSesion">Cerrar sesión</a>
                     </div>
@@ -1592,6 +1592,17 @@
         document.addEventListener("click", () => {
             dropdown.classList.remove("show");
         });
+
+
+        document.addEventListener('click', function (e) {
+            const perfil = e.target.closest('.perfilUser, #Perfil');
+            if (perfil) {
+                const userId = obtenerCookie("userId");
+                window.location.href = `/perfilUser?id=${userId}`;
+            }
+        });
+
+
     </script>
 
     <!-- Obtener departamentos y ciudades -->
