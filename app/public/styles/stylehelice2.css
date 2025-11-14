@@ -389,11 +389,9 @@ h2 {
     margin: 0 auto 2rem;
     padding: 2rem;
     background-color: var(--card-bg);
-    border-radius: 15px;
+    border-radius: 15x;
     box-shadow: var(--shadow);
 }
-
-
 
 
 .helix-title,

@@ -7,133 +7,300 @@
     <title>SINAPTICO</title>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
 
     <link rel="stylesheet" href="styles/colores.css">
-    <link rel="stylesheet" href="styles/perfil.css">
+    <link rel="stylesheet" href="styles/stylehelice2.css">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
-
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Leaflet.js para mapas -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
 
 </head>
 
 <body>
+    <!-- Fondo de animación neuronal -->
+    <div class="neural-background">
+        <canvas id="neuralCanvas"></canvas>
+    </div>
+
     <!-- Encabezado -->
-    <header class="header">
-        <div onclick="window.location.href='/helice'" class="logo">
-            <!-- <span class="logo-icon">⚡</span> -->
-            <span class="logo-text">SINAPTICO</span>
-        </div>
-        <nav class="nav">
-            <button class="nav-button pulse" onclick="window.location.href='/helice'">Hélice</button>
-            <button class="nav-button pulse" onclick="window.location.href='/proyectos'">Proyectos</button>
-            <button class="nav-button pulse" onclick="window.location.href='/innovacion'">Innovación</button>
+    <header>
 
-            <button class="nav-button pulse" onclick="window.location.href='/Conocimiento'">Conocimiento</button>
-            <button class="nav-button pulse" onclick="window.location.href='/convocatorias'">Convocatorias</button>
-
-            <button class="nav-button pulse" onclick="window.location.href='/mapa-usuarios'">Mapa</button>
-
-            <div style="position:fixed;top:10px;right:20px;z-index:1000;font-size:1.5em;cursor:pointer;">
-                <span id="icono-notif">🔔 <span
-                        style='background:red;color:white;border-radius:50%;padding:2px 7px;font-size:0.9em;'>0</span></span>
+        <div class="header">
+            <div onclick="window.location.href='/helice'">
+                <!-- <span class="logo-icon">⚡</span> -->
+                <img src="/img/logo1.png" alt="SINAPTICO" class="logo" style="height:8vh;">
             </div>
-            <div class="notificaciones" id="notificaciones"></div>
+            <div style="display: flex; align-items: center; gap: 20px;">
+                <div style="font-size:1.5em;cursor:pointer;">
+                    <span id="icono-notif">🔔 <span>0</span></span>
+                </div>
+                <div class="notificaciones" id="notificaciones"></div>
 
-            <!-- <button class="nav-button pulse" id="cerrarSesion">Cerrar sesión</button> -->
-            <!-- Botón con menú desplegable -->
-            <div class="dropdown">
-                <button class=" " id="userMenuBtn">
-                    <div id="userPhoto ">
-                        <img class="imagenPerfil" id="imagenPerfilSecundaria" src="img/sinfoto.jpg" alt="Foto de perfil"
-                            onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
+
+                <div class="dropdown">
+                    <button id="userMenuBtn" style="display: flex; align-items: center;">
+                        <div id="userPhoto ">
+                            <img class="imagenPerfil" id="imagenPerfilSecundaria" src="img/sinfoto.jpg"
+                                alt="Foto de perfil" onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
+
+                        </div>
+                        <h3 id="nombreUsuarioHeader" style="color:white; margin-left:10px;">Usuario <i
+                                class="bi bi-chevron-down"></i> </h3>
+                    </button>
+
+                    <div class="dropdown-menu" id="userMenu">
+                        <a href="/perfil">Perfil</a>
+                        <a href="/perfilEntidad">Empresa</a>
+                        <a href="#" id="cerrarSesion">Cerrar sesión</a>
                     </div>
-
-                </button>
-
-                <div class="dropdown-menu" id="userMenu">
-                    <a href="/perfil">Perfil</a>
-                    <a href="/configuracion">Configuración</a>
-                    <a href="#" id="cerrarSesion">Cerrar sesión</a>
                 </div>
             </div>
+        </div>
+        <nav class="nav">
+            <button class="nav-button pulse" onclick="window.location.href='/helice'" id="inicio">Inicio</button>
+            <button class="nav-button" onclick="window.location.href='/directorio'">Directorio</button>
+
+            <button class="nav-button" onclick="window.location.href='/proyectos'">Proyectos</button>
+            <button class="nav-button" onclick="window.location.href='/innovacion'">Innovación</button>
+
+            <button class="nav-button" onclick="window.location.href='/Conocimiento'">Conocimiento</button>
+            <button class="nav-button" onclick="window.location.href='/convocatorias'">Convocatorias</button>
+
+            <button class="nav-button" onclick="window.location.href='/eventos'">Eventos</button>
+
         </nav>
     </header>
+    <style>
+/* === CONTENEDOR PRINCIPAL === */
+.perfil-content {
+    display: flex;
+    width: 90%;
+    max-width: 1200px;
+    min-height: 70vh;
+    margin: 3rem auto;
+    border-radius: 25px;
+    background: white;
+    overflow: hidden; 
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.12);
+    padding: 0;
+}
 
-    <!-- Contenido principal - Datos Generales -->
+/* === SISTEMA DE DOS COLUMNAS === */
+.perfil-columns {
+    display: grid;
+    grid-template-columns: 40% 60%;
+    width: 100%;
+}
 
-    <div class="welcome-text">
+/* === COLUMNA IZQUIERDA (degradado) === */
+.perfil-column-left {
+    background: linear-gradient(180deg, #1c3d70, #6a8bf8);
+    /* background: var(--secondary-color); */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 0;
+}
 
-        <h1 style="display: none;" id="departamentoPerfilValor"></h1>
-        <h1 style="display: none;" id="ciudadPerfilValor"></h1>
-        <!-- <p class="subtitle">Conectando entidades para potenciar la innovación</p> -->
+.perfil-foto-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.perfil-foto-custom {
+    width: 260px;
+    height: 260px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: white;
+    padding: 10px;
+    box-shadow: 0px 6px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* === COLUMNA DERECHA === */
+.perfil-column-right {
+    background: white;
+    padding: 50px;
+    display: flex;
+    align-items: flex-start;
+}
+
+.perfil-datos-custom {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+#MiNombreCompleto {
+    font-size: 2.2rem;
+    font-weight: bold;
+    color: #222;
+}
+
+#MiPerfilProfesional {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #555;
+    text-align: justify;
+}
+
+/* Caja con datos básicos */
+.perfil-datos-custom > div {
+    background: rgba(193, 198, 255, 0.28);
+    padding: 20px;
+    border-radius: 12px;
+}
+
+.perfil-dato-linea-custom strong {
+    min-width: 150px;
+    display: inline-block;
+    font-weight: 700;
+}
+
+/* Botón */
+.action-button {
+    background: #ff7b00;
+    color: #fff;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    width: fit-content;
+}
+
+.action-button:hover {
+    background: #d46300;
+}
+
+/* === Modal y hoja de vida === */
+#iframeHojaVida {
+    width: 100%;
+    height: 700px;
+    border: none;
+}
+
+/* === Spinner === */
+#page-spinner-overlay {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    background: rgba(255, 255, 255, 0.95);
+    z-index: 99999;
+    transition: opacity .4s ease;
+    -webkit-backdrop-filter: blur(2px);
+    backdrop-filter: blur(2px);
+}
+
+#page-spinner-overlay .spinner {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    border: 6px solid rgba(0, 0, 0, 0.08);
+    border-top-color: #007bff;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+
+    </style>
+ <!-- Spinner -->
+<div id="page-spinner-overlay" aria-hidden="true" role="status" aria-label="Cargando">
+    <div class="spinner"></div>
+    <div class="spinner-text">Cargando...</div>
+</div>
+
+<!-- Bienvenida -->
+<div class="welcome-container" id="welcome-container">
+    <div class="welcome-text" id="welcome-text" style="width: 30vw; text-align: left;">
+        <p>Bienvenido</p>
+        <h3 class="tittle" id="bienvenido"></h3>
     </div>
-    <!--Modal ver Perfil-->
-    <div class="main-content" id="miPerfil">
 
-        <div class="section">
+    <div class="action-buttons" style="width: 40vw;">
+        <button class="action-button" id="perfil">
+            <span><i class="bi bi-pencil-square"></i> Perfil</span>
+        </button>
+    </div>
+</div>
 
-            <!-- Columna izquierda: tabla -->
-            <div class="input-box">
+<!-- PERFIL -->
+<div class="perfil-content">
 
+    <div class="perfil-columns">
 
-                <h2 class="tittle">Datos Generales</h2>
-
-                <table class="table-perfil">
-                    <tr>
-                        <td>
-                            <div id="userPhoto">
-                                <img id="imagenPerfil" src="img/sinfoto.jpg" alt="Foto de perfil"
-                                    onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
-                            </div>
-
-                        </td>
-                        <td id="">
-                            <h3 id="MiNombreCompleto" style="text-transform: capitalize;"></h3>
-                            <div>
-                                <button class="nav-button" id="perfil">
-                                    <span><i class="bi bi-pencil-square"></i> Perfil </span>
-
-                                </button>
-
-                            </div>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td><strong>Perfil Profesional:</strong></td>
-                        <td id="MiPerfilProfesional"></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Teléfono:</strong></td>
-                        <td id="MiTelefono"></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Ubicación:</strong></td>
-                        <td id="MiUbicacion"></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Correo Electrónico:</strong></td>
-                        <td id="MiCorreo"></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Vinculado a:</strong></td>
-                        <td id="MiVinculado"></td>
-                    </tr>
-                </table>
-                <br>
-
-            </div>
-
-            <!-- Columna derecha: PDF -->
-            <div class="input-box">
-                <iframe src="" width="100%" height="700px" style="display:none;"></iframe>
-
+        <!-- COLUMNA IZQUIERDA -->
+        <div class="perfil-column-left">
+            <div class="perfil-foto-container">
+                <img id="imagenPerfilIntegrante"
+                     src="img/sinfoto.jpg"
+                     alt="Foto de perfil"
+                     class="perfil-foto-custom"
+                     onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
             </div>
         </div>
+
+        <!-- COLUMNA DERECHA -->
+        <div class="perfil-column-right">
+            <div class="perfil-datos-custom">
+                <h2 id="MiNombreCompleto" class="tittle" style="text-transform: capitalize;"></h2>
+
+                <span id="MiPerfilProfesional"></span>
+
+                <div>
+                    <p class="perfil-dato-linea-custom"><strong>Teléfono:</strong> <span id="MiTelefono"></span></p>
+                    <p class="perfil-dato-linea-custom"><strong>Ubicación:</strong> <span id="MiUbicacion"></span></p>
+                    <p class="perfil-dato-linea-custom"><strong>Correo Electrónico:</strong> <span id="MiCorreo"></span></p>
+                    <p class="perfil-dato-linea-custom"><strong>Vinculado a:</strong> <span id="MiVinculado"></span></p>
+                </div>
+
+                <button id="btnHojaVida" class="action-button" onclick="abrirModal()" style="display:none;">
+                    Ver Hoja de Vida
+                </button>
+            </div>
+        </div>
+
     </div>
+
+    <!-- Modal Hoja de vida -->
+    <div id="modalHojaVida" class="modal">
+        <div class="modal-content">
+            <div class="perfil-modal-header-custom">
+                <h2 class="title" id="tituloHojaVida">Hoja de Vida</h2>
+                <span class="close" onclick="cerrarModal()">&times;</span>
+            </div>
+
+            <iframe id="iframeHojaVida" src=""></iframe>
+        </div>
+    </div>
+
+</div>
+
+
     <!--Modal Actualizar Perfil-->
     <div id="modalPerfil" class="modal">
         <div class="modal-content" style="max-width:900px;">
@@ -218,7 +385,346 @@
         </div>
 
     </div>
-    </div>
+
+    <script>
+        let hojaVidaURL = ""; // Se llenará dinámicamente
+
+        // Función para abrir el modal
+        function abrirModal() {
+            const modal = document.getElementById("modalHojaVida");
+            const iframe = document.getElementById("iframeHojaVida");
+            const titulo = document.getElementById("tituloHojaVida");
+            const nombre = document.getElementById("MiNombreCompleto").textContent || "";
+
+            if (!hojaVidaURL) return;
+
+            iframe.src = hojaVidaURL;
+            titulo.textContent = nombre ? `Hoja de Vida de ${nombre}` : "Hoja de Vida";
+            modal.style.display = "block";
+        }
+
+        // Función para cerrar el modal
+        function cerrarModal() {
+            const modal = document.getElementById("modalHojaVida");
+            const iframe = document.getElementById("iframeHojaVida");
+            modal.style.display = "none";
+            iframe.src = "";
+        }
+
+        // Cerrar modal al hacer clic fuera
+        window.onclick = function (event) {
+            const modal = document.getElementById("modalHojaVida");
+            if (event.target === modal) {
+                cerrarModal();
+            }
+        };
+
+        // === Cargar información del usuario ===
+        async function cargarPerfilUsuario(userId) {
+            try {
+                const res = await fetch(`/api/user/${userId}`);
+                if (!res.ok) throw new Error('No se pudo obtener el perfil');
+                const data = await res.json();
+
+                document.getElementById('MiNombreCompleto').textContent = data.name || '';
+                document.getElementById('MiPerfilProfesional').textContent = data.perfilProfesional || '';
+                document.getElementById('MiTelefono').textContent = data.telefono || '';
+                document.getElementById('MiUbicacion').textContent =
+                    data.ciudad?.nombre && data.ciudad?.departamento?.nombre
+                        ? `${data.ciudad.nombre} - ${data.ciudad.departamento.nombre}`
+                        : '';
+                document.getElementById('MiCorreo').textContent = data.email || '';
+                document.getElementById("imagenPerfilIntegrante").src =
+                    data.fotoPerfil ? "photo/" + data.fotoPerfil : "photo/sinfoto.jpg";
+
+                // ✅ Mostrar botón solo si existe hoja de vida
+                const btnHoja = document.getElementById("btnHojaVida");
+                if (data.enlaceHojaDeVida && data.enlaceHojaDeVida.trim() !== "") {
+                    hojaVidaURL = "CV/" + data.enlaceHojaDeVida;
+                    btnHoja.style.display = "inline-block";
+                } else {
+                    hojaVidaURL = "";
+                    btnHoja.style.display = "none";
+                }
+
+                // Verificar si hay entidad asociada
+                const entidadRes = await fetch(`/api/entidad/verificar-entidad/${userId}`);
+                if (entidadRes.ok) {
+                    const entidadData = await entidadRes.json();
+                    const entidadNombre = entidadData.success
+                        ? entidadData.entidad.razonSocial
+                        : "Sin entidad asociada";
+                    document.getElementById('MiVinculado').textContent = entidadNombre;
+                }
+
+            } catch (err) {
+                console.error("Error cargando datos de usuario:", err);
+            }
+        }
+
+        // === Cargar al inicio ===
+        document.addEventListener("DOMContentLoaded", () => {
+            const params = new URLSearchParams(window.location.search);
+            const userId = params.get("id");
+            if (userId) {
+                cargarPerfilUsuario(userId);
+            }
+        });
+    </script>
+    <!--Menú desplegables-->
+    <script>
+        const userMenuBtn = document.getElementById("userMenuBtn");
+        const dropdown = userMenuBtn.closest(".dropdown");
+
+        // Mostrar / ocultar el menú al hacer clic
+        userMenuBtn.addEventListener("click", (event) => {
+            event.stopPropagation(); // evita que el clic cierre inmediatamente el menú
+            dropdown.classList.toggle("show");
+        });
+
+        // Cerrar el menú si haces clic fuera
+        document.addEventListener("click", () => {
+            dropdown.classList.remove("show");
+        });
+    </script>
+    <!-- Utilidades-->
+    <script>
+        // =========================
+        // Utilidades
+        // =========================
+        function obtenerCookie(nombre) {
+            const nombreCookie = `${nombre}=`;
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                let cookie = cookies[i].trim();
+                if (cookie.indexOf(nombreCookie) === 0) {
+                    return cookie.substring(nombreCookie.length, cookie.length);
+                }
+            }
+            return null;
+        }
+
+        const userId = obtenerCookie("userId");
+
+        // =========================
+        // Inicialización de usuario (nombre, foto) y carga de proyectos
+        // =========================
+        (async () => {
+            try {
+                // Cargar usuario (para cabecera y foto)
+                const resUser = await fetch(`/api/user/${userId}`);
+                const dataUser = await resUser.json();
+                if (dataUser?.name) {
+
+                    document.getElementById('nombreUsuarioHeader').innerText = ` ${dataUser.name.split(" ")[0]}`;
+                }
+
+                document.getElementById("imagenPerfilSecundaria").src = dataUser.fotoPerfil ? "photo/" + dataUser.fotoPerfil : "photo/sinfoto.jpg";
+
+                if (dataUser?.fotoPerfil) {
+                    const img = document.getElementById('imagenPerfil');
+                    if (img) img.src = dataUser.fotoPerfil;
+                }
+
+                // Determinar entidad y setear input nombreEntidad
+                let entidadId = null;
+                const resUE = await fetch(`/api/usuarioempresa/user/${userId}`);
+                const dataUE = await resUE.json();
+
+                if (Array.isArray(dataUE) && dataUE.length > 0 && dataUE[0].empresa) {
+                    entidadId = dataUE[0].empresa.id;
+                } else {
+                    entidadId = 'null';
+                }
+
+                const inputEntidad = document.getElementById('nombreEntidad');
+                if (inputEntidad) inputEntidad.value = entidadId;
+
+                console.log('Entidad ID seleccionada:', entidadId);
+
+
+            } catch (err) {
+                console.error('Error inicializando la vista:', err);
+            }
+        })();
+
+        // =========================
+        // Cerrar modal de postulaciones
+        // =========================
+        const btnCerrar = document.getElementById('cerrarModalPostulaciones');
+        if (btnCerrar) {
+            btnCerrar.onclick = function () {
+                const modal = document.getElementById('modalPostulaciones');
+                if (modal) modal.style.display = 'none';
+            };
+        }
+
+        // =========================
+        // Helpers para renderizar select de Líder
+        // =========================
+        async function renderLiderEmpresa(empresaId) {
+            const nombreLiderInput = document.getElementById('nombreLider');
+            const correoLiderInput = document.getElementById('correoLider');
+            const telefonoLiderInput = document.getElementById('telefonoLider');
+
+            const selectLider = document.createElement('select');
+            selectLider.id = 'nombreLider';
+            selectLider.name = 'nombreLider';
+            selectLider.required = true;
+
+            const res = await fetch(`/api/usuarioempresa/empresa/${empresaId}`);
+            const data = await res.json();
+
+            (data || []).forEach(item => {
+                const option = document.createElement('option');
+                option.value = item.User.id;
+                option.text = `${item.User.name} (${item.Cargo?.nombre || 'Sin cargo'})`;
+
+                option.dataset.email = item.User.email || '';
+                option.dataset.telefono = item.User.telefono || '';
+                selectLider.appendChild(option);
+            });
+
+            // Seleccionar el primero y actualizar campos
+            if (selectLider.options.length > 0) {
+                const selectedOption = selectLider.options[0];
+                if (correoLiderInput) correoLiderInput.value = selectedOption.dataset.email || '';
+                if (telefonoLiderInput) telefonoLiderInput.value = selectedOption.dataset.telefono || '';
+            } else {
+                if (correoLiderInput) correoLiderInput.value = '';
+                if (telefonoLiderInput) telefonoLiderInput.value = '';
+            }
+
+            // Cambiar correo y teléfono al cambiar líder
+            selectLider.onchange = function () {
+                const selectedOption = selectLider.options[selectLider.selectedIndex];
+                if (correoLiderInput) correoLiderInput.value = selectedOption.dataset.email || '';
+                if (telefonoLiderInput) telefonoLiderInput.value = selectedOption.dataset.telefono || '';
+            };
+
+            if (nombreLiderInput && nombreLiderInput.parentNode) {
+                nombreLiderInput.parentNode.replaceChild(selectLider, nombreLiderInput);
+            } else {
+                // Si no existe el input a reemplazar, intenta anexar en un contenedor conocido
+                const cont = document.getElementById('contenedorLider') || document.body;
+                cont.appendChild(selectLider);
+            }
+        }
+
+        async function renderLiderIndependiente() {
+            const nombreLiderInput = document.getElementById('nombreLider');
+            const correoLiderInput = document.getElementById('correoLider');
+            const telefonoLiderInput = document.getElementById('telefonoLider');
+
+            const selectLider = document.createElement('select');
+            selectLider.id = 'nombreLider';
+            selectLider.name = 'nombreLider';
+            selectLider.required = true;
+
+            const uid = obtenerCookie("userId");
+            const resUser = await fetch(`/api/user/${uid}`);
+            const user = await resUser.json();
+
+            const optionUsuario = document.createElement('option');
+            optionUsuario.value = uid;
+
+            // Tomar nombre desde #bienvenido si existe ("Hola Nombre")
+
+            optionUsuario.dataset.name = user.name || '';
+            optionUsuario.dataset.email = user.email || '';
+            optionUsuario.dataset.telefono = user.telefono || '';
+            selectLider.appendChild(optionUsuario);
+            optionUsuario.text = user.name || 'Usuario Actual';
+
+            // Rellenar inputs con datos del usuario
+            if (nombreLiderInput) nombreLiderInput.value = user.name || '';
+            if (correoLiderInput) correoLiderInput.value = user.email || '';
+            if (telefonoLiderInput) telefonoLiderInput.value = user.telefono || '';
+
+            // Listener (aunque solo haya uno)
+            selectLider.onchange = function () {
+
+                const selectedOption = selectLider.options[selectLider.selectedIndex];
+                if (correoLiderInput) correoLiderInput.value = selectedOption.dataset.email || '';
+                if (telefonoLiderInput) telefonoLiderInput.value = selectedOption.dataset.telefono || '';
+            };
+
+            if (nombreLiderInput && nombreLiderInput.parentNode) {
+                nombreLiderInput.parentNode.replaceChild(selectLider, nombreLiderInput);
+            } else {
+                const cont = document.getElementById('contenedorLider') || document.body;
+                cont.appendChild(selectLider);
+            }
+        }
+
+        // =========================
+        // Listeners de cambio
+        // =========================
+        // Cambiar líderes al cambiar el select de entidad (nombreEntidad)
+        document.addEventListener('change', async function (e) {
+            if (e.target && e.target.id === 'nombreEntidad') {
+                const empresaId = e.target.value;
+                if (empresaId && empresaId !== "null") {
+                    await renderLiderEmpresa(empresaId);
+                } else {
+                    await renderLiderIndependiente();
+                }
+            }
+        });
+
+        // Cambiar correo y teléfono al cambiar líder (nombreLider), incluso si no cambia la entidad
+        document.addEventListener('change', function (e) {
+            if (e.target && e.target.id === 'nombreLider') {
+                const selectedOption = e.target.options[e.target.selectedIndex];
+                const correoLiderInput = document.getElementById('correoLider');
+                const telefonoLiderInput = document.getElementById('telefonoLider');
+                if (correoLiderInput) correoLiderInput.value = selectedOption.dataset.email || '';
+                if (telefonoLiderInput) telefonoLiderInput.value = selectedOption.dataset.telefono || '';
+            }
+        });
+
+        // =========================
+        // (Opcional) Si deseas forzar que al inicio se renderice el líder acorde al valor cargado de nombreEntidad
+        // =========================
+        window.addEventListener('DOMContentLoaded', async () => {
+            const inputEntidad = document.getElementById('nombreEntidad');
+            if (inputEntidad) {
+                if (inputEntidad.value && inputEntidad.value !== 'null') {
+                    await renderLiderEmpresa(inputEntidad.value);
+                } else {
+                    await renderLiderIndependiente();
+                }
+            }
+        });
+    </script>
+    <script>
+        (function () {
+            // Garantiza que el overlay permanezca al menos 5s desde que se ejecuta este script.
+            const MIN_MS = 3000;
+            const overlay = document.getElementById('page-spinner-overlay');
+            if (!overlay) return;
+
+            // Si ya pasó más de MIN_MS desde la navegación start, aun así mostramos el overlay breve
+            const start = performance.timing ? performance.timing.navigationStart : Date.now();
+            const now = Date.now();
+            const elapsed = Math.max(0, now - start);
+            const remaining = Math.max(0, MIN_MS - elapsed);
+
+            // Evita interacción mientras existe el overlay
+            document.documentElement.style.overflow = 'hidden';
+            document.body.style.overflow = 'hidden';
+
+            setTimeout(() => {
+                overlay.style.opacity = '0';
+                // permitir scroll cuando hide completo
+                setTimeout(() => {
+                    if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
+                    document.documentElement.style.overflow = '';
+                    document.body.style.overflow = '';
+                }, 420);
+            }, remaining);
+        })();
+    </script>
     <!--Cargar Datos mi Perfil-->
     <script>
 
@@ -230,16 +736,8 @@
                 const res = await fetch(`/api/user/${userId}`);
                 if (!res.ok) throw new Error('No se pudo obtener el perfil');
                 const data = await res.json();
-                console.log(data);
-                // Coloca los datos en los elementos correspondientes
-                document.getElementById('MiNombreCompleto').textContent = data.name || '';
-                document.getElementById('MiPerfilProfesional').textContent = data.perfilProfesional || '';
-                document.getElementById('MiTelefono').textContent = data.telefono || '';
-                document.getElementById('MiUbicacion').textContent = data.ciudad.nombre + ' - ' + data.ciudad.departamento.nombre || '';
-                document.getElementById('MiCorreo').textContent = data.email || '';
-
-                document.getElementById("imagenPerfilSecundaria").src = data.fotoPerfil ? "photo/" + data.fotoPerfil : "photo/sinfoto.jpg";
-                document.getElementById("imagenPerfil").src = data.fotoPerfil ? "photo/" + data.fotoPerfil : "photo/sinfoto.jpg";
+                console.log("DATOS DEL USUARIO",data);
+ 
 
                 // Cargar Datos para actualizar Perfil
 
@@ -318,48 +816,7 @@
         // Llama a la función al cargar la página
         window.addEventListener('DOMContentLoaded', cargarDatosMiPerfil);
     </script>
-    </div>
-    <!--Menú desplegable -->
-    <script>
-        const userMenuBtn = document.getElementById("userMenuBtn");
-        const dropdown = userMenuBtn.closest(".dropdown");
 
-        // Mostrar / ocultar el menú al hacer clic
-        userMenuBtn.addEventListener("click", (event) => {
-            event.stopPropagation(); // evita que el clic cierre inmediatamente el menú
-            dropdown.classList.toggle("show");
-        });
-
-        // Cerrar el menú si haces clic fuera
-        document.addEventListener("click", () => {
-            dropdown.classList.remove("show");
-        });
-    </script>
-    <!--Cerrar Sesion -->
-    <script>
-        document.getElementById("cerrarSesion").addEventListener("click", () => {
-            Swal.fire({
-                title: '¿Estás seguro?',
-                text: '¿Querés cerrar sesión?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Sí, cerrar sesión',
-                cancelButtonText: 'Cancelar',
-                reverseButtons: true
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Borrar cookies y redirigir
-                    document.cookie = 'jwt=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-                    document.cookie = 'user=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-                    document.cookie = 'userId=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-                    document.location.href = "/";
-
-                }
-                // Si el usuario cancela, no pasa nada
-            });
-        });
-
-    </script>
     <!--Modal Actualizar Perfil-->
     <script>
 
@@ -533,13 +990,32 @@
             cargarCiudadesPerfil(this.value);
         };
     </script>
+    <!--Cerrar Sesion -->
+    <script>
+        document.getElementById("cerrarSesion").addEventListener("click", () => {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: '¿Querés cerrar sesión?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, cerrar sesión',
+                cancelButtonText: 'Cancelar',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Borrar cookies y redirigir
+                    document.cookie = 'jwt=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+                    document.cookie = 'user=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+                    document.cookie = 'userId=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+                    document.location.href = "/";
 
+                }
+                // Si el usuario cancela, no pasa nada
+            });
+        });
+
+    </script>
     <script src="js/notificaciones.js"></script>
     <script src="/js/websocket.js"></script>
-
-    <!-- <script src="/js/cargarProyectos.js"></script> -->
-
-
+    <script src="/js/config.js"></script>
 </body>
-
-</html>
