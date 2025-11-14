@@ -96,6 +96,7 @@ document.getElementById("cerrarModal").addEventListener("click", () => {
 
 })
 document.getElementById("cerrarModalBtn").addEventListener("click", () => {
+  console.log("cerrarModalBtn")
   document.getElementById('myModal').style.display = 'none';
   overlay.style.display = 'none'; // Ocultar overlay
 
@@ -170,7 +171,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     console.log(data);
     if (data.success && data.entidad && data.entidad.UserAdminId) {
       idEntidad = data.entidad.id;
-
+     document.getElementById("habilitarMiEmpresa").style.display = "block"
       const estado = data.entidad.habilitado == 1 ? "Estado: Activo" : "Estamos Confirmando Tu Información.";
       document.getElementById("crearEntidad").style.display = "none";
       document.getElementById("editarEntidad").style.display = data.entidad.habilitado == 1 ? "block" : "none";
@@ -192,6 +193,9 @@ document.addEventListener("DOMContentLoaded", async function () {
       console.log(usuarioData)
 
       if (usuarioData.length > 0) {
+        if (usuarioData[0].estado == 1) {
+        document.getElementById("habilitarMiEmpresa").style.display = "block";
+        }
         const estado = usuarioData[0].estado == 1 ? "Estado: Activo" : "Estamos Confirmando Tu Información. ";
         document.getElementById('bienvenido').innerText =
           `${nombreUsuario} - ${usuarioData[0].Cargo.nombre} de ${usuarioData[0].empresa.razonSocial}.\n`;
