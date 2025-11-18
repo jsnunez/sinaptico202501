@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
 document.getElementById("cerrarSesion").addEventListener("click", () => {
   Swal.fire({
     title: '¿Estás seguro?',
-    text: '¿Querés cerrar sesión?',
+    text: '¿Quieres cerrar sesión?',
     icon: 'warning',
     showCancelButton: true,
     confirmButtonText: 'Sí, cerrar sesión',
