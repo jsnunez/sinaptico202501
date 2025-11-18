@@ -451,7 +451,7 @@
                     </button>
 
                     <div class="dropdown-menu" id="userMenu">
-                        <a href="/perfil">Perfil</a>
+                        <a class="perfilUser" id="perfilUser">Perfil</a>
                         <a href="/miEntidad" id="habilitarMiEmpresa">Empresa</a>
                         <a href="#" id="cerrarSesion">Cerrar sesión</a>
                     </div>
@@ -1162,13 +1162,13 @@
         document.addEventListener('DOMContentLoaded', async () => {
             // Obtener el ID del usuario desde las cookies
             const userId = obtenerCookie("userId");
-            
+
             // Obtener el ID de la entidad asociada al usuario
             let idEntidad = null;
             try {
                 const userEntityResponse = await fetch(`/api/usuarioempresa/user/${userId}`);
                 const userEntityData = await userEntityResponse.json();
-                
+
                 if (userEntityData && userEntityData.length > 0) {
                     // Buscar la entidad activa del usuario
                     const activeEntity = userEntityData.find(ue => ue.estado === true);
@@ -1279,56 +1279,56 @@
                         fotoPerfil: item.User?.fotoPerfil || 'sinfoto.jpg'
                     }));
 
-          // Construir tarjetas
-const container = document.getElementById('integrantesAsociados');
-container.innerHTML = '';
+                // Construir tarjetas
+                const container = document.getElementById('integrantesAsociados');
+                container.innerHTML = '';
 
-// 🔥 Cantidad de veces a duplicar
-const multiplicar = 4;
+                // 🔥 Cantidad de veces a duplicar
+                const multiplicar = 4;
 
-// Repetir el set completo 4 veces
-for (let x = 0; x < multiplicar; x++) {
-    integrantes.forEach(i => container.appendChild(crearTarjeta(i)));
-}
+                // Repetir el set completo 4 veces
+                for (let x = 0; x < multiplicar; x++) {
+                    integrantes.forEach(i => container.appendChild(crearTarjeta(i)));
+                }
 
-// Animación infinita
-let isHovering = false;
-let currentOffset = 0;
-const speedNormal = 0.5;
-const speedHover = 0.1;
+                // Animación infinita
+                let isHovering = false;
+                let currentOffset = 0;
+                const speedNormal = 0.5;
+                const speedHover = 0.1;
 
-let totalWidth = 0;
+                let totalWidth = 0;
 
-requestAnimationFrame(() => {
-    totalWidth = container.scrollWidth / multiplicar; 
-});
+                requestAnimationFrame(() => {
+                    totalWidth = container.scrollWidth / multiplicar;
+                });
 
-function animate() {
-    const speed = isHovering ? speedHover : speedNormal;
-    currentOffset -= speed;
+                function animate() {
+                    const speed = isHovering ? speedHover : speedNormal;
+                    currentOffset -= speed;
 
-    if (Math.abs(currentOffset) >= totalWidth) {
-        currentOffset = 0;
-    }
+                    if (Math.abs(currentOffset) >= totalWidth) {
+                        currentOffset = 0;
+                    }
 
-    container.style.transform = `translateX(${currentOffset}px)`;
-    requestAnimationFrame(animate);
-}
+                    container.style.transform = `translateX(${currentOffset}px)`;
+                    requestAnimationFrame(animate);
+                }
 
-requestAnimationFrame(animate);
+                requestAnimationFrame(animate);
 
-// Hover
-container.addEventListener('mouseenter', () => isHovering = true);
-container.addEventListener('mouseleave', () => isHovering = false);
+                // Hover
+                container.addEventListener('mouseenter', () => isHovering = true);
+                container.addEventListener('mouseleave', () => isHovering = false);
 
-// Botones
-const btnPrev = document.querySelector('.btn-carrusel.prev');
-const btnNext = document.querySelector('.btn-carrusel.next');
+                // Botones
+                const btnPrev = document.querySelector('.btn-carrusel.prev');
+                const btnNext = document.querySelector('.btn-carrusel.next');
 
-if (btnPrev && btnNext) {
-    btnPrev.addEventListener('click', () => { currentOffset += 150; });
-    btnNext.addEventListener('click', () => { currentOffset -= 150; });
-}
+                if (btnPrev && btnNext) {
+                    btnPrev.addEventListener('click', () => { currentOffset += 150; });
+                    btnNext.addEventListener('click', () => { currentOffset -= 150; });
+                }
             } catch (error) {
                 console.error('Error al obtener integrantes:', error);
                 document.getElementById('integrantesAsociados').innerHTML = 'Error al cargar integrantes.';
@@ -1463,6 +1463,14 @@ if (btnPrev && btnNext) {
         document.addEventListener("click", () => {
             dropdown.classList.remove("show");
         });
+        document.addEventListener('click', function (e) {
+            const perfil = e.target.closest('.perfilUser, #Perfil');
+            if (perfil) {
+                const userId = obtenerCookie("userId");
+                window.location.href = `/perfilUser?id=${userId}`;
+            }
+        });
+
     </script>
 
     <!-- Obtener departamentos y ciudades -->

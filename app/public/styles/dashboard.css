@@ -1451,7 +1451,7 @@ form {
 
 /* Hover de los enlaces */
 .dropdown-menu a:hover {
-  background: var(--select-btn, rgba(71, 10, 240, 0.25));
+  background: var(--blue, rgba(71, 10, 240, 0.25));
 
 }
 
