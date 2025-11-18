@@ -1272,6 +1272,7 @@
     <script src="js/notificaciones.js"></script>
     <script src="/js/websocket.js"></script>
     <script src="js/enviarInvitacion.js"></script>
+    <script src="/js/menu.js"></script>
 
 
     <!-- Mis contactos -->
@@ -1468,17 +1469,6 @@
 
     </script>
 
-    <!-- En construcción -->
-    <script>
-        function irEnConstruccion() {
-            window.location.href = "/construccion"; // o la ruta que tengas
-        }
-        fetchChallengeCount();
-        fetchEntidadesCount();
-        fetchUserCount();
-
-    </script>
-
     <!-- Modal foto de perfil -->
     <script>
         // Abrir modal al hacer clic en la foto de usuario
@@ -1576,35 +1566,6 @@
         };
 
     </script>
-
-    <!-- Menú desplegable -->
-    <script>
-        const userMenuBtn = document.getElementById("userMenuBtn");
-        const dropdown = userMenuBtn.closest(".dropdown");
-
-        // Mostrar / ocultar el menú al hacer clic
-        userMenuBtn.addEventListener("click", (event) => {
-            event.stopPropagation(); // evita que el clic cierre inmediatamente el menú
-            dropdown.classList.toggle("show");
-        });
-
-        // Cerrar el menú si haces clic fuera
-        document.addEventListener("click", () => {
-            dropdown.classList.remove("show");
-        });
-
-
-        document.addEventListener('click', function (e) {
-            const perfil = e.target.closest('.perfilUser, #Perfil');
-            if (perfil) {
-                const userId = obtenerCookie("userId");
-                window.location.href = `/perfilUser?id=${userId}`;
-            }
-        });
-
-
-    </script>
-
     <!-- Obtener departamentos y ciudades -->
     <script>
         // Función para obtener departamentos desde la API
@@ -1727,35 +1688,6 @@
             font-weight: 500;
         }
     </style>
-
-    <script>
-        (function () {
-            // Garantiza que el overlay permanezca al menos 5s desde que se ejecuta este script.
-            const MIN_MS = 2000;
-            const overlay = document.getElementById('page-spinner-overlay');
-            if (!overlay) return;
-
-            // Si ya pasó más de MIN_MS desde la navegación start, aun así mostramos el overlay breve
-            const start = performance.timing ? performance.timing.navigationStart : Date.now();
-            const now = Date.now();
-            const elapsed = Math.max(0, now - start);
-            const remaining = Math.max(0, MIN_MS - elapsed);
-
-            // Evita interacción mientras existe el overlay
-            document.documentElement.style.overflow = 'hidden';
-            document.body.style.overflow = 'hidden';
-
-            setTimeout(() => {
-                overlay.style.opacity = '0';
-                // permitir scroll cuando hide completo
-                setTimeout(() => {
-                    if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
-                    document.documentElement.style.overflow = '';
-                    document.body.style.overflow = '';
-                }, 420);
-            }, remaining);
-        })();
-    </script>
 
     <!-- En Directorio -->
     <script>
