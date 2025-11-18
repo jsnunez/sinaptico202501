@@ -88,6 +88,7 @@
 
 
   </div>
+
   <!-- Crear nueva idea PPI-->
   <div id="modalPostulaciones" class="modal">
     <div class="modal-content" style="max-width:900px;">
@@ -335,6 +336,35 @@
             </div> -->
     </div>
   </div>
+
+  <!-- Estadísticas -->
+  <div class="main-content">
+    <div class="stats-grid">
+
+      <div class="stat-card presentados">
+        <div class="stat-icon"></div>
+        <div class="stat-number">75</div>
+        <div class="stat-label">Proyectos Totales</div>
+      </div>
+      <div class="stat-card aprobados">
+        <div class="stat-icon"></div>
+        <div class="stat-number">30</div>
+        <div class="stat-label">Proyectos Aplicados</div>
+      </div>
+
+      <div class="stat-card evaluacion">
+        <div class="stat-icon"></div>
+        <div class="stat-number">25</div>
+        <div class="stat-label">En Evaluación</div>
+      </div>
+
+      <div class="stat-card comite">
+        <div class="stat-icon"></div>
+        <div class="stat-number">20</div>
+        <div class="stat-label">Ejecutados</div>
+      </div>
+    </div>
+  </div>
   <!-- Mis Proyectos -->
   <div class="main-content">
     <div style="display: flex;   justify-content: space-between;">
@@ -489,7 +519,7 @@
 
         const tituloProyectos = document.getElementById('misProyectos');
         if (tituloProyectos && dataUser?.name) {
-          tituloProyectos.innerText = `Proyectos de apliacados a CRCI`;
+          tituloProyectos.innerText = `Proyectos de postulados a CRCI`;
         }
         document.getElementById("imagenPerfilSecundaria").src = dataUser.fotoPerfil ? "photo/" + dataUser.fotoPerfil : "photo/sinfoto.jpg";
 
@@ -1069,73 +1099,73 @@
       });
     }
   </script>
-<script>
-  // =========================
-  // 🔹 Variables globales
-  // =========================
-  let proyectosCargados = [];
-  let listaFiltrada = [];
-  let paginaActual = 1;
-  const itemsPorPagina = 5;
-  let entidadId = null;
+  <script>
+    // =========================
+    // 🔹 Variables globales
+    // =========================
+    let proyectosCargados = [];
+    let listaFiltrada = [];
+    let paginaActual = 1;
+    const itemsPorPagina = 5;
+    let entidadId = null;
 
-  // =========================
-  // 🔹 Inicialización
-  // =========================
-  document.addEventListener("DOMContentLoaded", async () => {
-    try {
-      const resUE = await fetch(`/api/usuarioempresa/user/${userId}`);
-      const dataUE = await resUE.json();
+    // =========================
+    // 🔹 Inicialización
+    // =========================
+    document.addEventListener("DOMContentLoaded", async () => {
+      try {
+        const resUE = await fetch(`/api/usuarioempresa/user/${userId}`);
+        const dataUE = await resUE.json();
 
-      entidadId = (Array.isArray(dataUE) && dataUE[0]?.empresa?.id) ? dataUE[0].empresa.id : 'null';
-      console.log('Entidad ID seleccionada:', entidadId);
+        entidadId = (Array.isArray(dataUE) && dataUE[0]?.empresa?.id) ? dataUE[0].empresa.id : 'null';
+        console.log('Entidad ID seleccionada:', entidadId);
 
-      await cargarProyectos(); // Cargar proyectos
-    } catch (error) {
-      console.error("❌ Error inicializando:", error);
+        await cargarProyectos(); // Cargar proyectos
+      } catch (error) {
+        console.error("❌ Error inicializando:", error);
+      }
+    });
+
+    // =========================
+    // 🔹 Cargar proyectos
+    // =========================
+    async function cargarProyectos() {
+      try {
+        const resProy = await fetch(`/api/aliados-proyectos-aplicados/postulado/1`);
+        const dataProy = await resProy.json();
+
+        proyectosCargados = Array.isArray(dataProy) ? dataProy : [];
+        console.log("✅ Proyectos cargados:", proyectosCargados);
+
+        listaFiltrada = [...proyectosCargados];
+        paginaActual = 1;
+        renderizarPagina();
+        llenarFiltros(proyectosCargados);
+      } catch (err) {
+        console.error("❌ Error cargando proyectos:", err);
+      }
     }
-  });
 
-  // =========================
-  // 🔹 Cargar proyectos
-  // =========================
-  async function cargarProyectos() {
-    try {
-      const resProy = await fetch(`/api/aliados-proyectos-aplicados/postulado/1`);
-      const dataProy = await resProy.json();
+    // =========================
+    // 🔹 Renderizar tabla
+    // =========================
+    function mostrarProyectos(lista) {
+      const tbody = document.getElementById('cuerpoTablaPostulaciones');
+      if (!tbody) return;
 
-      proyectosCargados = Array.isArray(dataProy) ? dataProy : [];
-      console.log("✅ Proyectos cargados:", proyectosCargados);
+      tbody.innerHTML = '';
 
-      listaFiltrada = [...proyectosCargados];
-      paginaActual = 1;
-      renderizarPagina();
-      llenarFiltros(proyectosCargados);
-    } catch (err) {
-      console.error("❌ Error cargando proyectos:", err);
-    }
-  }
-
-  // =========================
-  // 🔹 Renderizar tabla
-  // =========================
-  function mostrarProyectos(lista) {
-    const tbody = document.getElementById('cuerpoTablaPostulaciones');
-    if (!tbody) return;
-
-    tbody.innerHTML = '';
-
-    if (!lista.length) {
-      tbody.innerHTML = `
+      if (!lista.length) {
+        tbody.innerHTML = `
         <tr>
           <td colspan="9" style="text-align:center; color:#777;">No hay proyectos encontrados</td>
         </tr>`;
-      return;
-    }
+        return;
+      }
 
-    lista.forEach(p => {
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
+      lista.forEach(p => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
         <td>${p.proyecto?.id || ''}</td>
         <td>${p.proyecto?.nombrePPI || ''}</td>
         <td>${p.proyecto?.objetivo || ''}</td>
@@ -1154,126 +1184,126 @@
           </button>
         </td>
       `;
-      tbody.appendChild(tr);
-    });
-  }
+        tbody.appendChild(tr);
+      });
+    }
 
-  // =========================
-  // 🔹 Llenar filtros
-  // =========================
-  function llenarFiltros(data) {
-    console.log("Llenar filtros con:", data);
+    // =========================
+    // 🔹 Llenar filtros
+    // =========================
+    function llenarFiltros(data) {
+      console.log("Llenar filtros con:", data);
 
-    const duracionSelect = document.getElementById('filter-duracionPPI');
-    const responsableSelect = document.getElementById('filter-responsable');
-    const estadoSelect = document.getElementById('filter-estado');
+      const duracionSelect = document.getElementById('filter-duracionPPI');
+      const responsableSelect = document.getElementById('filter-responsable');
+      const estadoSelect = document.getElementById('filter-estado');
 
-    // Limpiar opciones
-    responsableSelect.innerHTML = '<option value="">Todos los responsables</option>';
-    estadoSelect.innerHTML = '<option value="">Selecciona la fase</option>';
-    duracionSelect.innerHTML = '<option value="">Selecciona la duración</option>';
+      // Limpiar opciones
+      responsableSelect.innerHTML = '<option value="">Todos los responsables</option>';
+      estadoSelect.innerHTML = '<option value="">Selecciona la fase</option>';
+      duracionSelect.innerHTML = '<option value="">Selecciona la duración</option>';
 
-    // Extraer datos únicos
-    const responsables = [...new Set(data.map(p => p.proyecto?.usuarioLider?.name || "Sin responsable"))];
-    const estados = [...new Set(data.map(p => p.proyecto?.fasePPI).filter(Boolean))];
-    const duraciones = [...new Set(data.map(p => p.proyecto?.duracionPPI).filter(Boolean))];
+      // Extraer datos únicos
+      const responsables = [...new Set(data.map(p => p.proyecto?.usuarioLider?.name || "Sin responsable"))];
+      const estados = [...new Set(data.map(p => p.proyecto?.fasePPI).filter(Boolean))];
+      const duraciones = [...new Set(data.map(p => p.proyecto?.duracionPPI).filter(Boolean))];
 
-    // Agregar opciones al select
-    responsables.forEach(r => responsableSelect.insertAdjacentHTML('beforeend', `<option value="${r}">${r}</option>`));
-    estados.forEach(e => estadoSelect.insertAdjacentHTML('beforeend', `<option value="${e}">${e}</option>`));
-    duraciones.forEach(d => duracionSelect.insertAdjacentHTML('beforeend', `<option value="${d}">${d}</option>`));
-  }
+      // Agregar opciones al select
+      responsables.forEach(r => responsableSelect.insertAdjacentHTML('beforeend', `<option value="${r}">${r}</option>`));
+      estados.forEach(e => estadoSelect.insertAdjacentHTML('beforeend', `<option value="${e}">${e}</option>`));
+      duraciones.forEach(d => duracionSelect.insertAdjacentHTML('beforeend', `<option value="${d}">${d}</option>`));
+    }
 
-  // =========================
-  // 🔹 Filtros
-  // =========================
-  function aplicarFiltros() {
-    const texto = document.getElementById('buscarMisProyectos').value.toLowerCase();
-    const responsable = document.getElementById('filter-responsable').value;
-    const estado = document.getElementById('filter-estado').value;
-    const duracionPPI = document.getElementById('filter-duracionPPI').value;
+    // =========================
+    // 🔹 Filtros
+    // =========================
+    function aplicarFiltros() {
+      const texto = document.getElementById('buscarMisProyectos').value.toLowerCase();
+      const responsable = document.getElementById('filter-responsable').value;
+      const estado = document.getElementById('filter-estado').value;
+      const duracionPPI = document.getElementById('filter-duracionPPI').value;
 
-    listaFiltrada = proyectosCargados.filter(p => {
-      const nombre = p.proyecto?.nombrePPI?.toLowerCase() || '';
-      const objetivo = p.proyecto?.objetivo?.toLowerCase() || '';
-      const entidad = p.proyecto?.entidad?.razonSocial?.toLowerCase() || '';
+      listaFiltrada = proyectosCargados.filter(p => {
+        const nombre = p.proyecto?.nombrePPI?.toLowerCase() || '';
+        const objetivo = p.proyecto?.objetivo?.toLowerCase() || '';
+        const entidad = p.proyecto?.entidad?.razonSocial?.toLowerCase() || '';
 
-      const coincideTexto = !texto || nombre.includes(texto) || objetivo.includes(texto) || entidad.includes(texto);
-      const coincideResponsable = !responsable || p.proyecto?.usuarioLider?.name === responsable;
-      const coincideEstado = !estado || p.proyecto?.fasePPI === estado;
-      const coincideDuracion = !duracionPPI || p.proyecto?.duracionPPI === duracionPPI;
+        const coincideTexto = !texto || nombre.includes(texto) || objetivo.includes(texto) || entidad.includes(texto);
+        const coincideResponsable = !responsable || p.proyecto?.usuarioLider?.name === responsable;
+        const coincideEstado = !estado || p.proyecto?.fasePPI === estado;
+        const coincideDuracion = !duracionPPI || p.proyecto?.duracionPPI === duracionPPI;
 
-      return coincideTexto && coincideResponsable && coincideEstado && coincideDuracion;
-    });
+        return coincideTexto && coincideResponsable && coincideEstado && coincideDuracion;
+      });
 
-    console.log("📊 Filtrados:", listaFiltrada);
+      console.log("📊 Filtrados:", listaFiltrada);
 
-    paginaActual = 1;
-    renderizarPagina();
-  }
+      paginaActual = 1;
+      renderizarPagina();
+    }
 
-  // =========================
-  // 🔹 Paginación
-  // =========================
-  function mostrarPaginador(lista) {
-    const paginadorDiv = document.getElementById('paginador');
-    if (!paginadorDiv) return;
+    // =========================
+    // 🔹 Paginación
+    // =========================
+    function mostrarPaginador(lista) {
+      const paginadorDiv = document.getElementById('paginador');
+      if (!paginadorDiv) return;
 
-    const totalPaginas = Math.ceil(lista.length / itemsPorPagina);
+      const totalPaginas = Math.ceil(lista.length / itemsPorPagina);
 
-    let botones = '';
-    for (let i = 1; i <= totalPaginas; i++) {
-      botones += `
+      let botones = '';
+      for (let i = 1; i <= totalPaginas; i++) {
+        botones += `
         <button 
           class="btn-pagina ${i === paginaActual ? 'activo' : ''}" 
           onclick="cambiarPagina(${i})">
           ${i}
         </button>`;
-    }
+      }
 
-    paginadorDiv.innerHTML = `
+      paginadorDiv.innerHTML = `
       <button class="btn-pagina" onclick="cambiarPagina(${paginaActual - 1})" ${paginaActual === 1 ? 'disabled' : ''}>« Anterior</button>
       ${botones}
       <button class="btn-pagina" onclick="cambiarPagina(${paginaActual + 1})" ${paginaActual === totalPaginas ? 'disabled' : ''}>Siguiente »</button>
     `;
-  }
+    }
 
-  function cambiarPagina(nuevaPagina) {
-    const totalPaginas = Math.ceil(listaFiltrada.length / itemsPorPagina);
-    if (nuevaPagina < 1 || nuevaPagina > totalPaginas) return;
-    paginaActual = nuevaPagina;
-    renderizarPagina();
-  }
+    function cambiarPagina(nuevaPagina) {
+      const totalPaginas = Math.ceil(listaFiltrada.length / itemsPorPagina);
+      if (nuevaPagina < 1 || nuevaPagina > totalPaginas) return;
+      paginaActual = nuevaPagina;
+      renderizarPagina();
+    }
 
-  function renderizarPagina() {
-    const inicio = (paginaActual - 1) * itemsPorPagina;
-    const fin = inicio + itemsPorPagina;
-    const pagina = listaFiltrada.slice(inicio, fin);
+    function renderizarPagina() {
+      const inicio = (paginaActual - 1) * itemsPorPagina;
+      const fin = inicio + itemsPorPagina;
+      const pagina = listaFiltrada.slice(inicio, fin);
 
-    mostrarProyectos(pagina);
-    mostrarPaginador(listaFiltrada);
-  }
+      mostrarProyectos(pagina);
+      mostrarPaginador(listaFiltrada);
+    }
 
-  // =========================
-  // 🔹 Eventos de filtros
-  // =========================
-  document.getElementById('buscarMisProyectos').addEventListener('input', aplicarFiltros);
-  document.getElementById('filter-responsable').addEventListener('change', aplicarFiltros);
-  document.getElementById('filter-estado').addEventListener('change', aplicarFiltros);
-  document.getElementById('filter-duracionPPI').addEventListener('change', aplicarFiltros);
+    // =========================
+    // 🔹 Eventos de filtros
+    // =========================
+    document.getElementById('buscarMisProyectos').addEventListener('input', aplicarFiltros);
+    document.getElementById('filter-responsable').addEventListener('change', aplicarFiltros);
+    document.getElementById('filter-estado').addEventListener('change', aplicarFiltros);
+    document.getElementById('filter-duracionPPI').addEventListener('change', aplicarFiltros);
 
-  // 🔹 Botón limpiar
-  document.getElementById('filter-misIdeas').addEventListener('click', () => {
-    document.getElementById('buscarMisProyectos').value = '';
-    document.getElementById('filter-responsable').value = '';
-    document.getElementById('filter-estado').value = '';
-    document.getElementById('filter-duracionPPI').value = '';
+    // 🔹 Botón limpiar
+    document.getElementById('filter-misIdeas').addEventListener('click', () => {
+      document.getElementById('buscarMisProyectos').value = '';
+      document.getElementById('filter-responsable').value = '';
+      document.getElementById('filter-estado').value = '';
+      document.getElementById('filter-duracionPPI').value = '';
 
-    listaFiltrada = [...proyectosCargados];
-    paginaActual = 1;
-    renderizarPagina();
-  });
-</script>
+      listaFiltrada = [...proyectosCargados];
+      paginaActual = 1;
+      renderizarPagina();
+    });
+  </script>
 
 
 </body>
