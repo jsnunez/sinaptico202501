@@ -74,7 +74,7 @@
   <!-- Mis Proyectos -->
   <div class="main-content">
     <div style="display: flex;   justify-content: space-between;">
-      <h2 class="title" id="misProyectos">Proyectos de </h2>
+      <h2 class="title" id="proyectosAprobados">Proyectos Aprobados CRCI </h2>
       </h2>
 
     </div>
@@ -125,7 +125,7 @@
           <th>Duración</th>
           <th>Estado</th>
           <th>Ver</th>
-          <th>Acciones</th>
+        
         </tr>
       </thead>
       <tbody id="cuerpoTablaPostulaciones">
@@ -140,279 +140,8 @@
   </div>
 
 
-  <div class="container">
-        <!-- Header -->
-        <div class="header">
-            <h1>📊 Proyectos Aprobados</h1>
-            <p>Visualización de Proyectos de Innovación Aprobados</p>
-        </div>
-        
-        <!-- Estadísticas -->
-        <div class="stats-grid">            
-            <div class="stat-card aprobados">
-                <div class="stat-icon">✅</div>
-                <div class="stat-number">15</div>
-                <div class="stat-label">Proyectos Aprobados</div>
-            </div>
-            
-            <div class="stat-card presentados">
-                <div class="stat-icon">💲</div>
-                <div class="stat-number">$2.5B</div>
-                <div class="stat-label">Presupuesto Total</div>
-            </div>
-            
-            <div class="stat-card evaluacion">
-                <div class="stat-icon">⏱️</div>
-                <div class="stat-number">8.2</div>
-                <div class="stat-label">Duración Promedio (meses)</div>
-            </div>
-            
-            <div class="stat-card comite">
-                <div class="stat-icon">🏆</div>
-                <div class="stat-number">4.3</div>
-                <div class="stat-label">Puntuación Promedio</div>
-            </div>
-        </div>
-        
-        <!-- Controles -->
-        <div class="controls-section">
-            <div class="controls-header">
-                <h3>🔧 Proyectos Aprobados</h3>
-                <button id="btnPresentarProyecto" class="btn btn-success">+ Presentar Proyecto</button>
-            </div>
-            
-            <div class="filters">
-                <div class="filter-group">
-                    <label>Buscar:</label>
-                    <input type="text" id="buscarProyecto" placeholder="Título, ID o solicitante..." 
-                           onkeyup="filtrarProyectos()">
-                </div>
-                
-                <div class="filter-group">
-                    <label>Ordenar por:</label>
-                    <select id="ordenarPor" onchange="ordenarProyectos()">
-                        <option value="fecha_desc">Más recientes</option>
-                        <option value="fecha_asc">Más antiguos</option>
-                        <option value="presupuesto_desc">Mayor presupuesto</option>
-                        <option value="presupuesto_asc">Menor presupuesto</option>
-                        <option value="titulo_asc">Título A-Z</option>
-                        <option value="titulo_desc">Título Z-A</option>
-                    </select>
-                </div>
-                
-                <button class="btn btn-secondary" onclick="limpiarFiltros()">Limpiar Filtros</button>
-            </div>
-        </div>
-        
-        <!-- Lista de Proyectos -->
-        <div class="projects-grid" id="projectsContainer">
-            <!-- Los proyectos se cargarán aquí dinámicamente -->
-        </div>
-        
-        <!-- Paginación -->
-        <div class="pagination" id="pagination">
-            <!-- La paginación se generará dinámicamente -->
-        </div>
-    </div>
-
-    <!-- Modal para Presentar Proyecto -->
-    <div id="modalPresentarProyecto" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>📋 Presentar Nuevo Proyecto</h2>
-                <p>Complete todos los campos para presentar su propuesta de proyecto</p>
-                <span class="close">&times;</span>
-            </div>
-            <div class="modal-body">
-                <form id="proyectoForm">
-                    <!-- Información Básica -->
-                    <div class="form-section-modal">
-                        <h3>📝 Información Básica del Proyecto</h3>
-                        
-                        <div class="form-group-modal">
-                            <label for="titulo">Título del Proyecto <span class="required">*</span></label>
-                            <input type="text" id="titulo" name="titulo" required 
-                                   placeholder="Ej: Sistema de Gestión Inteligente para PYMES">
-                        </div>
-                        
-                        <div class="form-group-modal">
-                            <label for="descripcion">Descripción General <span class="required">*</span></label>
-                            <textarea id="descripcion" name="descripcion" required 
-                                      placeholder="Describa brevemente el proyecto, su propósito y alcance..."></textarea>
-                            <div class="help-text">Mínimo 100 caracteres</div>
-                        </div>
-                        
-                        <div class="form-group-modal">
-                            <label for="objetivos">Objetivos del Proyecto <span class="required">*</span></label>
-                            <textarea id="objetivos" name="objetivos" required 
-                                      placeholder="Liste los objetivos específicos que busca alcanzar con este proyecto..."></textarea>
-                        </div>
-                    </div>
-                    
-                    <!-- Detalles Técnicos -->
-                    <div class="form-section-modal">
-                        <h3>🔧 Detalles Técnicos y Metodología</h3>
-                        
-                        <div class="form-group-modal">
-                            <label for="metodologia">Metodología <span class="required">*</span></label>
-                            <textarea id="metodologia" name="metodologia" required 
-                                      placeholder="Describa la metodología que utilizará para desarrollar el proyecto..."></textarea>
-                        </div>
-                        
-                        <div class="form-group-modal">
-                            <label for="resultadosEsperados">Resultados Esperados <span class="required">*</span></label>
-                            <textarea id="resultadosEsperados" name="resultadosEsperados" required 
-                                      placeholder="Describa los resultados y entregables esperados..."></textarea>
-                        </div>
-                        
-                        <div class="form-group-modal">
-                            <label for="equipoTrabajo">Equipo de Trabajo <span class="required">*</span></label>
-                            <textarea id="equipoTrabajo" name="equipoTrabajo" required 
-                                      placeholder="Describa los perfiles profesionales y roles del equipo..."></textarea>
-                        </div>
-                        
-                        <div class="form-group-modal">
-                            <label for="recursos">Recursos Necesarios</label>
-                            <textarea id="recursos" name="recursos" 
-                                      placeholder="Liste los recursos técnicos, humanos y materiales necesarios..."></textarea>
-                        </div>
-                    </div>
-                    
-                    <!-- Información Financiera y Temporal -->
-                    <div class="form-section-modal">
-                        <h3>💰 Información Financiera y Temporal</h3>
-                        
-                        <div class="form-row-modal">
-                            <div class="form-group-modal">
-                                <label for="presupuesto">Presupuesto Total <span class="required">*</span></label>
-                                <input type="number" id="presupuesto" name="presupuesto" required 
-                                       step="0.01" min="0" placeholder="0.00">
-                                <div class="help-text">Monto en pesos colombianos</div>
-                            </div>
-                            
-                            <div class="form-group-modal">
-                                <label for="duracionMeses">Duración (meses) <span class="required">*</span></label>
-                                <input type="number" id="duracionMeses" name="duracionMeses" required 
-                                       min="1" max="60" placeholder="12">
-                            </div>
-                        </div>
-                        
-                        <div class="form-row-modal">
-                            <div class="form-group-modal">
-                                <label for="fechaInicio">Fecha de Inicio Propuesta <span class="required">*</span></label>
-                                <input type="date" id="fechaInicio" name="fechaInicio" required>
-                            </div>
-                            
-                            <div class="form-group-modal">
-                                <label for="fechaFin">Fecha de Finalización Propuesta <span class="required">*</span></label>
-                                <input type="date" id="fechaFin" name="fechaFin" required>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Documentos Adjuntos -->
-                    <div class="form-section-modal">
-                        <h3>📎 Documentos Adjuntos</h3>
-                        
-                        <div class="form-group-modal">
-                            <label for="documentoTecnico">Documento Técnico</label>
-                            <div class="file-upload-modal">
-                                <input type="file" id="documentoTecnico" name="documentoTecnico" accept=".pdf,.doc,.docx">
-                                <label for="documentoTecnico" class="file-upload-label-modal">
-                                    📄 Seleccionar documento técnico (PDF, DOC, DOCX)
-                                </label>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group-modal">
-                            <label for="presentacion">Presentación</label>
-                            <div class="file-upload-modal">
-                                <input type="file" id="presentacion" name="presentacion" accept=".pdf,.ppt,.pptx">
-                                <label for="presentacion" class="file-upload-label-modal">
-                                    📊 Seleccionar presentación (PDF, PPT, PPTX)
-                                </label>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group-modal">
-                            <label for="anexos">Anexos Adicionales</label>
-                            <div class="file-upload-modal">
-                                <input type="file" id="anexos" name="anexos" multiple>
-                                <label for="anexos" class="file-upload-label-modal">
-                                    📁 Seleccionar anexos (múltiples archivos permitidos)
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="modal-actions">
-                        <button type="button" id="btnLlenarDemo" class="btn btn-secondary">🎭 Datos Demo</button>
-                        <button type="button" id="btnCancelarProyecto" class="btn btn-secondary">Cancelar</button>
-                        <button type="submit" class="btn btn-primary">Presentar Proyecto</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-  <!--Crear idea PPI-->
-
   
-  <script>
-    document.getElementById('guardarFichaPPI').onclick = async function () {
-      // Recoge los datos del formulario
-      const data = {
-        entidadId: document.getElementById('nombreEntidad').value === 'null' ? null : document.getElementById('nombreEntidad').value,
-        userId: obtenerCookie("userId"),
-        userLiderId: document.getElementById('nombreLider').value,
-        nombrePPI: document.getElementById('nombrePPI').value,
-        determinanteProductividad: document.getElementById('determinanteProductividad').value,
-        componenteProductividad: document.getElementById('componenteProductividad').value,
-        objetivo: document.getElementById('objetivo').value,
-        necesidadProblema: document.querySelectorAll('#objetivo')[1]?.value || '',
-        impactos: document.getElementById('impactos').value,
-        objetivosEspecificos: document.getElementById('objetivosEspecificos').value,
-        duracionPPI: document.getElementById('duracionPPI').value,
-        presupuestoPPI: document.getElementById('presupuestoPPI').value,
-        fasePPI: document.getElementById('fasePPI').value,
-        correoLider: document.getElementById('correoLider').value,
-        telefonoLider: document.getElementById('telefonoLider').value,
-        rangoDeEmpleos: 'sin usar',
-        estratosBeneficiarios: 'sin usar',
-        potencialEmpleo: 'sin usar',
-        impactoEmpleo: 'sin usar',
-        impactoEquidad: 'sin usar',
-        politicasPPI: 'sin usar'
-      };
-      console.log(data);
-      // Validación rápida
-      // Si entidadId es null, no lo validamos como error
-      for (const key in data) {
-        if (key !== 'entidadId' && !data[key]) {
-          Swal.fire('Faltan datos', `Por favor completa el campo: ${key}.`, 'warning');
-          return;
-        }
-      }
 
-      try {
-        const res = await fetch('/api/proyectos', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data)
-        });
-        const result = await res.json();
-        if (res.ok) {
-          Swal.fire('Guardado', 'Ficha técnica enviada correctamente.', 'success').then(() => {
-            document.getElementById('modalPostulaciones').style.display = 'none';
-            location.reload();
-          });
-        } else {
-          Swal.fire('Error', result.message || 'No se pudo guardar.', 'error');
-        }
-      } catch (err) {
-        Swal.fire('Error', 'No se pudo conectar con el servidor.', 'error');
-      }
-    };
-  </script>
   <!-- Utilidades-->
   <script>
     // =========================
@@ -435,78 +164,9 @@
     // =========================
     // Inicialización de usuario (nombre, foto) y carga de proyectos
     // =========================
-    (async () => {
-      try {
-        // Cargar usuario (para cabecera y foto)
-        const resUser = await fetch(`/api/user/${userId}`);
-        const dataUser = await resUser.json();
 
-        const tituloProyectos = document.getElementById('misProyectos');
-        if (tituloProyectos && dataUser?.name) {
-          tituloProyectos.innerText = `Proyectos de apliacados a CRCI`;
-        }
-        document.getElementById("imagenPerfilSecundaria").src = dataUser.fotoPerfil ? "photo/" + dataUser.fotoPerfil : "photo/sinfoto.jpg";
 
-        if (dataUser?.fotoPerfil) {
-          const img = document.getElementById('imagenPerfil');
-          if (img) img.src = dataUser.fotoPerfil;
-        }
-
-        // Determinar entidad y setear input nombreEntidad
-        let entidadId = null;
-        const resUE = await fetch(`/api/usuarioempresa/user/${userId}`);
-        const dataUE = await resUE.json();
-
-        if (Array.isArray(dataUE) && dataUE.length > 0 && dataUE[0].empresa) {
-          entidadId = dataUE[0].empresa.id;
-        } else {
-          entidadId = 'null';
-        }
-
-        const inputEntidad = document.getElementById('nombreEntidad');
-        if (inputEntidad) inputEntidad.value = entidadId;
-
-        console.log('Entidad ID seleccionada:', entidadId);
-
-        // Cargar proyectos por entidad o propios
-        const resProy = await fetch(`/api/aliados-proyectos-aplicados/postulado/1`);
-        const dataProy = await resProy.json();
-        // console.log('Proyectos cargados:', dataProy);
-        const tbody = document.getElementById('cuerpoTablaPostulaciones');
-        if (tbody) {
-          tbody.innerHTML = '';
-          if (Array.isArray(dataProy) && dataProy.length > 0) {
-            dataProy.forEach(proyecto => {
-              console.log(proyecto)
-              const tr = document.createElement('tr');
-              tr.innerHTML = `
-              <td>${proyecto.proyecto.id || ''}</td>
-              <td>${proyecto.proyecto.nombrePPI || ''}</td>
-              <td>${proyecto.proyecto.objetivo || ''}</td>
-              <td>${proyecto.proyecto.entidad?.razonSocial ? proyecto.proyecto.entidad.razonSocial : 'Independiente'}</td>
-              <td>${proyecto.proyecto.usuarioLider.name || ''}</td>
-              <td>${proyecto.proyecto.duracionPPI || ''}</td>
-              <td>${proyecto.proyecto.fasePPI || ''}</td>
-              <td>
-                <button class="action-button" onclick="verMasProyecto(${proyecto.proyecto.id})" style="justify-content:center;">
-                <i class="bi bi-clipboard-fill"></i>
-                </button>
-              </td>
-              <td>
-                <button class="action-button" onclick="evaluarProyecto(${proyecto.proyecto.id})" style="justify-content:center;">
-                  <i class="bi bi-star-fill"></i> Evaluar
-                </button>
-              </td>
-            `;
-              tbody.appendChild(tr);
-            });
-          }
-        }
-      } catch (err) {
-        console.error('Error inicializando la vista:', err);
-      }
-    })();
-
+    
     // =========================
     // Cerrar modal de postulaciones
     // =========================
@@ -757,135 +417,7 @@
     });
   </script>
   <!--Mis proyectos-->
-  <script>
-    (() => {
-      const $ = (id) => document.getElementById(id);
 
-      // 👉 Cache del usuario actual para usarlo en "Independiente"
-      let userSelf = { id: null, name: '', email: '', telefono: '' };
-
-      function setContacto(email = '', telefono = '') {
-
-        $('correoLider').value = email || '';
-        $('telefonoLider').value = telefono || '';
-      }
-
-      function renderSelectLider(options = [], preselectValue = null) {
-        const old = $('nombreLider');
-        const select = document.createElement('select');
-        select.id = 'nombreLider';
-        select.name = 'nombreLider';
-        select.required = true;
-
-        options.forEach(o => {
-          const opt = document.createElement('option');
-          opt.value = o.value;
-          opt.text = o.label;
-          opt.dataset.email = o.email || '';
-          opt.dataset.telefono = o.telefono || '';
-          if (preselectValue && preselectValue == o.value) opt.selected = true;
-          select.appendChild(opt);
-        });
-
-        select.addEventListener('change', () => {
-          const sel = select.options[select.selectedIndex];
-          setContacto(sel?.dataset.email, sel?.dataset.telefono);
-        });
-
-        old?.parentNode.replaceChild(select, old);
-
-        if (select.options.length > 0) {
-          const sel = select.options[select.selectedIndex];
-          setContacto(sel?.dataset.email, sel?.dataset.telefono);
-        } else {
-          setContacto('', '');
-        }
-      }
-
-      function renderSelectEntidad({ empresa } = {}) {
-        const old = $('nombreEntidad');
-        const select = document.createElement('select');
-        select.id = 'nombreEntidad';
-        select.name = 'nombreEntidad';
-        select.required = true;
-
-        const optInd = document.createElement('option');
-        optInd.value = 'null';
-        optInd.text = 'Independiente';
-        select.appendChild(optInd);
-
-        let preselect = 'null';
-        if (empresa && empresa.id) {
-          const optEmp = document.createElement('option');
-          optEmp.value = String(empresa.id);
-          optEmp.text = empresa.razonSocial || `Empresa ${empresa.id}`;
-          select.appendChild(optEmp);
-          preselect = String(empresa.id);
-        }
-
-        select.value = preselect;
-
-        // 💡 Al cambiar entidad: si es Independiente, seteamos contacto del usuario
-        select.addEventListener('change', async () => {
-          await onEntidadChange(select.value);
-        });
-
-        old?.parentNode.replaceChild(select, old);
-        return preselect;
-      }
-
-      async function loadLideresPorEmpresa(empresaId) {
-        const res = await fetch(`/api/usuarioempresa/empresa/${empresaId}`);
-        const data = await res.json();
-        const opciones = (Array.isArray(data) ? data : []).map(item => ({
-          value: String(item.User.id),
-          label: `${item.User.name} (${item.Cargo?.nombre || '—'})`,
-          email: item.User.email || '',
-          telefono: item.User.telefono || ''
-        }));
-        renderSelectLider(opciones);
-      }
-
-      // ✅ Ahora recibe userSelf y actualiza contacto
-      function setIndependienteAsLider() {
-        renderSelectLider([{
-          value: String(userSelf.id || obtenerCookie("userId")),
-          label: userSelf.name || 'Usuario Actual',
-          email: userSelf.email || '',
-          telefono: userSelf.telefono || ''
-        }], String(userSelf.id || obtenerCookie("userId")));
-        console
-        // Fuerza contacto del usuario (por si veníamos con datos de empresa)
-        // Trae email y teléfono del usuario actual por fetch
-        fetch(`/api/user/${userSelf.id}`)
-          .then(res => res.json())
-          .then(user => {
-            setContacto(user.email || '', user.telefono || '', user.name || '');
-          })
-          .catch(() => {
-            setContacto(userSelf.email || '', userSelf.telefono || '', userSelf.name || '');
-          });
-      }
-
-      async function onEntidadChange(empresaValue) {
-        if (empresaValue && empresaValue !== 'null') {
-          await loadLideresPorEmpresa(empresaValue);
-        } else {
-          setIndependienteAsLider();
-        }
-      }
-
-   
-    })();
-  </script>
-  <!--Cargar foto Perfil-->
- 
-
-  <!-- Scripts -->
-  <!-- 
-  <script src="/js/notificaciones.js"></script>
-  <script src="/js/websocket.js"></script> -->
-  <!-- <script src="/js/cargarProyectos.js"></script> -->
 
   <!--Menú desplegables-->
   <script>
@@ -2007,8 +1539,6 @@
                 }
             }, 5000);
 
-            // Configurar modal de presentar proyecto
-            setupModalPresentarProyecto();
         });
 
         // ===== FUNCIONES DEL MODAL PRESENTAR PROYECTO =====
@@ -2200,43 +1730,54 @@
   let listaFiltrada = [];
   let paginaActual = 1;
   const itemsPorPagina = 5;
-  let entidadId = null;
 
   // =========================
-  // 🔹 Inicialización
+  // 🔹 Inicialización (solo demo con datos ficticios)
   // =========================
   document.addEventListener("DOMContentLoaded", async () => {
     try {
+      // Si quieres seguir usando entidadId desde el backend, puedes dejar esto,
+      // pero para la tabla solo usaremos proyectosFicticios aprobados.
       const resUE = await fetch(`/api/usuarioempresa/user/${userId}`);
       const dataUE = await resUE.json();
-
-      entidadId = (Array.isArray(dataUE) && dataUE[0]?.empresa?.id) ? dataUE[0].empresa.id : 'null';
+      const entidadId = (Array.isArray(dataUE) && dataUE[0]?.empresa?.id) ? dataUE[0].empresa.id : 'null';
       console.log('Entidad ID seleccionada:', entidadId);
 
-      await cargarProyectos(); // Cargar proyectos
+      await cargarProyectosDemo(); // Cargar proyectos desde proyectosFicticios
     } catch (error) {
       console.error("❌ Error inicializando:", error);
+      // Si falla el fetch, igual cargamos los ficticios
+      await cargarProyectosDemo();
     }
   });
 
   // =========================
-  // 🔹 Cargar proyectos
+  // 🔹 Cargar proyectos (DEMO con proyectosFicticios)
   // =========================
-  async function cargarProyectos() {
-    try {
-      const resProy = await fetch(`/api/aliados-proyectos-aplicados/postulado/1`);
-      const dataProy = await resProy.json();
+  async function cargarProyectosDemo() {
+    // Usamos solo proyectos APROBADOS
+    const aprobados = proyectosFicticios.filter(p => p.estado === 'aprobado');
 
-      proyectosCargados = Array.isArray(dataProy) ? dataProy : [];
-      console.log("✅ Proyectos cargados:", proyectosCargados);
+    // Los adaptamos al formato que ya usa la tabla (p.proyecto.xxx)
+    proyectosCargados = aprobados.map(p => ({
+      proyecto: {
+        id: p.id,
+        nombrePPI: p.titulo,
+        objetivo: p.descripcion,
+        entidad: { razonSocial: p.solicitante },
+        // En demo usamos el evaluador como "líder" solo para mostrar algo
+        usuarioLider: { name: p.evaluador || 'Líder no asignado' },
+        duracionPPI: p.duracion, // en meses (número)
+        fasePPI: 'Aprobado'
+      }
+    }));
 
-      listaFiltrada = [...proyectosCargados];
-      paginaActual = 1;
-      renderizarPagina();
-      llenarFiltros(proyectosCargados);
-    } catch (err) {
-      console.error("❌ Error cargando proyectos:", err);
-    }
+    console.log("✅ Proyectos DEMO cargados en tabla:", proyectosCargados);
+
+    listaFiltrada = [...proyectosCargados];
+    paginaActual = 1;
+    renderizarPagina();
+    llenarFiltros(proyectosCargados);
   }
 
   // =========================
@@ -2264,18 +1805,14 @@
         <td>${p.proyecto?.objetivo || ''}</td>
         <td>${p.proyecto?.entidad?.razonSocial || 'Independiente'}</td>
         <td>${p.proyecto?.usuarioLider?.name || ''}</td>
-        <td>${p.proyecto?.duracionPPI || ''}</td>
+        <td>${p.proyecto?.duracionPPI ? p.proyecto.duracionPPI + ' meses' : ''}</td>
         <td>${p.proyecto?.fasePPI || ''}</td>
         <td>
-          <button class="action-button" onclick="verMasProyecto(${p.proyecto?.id})">
+          <button class="action-button" onclick="verDetalles('${p.proyecto?.id}')">
             <i class="bi bi-clipboard-fill"></i>
           </button>
         </td>
-        <td>
-          <button class="action-button" onclick="evaluarProyecto(${p.proyecto?.id})">
-            <i class="bi bi-star-fill"></i> Evaluar
-          </button>
-        </td>
+  
       `;
       tbody.appendChild(tr);
     });
@@ -2291,20 +1828,26 @@
     const responsableSelect = document.getElementById('filter-responsable');
     const estadoSelect = document.getElementById('filter-estado');
 
+    if (!duracionSelect || !responsableSelect || !estadoSelect) return;
+
     // Limpiar opciones
     responsableSelect.innerHTML = '<option value="">Todos los responsables</option>';
     estadoSelect.innerHTML = '<option value="">Selecciona la fase</option>';
-    duracionSelect.innerHTML = '<option value="">Selecciona la duración</option>';
+    duracionSelect.innerHTML = '<option value="">Selecciona el rango</option>';
 
-    // Extraer datos únicos
     const responsables = [...new Set(data.map(p => p.proyecto?.usuarioLider?.name || "Sin responsable"))];
     const estados = [...new Set(data.map(p => p.proyecto?.fasePPI).filter(Boolean))];
     const duraciones = [...new Set(data.map(p => p.proyecto?.duracionPPI).filter(Boolean))];
 
-    // Agregar opciones al select
-    responsables.forEach(r => responsableSelect.insertAdjacentHTML('beforeend', `<option value="${r}">${r}</option>`));
-    estados.forEach(e => estadoSelect.insertAdjacentHTML('beforeend', `<option value="${e}">${e}</option>`));
-    duraciones.forEach(d => duracionSelect.insertAdjacentHTML('beforeend', `<option value="${d}">${d}</option>`));
+    responsables.forEach(r =>
+      responsableSelect.insertAdjacentHTML('beforeend', `<option value="${r}">${r}</option>`)
+    );
+    estados.forEach(e =>
+      estadoSelect.insertAdjacentHTML('beforeend', `<option value="${e}">${e}</option>`)
+    );
+    duraciones.forEach(d =>
+      duracionSelect.insertAdjacentHTML('beforeend', `<option value="${d}">${d} meses</option>`)
+    );
   }
 
   // =========================
@@ -2321,10 +1864,17 @@
       const objetivo = p.proyecto?.objetivo?.toLowerCase() || '';
       const entidad = p.proyecto?.entidad?.razonSocial?.toLowerCase() || '';
 
-      const coincideTexto = !texto || nombre.includes(texto) || objetivo.includes(texto) || entidad.includes(texto);
-      const coincideResponsable = !responsable || p.proyecto?.usuarioLider?.name === responsable;
-      const coincideEstado = !estado || p.proyecto?.fasePPI === estado;
-      const coincideDuracion = !duracionPPI || p.proyecto?.duracionPPI === duracionPPI;
+      const coincideTexto =
+        !texto || nombre.includes(texto) || objetivo.includes(texto) || entidad.includes(texto);
+
+      const coincideResponsable =
+        !responsable || p.proyecto?.usuarioLider?.name === responsable;
+
+      const coincideEstado =
+        !estado || p.proyecto?.fasePPI === estado;
+
+      const coincideDuracion =
+        !duracionPPI || String(p.proyecto?.duracionPPI) === String(duracionPPI);
 
       return coincideTexto && coincideResponsable && coincideEstado && coincideDuracion;
     });
@@ -2343,6 +1893,11 @@
     if (!paginadorDiv) return;
 
     const totalPaginas = Math.ceil(lista.length / itemsPorPagina);
+
+    if (totalPaginas === 0) {
+      paginadorDiv.innerHTML = '';
+      return;
+    }
 
     let botones = '';
     for (let i = 1; i <= totalPaginas; i++) {
@@ -2397,6 +1952,7 @@
     renderizarPagina();
   });
 </script>
+
 
 
 </body>
