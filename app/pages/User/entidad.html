@@ -209,7 +209,9 @@
                     - <a id="departamento"></a></p>
                 </p>
             </div>
-
+ <div id="edit-map-container" style="height: 300px; margin: 10px 0;">
+                <div id="edit-location-map" style="width: 100%; height: 100%;"></div>
+            </div>
         </div>
     </div>
 
@@ -226,7 +228,39 @@
     <script src="/js/websocket.js"></script>
     <script src="/js/menu.js"></script>
     <script src="/js/enviarInvitacion.js"></script>
+<script>
 
+    function initEditMap(   lat, lng) {
+    const mapElement = document.getElementById('edit-location-map');
+    if (!mapElement) {
+        console.error('Elemento del mapa de edición no encontrado');
+        return;
+    }
+     const defaultLat = lat || 7.1193;
+    const defaultLng = lng || -73.1227;
+
+    // Inicializar el mapa
+    editMap = L.map('edit-location-map').setView([defaultLat, defaultLng], 13);
+
+    // Agregar tiles de OpenStreetMap
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors',
+        maxZoom: 19
+    }).addTo(editMap);
+
+      // Agregar nuevo marcador
+        editMarker = L.marker([lat, lng], {
+            icon: L.icon({
+                iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+                shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34],
+                shadowSize: [41, 41]
+            })
+        }).addTo(editMap);
+}
+</script>
     <!-- Cargar datos de entidad -->
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
@@ -250,6 +284,8 @@
                     // Si tienes ubicaciones
                     if (entidad.ubicaciones?.length > 0) {
                         document.getElementById('UbicacionEntidad').textContent = entidad.ubicaciones[0].direccionCompleta || '';
+                        
+                           initEditMap( entidad.ubicaciones[0].latitud, entidad.ubicaciones[0].longitud);
                     } else {
                         document.getElementById('UbicacionEntidad').textContent = 'Sin dirección registrada';
                     }
@@ -262,6 +298,7 @@
                     // Cargar servicios e integrantes
                     llamarservicios(idEntidad);
                     llamarIntegrantes(idEntidad);
+                  
                 } else {
                     alert('Entidad no encontrada');
                 }
