@@ -86,219 +86,207 @@
         </nav>
     </header>
     <style>
-/* === CONTENEDOR PRINCIPAL === */
-.perfil-content {
-    display: flex;
-    width: 90%;
-    max-width: 1200px;
-    min-height: 70vh;
-    margin: 3rem auto;
-    border-radius: 25px;
-    background: white;
-    overflow: hidden; 
-    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.12);
-    padding: 0;
-}
+        /* === CONTENEDOR PRINCIPAL === */
+        .perfil-content {
+            display: flex;
+            width: 90%;
+            max-width: 1200px;
+            min-height: 70vh;
+            margin: 3rem auto;
+            border-radius: 25px;
+            background: white;
+            overflow: hidden;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.12);
+            padding: 0;
+        }
 
-/* === SISTEMA DE DOS COLUMNAS === */
-.perfil-columns {
-    display: grid;
-    grid-template-columns: 40% 60%;
-    width: 100%;
-}
+        /* === SISTEMA DE DOS COLUMNAS === */
+        .perfil-columns {
+            display: grid;
+            grid-template-columns: 40% 60%;
+            width: 100%;
+        }
 
-/* === COLUMNA IZQUIERDA (degradado) === */
-.perfil-column-left {
-    background: linear-gradient(180deg, #1c3d70, #6a8bf8);
-    /* background: var(--secondary-color); */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 40px 0;
-}
+        /* === COLUMNA IZQUIERDA  === */
+        .perfil-column-left {
+            /* background: linear-gradient(180deg, #1c3d70, #6a8bf8); */
+            background: var(--secondary-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 0;
+        }
 
-.perfil-foto-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+        .perfil-foto-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-.perfil-foto-custom {
-    width: 260px;
-    height: 260px;
-    border-radius: 50%;
-    object-fit: cover;
-    background: white;
-    padding: 10px;
-    box-shadow: 0px 6px 25px rgba(0, 0, 0, 0.15);
-}
+        .perfil-foto-custom {
+            width: 260px;
+            height: 260px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: white;
+            padding: 10px;
+            box-shadow: 0px 6px 25px rgba(0, 0, 0, 0.15);
+        }
 
-/* === COLUMNA DERECHA === */
-.perfil-column-right {
-    background: white;
-    padding: 50px;
-    display: flex;
-    align-items: flex-start;
-}
+        /* === COLUMNA DERECHA === */
+        .perfil-column-right {
+            background: white;
+            padding: 50px;
+            display: flex;
+            align-items: flex-start;
+        }
 
-.perfil-datos-custom {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 25px;
-}
+        .perfil-datos-custom {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
 
-#MiNombreCompleto {
-    font-size: 2.2rem;
-    font-weight: bold;
-    color: #222;
-}
+        #MiNombreCompleto {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #222;
+        }
 
-#MiPerfilProfesional {
-    font-size: 1.1rem;
-    line-height: 1.6;
-    color: #555;
-    text-align: justify;
-}
+        #MiPerfilProfesional {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #555;
+            text-align: justify;
+        }
 
-/* Caja con datos básicos */
-.perfil-datos-custom > div {
-    background: rgba(193, 198, 255, 0.28);
-    padding: 20px;
-    border-radius: 12px;
-}
+        /* Caja con datos básicos */
+        .perfil-datos-custom>div {
+            background: rgba(193, 198, 255, 0.28);
+            padding: 20px;
+            border-radius: 12px;
+        }
 
-.perfil-dato-linea-custom strong {
-    min-width: 150px;
-    display: inline-block;
-    font-weight: 700;
-}
+        .perfil-dato-linea-custom strong {
+            min-width: 150px;
+            display: inline-block;
+            font-weight: 700;
+        }
 
-/* Botón */
-.action-button {
-    background: #ff7b00;
-    color: #fff;
-    padding: 12px 24px;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 16px;
-    width: fit-content;
-}
+        /* Botón */
+        .action-button {
+            background: #ff7b00;
+            color: #fff;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            width: fit-content;
+        }
 
-.action-button:hover {
-    background: #d46300;
-}
+        .action-button:hover {
+            background: #d46300;
+        }
 
-/* === Modal y hoja de vida === */
-#iframeHojaVida {
-    width: 100%;
-    height: 700px;
-    border: none;
-}
+        /* === Modal y hoja de vida === */
+        #iframeHojaVida {
+            width: 100%;
+            height: 700px;
+            border: none;
+        }
 
-/* === Spinner === */
-#page-spinner-overlay {
-    position: fixed;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    background: rgba(255, 255, 255, 0.95);
-    z-index: 99999;
-    transition: opacity .4s ease;
-    -webkit-backdrop-filter: blur(2px);
-    backdrop-filter: blur(2px);
-}
+        /* === Spinner === */
+        #page-spinner-overlay {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.95);
+            z-index: 99999;
+            transition: opacity .4s ease;
+            -webkit-backdrop-filter: blur(2px);
+            backdrop-filter: blur(2px);
+        }
 
-#page-spinner-overlay .spinner {
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-    border: 6px solid rgba(0, 0, 0, 0.08);
-    border-top-color: #007bff;
-    animation: spin 1s linear infinite;
-}
+        #page-spinner-overlay .spinner {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            border: 6px solid rgba(0, 0, 0, 0.08);
+            border-top-color: #007bff;
+            animation: spin 1s linear infinite;
+        }
 
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
-
-
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
     </style>
- <!-- Spinner -->
-<div id="page-spinner-overlay" aria-hidden="true" role="status" aria-label="Cargando">
-    <div class="spinner"></div>
-    <div class="spinner-text">Cargando...</div>
-</div>
-
-<!-- Bienvenida -->
-<div class="welcome-container" id="welcome-container">
-    <div class="welcome-text" id="welcome-text" style="width: 30vw; text-align: left;">
-        <p>Bienvenido</p>
-        <h3 class="tittle" id="bienvenido"></h3>
+    <!-- Spinner -->
+    <div id="page-spinner-overlay" aria-hidden="true" role="status" aria-label="Cargando">
+        <div class="spinner"></div>
+        <div class="spinner-text">Cargando...</div>
     </div>
 
-    <div class="action-buttons" style="width: 40vw;">
-        <button class="action-button" id="perfil">
-            <span><i class="bi bi-pencil-square"></i> Perfil</span>
-        </button>
-    </div>
-</div>
+    <!-- PERFIL -->
+    <div class="perfil-content">
 
-<!-- PERFIL -->
-<div class="perfil-content">
+        <div class="perfil-columns">
 
-    <div class="perfil-columns">
-
-        <!-- COLUMNA IZQUIERDA -->
-        <div class="perfil-column-left">
-            <div class="perfil-foto-container">
-                <img id="imagenPerfilIntegrante"
-                     src="img/sinfoto.jpg"
-                     alt="Foto de perfil"
-                     class="perfil-foto-custom"
-                     onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
-            </div>
-        </div>
-
-        <!-- COLUMNA DERECHA -->
-        <div class="perfil-column-right">
-            <div class="perfil-datos-custom">
-                <h2 id="MiNombreCompleto" class="tittle" style="text-transform: capitalize;"></h2>
-
-                <span id="MiPerfilProfesional"></span>
-
-                <div>
-                    <p class="perfil-dato-linea-custom"><strong>Teléfono:</strong> <span id="MiTelefono"></span></p>
-                    <p class="perfil-dato-linea-custom"><strong>Ubicación:</strong> <span id="MiUbicacion"></span></p>
-                    <p class="perfil-dato-linea-custom"><strong>Correo Electrónico:</strong> <span id="MiCorreo"></span></p>
-                    <p class="perfil-dato-linea-custom"><strong>Vinculado a:</strong> <span id="MiVinculado"></span></p>
+            <!-- COLUMNA IZQUIERDA -->
+            <div class="perfil-column-left">
+                <div class="perfil-foto-container">
+                    <img id="imagenPerfilIntegrante" src="img/sinfoto.jpg" alt="Foto de perfil"
+                        class="perfil-foto-custom" onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
+                    <i class="bi bi-pencil-square" id="perfil" style="color: white; font-size: 50px; display:none;"></i>
                 </div>
 
-                <button id="btnHojaVida" class="action-button" onclick="abrirModal()" style="display:none;">
-                    Ver Hoja de Vida
-                </button>
+            </div>
+
+            <!-- COLUMNA DERECHA -->
+            <div class="perfil-column-right">
+                <div class="perfil-datos-custom">
+                    <h2 id="MiNombreCompleto" class="tittle" style="text-transform: capitalize;"></h2>
+
+                    <span id="MiPerfilProfesional"></span>
+
+                    <div>
+                        <p class="perfil-dato-linea-custom"><strong>Teléfono:</strong> <span id="MiTelefono"></span></p>
+                        <p class="perfil-dato-linea-custom"><strong>Ubicación:</strong> <span id="MiUbicacion"></span>
+                        </p>
+                        <p class="perfil-dato-linea-custom"><strong>Correo Electrónico:</strong> <span
+                                id="MiCorreo"></span></p>
+                        <p class="perfil-dato-linea-custom"><strong>Vinculado a:</strong> <span id="MiVinculado"></span>
+                        </p>
+                    </div>
+
+                    <button id="btnHojaVida" class="action-button" onclick="abrirModal()" style="display:none;">
+                        Ver Hoja de Vida
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Modal Hoja de vida -->
+        <div id="modalHojaVida" class="modal">
+            <div class="modal-content">
+                <div class="perfil-modal-header-custom">
+                    <h2 class="title" id="tituloHojaVida">Hoja de Vida</h2>
+                    <span class="close" onclick="cerrarModal()">&times;</span>
+                </div>
+
+                <iframe id="iframeHojaVida" src=""></iframe>
             </div>
         </div>
 
     </div>
-
-    <!-- Modal Hoja de vida -->
-    <div id="modalHojaVida" class="modal">
-        <div class="modal-content">
-            <div class="perfil-modal-header-custom">
-                <h2 class="title" id="tituloHojaVida">Hoja de Vida</h2>
-                <span class="close" onclick="cerrarModal()">&times;</span>
-            </div>
-
-            <iframe id="iframeHojaVida" src=""></iframe>
-        </div>
-    </div>
-
-</div>
 
 
     <!--Modal Actualizar Perfil-->
@@ -385,7 +373,7 @@
         </div>
 
     </div>
-
+    <!-- modal CV -->
     <script>
         let hojaVidaURL = ""; // Se llenará dinámicamente
 
@@ -487,6 +475,25 @@
             dropdown.classList.remove("show");
         });
     </script>
+    <script>
+        (function () {
+            function getCookie(name) {
+                const cookie = document.cookie.split(';').map(c => c.trim()).find(c => c.startsWith(name + '='));
+                return cookie ? decodeURIComponent(cookie.split('=')[1]) : null;
+            }
+            const currentUserId = getCookie('userId');
+            const params = new URLSearchParams(window.location.search);
+            const profileId = params.get('id');
+            const perfilIcon = document.getElementById('perfil');
+            if (!perfilIcon) return;
+            // Mostrar solo si es el perfil del usuario logueado.
+            if ((profileId && currentUserId && profileId === currentUserId) || (!profileId && currentUserId)) {
+                perfilIcon.style.display = 'inline-block';
+            } else {
+                perfilIcon.style.display = 'none';
+            }
+        })();
+    </script>
     <!-- Utilidades-->
     <script>
         // =========================
@@ -548,155 +555,9 @@
             }
         })();
 
-        // =========================
-        // Cerrar modal de postulaciones
-        // =========================
-        const btnCerrar = document.getElementById('cerrarModalPostulaciones');
-        if (btnCerrar) {
-            btnCerrar.onclick = function () {
-                const modal = document.getElementById('modalPostulaciones');
-                if (modal) modal.style.display = 'none';
-            };
-        }
-
-        // =========================
-        // Helpers para renderizar select de Líder
-        // =========================
-        async function renderLiderEmpresa(empresaId) {
-            const nombreLiderInput = document.getElementById('nombreLider');
-            const correoLiderInput = document.getElementById('correoLider');
-            const telefonoLiderInput = document.getElementById('telefonoLider');
-
-            const selectLider = document.createElement('select');
-            selectLider.id = 'nombreLider';
-            selectLider.name = 'nombreLider';
-            selectLider.required = true;
-
-            const res = await fetch(`/api/usuarioempresa/empresa/${empresaId}`);
-            const data = await res.json();
-
-            (data || []).forEach(item => {
-                const option = document.createElement('option');
-                option.value = item.User.id;
-                option.text = `${item.User.name} (${item.Cargo?.nombre || 'Sin cargo'})`;
-
-                option.dataset.email = item.User.email || '';
-                option.dataset.telefono = item.User.telefono || '';
-                selectLider.appendChild(option);
-            });
-
-            // Seleccionar el primero y actualizar campos
-            if (selectLider.options.length > 0) {
-                const selectedOption = selectLider.options[0];
-                if (correoLiderInput) correoLiderInput.value = selectedOption.dataset.email || '';
-                if (telefonoLiderInput) telefonoLiderInput.value = selectedOption.dataset.telefono || '';
-            } else {
-                if (correoLiderInput) correoLiderInput.value = '';
-                if (telefonoLiderInput) telefonoLiderInput.value = '';
-            }
-
-            // Cambiar correo y teléfono al cambiar líder
-            selectLider.onchange = function () {
-                const selectedOption = selectLider.options[selectLider.selectedIndex];
-                if (correoLiderInput) correoLiderInput.value = selectedOption.dataset.email || '';
-                if (telefonoLiderInput) telefonoLiderInput.value = selectedOption.dataset.telefono || '';
-            };
-
-            if (nombreLiderInput && nombreLiderInput.parentNode) {
-                nombreLiderInput.parentNode.replaceChild(selectLider, nombreLiderInput);
-            } else {
-                // Si no existe el input a reemplazar, intenta anexar en un contenedor conocido
-                const cont = document.getElementById('contenedorLider') || document.body;
-                cont.appendChild(selectLider);
-            }
-        }
-
-        async function renderLiderIndependiente() {
-            const nombreLiderInput = document.getElementById('nombreLider');
-            const correoLiderInput = document.getElementById('correoLider');
-            const telefonoLiderInput = document.getElementById('telefonoLider');
-
-            const selectLider = document.createElement('select');
-            selectLider.id = 'nombreLider';
-            selectLider.name = 'nombreLider';
-            selectLider.required = true;
-
-            const uid = obtenerCookie("userId");
-            const resUser = await fetch(`/api/user/${uid}`);
-            const user = await resUser.json();
-
-            const optionUsuario = document.createElement('option');
-            optionUsuario.value = uid;
-
-            // Tomar nombre desde #bienvenido si existe ("Hola Nombre")
-
-            optionUsuario.dataset.name = user.name || '';
-            optionUsuario.dataset.email = user.email || '';
-            optionUsuario.dataset.telefono = user.telefono || '';
-            selectLider.appendChild(optionUsuario);
-            optionUsuario.text = user.name || 'Usuario Actual';
-
-            // Rellenar inputs con datos del usuario
-            if (nombreLiderInput) nombreLiderInput.value = user.name || '';
-            if (correoLiderInput) correoLiderInput.value = user.email || '';
-            if (telefonoLiderInput) telefonoLiderInput.value = user.telefono || '';
-
-            // Listener (aunque solo haya uno)
-            selectLider.onchange = function () {
-
-                const selectedOption = selectLider.options[selectLider.selectedIndex];
-                if (correoLiderInput) correoLiderInput.value = selectedOption.dataset.email || '';
-                if (telefonoLiderInput) telefonoLiderInput.value = selectedOption.dataset.telefono || '';
-            };
-
-            if (nombreLiderInput && nombreLiderInput.parentNode) {
-                nombreLiderInput.parentNode.replaceChild(selectLider, nombreLiderInput);
-            } else {
-                const cont = document.getElementById('contenedorLider') || document.body;
-                cont.appendChild(selectLider);
-            }
-        }
-
-        // =========================
-        // Listeners de cambio
-        // =========================
-        // Cambiar líderes al cambiar el select de entidad (nombreEntidad)
-        document.addEventListener('change', async function (e) {
-            if (e.target && e.target.id === 'nombreEntidad') {
-                const empresaId = e.target.value;
-                if (empresaId && empresaId !== "null") {
-                    await renderLiderEmpresa(empresaId);
-                } else {
-                    await renderLiderIndependiente();
-                }
-            }
-        });
-
-        // Cambiar correo y teléfono al cambiar líder (nombreLider), incluso si no cambia la entidad
-        document.addEventListener('change', function (e) {
-            if (e.target && e.target.id === 'nombreLider') {
-                const selectedOption = e.target.options[e.target.selectedIndex];
-                const correoLiderInput = document.getElementById('correoLider');
-                const telefonoLiderInput = document.getElementById('telefonoLider');
-                if (correoLiderInput) correoLiderInput.value = selectedOption.dataset.email || '';
-                if (telefonoLiderInput) telefonoLiderInput.value = selectedOption.dataset.telefono || '';
-            }
-        });
-
-        // =========================
-        // (Opcional) Si deseas forzar que al inicio se renderice el líder acorde al valor cargado de nombreEntidad
-        // =========================
-        window.addEventListener('DOMContentLoaded', async () => {
-            const inputEntidad = document.getElementById('nombreEntidad');
-            if (inputEntidad) {
-                if (inputEntidad.value && inputEntidad.value !== 'null') {
-                    await renderLiderEmpresa(inputEntidad.value);
-                } else {
-                    await renderLiderIndependiente();
-                }
-            }
-        });
     </script>
+
+    <!-- spinner -->
     <script>
         (function () {
             // Garantiza que el overlay permanezca al menos 5s desde que se ejecuta este script.
@@ -725,9 +586,9 @@
             }, remaining);
         })();
     </script>
+
     <!--Cargar Datos mi Perfil-->
     <script>
-
         async function cargarDatosMiPerfil() {
             try {
                 const userId = obtenerCookie("userId");
@@ -736,8 +597,8 @@
                 const res = await fetch(`/api/user/${userId}`);
                 if (!res.ok) throw new Error('No se pudo obtener el perfil');
                 const data = await res.json();
-                console.log("DATOS DEL USUARIO",data);
- 
+                console.log("DATOS DEL USUARIO", data);
+
 
                 // Cargar Datos para actualizar Perfil
 
