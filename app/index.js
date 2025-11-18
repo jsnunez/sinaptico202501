@@ -98,10 +98,10 @@ app.get('/conocimiento', authorization.soloUser, (req, res) => res.sendFile(path
 app.get('/mapa-usuarios', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/mapa-usuarios.html')));
 app.get('/proyectos1', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/proyectos.html')));
 app.get('/proyectos', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/postulaciones.html')));
-app.get('/perfil', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/perfilUser.html')));
+app.get('/perfilUser', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/perfilUser.html')));
 app.get('/perfilEntidad', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/entidad.html')));
 app.get('/miEntidad', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/perfilEntidad.html')));
-app.get('/perfilUser', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/verUser.html')));
+
 
 
 app.get('/mapa-publico', (req, res) => res.sendFile(path.join(__dirname, 'pages/User/mapa-usuarios.html')));

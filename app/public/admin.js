@@ -171,7 +171,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     console.log(data);
     if (data.success && data.entidad && data.entidad.UserAdminId) {
       idEntidad = data.entidad.id;
-     document.getElementById("habilitarMiEmpresa").style.display = "block"
+    
       const estado = data.entidad.habilitado == 1 ? "Estado: Activo" : "Estamos Confirmando Tu Información.";
       document.getElementById("crearEntidad").style.display = "none";
       document.getElementById("editarEntidad").style.display = data.entidad.habilitado == 1 ? "block" : "none";

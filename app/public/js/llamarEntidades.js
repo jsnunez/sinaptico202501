@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Llamamos a la función para cargar las empresas
         todasLasEmpresas = data.empresas; // Guardar todas
 
-        cargarEmpresas(data.empresas);
+        // cargarEmpresas(data.empresas);
       } else {
         console.log(data.mensaje || 'No hay empresas habilitadas.');
       }
@@ -23,70 +23,70 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-// Función para cargar las empresas dinámicamente
-function cargarEmpresas(empresas) {
-  const listado = document.getElementById('listado');
-  listado.innerHTML = '';  // Limpiar el contenido previo
-  empresaC = 0;
-  EstadoC = 0;
-  SociedadC = 0;
-  AcademiaesC = 0;
-  empresas.forEach(empresa => {
-    if (empresa.habilitado == 1) {
+// // Función para cargar las empresas dinámicamente
+// function cargarEmpresas(empresas) {
+//   const listado = document.getElementById('listado');
+//   listado.innerHTML = '';  // Limpiar el contenido previo
+//   empresaC = 0;
+//   EstadoC = 0;
+//   SociedadC = 0;
+//   AcademiaesC = 0;
+//   empresas.forEach(empresa => {
+//     if (empresa.habilitado == 1) {
 
-      const empresaCard = document.createElement('div');
-      empresaCard.classList.add('cardinfo');
-      let rutaCompleta = empresa.logo;
-      empresaCard.innerHTML = `
-            <img src="/logos/${rutaCompleta}" alt="Logo Empresa" class="card-icon" onerror="this.onerror=null;this.src='/img/sinfoto.jpg';">
-            <h3 class="card-title">${empresa.razonSocial}</h3>
-            <p class="card-text">${empresa.actividadEconomica}</p>
-
-
+//       const empresaCard = document.createElement('div');
+//       empresaCard.classList.add('cardinfo');
+//       let rutaCompleta = empresa.logo;
+//       empresaCard.innerHTML = `
+//             <img src="/logos/${rutaCompleta}" alt="Logo Empresa" class="card-icon" onerror="this.onerror=null;this.src='/img/sinfoto.jpg';">
+//             <h3 class="card-title">${empresa.razonSocial}</h3>
+//             <p class="card-text">${empresa.actividadEconomica}</p>
 
 
-        `;
 
-      listado.appendChild(empresaCard);
 
-      switch (empresa.claseEntidad) {
-        case "Empresa":
-          empresaC++;
-          break;
-        case "Sociedad":
-          SociedadC++;
-          break;
-        case "Estado":
-          EstadoC++;
-          break;
-        case "Academia":
-          AcademiaesC++;
-          break;
+//         `;
 
-        default:
-          break;
-      }
+//       listado.appendChild(empresaCard);
 
-    }
-  });
+//       switch (empresa.claseEntidad) {
+//         case "Empresa":
+//           empresaC++;
+//           break;
+//         case "Sociedad":
+//           SociedadC++;
+//           break;
+//         case "Estado":
+//           EstadoC++;
+//           break;
+//         case "Academia":
+//           AcademiaesC++;
+//           break;
 
-  if (empresas.length == 0) {
-    const empresaCard = document.createElement('div');
-    empresaCard.classList.add('cardinfo');
+//         default:
+//           break;
+//       }
 
-    empresaCard.innerHTML = `
-                <img src="/logos/sindatos.jpg" alt="Logo Empresa" class="card-icon">
-                <h3 class="card-title">0 entidades </h3>
-            `;
-    listado.appendChild(empresaCard);
-  }
+//     }
+//   });
 
-  // document.getElementById("empresaC").innerText = empresaC;
-  // document.getElementById("SociedadC").innerText = SociedadC;
-  // document.getElementById("EstadoC").innerText = EstadoC;
-  // document.getElementById("AcademiaesC").innerText = AcademiaesC;
+//   if (empresas.length == 0) {
+//     const empresaCard = document.createElement('div');
+//     empresaCard.classList.add('cardinfo');
 
-}
+//     empresaCard.innerHTML = `
+//                 <img src="/logos/sindatos.jpg" alt="Logo Empresa" class="card-icon">
+//                 <h3 class="card-title">0 entidades </h3>
+//             `;
+//     listado.appendChild(empresaCard);
+//   }
+
+//   // document.getElementById("empresaC").innerText = empresaC;
+//   // document.getElementById("SociedadC").innerText = SociedadC;
+//   // document.getElementById("EstadoC").innerText = EstadoC;
+//   // document.getElementById("AcademiaesC").innerText = AcademiaesC;
+
+// }
 
 document.addEventListener('DOMContentLoaded', function () {
   // Abrir modal con info de la empresa
