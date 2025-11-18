@@ -2,678 +2,192 @@
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Banco de Proyectos - SinAptico</title>
-    <link rel="stylesheet" href="../../public/styles/styles.css">
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f5f7fa;
-            margin: 0;
-            padding: 20px;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SINAPTICO</title>
 
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="stylesheet" href="styles/stylehelice2.css">
 
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 30px;
-            border-radius: 15px;
-            margin-bottom: 30px;
-            text-align: center;
-        }
+  <link rel="stylesheet" href="styles/colores.css">
+  <link rel="stylesheet" href="styles/postulaciones.css">
 
-        .header h1 {
-            margin: 0;
-            font-size: 2.5em;
-        }
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
 
-        .header p {
-            margin: 10px 0 0 0;
-            opacity: 0.9;
-            font-size: 1.1em;
-        }
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .stat-card {
-            background: white;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            border-top: 4px solid #3498db;
-            transition: transform 0.3s;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .stat-card.presentados {
-            border-top-color: #3498db;
-        }
-
-        .stat-card.evaluacion {
-            border-top-color: #f39c12;
-        }
-
-        .stat-card.comite {
-            border-top-color: #9b59b6;
-        }
-
-        .stat-card.aprobados {
-            border-top-color: #27ae60;
-        }
-
-        .stat-card.rechazados {
-            border-top-color: #e74c3c;
-        }
-
-        .stat-icon {
-            font-size: 3em;
-            margin-bottom: 15px;
-        }
-
-        .stat-number {
-            font-size: 2.5em;
-            font-weight: bold;
-            color: #2c3e50;
-            margin-bottom: 10px;
-        }
-
-        .stat-label {
-            color: #7f8c8d;
-            font-size: 1.1em;
-            font-weight: 500;
-        }
-
-        .controls-section {
-            background: white;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            margin-bottom: 30px;
-        }
-
-        .controls-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .filters {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-
-        .filter-group {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-
-        .filter-group label {
-            font-size: 0.9em;
-            color: #7f8c8d;
-            font-weight: 500;
-        }
-
-        .filter-group select,
-        .filter-group input {
-            padding: 8px 12px;
-            border: 2px solid #ecf0f1;
-            border-radius: 6px;
-            font-size: 14px;
-        }
-
-        .filter-group select:focus,
-        .filter-group input:focus {
-            outline: none;
-            border-color: #3498db;
-        }
-
-        .btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 6px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-decoration: none;
-            display: inline-block;
-            font-weight: 500;
-        }
-
-        .btn-primary {
-            background-color: #3498db;
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background-color: #2980b9;
-        }
-
-        .btn-success {
-            background-color: #27ae60;
-            color: white;
-        }
-
-        .btn-success:hover {
-            background-color: #219a52;
-        }
-
-        .btn-warning {
-            background-color: #f39c12;
-            color: white;
-        }
-
-        .btn-warning:hover {
-            background-color: #d68910;
-        }
-
-        .btn-danger {
-            background-color: #e74c3c;
-            color: white;
-        }
-
-        .btn-danger:hover {
-            background-color: #c0392b;
-        }
-
-        .btn-secondary {
-            background-color: #95a5a6;
-            color: white;
-        }
-
-        .btn-secondary:hover {
-            background-color: #7f8c8d;
-        }
-
-        .projects-grid {
-            display: grid;
-            gap: 20px;
-        }
-
-        .project-card {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .project-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-        }
-
-        .project-header {
-            padding: 20px 25px 15px 25px;
-            border-bottom: 2px solid #ecf0f1;
-        }
-
-        .project-title-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 10px;
-            gap: 15px;
-        }
-
-        .project-title {
-            flex: 1;
-            margin: 0;
-            color: #2c3e50;
-            font-size: 1.3em;
-            font-weight: bold;
-        }
-
-        .project-id {
-            color: #7f8c8d;
-            font-size: 0.9em;
-            font-weight: normal;
-        }
-
-        .status-badge {
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 0.85em;
-            font-weight: bold;
-            color: white;
-            white-space: nowrap;
-        }
-
-        .status-presentado {
-            background-color: #3498db;
-        }
-
-        .status-en_evaluacion {
-            background-color: #f39c12;
-        }
-
-        .status-en_comite {
-            background-color: #9b59b6;
-        }
-
-        .status-aprobado {
-            background-color: #27ae60;
-        }
-
-        .status-rechazado {
-            background-color: #e74c3c;
-        }
-
-        .project-meta {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-            color: #7f8c8d;
-            font-size: 0.9em;
-        }
-
-        .meta-item {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .meta-label {
-            font-weight: 500;
-            margin-bottom: 3px;
-        }
-
-        .meta-value {
-            color: #2c3e50;
-            font-weight: bold;
-        }
-
-        .project-body {
-            padding: 20px 25px;
-        }
-
-        .project-description {
-            color: #7f8c8d;
-            margin-bottom: 20px;
-            line-height: 1.5;
-        }
-
-        .project-actions {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            justify-content: flex-end;
-        }
-
-        .timeline-indicator {
-            margin: 15px 25px 0 25px;
-            padding: 15px 0;
-            border-top: 1px solid #ecf0f1;
-        }
-
-        .timeline-steps {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: relative;
-        }
-
-        .timeline-step {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            flex: 1;
-            position: relative;
-        }
-
-        .step-circle {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            font-weight: bold;
-            margin-bottom: 8px;
-            z-index: 2;
-            position: relative;
-        }
-
-        .step-circle.completed {
-            background-color: #27ae60;
-            color: white;
-        }
-
-        .step-circle.current {
-            background-color: #f39c12;
-            color: white;
-        }
-
-        .step-circle.pending {
-            background-color: #ecf0f1;
-            color: #7f8c8d;
-        }
-
-        .step-label {
-            font-size: 0.8em;
-            color: #7f8c8d;
-            text-align: center;
-            line-height: 1.2;
-        }
-
-        .timeline-line {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            right: 15px;
-            height: 2px;
-            background-color: #ecf0f1;
-            z-index: 1;
-        }
-
-        .timeline-progress {
-            height: 100%;
-            background-color: #27ae60;
-            transition: width 0.3s;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: #7f8c8d;
-        }
-
-        .empty-state-icon {
-            font-size: 4em;
-            margin-bottom: 20px;
-        }
-
-        .pagination {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            margin-top: 30px;
-        }
-
-        .pagination button {
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            background: white;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .pagination button:hover:not(:disabled) {
-            background-color: #f8f9fa;
-        }
-
-        .pagination button.active {
-            background-color: #3498db;
-            color: white;
-            border-color: #3498db;
-        }
-
-        .pagination button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        /* Estilos del Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.4);
-        }
-
-        .modal-content {
-            background-color: #fefefe;
-            margin: 2% auto;
-            padding: 0;
-            border: none;
-            width: 90%;
-            max-width: 1000px;
-            border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-            max-height: 95vh;
-            overflow-y: auto;
-        }
-
-        .modal-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 20px 30px;
-            border-radius: 10px 10px 0 0;
-            position: relative;
-        }
-
-        .modal-header h2 {
-            margin: 0;
-            font-size: 1.8em;
-        }
-
-        .modal-header p {
-            margin: 10px 0 0 0;
-            opacity: 0.9;
-        }
-
-        .close {
-            position: absolute;
-            right: 20px;
-            top: 20px;
-            color: white;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background-color 0.3s;
-        }
-
-        .close:hover,
-        .close:focus {
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-
-        .modal-body {
-            padding: 30px;
-        }
-
-        .form-section-modal {
-            margin-bottom: 25px;
-        }
-
-        .form-section-modal h3 {
-            color: #34495e;
-            border-bottom: 2px solid #ecf0f1;
-            padding-bottom: 8px;
-            margin-bottom: 15px;
-            font-size: 1.2em;
-        }
-
-        .form-group-modal {
-            margin-bottom: 15px;
-        }
-
-        .form-row-modal {
-            display: flex;
-            gap: 15px;
-        }
-
-        .form-row-modal .form-group-modal {
-            flex: 1;
-        }
-
-        .form-group-modal label {
-            display: block;
-            margin-bottom: 6px;
-            font-weight: bold;
-            color: #2c3e50;
-            font-size: 14px;
-        }
-
-        .form-group-modal input,
-        .form-group-modal textarea,
-        .form-group-modal select {
-            width: 100%;
-            padding: 10px;
-            border: 2px solid #bdc3c7;
-            border-radius: 6px;
-            font-size: 14px;
-            transition: border-color 0.3s;
-            box-sizing: border-box;
-        }
-
-        .form-group-modal input:focus,
-        .form-group-modal textarea:focus,
-        .form-group-modal select:focus {
-            outline: none;
-            border-color: #3498db;
-        }
-
-        .form-group-modal textarea {
-            resize: vertical;
-            min-height: 80px;
-        }
-
-        .file-upload-modal {
-            position: relative;
-            display: inline-block;
-            cursor: pointer;
-            width: 100%;
-        }
-
-        .file-upload-modal input[type=file] {
-            position: absolute;
-            left: -9999px;
-        }
-
-        .file-upload-label-modal {
-            display: block;
-            padding: 10px;
-            border: 2px dashed #bdc3c7;
-            border-radius: 6px;
-            text-align: center;
-            color: #7f8c8d;
-            transition: all 0.3s;
-            font-size: 13px;
-        }
-
-        .file-upload-label-modal:hover {
-            border-color: #3498db;
-            color: #3498db;
-        }
-
-        .modal-actions {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 25px;
-            padding-top: 20px;
-            border-top: 2px solid #ecf0f1;
-        }
-
-        .required {
-            color: #e74c3c;
-        }
-
-        .help-text {
-            font-size: 11px;
-            color: #7f8c8d;
-            margin-top: 3px;
-        }
-
-        @media (max-width: 768px) {
-            .modal-content {
-                width: 95%;
-                margin: 1% auto;
-            }
-
-            .form-row-modal {
-                flex-direction: column;
-            }
-
-            .modal-body {
-                padding: 20px;
-            }
-        }
-    </style>
 </head>
 
 <body>
-    <div class="container">
+  <!-- Encabezado -->
+  <header>
+    <div class="header">
+      <div onclick="window.location.href='/'">
+        <!-- <span class="logo-icon">⚡</span> -->
+        <img src="/img/logo1.png" alt="SINAPTICO" class="logo" style="height:8vh;">
+      </div>
+      <div style="display: flex; align-items: center; gap: 20px;">
+        <!-- <div style="font-size:1.5em;cursor:pointer;">
+          <span id="icono-notif">🔔 <span
+              style='background:red;color:white;border-radius:50%;padding:2px 7px;font-size:0.9em;'>0</span></span>
+        </div>
+        <div class="notificaciones" id="notificaciones"></div> -->
+
+
+        <div class="dropdown">
+          <button id="userMenuBtn" style="display: flex; align-items: center;">
+            <div id="userPhoto ">
+              <img class="imagenPerfil" id="imagenPerfilSecundaria" src="img/sinfoto.jpg" alt="Foto de perfil"
+                onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
+
+            </div>
+            <h3 id="nombreUsuarioHeader" style="color:white; margin-left:10px;">CRCI <i class="bi bi-chevron-down"></i>
+            </h3>
+          </button>
+
+          <div class="dropdown-menu" id="userMenu">
+            <!-- <a href="/perfil">Perfil</a>
+            <a href="/perfilEntidad">Empresa</a> -->
+            <a href="#" id="cerrarSesion">Cerrar sesión</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <nav class="nav">
+      <button class="nav-button " onclick="window.location.href='/dashboardCRCI'" id="inicio">Inicio</button>
+      <button class="nav-button pulse" onclick="window.location.href='/dashboardCRCIAplicados'">Proyectos ADCI</button>
+
+
+    </nav>
+  </header>
+
+  <!-- Spinner de carga de página -->
+  <div id="page-spinner-overlay" aria-hidden="true" role="status" aria-label="Cargando">
+    <div class="spinner" aria-hidden="true"></div>
+    <div class="spinner-text">Cargando...</div>
+  </div>
+ 
+  
+  <!-- Mis Proyectos -->
+  <div class="main-content">
+    <div style="display: flex;   justify-content: space-between;">
+      <h2 class="title" id="misProyectos">Proyectos de </h2>
+      </h2>
+
+    </div>
+
+
+
+    <!-- Filtros -->
+    <div class="proyecto-controls">
+      <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+        <div class="control-group">
+          <label class="control-label">Buscar proyecto</label>
+          <input type="text" id="buscarMisProyectos" placeholder="Buscar tus proyectos..." class="control-input">
+        </div>
+        <div class="control-group">
+          <label class="control-label">Lider del PPI</label>
+          <select class="control-select" id="filter-responsable">
+            <option value="">Todos los responsables</option>
+          </select>
+        </div>
+        <div class="control-group">
+          <label class="control-label">Fase del PPI</label>
+          <select class="control-select" id="filter-estado">
+            <option value="">Selecciona la fase</option>
+          </select>
+        </div>
+        <div class="control-group">
+          <label class="control-label">Duración PPI</label>
+          <select class="control-select" id="filter-duracionPPI">
+            <option value="">Selecciona el rango</option>
+          </select>
+        </div>
+        <div class="control-group">
+          <button class="filter-btn" id="filter-misIdeas"><i class="bi bi-arrow-clockwise"></i></button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Tabla de Mis Proyectos -->
+    <table class="data-table" id="tablaPostulaciones">
+      <thead>
+        <tr>
+          <th>Codigo</th>
+          <th>Nombre del proyecto</th>
+          <th>Objetivo</th>
+          <th>Entidad</th>
+          <th>Líder PPI</th>
+          <th>Duración</th>
+          <th>Estado</th>
+          <th>Ver</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="cuerpoTablaPostulaciones">
+        <!-- Filas de datos se generarán dinámicamente aquí -->
+
+      </tbody>
+    </table>
+
+    <div id="paginador" style="margin-top:15px; text-align:center;"></div>
+
+
+  </div>
+
+
+  <div class="container">
         <!-- Header -->
         <div class="header">
             <h1>📊 Proyectos Aprobados</h1>
             <p>Visualización de Proyectos de Innovación Aprobados</p>
         </div>
-
+        
         <!-- Estadísticas -->
-        <div class="stats-grid">
+        <div class="stats-grid">            
             <div class="stat-card aprobados">
                 <div class="stat-icon">✅</div>
                 <div class="stat-number">15</div>
                 <div class="stat-label">Proyectos Aprobados</div>
             </div>
-
+            
             <div class="stat-card presentados">
                 <div class="stat-icon">💲</div>
                 <div class="stat-number">$2.5B</div>
                 <div class="stat-label">Presupuesto Total</div>
             </div>
-
+            
             <div class="stat-card evaluacion">
                 <div class="stat-icon">⏱️</div>
                 <div class="stat-number">8.2</div>
                 <div class="stat-label">Duración Promedio (meses)</div>
             </div>
-
+            
             <div class="stat-card comite">
                 <div class="stat-icon">🏆</div>
                 <div class="stat-number">4.3</div>
                 <div class="stat-label">Puntuación Promedio</div>
             </div>
         </div>
-
+        
         <!-- Controles -->
         <div class="controls-section">
             <div class="controls-header">
                 <h3>🔧 Proyectos Aprobados</h3>
                 <button id="btnPresentarProyecto" class="btn btn-success">+ Presentar Proyecto</button>
             </div>
-
+            
             <div class="filters">
                 <div class="filter-group">
                     <label>Buscar:</label>
-                    <input type="text" id="buscarProyecto" placeholder="Título, ID o solicitante..."
-                        onkeyup="filtrarProyectos()">
+                    <input type="text" id="buscarProyecto" placeholder="Título, ID o solicitante..." 
+                           onkeyup="filtrarProyectos()">
                 </div>
-
+                
                 <div class="filter-group">
                     <label>Ordenar por:</label>
                     <select id="ordenarPor" onchange="ordenarProyectos()">
@@ -685,16 +199,16 @@
                         <option value="titulo_desc">Título Z-A</option>
                     </select>
                 </div>
-
+                
                 <button class="btn btn-secondary" onclick="limpiarFiltros()">Limpiar Filtros</button>
             </div>
         </div>
-
+        
         <!-- Lista de Proyectos -->
         <div class="projects-grid" id="projectsContainer">
             <!-- Los proyectos se cargarán aquí dinámicamente -->
         </div>
-
+        
         <!-- Paginación -->
         <div class="pagination" id="pagination">
             <!-- La paginación se generará dinámicamente -->
@@ -714,106 +228,102 @@
                     <!-- Información Básica -->
                     <div class="form-section-modal">
                         <h3>📝 Información Básica del Proyecto</h3>
-
+                        
                         <div class="form-group-modal">
                             <label for="titulo">Título del Proyecto <span class="required">*</span></label>
-                            <input type="text" id="titulo" name="titulo" required
-                                placeholder="Ej: Sistema de Gestión Inteligente para PYMES">
+                            <input type="text" id="titulo" name="titulo" required 
+                                   placeholder="Ej: Sistema de Gestión Inteligente para PYMES">
                         </div>
-
+                        
                         <div class="form-group-modal">
                             <label for="descripcion">Descripción General <span class="required">*</span></label>
-                            <textarea id="descripcion" name="descripcion" required
-                                placeholder="Describa brevemente el proyecto, su propósito y alcance..."></textarea>
+                            <textarea id="descripcion" name="descripcion" required 
+                                      placeholder="Describa brevemente el proyecto, su propósito y alcance..."></textarea>
                             <div class="help-text">Mínimo 100 caracteres</div>
                         </div>
-
+                        
                         <div class="form-group-modal">
                             <label for="objetivos">Objetivos del Proyecto <span class="required">*</span></label>
-                            <textarea id="objetivos" name="objetivos" required
-                                placeholder="Liste los objetivos específicos que busca alcanzar con este proyecto..."></textarea>
+                            <textarea id="objetivos" name="objetivos" required 
+                                      placeholder="Liste los objetivos específicos que busca alcanzar con este proyecto..."></textarea>
                         </div>
                     </div>
-
+                    
                     <!-- Detalles Técnicos -->
                     <div class="form-section-modal">
                         <h3>🔧 Detalles Técnicos y Metodología</h3>
-
+                        
                         <div class="form-group-modal">
                             <label for="metodologia">Metodología <span class="required">*</span></label>
-                            <textarea id="metodologia" name="metodologia" required
-                                placeholder="Describa la metodología que utilizará para desarrollar el proyecto..."></textarea>
+                            <textarea id="metodologia" name="metodologia" required 
+                                      placeholder="Describa la metodología que utilizará para desarrollar el proyecto..."></textarea>
                         </div>
-
+                        
                         <div class="form-group-modal">
-                            <label for="resultadosEsperados">Resultados Esperados <span
-                                    class="required">*</span></label>
-                            <textarea id="resultadosEsperados" name="resultadosEsperados" required
-                                placeholder="Describa los resultados y entregables esperados..."></textarea>
+                            <label for="resultadosEsperados">Resultados Esperados <span class="required">*</span></label>
+                            <textarea id="resultadosEsperados" name="resultadosEsperados" required 
+                                      placeholder="Describa los resultados y entregables esperados..."></textarea>
                         </div>
-
+                        
                         <div class="form-group-modal">
                             <label for="equipoTrabajo">Equipo de Trabajo <span class="required">*</span></label>
-                            <textarea id="equipoTrabajo" name="equipoTrabajo" required
-                                placeholder="Describa los perfiles profesionales y roles del equipo..."></textarea>
+                            <textarea id="equipoTrabajo" name="equipoTrabajo" required 
+                                      placeholder="Describa los perfiles profesionales y roles del equipo..."></textarea>
                         </div>
-
+                        
                         <div class="form-group-modal">
                             <label for="recursos">Recursos Necesarios</label>
-                            <textarea id="recursos" name="recursos"
-                                placeholder="Liste los recursos técnicos, humanos y materiales necesarios..."></textarea>
+                            <textarea id="recursos" name="recursos" 
+                                      placeholder="Liste los recursos técnicos, humanos y materiales necesarios..."></textarea>
                         </div>
                     </div>
-
+                    
                     <!-- Información Financiera y Temporal -->
                     <div class="form-section-modal">
                         <h3>💰 Información Financiera y Temporal</h3>
-
+                        
                         <div class="form-row-modal">
                             <div class="form-group-modal">
                                 <label for="presupuesto">Presupuesto Total <span class="required">*</span></label>
-                                <input type="number" id="presupuesto" name="presupuesto" required step="0.01" min="0"
-                                    placeholder="0.00">
+                                <input type="number" id="presupuesto" name="presupuesto" required 
+                                       step="0.01" min="0" placeholder="0.00">
                                 <div class="help-text">Monto en pesos colombianos</div>
                             </div>
-
+                            
                             <div class="form-group-modal">
                                 <label for="duracionMeses">Duración (meses) <span class="required">*</span></label>
-                                <input type="number" id="duracionMeses" name="duracionMeses" required min="1" max="60"
-                                    placeholder="12">
+                                <input type="number" id="duracionMeses" name="duracionMeses" required 
+                                       min="1" max="60" placeholder="12">
                             </div>
                         </div>
-
+                        
                         <div class="form-row-modal">
                             <div class="form-group-modal">
-                                <label for="fechaInicio">Fecha de Inicio Propuesta <span
-                                        class="required">*</span></label>
+                                <label for="fechaInicio">Fecha de Inicio Propuesta <span class="required">*</span></label>
                                 <input type="date" id="fechaInicio" name="fechaInicio" required>
                             </div>
-
+                            
                             <div class="form-group-modal">
-                                <label for="fechaFin">Fecha de Finalización Propuesta <span
-                                        class="required">*</span></label>
+                                <label for="fechaFin">Fecha de Finalización Propuesta <span class="required">*</span></label>
                                 <input type="date" id="fechaFin" name="fechaFin" required>
                             </div>
                         </div>
                     </div>
-
+                    
                     <!-- Documentos Adjuntos -->
                     <div class="form-section-modal">
                         <h3>📎 Documentos Adjuntos</h3>
-
+                        
                         <div class="form-group-modal">
                             <label for="documentoTecnico">Documento Técnico</label>
                             <div class="file-upload-modal">
-                                <input type="file" id="documentoTecnico" name="documentoTecnico"
-                                    accept=".pdf,.doc,.docx">
+                                <input type="file" id="documentoTecnico" name="documentoTecnico" accept=".pdf,.doc,.docx">
                                 <label for="documentoTecnico" class="file-upload-label-modal">
                                     📄 Seleccionar documento técnico (PDF, DOC, DOCX)
                                 </label>
                             </div>
                         </div>
-
+                        
                         <div class="form-group-modal">
                             <label for="presentacion">Presentación</label>
                             <div class="file-upload-modal">
@@ -823,7 +333,7 @@
                                 </label>
                             </div>
                         </div>
-
+                        
                         <div class="form-group-modal">
                             <label for="anexos">Anexos Adicionales</label>
                             <div class="file-upload-modal">
@@ -834,7 +344,7 @@
                             </div>
                         </div>
                     </div>
-
+                    
                     <div class="modal-actions">
                         <button type="button" id="btnLlenarDemo" class="btn btn-secondary">🎭 Datos Demo</button>
                         <button type="button" id="btnCancelarProyecto" class="btn btn-secondary">Cancelar</button>
@@ -844,9 +354,596 @@
             </div>
         </div>
     </div>
+  <!--Crear idea PPI-->
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
+  
+  <script>
+    document.getElementById('guardarFichaPPI').onclick = async function () {
+      // Recoge los datos del formulario
+      const data = {
+        entidadId: document.getElementById('nombreEntidad').value === 'null' ? null : document.getElementById('nombreEntidad').value,
+        userId: obtenerCookie("userId"),
+        userLiderId: document.getElementById('nombreLider').value,
+        nombrePPI: document.getElementById('nombrePPI').value,
+        determinanteProductividad: document.getElementById('determinanteProductividad').value,
+        componenteProductividad: document.getElementById('componenteProductividad').value,
+        objetivo: document.getElementById('objetivo').value,
+        necesidadProblema: document.querySelectorAll('#objetivo')[1]?.value || '',
+        impactos: document.getElementById('impactos').value,
+        objetivosEspecificos: document.getElementById('objetivosEspecificos').value,
+        duracionPPI: document.getElementById('duracionPPI').value,
+        presupuestoPPI: document.getElementById('presupuestoPPI').value,
+        fasePPI: document.getElementById('fasePPI').value,
+        correoLider: document.getElementById('correoLider').value,
+        telefonoLider: document.getElementById('telefonoLider').value,
+        rangoDeEmpleos: 'sin usar',
+        estratosBeneficiarios: 'sin usar',
+        potencialEmpleo: 'sin usar',
+        impactoEmpleo: 'sin usar',
+        impactoEquidad: 'sin usar',
+        politicasPPI: 'sin usar'
+      };
+      console.log(data);
+      // Validación rápida
+      // Si entidadId es null, no lo validamos como error
+      for (const key in data) {
+        if (key !== 'entidadId' && !data[key]) {
+          Swal.fire('Faltan datos', `Por favor completa el campo: ${key}.`, 'warning');
+          return;
+        }
+      }
+
+      try {
+        const res = await fetch('/api/proyectos', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        const result = await res.json();
+        if (res.ok) {
+          Swal.fire('Guardado', 'Ficha técnica enviada correctamente.', 'success').then(() => {
+            document.getElementById('modalPostulaciones').style.display = 'none';
+            location.reload();
+          });
+        } else {
+          Swal.fire('Error', result.message || 'No se pudo guardar.', 'error');
+        }
+      } catch (err) {
+        Swal.fire('Error', 'No se pudo conectar con el servidor.', 'error');
+      }
+    };
+  </script>
+  <!-- Utilidades-->
+  <script>
+    // =========================
+    // Utilidades
+    // =========================
+    function obtenerCookie(nombre) {
+      const nombreCookie = `${nombre}=`;
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        let cookie = cookies[i].trim();
+        if (cookie.indexOf(nombreCookie) === 0) {
+          return cookie.substring(nombreCookie.length, cookie.length);
+        }
+      }
+      return null;
+    }
+
+    const userId = obtenerCookie("userId");
+
+    // =========================
+    // Inicialización de usuario (nombre, foto) y carga de proyectos
+    // =========================
+    (async () => {
+      try {
+        // Cargar usuario (para cabecera y foto)
+        const resUser = await fetch(`/api/user/${userId}`);
+        const dataUser = await resUser.json();
+
+        const tituloProyectos = document.getElementById('misProyectos');
+        if (tituloProyectos && dataUser?.name) {
+          tituloProyectos.innerText = `Proyectos de apliacados a CRCI`;
+        }
+        document.getElementById("imagenPerfilSecundaria").src = dataUser.fotoPerfil ? "photo/" + dataUser.fotoPerfil : "photo/sinfoto.jpg";
+
+        if (dataUser?.fotoPerfil) {
+          const img = document.getElementById('imagenPerfil');
+          if (img) img.src = dataUser.fotoPerfil;
+        }
+
+        // Determinar entidad y setear input nombreEntidad
+        let entidadId = null;
+        const resUE = await fetch(`/api/usuarioempresa/user/${userId}`);
+        const dataUE = await resUE.json();
+
+        if (Array.isArray(dataUE) && dataUE.length > 0 && dataUE[0].empresa) {
+          entidadId = dataUE[0].empresa.id;
+        } else {
+          entidadId = 'null';
+        }
+
+        const inputEntidad = document.getElementById('nombreEntidad');
+        if (inputEntidad) inputEntidad.value = entidadId;
+
+        console.log('Entidad ID seleccionada:', entidadId);
+
+        // Cargar proyectos por entidad o propios
+        const resProy = await fetch(`/api/aliados-proyectos-aplicados/postulado/1`);
+        const dataProy = await resProy.json();
+        // console.log('Proyectos cargados:', dataProy);
+        const tbody = document.getElementById('cuerpoTablaPostulaciones');
+        if (tbody) {
+          tbody.innerHTML = '';
+          if (Array.isArray(dataProy) && dataProy.length > 0) {
+            dataProy.forEach(proyecto => {
+              console.log(proyecto)
+              const tr = document.createElement('tr');
+              tr.innerHTML = `
+              <td>${proyecto.proyecto.id || ''}</td>
+              <td>${proyecto.proyecto.nombrePPI || ''}</td>
+              <td>${proyecto.proyecto.objetivo || ''}</td>
+              <td>${proyecto.proyecto.entidad?.razonSocial ? proyecto.proyecto.entidad.razonSocial : 'Independiente'}</td>
+              <td>${proyecto.proyecto.usuarioLider.name || ''}</td>
+              <td>${proyecto.proyecto.duracionPPI || ''}</td>
+              <td>${proyecto.proyecto.fasePPI || ''}</td>
+              <td>
+                <button class="action-button" onclick="verMasProyecto(${proyecto.proyecto.id})" style="justify-content:center;">
+                <i class="bi bi-clipboard-fill"></i>
+                </button>
+              </td>
+              <td>
+                <button class="action-button" onclick="evaluarProyecto(${proyecto.proyecto.id})" style="justify-content:center;">
+                  <i class="bi bi-star-fill"></i> Evaluar
+                </button>
+              </td>
+            `;
+              tbody.appendChild(tr);
+            });
+          }
+        }
+      } catch (err) {
+        console.error('Error inicializando la vista:', err);
+      }
+    })();
+
+    // =========================
+    // Cerrar modal de postulaciones
+    // =========================
+    const btnCerrar = document.getElementById('cerrarModalPostulaciones');
+    if (btnCerrar) {
+      btnCerrar.onclick = function () {
+        const modal = document.getElementById('modalPostulaciones');
+        if (modal) modal.style.display = 'none';
+      };
+    }
+
+    // =========================
+    // Helpers para renderizar select de Líder
+    // =========================
+    async function renderLiderEmpresa(empresaId) {
+      const nombreLiderInput = document.getElementById('nombreLider');
+      const correoLiderInput = document.getElementById('correoLider');
+      const telefonoLiderInput = document.getElementById('telefonoLider');
+
+      const selectLider = document.createElement('select');
+      selectLider.id = 'nombreLider';
+      selectLider.name = 'nombreLider';
+      selectLider.required = true;
+
+      const res = await fetch(`/api/usuarioempresa/empresa/${empresaId}`);
+      const data = await res.json();
+
+      (data || []).forEach(item => {
+        const option = document.createElement('option');
+        option.value = item.User.id;
+        option.text = `${item.User.name} (${item.Cargo?.nombre || 'Sin cargo'})`;
+
+        option.dataset.email = item.User.email || '';
+        option.dataset.telefono = item.User.telefono || '';
+        selectLider.appendChild(option);
+      });
+
+      // Seleccionar el primero y actualizar campos
+      if (selectLider.options.length > 0) {
+        const selectedOption = selectLider.options[0];
+        if (correoLiderInput) correoLiderInput.value = selectedOption.dataset.email || '';
+        if (telefonoLiderInput) telefonoLiderInput.value = selectedOption.dataset.telefono || '';
+      } else {
+        if (correoLiderInput) correoLiderInput.value = '';
+        if (telefonoLiderInput) telefonoLiderInput.value = '';
+      }
+
+      // Cambiar correo y teléfono al cambiar líder
+      selectLider.onchange = function () {
+        const selectedOption = selectLider.options[selectLider.selectedIndex];
+        if (correoLiderInput) correoLiderInput.value = selectedOption.dataset.email || '';
+        if (telefonoLiderInput) telefonoLiderInput.value = selectedOption.dataset.telefono || '';
+      };
+
+      if (nombreLiderInput && nombreLiderInput.parentNode) {
+        nombreLiderInput.parentNode.replaceChild(selectLider, nombreLiderInput);
+      } else {
+        // Si no existe el input a reemplazar, intenta anexar en un contenedor conocido
+        const cont = document.getElementById('contenedorLider') || document.body;
+        cont.appendChild(selectLider);
+      }
+    }
+
+    async function renderLiderIndependiente() {
+      const nombreLiderInput = document.getElementById('nombreLider');
+      const correoLiderInput = document.getElementById('correoLider');
+      const telefonoLiderInput = document.getElementById('telefonoLider');
+
+      const selectLider = document.createElement('select');
+      selectLider.id = 'nombreLider';
+      selectLider.name = 'nombreLider';
+      selectLider.required = true;
+
+      const uid = obtenerCookie("userId");
+      const resUser = await fetch(`/api/user/${uid}`);
+      const user = await resUser.json();
+
+      const optionUsuario = document.createElement('option');
+      optionUsuario.value = uid;
+
+      // Tomar nombre desde #bienvenido si existe ("Hola Nombre")
+
+      optionUsuario.dataset.name = user.name || '';
+      optionUsuario.dataset.email = user.email || '';
+      optionUsuario.dataset.telefono = user.telefono || '';
+      selectLider.appendChild(optionUsuario);
+      optionUsuario.text = user.name || 'Usuario Actual';
+
+      // Rellenar inputs con datos del usuario
+      if (nombreLiderInput) nombreLiderInput.value = user.name || '';
+      if (correoLiderInput) correoLiderInput.value = user.email || '';
+      if (telefonoLiderInput) telefonoLiderInput.value = user.telefono || '';
+
+      // Listener (aunque solo haya uno)
+      selectLider.onchange = function () {
+
+        const selectedOption = selectLider.options[selectLider.selectedIndex];
+        if (correoLiderInput) correoLiderInput.value = selectedOption.dataset.email || '';
+        if (telefonoLiderInput) telefonoLiderInput.value = selectedOption.dataset.telefono || '';
+      };
+
+      if (nombreLiderInput && nombreLiderInput.parentNode) {
+        nombreLiderInput.parentNode.replaceChild(selectLider, nombreLiderInput);
+      } else {
+        const cont = document.getElementById('contenedorLider') || document.body;
+        cont.appendChild(selectLider);
+      }
+    }
+
+    // =========================
+    // Listeners de cambio
+    // =========================
+    // Cambiar líderes al cambiar el select de entidad (nombreEntidad)
+    document.addEventListener('change', async function (e) {
+      if (e.target && e.target.id === 'nombreEntidad') {
+        const empresaId = e.target.value;
+        if (empresaId && empresaId !== "null") {
+          await renderLiderEmpresa(empresaId);
+        } else {
+          await renderLiderIndependiente();
+        }
+      }
+    });
+
+    // Cambiar correo y teléfono al cambiar líder (nombreLider), incluso si no cambia la entidad
+    document.addEventListener('change', function (e) {
+      if (e.target && e.target.id === 'nombreLider') {
+        const selectedOption = e.target.options[e.target.selectedIndex];
+        const correoLiderInput = document.getElementById('correoLider');
+        const telefonoLiderInput = document.getElementById('telefonoLider');
+        if (correoLiderInput) correoLiderInput.value = selectedOption.dataset.email || '';
+        if (telefonoLiderInput) telefonoLiderInput.value = selectedOption.dataset.telefono || '';
+      }
+    });
+
+    // =========================
+    // (Opcional) Si deseas forzar que al inicio se renderice el líder acorde al valor cargado de nombreEntidad
+    // =========================
+    window.addEventListener('DOMContentLoaded', async () => {
+      const inputEntidad = document.getElementById('nombreEntidad');
+      if (inputEntidad) {
+        if (inputEntidad.value && inputEntidad.value !== 'null') {
+          await renderLiderEmpresa(inputEntidad.value);
+        } else {
+          await renderLiderIndependiente();
+        }
+      }
+    });
+  </script>
+  <!--Detalles de mis proyectos-->
+  <script>
+    function verMasProyecto(proyectoId) {
+      fetch(`/api/proyectos/${proyectoId}`)
+        .then(res => res.json())
+        .then(proyecto => {
+          // Crea el modal si no existe
+          console.log('Proyecto cargado para ver más:', proyecto);
+          let modal = document.getElementById('modalVerProyecto');
+          if (!modal) {
+            modal = document.createElement('div');
+            modal.id = 'modalVerProyecto';
+            modal.className = 'modal';
+            modal.innerHTML = `
+           
+                    <div class="modal-content" style="max-width:900px;">
+                        <span class="close" id="cerrarModalVerProyecto">&times;</span>
+
+                        <div id="contenidoVerProyecto" ></div>
+                    </div>
+                `;
+            document.body.appendChild(modal);
+            document.getElementById('cerrarModalVerProyecto').onclick = function () {
+              modal.style.display = 'none';
+            };
+          }
+          // Llena el contenido con tarjetas y estilos
+          console.log('Proyecto cargado para ver más:', proyecto);
+
+          const contenido = document.getElementById('contenidoVerProyecto');
+          contenido.innerHTML = `
+                                           
+                        <div style="margin-bottom:20px; display: flex; justify-content: space-between; align-items: center;">
+                         
+                            <h2>P-2025-${proyecto.id || ''} ${proyecto.nombrePPI || ''}</h2>
+                             
+                        </div>
+                     
+                        <div class="form-section">
+                            <h4 class="section-title">Información General</h4>
+                            <!-- nombres científicos -->
+
+                            <p><b>Objetivo: </b><br> ${proyecto.objetivo || ''}</p>
+                            <p><b>Problema:</b> ${(proyecto.necesidadProblema || '').replace(/(\d+\.)/g, '<br>$1')}</p>
+                            <p><b>Impactos:</b> ${(proyecto.impactos || '').replace(/(\d+\.)/g, '<br>$1')}</p>
+                            <p><b>Objetivos específicos:</b><br> ${(proyecto.objetivosEspecificos || '').replace(/(\d+\.)/g, '<br>$1')}</p>
+                        </div>
+             
+                        <div class="form-section">
+                            <h4 class="section-title">Detalles Técnicos</h4>
+                            <p><b>Entidad:</b> ${proyecto.entidad?.razonSocial || 'Independiente'}</p>
+                            <p><b>Duración:</b> ${proyecto.duracionPPI || ''}</p>
+                            <p><b>Presupuesto:</b> ${proyecto.presupuestoPPI || ''}</p>
+                            <p><b>Fase:</b> ${proyecto.fasePPI || ''}</p>
+                            <p><b>Determinante productividad:</b> ${proyecto.determinanteProductividad || ''}</p>
+                            <p><b>Componente productividad:</b> ${proyecto.componenteProductividad || ''}</p>
+                        </div>
+                    </div>
+                
+                        <div class="form-section">
+                            <h4 class="section-title" >Contacto Responsable</h4>
+                            <p><b>Nombre:</b> ${proyecto.usuarioLider?.name || ''}</p>
+                            <p><b>Correo:</b> <a href="mailto:${proyecto.usuarioLider?.email || ''}" style="color:#007bff;">${proyecto.usuarioLider?.email || ''}</a></p>
+                            <p><b>Teléfono:</b> <a href="tel:${proyecto.usuarioLider?.telefono || ''}" style="color:#007bff;">${proyecto.usuarioLider?.telefono || ''}</a></p>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+          modal.style.display = 'block';
+        })
+        .catch(() => {
+          Swal.fire('Error', 'No se pudo cargar el proyecto.', 'error');
+        });
+    }
+  </script>
+  <!--Cerrar Sesión-->
+  <script>
+    document.getElementById("cerrarSesion").addEventListener("click", () => {
+      Swal.fire({
+        title: '¿Estás seguro?',
+        text: '¿Querés cerrar sesión?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, cerrar sesión',
+        cancelButtonText: 'Cancelar',
+        reverseButtons: true
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Borrar cookies y redirigir
+          document.cookie = 'jwt=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+          document.cookie = 'user=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+          document.cookie = 'userId=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+          document.location.href = "/";
+
+        }
+        // Si el usuario cancela, no pasa nada
+      });
+    });
+  </script>
+  <!--Mis proyectos-->
+  <script>
+    (() => {
+      const $ = (id) => document.getElementById(id);
+
+      // 👉 Cache del usuario actual para usarlo en "Independiente"
+      let userSelf = { id: null, name: '', email: '', telefono: '' };
+
+      function setContacto(email = '', telefono = '') {
+
+        $('correoLider').value = email || '';
+        $('telefonoLider').value = telefono || '';
+      }
+
+      function renderSelectLider(options = [], preselectValue = null) {
+        const old = $('nombreLider');
+        const select = document.createElement('select');
+        select.id = 'nombreLider';
+        select.name = 'nombreLider';
+        select.required = true;
+
+        options.forEach(o => {
+          const opt = document.createElement('option');
+          opt.value = o.value;
+          opt.text = o.label;
+          opt.dataset.email = o.email || '';
+          opt.dataset.telefono = o.telefono || '';
+          if (preselectValue && preselectValue == o.value) opt.selected = true;
+          select.appendChild(opt);
+        });
+
+        select.addEventListener('change', () => {
+          const sel = select.options[select.selectedIndex];
+          setContacto(sel?.dataset.email, sel?.dataset.telefono);
+        });
+
+        old?.parentNode.replaceChild(select, old);
+
+        if (select.options.length > 0) {
+          const sel = select.options[select.selectedIndex];
+          setContacto(sel?.dataset.email, sel?.dataset.telefono);
+        } else {
+          setContacto('', '');
+        }
+      }
+
+      function renderSelectEntidad({ empresa } = {}) {
+        const old = $('nombreEntidad');
+        const select = document.createElement('select');
+        select.id = 'nombreEntidad';
+        select.name = 'nombreEntidad';
+        select.required = true;
+
+        const optInd = document.createElement('option');
+        optInd.value = 'null';
+        optInd.text = 'Independiente';
+        select.appendChild(optInd);
+
+        let preselect = 'null';
+        if (empresa && empresa.id) {
+          const optEmp = document.createElement('option');
+          optEmp.value = String(empresa.id);
+          optEmp.text = empresa.razonSocial || `Empresa ${empresa.id}`;
+          select.appendChild(optEmp);
+          preselect = String(empresa.id);
+        }
+
+        select.value = preselect;
+
+        // 💡 Al cambiar entidad: si es Independiente, seteamos contacto del usuario
+        select.addEventListener('change', async () => {
+          await onEntidadChange(select.value);
+        });
+
+        old?.parentNode.replaceChild(select, old);
+        return preselect;
+      }
+
+      async function loadLideresPorEmpresa(empresaId) {
+        const res = await fetch(`/api/usuarioempresa/empresa/${empresaId}`);
+        const data = await res.json();
+        const opciones = (Array.isArray(data) ? data : []).map(item => ({
+          value: String(item.User.id),
+          label: `${item.User.name} (${item.Cargo?.nombre || '—'})`,
+          email: item.User.email || '',
+          telefono: item.User.telefono || ''
+        }));
+        renderSelectLider(opciones);
+      }
+
+      // ✅ Ahora recibe userSelf y actualiza contacto
+      function setIndependienteAsLider() {
+        renderSelectLider([{
+          value: String(userSelf.id || obtenerCookie("userId")),
+          label: userSelf.name || 'Usuario Actual',
+          email: userSelf.email || '',
+          telefono: userSelf.telefono || ''
+        }], String(userSelf.id || obtenerCookie("userId")));
+        console
+        // Fuerza contacto del usuario (por si veníamos con datos de empresa)
+        // Trae email y teléfono del usuario actual por fetch
+        fetch(`/api/user/${userSelf.id}`)
+          .then(res => res.json())
+          .then(user => {
+            setContacto(user.email || '', user.telefono || '', user.name || '');
+          })
+          .catch(() => {
+            setContacto(userSelf.email || '', userSelf.telefono || '', userSelf.name || '');
+          });
+      }
+
+      async function onEntidadChange(empresaValue) {
+        if (empresaValue && empresaValue !== 'null') {
+          await loadLideresPorEmpresa(empresaValue);
+        } else {
+          setIndependienteAsLider();
+        }
+      }
+
+   
+    })();
+  </script>
+  <!--Cargar foto Perfil-->
+ 
+
+  <!-- Scripts -->
+  <!-- 
+  <script src="/js/notificaciones.js"></script>
+  <script src="/js/websocket.js"></script> -->
+  <!-- <script src="/js/cargarProyectos.js"></script> -->
+
+  <!--Menú desplegables-->
+  <script>
+    const userMenuBtn = document.getElementById("userMenuBtn");
+    const dropdown = userMenuBtn.closest(".dropdown");
+
+    // Mostrar / ocultar el menú al hacer clic
+    userMenuBtn.addEventListener("click", (event) => {
+      event.stopPropagation(); // evita que el clic cierre inmediatamente el menú
+      dropdown.classList.toggle("show");
+    });
+
+    // Cerrar el menú si haces clic fuera
+    document.addEventListener("click", () => {
+      dropdown.classList.remove("show");
+    });
+  </script>
+
+  <script>
+    (function () {
+      // Garantiza que el overlay permanezca al menos 5s desde que se ejecuta este script.
+      const MIN_MS = 3000;
+      const overlay = document.getElementById('page-spinner-overlay');
+      if (!overlay) return;
+
+      // Si ya pasó más de MIN_MS desde la navegación start, aun así mostramos el overlay breve
+      const start = performance.timing ? performance.timing.navigationStart : Date.now();
+      const now = Date.now();
+      const elapsed = Math.max(0, now - start);
+      const remaining = Math.max(0, MIN_MS - elapsed);
+
+      // Evita interacción mientras existe el overlay
+      document.documentElement.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden';
+
+      setTimeout(() => {
+        overlay.style.opacity = '0';
+        // permitir scroll cuando hide completo
+        setTimeout(() => {
+          if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
+          document.documentElement.style.overflow = '';
+          document.body.style.overflow = '';
+        }, 420);
+      }, remaining);
+    })();
+
+
+    function evaluarProyecto(proyectoId) {
+      Swal.fire({
+        title: 'En construcción',
+        text: 'La funcionalidad de evaluación de proyectos estará disponible próximamente.',
+        icon: 'info',
+        confirmButtonText: 'Entendido'
+      });
+    }
+  </script>
+
+   <script>
         // Datos ficticios de proyectos
         const proyectosFicticios = [
             {
@@ -2095,6 +2192,213 @@
             });
         }
     </script>
+<script>
+  // =========================
+  // 🔹 Variables globales
+  // =========================
+  let proyectosCargados = [];
+  let listaFiltrada = [];
+  let paginaActual = 1;
+  const itemsPorPagina = 5;
+  let entidadId = null;
+
+  // =========================
+  // 🔹 Inicialización
+  // =========================
+  document.addEventListener("DOMContentLoaded", async () => {
+    try {
+      const resUE = await fetch(`/api/usuarioempresa/user/${userId}`);
+      const dataUE = await resUE.json();
+
+      entidadId = (Array.isArray(dataUE) && dataUE[0]?.empresa?.id) ? dataUE[0].empresa.id : 'null';
+      console.log('Entidad ID seleccionada:', entidadId);
+
+      await cargarProyectos(); // Cargar proyectos
+    } catch (error) {
+      console.error("❌ Error inicializando:", error);
+    }
+  });
+
+  // =========================
+  // 🔹 Cargar proyectos
+  // =========================
+  async function cargarProyectos() {
+    try {
+      const resProy = await fetch(`/api/aliados-proyectos-aplicados/postulado/1`);
+      const dataProy = await resProy.json();
+
+      proyectosCargados = Array.isArray(dataProy) ? dataProy : [];
+      console.log("✅ Proyectos cargados:", proyectosCargados);
+
+      listaFiltrada = [...proyectosCargados];
+      paginaActual = 1;
+      renderizarPagina();
+      llenarFiltros(proyectosCargados);
+    } catch (err) {
+      console.error("❌ Error cargando proyectos:", err);
+    }
+  }
+
+  // =========================
+  // 🔹 Renderizar tabla
+  // =========================
+  function mostrarProyectos(lista) {
+    const tbody = document.getElementById('cuerpoTablaPostulaciones');
+    if (!tbody) return;
+
+    tbody.innerHTML = '';
+
+    if (!lista.length) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="9" style="text-align:center; color:#777;">No hay proyectos encontrados</td>
+        </tr>`;
+      return;
+    }
+
+    lista.forEach(p => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${p.proyecto?.id || ''}</td>
+        <td>${p.proyecto?.nombrePPI || ''}</td>
+        <td>${p.proyecto?.objetivo || ''}</td>
+        <td>${p.proyecto?.entidad?.razonSocial || 'Independiente'}</td>
+        <td>${p.proyecto?.usuarioLider?.name || ''}</td>
+        <td>${p.proyecto?.duracionPPI || ''}</td>
+        <td>${p.proyecto?.fasePPI || ''}</td>
+        <td>
+          <button class="action-button" onclick="verMasProyecto(${p.proyecto?.id})">
+            <i class="bi bi-clipboard-fill"></i>
+          </button>
+        </td>
+        <td>
+          <button class="action-button" onclick="evaluarProyecto(${p.proyecto?.id})">
+            <i class="bi bi-star-fill"></i> Evaluar
+          </button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  // =========================
+  // 🔹 Llenar filtros
+  // =========================
+  function llenarFiltros(data) {
+    console.log("Llenar filtros con:", data);
+
+    const duracionSelect = document.getElementById('filter-duracionPPI');
+    const responsableSelect = document.getElementById('filter-responsable');
+    const estadoSelect = document.getElementById('filter-estado');
+
+    // Limpiar opciones
+    responsableSelect.innerHTML = '<option value="">Todos los responsables</option>';
+    estadoSelect.innerHTML = '<option value="">Selecciona la fase</option>';
+    duracionSelect.innerHTML = '<option value="">Selecciona la duración</option>';
+
+    // Extraer datos únicos
+    const responsables = [...new Set(data.map(p => p.proyecto?.usuarioLider?.name || "Sin responsable"))];
+    const estados = [...new Set(data.map(p => p.proyecto?.fasePPI).filter(Boolean))];
+    const duraciones = [...new Set(data.map(p => p.proyecto?.duracionPPI).filter(Boolean))];
+
+    // Agregar opciones al select
+    responsables.forEach(r => responsableSelect.insertAdjacentHTML('beforeend', `<option value="${r}">${r}</option>`));
+    estados.forEach(e => estadoSelect.insertAdjacentHTML('beforeend', `<option value="${e}">${e}</option>`));
+    duraciones.forEach(d => duracionSelect.insertAdjacentHTML('beforeend', `<option value="${d}">${d}</option>`));
+  }
+
+  // =========================
+  // 🔹 Filtros
+  // =========================
+  function aplicarFiltros() {
+    const texto = document.getElementById('buscarMisProyectos').value.toLowerCase();
+    const responsable = document.getElementById('filter-responsable').value;
+    const estado = document.getElementById('filter-estado').value;
+    const duracionPPI = document.getElementById('filter-duracionPPI').value;
+
+    listaFiltrada = proyectosCargados.filter(p => {
+      const nombre = p.proyecto?.nombrePPI?.toLowerCase() || '';
+      const objetivo = p.proyecto?.objetivo?.toLowerCase() || '';
+      const entidad = p.proyecto?.entidad?.razonSocial?.toLowerCase() || '';
+
+      const coincideTexto = !texto || nombre.includes(texto) || objetivo.includes(texto) || entidad.includes(texto);
+      const coincideResponsable = !responsable || p.proyecto?.usuarioLider?.name === responsable;
+      const coincideEstado = !estado || p.proyecto?.fasePPI === estado;
+      const coincideDuracion = !duracionPPI || p.proyecto?.duracionPPI === duracionPPI;
+
+      return coincideTexto && coincideResponsable && coincideEstado && coincideDuracion;
+    });
+
+    console.log("📊 Filtrados:", listaFiltrada);
+
+    paginaActual = 1;
+    renderizarPagina();
+  }
+
+  // =========================
+  // 🔹 Paginación
+  // =========================
+  function mostrarPaginador(lista) {
+    const paginadorDiv = document.getElementById('paginador');
+    if (!paginadorDiv) return;
+
+    const totalPaginas = Math.ceil(lista.length / itemsPorPagina);
+
+    let botones = '';
+    for (let i = 1; i <= totalPaginas; i++) {
+      botones += `
+        <button 
+          class="btn-pagina ${i === paginaActual ? 'activo' : ''}" 
+          onclick="cambiarPagina(${i})">
+          ${i}
+        </button>`;
+    }
+
+    paginadorDiv.innerHTML = `
+      <button class="btn-pagina" onclick="cambiarPagina(${paginaActual - 1})" ${paginaActual === 1 ? 'disabled' : ''}>« Anterior</button>
+      ${botones}
+      <button class="btn-pagina" onclick="cambiarPagina(${paginaActual + 1})" ${paginaActual === totalPaginas ? 'disabled' : ''}>Siguiente »</button>
+    `;
+  }
+
+  function cambiarPagina(nuevaPagina) {
+    const totalPaginas = Math.ceil(listaFiltrada.length / itemsPorPagina);
+    if (nuevaPagina < 1 || nuevaPagina > totalPaginas) return;
+    paginaActual = nuevaPagina;
+    renderizarPagina();
+  }
+
+  function renderizarPagina() {
+    const inicio = (paginaActual - 1) * itemsPorPagina;
+    const fin = inicio + itemsPorPagina;
+    const pagina = listaFiltrada.slice(inicio, fin);
+
+    mostrarProyectos(pagina);
+    mostrarPaginador(listaFiltrada);
+  }
+
+  // =========================
+  // 🔹 Eventos de filtros
+  // =========================
+  document.getElementById('buscarMisProyectos').addEventListener('input', aplicarFiltros);
+  document.getElementById('filter-responsable').addEventListener('change', aplicarFiltros);
+  document.getElementById('filter-estado').addEventListener('change', aplicarFiltros);
+  document.getElementById('filter-duracionPPI').addEventListener('change', aplicarFiltros);
+
+  // 🔹 Botón limpiar
+  document.getElementById('filter-misIdeas').addEventListener('click', () => {
+    document.getElementById('buscarMisProyectos').value = '';
+    document.getElementById('filter-responsable').value = '';
+    document.getElementById('filter-estado').value = '';
+    document.getElementById('filter-duracionPPI').value = '';
+
+    listaFiltrada = [...proyectosCargados];
+    paginaActual = 1;
+    renderizarPagina();
+  });
+</script>
+
+
 </body>
 
 </html>
