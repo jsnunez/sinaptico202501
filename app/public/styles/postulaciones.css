@@ -1380,7 +1380,7 @@ td {
 
 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 20px;
     margin-bottom: 30px;
 }
@@ -1388,10 +1388,10 @@ td {
 .stat-card {
     background: white;
     padding: 25px;
-    border-radius: 12px;
+
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     text-align: left;
-    border-top: 4px solid #3498db;
+
     transition: transform 0.3s;
     display: flex;
     align-items: center;
@@ -1400,8 +1400,20 @@ td {
 
 .stat-card:hover {
     transform: translateY(-5px);
+    background-color: var(--primary-color);
+    color: var(--light-text);
 }
 
+
+.stat-card:hover .stat-number {
+
+    color: var(--light-text);
+}
+
+.stat-card:hover .stat-label{
+
+    color: var(--light-text);
+}
 .stat-icon {
     font-size: 3em;
     margin-bottom: 0;
@@ -1416,30 +1428,12 @@ td {
 }
 
 .stat-label {
-    color: #7f8c8d;
+    color: var(--text-color);
     font-size: 1.1em;
     font-weight: 500;
+
 }
 
-.stat-card.presentados {
-    border-top-color: #3498db;
-}
-
-.stat-card.evaluacion {
-    border-top-color: #f39c12;
-}
-
-.stat-card.comite {
-    border-top-color: #9b59b6;
-}
-
-.stat-card.aprobados {
-    border-top-color: #27ae60;
-}
-
-.stat-card.rechazados {
-    border-top-color: #e74c3c;
-}
 
 
 
