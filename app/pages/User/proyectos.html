@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,12 +13,12 @@
             margin: 0;
             padding: 20px;
         }
-        
+
         .container {
             max-width: 1400px;
             margin: 0 auto;
         }
-        
+
         .header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -26,85 +27,85 @@
             margin-bottom: 30px;
             text-align: center;
         }
-        
+
         .header h1 {
             margin: 0;
             font-size: 2.5em;
         }
-        
+
         .header p {
             margin: 10px 0 0 0;
             opacity: 0.9;
             font-size: 1.1em;
         }
-        
+
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
             margin-bottom: 30px;
         }
-        
+
         .stat-card {
             background: white;
             padding: 25px;
             border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             text-align: center;
             border-top: 4px solid #3498db;
             transition: transform 0.3s;
         }
-        
+
         .stat-card:hover {
             transform: translateY(-5px);
         }
-        
+
         .stat-card.presentados {
             border-top-color: #3498db;
         }
-        
+
         .stat-card.evaluacion {
             border-top-color: #f39c12;
         }
-        
+
         .stat-card.comite {
             border-top-color: #9b59b6;
         }
-        
+
         .stat-card.aprobados {
             border-top-color: #27ae60;
         }
-        
+
         .stat-card.rechazados {
             border-top-color: #e74c3c;
         }
-        
+
         .stat-icon {
             font-size: 3em;
             margin-bottom: 15px;
         }
-        
+
         .stat-number {
             font-size: 2.5em;
             font-weight: bold;
             color: #2c3e50;
             margin-bottom: 10px;
         }
-        
+
         .stat-label {
             color: #7f8c8d;
             font-size: 1.1em;
             font-weight: 500;
         }
-        
+
         .controls-section {
             background: white;
             padding: 25px;
             border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             margin-bottom: 30px;
         }
-        
+
         .controls-header {
             display: flex;
             justify-content: space-between;
@@ -113,38 +114,40 @@
             flex-wrap: wrap;
             gap: 15px;
         }
-        
+
         .filters {
             display: flex;
             gap: 15px;
             flex-wrap: wrap;
             align-items: center;
         }
-        
+
         .filter-group {
             display: flex;
             flex-direction: column;
             gap: 5px;
         }
-        
+
         .filter-group label {
             font-size: 0.9em;
             color: #7f8c8d;
             font-weight: 500;
         }
-        
-        .filter-group select, .filter-group input {
+
+        .filter-group select,
+        .filter-group input {
             padding: 8px 12px;
             border: 2px solid #ecf0f1;
             border-radius: 6px;
             font-size: 14px;
         }
-        
-        .filter-group select:focus, .filter-group input:focus {
+
+        .filter-group select:focus,
+        .filter-group input:focus {
             outline: none;
             border-color: #3498db;
         }
-        
+
         .btn {
             padding: 10px 20px;
             border: none;
@@ -156,75 +159,75 @@
             display: inline-block;
             font-weight: 500;
         }
-        
+
         .btn-primary {
             background-color: #3498db;
             color: white;
         }
-        
+
         .btn-primary:hover {
             background-color: #2980b9;
         }
-        
+
         .btn-success {
             background-color: #27ae60;
             color: white;
         }
-        
+
         .btn-success:hover {
             background-color: #219a52;
         }
-        
+
         .btn-warning {
             background-color: #f39c12;
             color: white;
         }
-        
+
         .btn-warning:hover {
             background-color: #d68910;
         }
-        
+
         .btn-danger {
             background-color: #e74c3c;
             color: white;
         }
-        
+
         .btn-danger:hover {
             background-color: #c0392b;
         }
-        
+
         .btn-secondary {
             background-color: #95a5a6;
             color: white;
         }
-        
+
         .btn-secondary:hover {
             background-color: #7f8c8d;
         }
-        
+
         .projects-grid {
             display: grid;
             gap: 20px;
         }
-        
+
         .project-card {
             background: white;
             border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             overflow: hidden;
             transition: transform 0.3s, box-shadow 0.3s;
         }
-        
+
         .project-card:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
         }
-        
+
         .project-header {
             padding: 20px 25px 15px 25px;
             border-bottom: 2px solid #ecf0f1;
         }
-        
+
         .project-title-row {
             display: flex;
             justify-content: space-between;
@@ -232,7 +235,7 @@
             margin-bottom: 10px;
             gap: 15px;
         }
-        
+
         .project-title {
             flex: 1;
             margin: 0;
@@ -240,13 +243,13 @@
             font-size: 1.3em;
             font-weight: bold;
         }
-        
+
         .project-id {
             color: #7f8c8d;
             font-size: 0.9em;
             font-weight: normal;
         }
-        
+
         .status-badge {
             padding: 6px 14px;
             border-radius: 20px;
@@ -255,27 +258,27 @@
             color: white;
             white-space: nowrap;
         }
-        
+
         .status-presentado {
             background-color: #3498db;
         }
-        
+
         .status-en_evaluacion {
             background-color: #f39c12;
         }
-        
+
         .status-en_comite {
             background-color: #9b59b6;
         }
-        
+
         .status-aprobado {
             background-color: #27ae60;
         }
-        
+
         .status-rechazado {
             background-color: #e74c3c;
         }
-        
+
         .project-meta {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -283,52 +286,52 @@
             color: #7f8c8d;
             font-size: 0.9em;
         }
-        
+
         .meta-item {
             display: flex;
             flex-direction: column;
         }
-        
+
         .meta-label {
             font-weight: 500;
             margin-bottom: 3px;
         }
-        
+
         .meta-value {
             color: #2c3e50;
             font-weight: bold;
         }
-        
+
         .project-body {
             padding: 20px 25px;
         }
-        
+
         .project-description {
             color: #7f8c8d;
             margin-bottom: 20px;
             line-height: 1.5;
         }
-        
+
         .project-actions {
             display: flex;
             gap: 10px;
             flex-wrap: wrap;
             justify-content: flex-end;
         }
-        
+
         .timeline-indicator {
             margin: 15px 25px 0 25px;
             padding: 15px 0;
             border-top: 1px solid #ecf0f1;
         }
-        
+
         .timeline-steps {
             display: flex;
             justify-content: space-between;
             align-items: center;
             position: relative;
         }
-        
+
         .timeline-step {
             display: flex;
             flex-direction: column;
@@ -336,7 +339,7 @@
             flex: 1;
             position: relative;
         }
-        
+
         .step-circle {
             width: 30px;
             height: 30px;
@@ -350,29 +353,29 @@
             z-index: 2;
             position: relative;
         }
-        
+
         .step-circle.completed {
             background-color: #27ae60;
             color: white;
         }
-        
+
         .step-circle.current {
             background-color: #f39c12;
             color: white;
         }
-        
+
         .step-circle.pending {
             background-color: #ecf0f1;
             color: #7f8c8d;
         }
-        
+
         .step-label {
             font-size: 0.8em;
             color: #7f8c8d;
             text-align: center;
             line-height: 1.2;
         }
-        
+
         .timeline-line {
             position: absolute;
             top: 15px;
@@ -382,24 +385,24 @@
             background-color: #ecf0f1;
             z-index: 1;
         }
-        
+
         .timeline-progress {
             height: 100%;
             background-color: #27ae60;
             transition: width 0.3s;
         }
-        
+
         .empty-state {
             text-align: center;
             padding: 60px 20px;
             color: #7f8c8d;
         }
-        
+
         .empty-state-icon {
             font-size: 4em;
             margin-bottom: 20px;
         }
-        
+
         .pagination {
             display: flex;
             justify-content: center;
@@ -407,7 +410,7 @@
             gap: 10px;
             margin-top: 30px;
         }
-        
+
         .pagination button {
             padding: 8px 12px;
             border: 1px solid #ddd;
@@ -415,17 +418,17 @@
             border-radius: 4px;
             cursor: pointer;
         }
-        
+
         .pagination button:hover:not(:disabled) {
             background-color: #f8f9fa;
         }
-        
+
         .pagination button.active {
             background-color: #3498db;
             color: white;
             border-color: #3498db;
         }
-        
+
         .pagination button:disabled {
             opacity: 0.5;
             cursor: not-allowed;
@@ -441,7 +444,7 @@
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgba(0,0,0,0.4);
+            background-color: rgba(0, 0, 0, 0.4);
         }
 
         .modal-content {
@@ -452,7 +455,7 @@
             width: 90%;
             max-width: 1000px;
             border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
             max-height: 95vh;
             overflow-y: auto;
         }
@@ -494,7 +497,7 @@
 
         .close:hover,
         .close:focus {
-            background-color: rgba(255,255,255,0.2);
+            background-color: rgba(255, 255, 255, 0.2);
         }
 
         .modal-body {
@@ -610,17 +613,18 @@
                 width: 95%;
                 margin: 1% auto;
             }
-            
+
             .form-row-modal {
                 flex-direction: column;
             }
-            
+
             .modal-body {
                 padding: 20px;
             }
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <!-- Header -->
@@ -628,48 +632,48 @@
             <h1>📊 Proyectos Aprobados</h1>
             <p>Visualización de Proyectos de Innovación Aprobados</p>
         </div>
-        
+
         <!-- Estadísticas -->
-        <div class="stats-grid">            
+        <div class="stats-grid">
             <div class="stat-card aprobados">
                 <div class="stat-icon">✅</div>
                 <div class="stat-number">15</div>
                 <div class="stat-label">Proyectos Aprobados</div>
             </div>
-            
+
             <div class="stat-card presentados">
                 <div class="stat-icon">💲</div>
                 <div class="stat-number">$2.5B</div>
                 <div class="stat-label">Presupuesto Total</div>
             </div>
-            
+
             <div class="stat-card evaluacion">
                 <div class="stat-icon">⏱️</div>
                 <div class="stat-number">8.2</div>
                 <div class="stat-label">Duración Promedio (meses)</div>
             </div>
-            
+
             <div class="stat-card comite">
                 <div class="stat-icon">🏆</div>
                 <div class="stat-number">4.3</div>
                 <div class="stat-label">Puntuación Promedio</div>
             </div>
         </div>
-        
+
         <!-- Controles -->
         <div class="controls-section">
             <div class="controls-header">
                 <h3>🔧 Proyectos Aprobados</h3>
                 <button id="btnPresentarProyecto" class="btn btn-success">+ Presentar Proyecto</button>
             </div>
-            
+
             <div class="filters">
                 <div class="filter-group">
                     <label>Buscar:</label>
-                    <input type="text" id="buscarProyecto" placeholder="Título, ID o solicitante..." 
-                           onkeyup="filtrarProyectos()">
+                    <input type="text" id="buscarProyecto" placeholder="Título, ID o solicitante..."
+                        onkeyup="filtrarProyectos()">
                 </div>
-                
+
                 <div class="filter-group">
                     <label>Ordenar por:</label>
                     <select id="ordenarPor" onchange="ordenarProyectos()">
@@ -681,16 +685,16 @@
                         <option value="titulo_desc">Título Z-A</option>
                     </select>
                 </div>
-                
+
                 <button class="btn btn-secondary" onclick="limpiarFiltros()">Limpiar Filtros</button>
             </div>
         </div>
-        
+
         <!-- Lista de Proyectos -->
         <div class="projects-grid" id="projectsContainer">
             <!-- Los proyectos se cargarán aquí dinámicamente -->
         </div>
-        
+
         <!-- Paginación -->
         <div class="pagination" id="pagination">
             <!-- La paginación se generará dinámicamente -->
@@ -710,102 +714,106 @@
                     <!-- Información Básica -->
                     <div class="form-section-modal">
                         <h3>📝 Información Básica del Proyecto</h3>
-                        
+
                         <div class="form-group-modal">
                             <label for="titulo">Título del Proyecto <span class="required">*</span></label>
-                            <input type="text" id="titulo" name="titulo" required 
-                                   placeholder="Ej: Sistema de Gestión Inteligente para PYMES">
+                            <input type="text" id="titulo" name="titulo" required
+                                placeholder="Ej: Sistema de Gestión Inteligente para PYMES">
                         </div>
-                        
+
                         <div class="form-group-modal">
                             <label for="descripcion">Descripción General <span class="required">*</span></label>
-                            <textarea id="descripcion" name="descripcion" required 
-                                      placeholder="Describa brevemente el proyecto, su propósito y alcance..."></textarea>
+                            <textarea id="descripcion" name="descripcion" required
+                                placeholder="Describa brevemente el proyecto, su propósito y alcance..."></textarea>
                             <div class="help-text">Mínimo 100 caracteres</div>
                         </div>
-                        
+
                         <div class="form-group-modal">
                             <label for="objetivos">Objetivos del Proyecto <span class="required">*</span></label>
-                            <textarea id="objetivos" name="objetivos" required 
-                                      placeholder="Liste los objetivos específicos que busca alcanzar con este proyecto..."></textarea>
+                            <textarea id="objetivos" name="objetivos" required
+                                placeholder="Liste los objetivos específicos que busca alcanzar con este proyecto..."></textarea>
                         </div>
                     </div>
-                    
+
                     <!-- Detalles Técnicos -->
                     <div class="form-section-modal">
                         <h3>🔧 Detalles Técnicos y Metodología</h3>
-                        
+
                         <div class="form-group-modal">
                             <label for="metodologia">Metodología <span class="required">*</span></label>
-                            <textarea id="metodologia" name="metodologia" required 
-                                      placeholder="Describa la metodología que utilizará para desarrollar el proyecto..."></textarea>
+                            <textarea id="metodologia" name="metodologia" required
+                                placeholder="Describa la metodología que utilizará para desarrollar el proyecto..."></textarea>
                         </div>
-                        
+
                         <div class="form-group-modal">
-                            <label for="resultadosEsperados">Resultados Esperados <span class="required">*</span></label>
-                            <textarea id="resultadosEsperados" name="resultadosEsperados" required 
-                                      placeholder="Describa los resultados y entregables esperados..."></textarea>
+                            <label for="resultadosEsperados">Resultados Esperados <span
+                                    class="required">*</span></label>
+                            <textarea id="resultadosEsperados" name="resultadosEsperados" required
+                                placeholder="Describa los resultados y entregables esperados..."></textarea>
                         </div>
-                        
+
                         <div class="form-group-modal">
                             <label for="equipoTrabajo">Equipo de Trabajo <span class="required">*</span></label>
-                            <textarea id="equipoTrabajo" name="equipoTrabajo" required 
-                                      placeholder="Describa los perfiles profesionales y roles del equipo..."></textarea>
+                            <textarea id="equipoTrabajo" name="equipoTrabajo" required
+                                placeholder="Describa los perfiles profesionales y roles del equipo..."></textarea>
                         </div>
-                        
+
                         <div class="form-group-modal">
                             <label for="recursos">Recursos Necesarios</label>
-                            <textarea id="recursos" name="recursos" 
-                                      placeholder="Liste los recursos técnicos, humanos y materiales necesarios..."></textarea>
+                            <textarea id="recursos" name="recursos"
+                                placeholder="Liste los recursos técnicos, humanos y materiales necesarios..."></textarea>
                         </div>
                     </div>
-                    
+
                     <!-- Información Financiera y Temporal -->
                     <div class="form-section-modal">
                         <h3>💰 Información Financiera y Temporal</h3>
-                        
+
                         <div class="form-row-modal">
                             <div class="form-group-modal">
                                 <label for="presupuesto">Presupuesto Total <span class="required">*</span></label>
-                                <input type="number" id="presupuesto" name="presupuesto" required 
-                                       step="0.01" min="0" placeholder="0.00">
+                                <input type="number" id="presupuesto" name="presupuesto" required step="0.01" min="0"
+                                    placeholder="0.00">
                                 <div class="help-text">Monto en pesos colombianos</div>
                             </div>
-                            
+
                             <div class="form-group-modal">
                                 <label for="duracionMeses">Duración (meses) <span class="required">*</span></label>
-                                <input type="number" id="duracionMeses" name="duracionMeses" required 
-                                       min="1" max="60" placeholder="12">
+                                <input type="number" id="duracionMeses" name="duracionMeses" required min="1" max="60"
+                                    placeholder="12">
                             </div>
                         </div>
-                        
+
                         <div class="form-row-modal">
                             <div class="form-group-modal">
-                                <label for="fechaInicio">Fecha de Inicio Propuesta <span class="required">*</span></label>
+                                <label for="fechaInicio">Fecha de Inicio Propuesta <span
+                                        class="required">*</span></label>
                                 <input type="date" id="fechaInicio" name="fechaInicio" required>
                             </div>
-                            
+
                             <div class="form-group-modal">
-                                <label for="fechaFin">Fecha de Finalización Propuesta <span class="required">*</span></label>
+                                <label for="fechaFin">Fecha de Finalización Propuesta <span
+                                        class="required">*</span></label>
                                 <input type="date" id="fechaFin" name="fechaFin" required>
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Documentos Adjuntos -->
                     <div class="form-section-modal">
                         <h3>📎 Documentos Adjuntos</h3>
-                        
+
                         <div class="form-group-modal">
                             <label for="documentoTecnico">Documento Técnico</label>
                             <div class="file-upload-modal">
-                                <input type="file" id="documentoTecnico" name="documentoTecnico" accept=".pdf,.doc,.docx">
+                                <input type="file" id="documentoTecnico" name="documentoTecnico"
+                                    accept=".pdf,.doc,.docx">
                                 <label for="documentoTecnico" class="file-upload-label-modal">
                                     📄 Seleccionar documento técnico (PDF, DOC, DOCX)
                                 </label>
                             </div>
                         </div>
-                        
+
                         <div class="form-group-modal">
                             <label for="presentacion">Presentación</label>
                             <div class="file-upload-modal">
@@ -815,7 +823,7 @@
                                 </label>
                             </div>
                         </div>
-                        
+
                         <div class="form-group-modal">
                             <label for="anexos">Anexos Adicionales</label>
                             <div class="file-upload-modal">
@@ -826,7 +834,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="modal-actions">
                         <button type="button" id="btnLlenarDemo" class="btn btn-secondary">🎭 Datos Demo</button>
                         <button type="button" id="btnCancelarProyecto" class="btn btn-secondary">Cancelar</button>
@@ -846,7 +854,7 @@
                 titulo: 'Plataforma Digital de Innovación Empresarial',
                 descripcion: 'Desarrollo de una plataforma web integral que permita a las empresas gestionar sus procesos de innovación, conectar con Estados y acceder a recursos de financiamiento.',
                 solicitante: 'TechInnovate S.A.S',
-                estado: 'en_comite',
+                estado: 'aprobado',
                 presupuesto: 85000000,
                 duracion: 8,
                 fechaPresentacion: '2025-07-25',
@@ -858,7 +866,7 @@
                 titulo: 'Sistema de Monitoreo Ambiental con IoT',
                 descripcion: 'Implementación de una red de sensores IoT para el monitoreo en tiempo real de la calidad del aire y agua en zonas industriales.',
                 solicitante: 'EcoTech Solutions',
-                estado: 'en_evaluacion',
+                estado: 'aprobado',
                 presupuesto: 120000000,
                 duracion: 12,
                 fechaPresentacion: '2025-07-28',
@@ -882,7 +890,7 @@
                 titulo: 'Blockchain para Cadena de Suministro Agrícola',
                 descripcion: 'Implementación de tecnología blockchain para mejorar la trazabilidad y transparencia en la cadena de suministro agrícola.',
                 solicitante: 'AgroChain Technologies',
-                estado: 'presentado',
+                estado: 'aprobado',
                 presupuesto: 95000000,
                 duracion: 10,
                 fechaPresentacion: '2025-07-30',
@@ -912,7 +920,610 @@
                 fechaPresentacion: '2025-07-26',
                 evaluador: 'Dra. Laura Pérez',
                 puntuacion: null
+            },
+
+            {
+                "id": "PROJ-2025-005",
+                "titulo": "Plataforma de Educación Virtual Adaptativa",
+                "descripcion": "Sistema de aprendizaje virtual que se adapta automáticamente al ritmo y estilo de aprendizaje de cada estudiante usando IA.",
+                "solicitante": "EduTech Innovations",
+                "estado": "aprobado",
+                "presupuesto": 75000000,
+                "duracion": 8,
+                "fechaPresentacion": "2025-07-20",
+                "evaluador": "Dr. Roberto Silva",
+                "puntuacion": 2.8
+            },
+            {
+                "id": "PROJ-2025-006",
+                "titulo": "Marketplace de Energías Renovables",
+                "descripcion": "Plataforma digital para la compra y venta de energía renovable entre productores independientes y consumidores.",
+                "solicitante": "GreenEnergy Market",
+                "estado": "en_evaluacion",
+                "presupuesto": 110000000,
+                "duracion": 9,
+                "fechaPresentacion": "2025-07-26",
+                "evaluador": "Dra. Laura Pérez",
+                "puntuacion": null
+            },
+            {
+                "id": "PROJ-2025-007",
+                "titulo": "Sistema de Gestión Hospitalaria Integral",
+                "descripcion": "Software unificado para la administración de citas médicas, historiales clínicos electrónicos y facturación hospitalaria.",
+                "solicitante": "HealthCare Solutions",
+                "estado": "aprobado",
+                "presupuesto": 150000000,
+                "duracion": 12,
+                "fechaPresentacion": "2025-08-01",
+                "evaluador": "Ing. Ana Gómez",
+                "puntuacion": 4.5
+            },
+            {
+                "id": "PROJ-2025-008",
+                "titulo": "App de Asistencia para el Cultivo Inteligente",
+                "descripcion": "Aplicación móvil para agricultores con monitoreo de suelo en tiempo real y recomendaciones de riego basadas en IoT.",
+                "solicitante": "AgroFuture S.A.",
+                "estado": "en_evaluacion",
+                "presupuesto": 55000000,
+                "duracion": 6,
+                "fechaPresentacion": "2025-08-05",
+                "evaluador": "Dr. Roberto Silva",
+                "puntuacion": null
+            },
+            {
+                "id": "PROJ-2025-009",
+                "titulo": "Motor de Recomendación para E-commerce",
+                "descripcion": "Implementación de un algoritmo de Machine Learning para sugerencias de productos personalizadas en un sitio de comercio electrónico.",
+                "solicitante": "Retail Global",
+                "estado": "aprobado",
+                "presupuesto": 40000000,
+                "duracion": 5,
+                "fechaPresentacion": "2025-08-10",
+                "evaluador": "Dra. Laura Pérez",
+                "puntuacion": 4.1
+            },
+            {
+                "id": "PROJ-2025-010",
+                "titulo": "Red Social para Intercambio de Habilidades",
+                "descripcion": "Plataforma peer-to-peer donde los usuarios intercambian servicios y conocimientos sin transacción monetaria.",
+                "solicitante": "SkillSwap Community",
+                "estado": "rechazado",
+                "presupuesto": 60000000,
+                "duracion": 7,
+                "fechaPresentacion": "2025-08-15",
+                "evaluador": "Ing. Ana Gómez",
+                "puntuacion": 3.0
+            },
+            {
+                "id": "PROJ-2025-011",
+                "titulo": "Análisis de Sentimiento en Redes Sociales (Marketing)",
+                "descripcion": "Herramienta de procesamiento de lenguaje natural (NLP) para medir la opinión del público sobre marcas y campañas.",
+                "solicitante": "Marketing Pro",
+                "estado": "aprobado",
+                "presupuesto": 85000000,
+                "duracion": 10,
+                "fechaPresentacion": "2025-08-20",
+                "evaluador": "Dr. Roberto Silva",
+                "puntuacion": 4.8
+            },
+            {
+                "id": "PROJ-2025-012",
+                "titulo": "Simulador de Inversiones en Criptomonedas",
+                "descripcion": "Entorno virtual para practicar la inversión en activos digitales con datos de mercado reales sin riesgo financiero.",
+                "solicitante": "Fintech Masters",
+                "estado": "en_evaluacion",
+                "presupuesto": 70000000,
+                "duracion": 8,
+                "fechaPresentacion": "2025-08-25",
+                "evaluador": "Dra. Laura Pérez",
+                "puntuacion": null
+            },
+            {
+                "id": "PROJ-2025-013",
+                "titulo": "Sistema de Control de Inventario con RFID",
+                "descripcion": "Integración de tecnología de identificación por radiofrecuencia (RFID) para la gestión automática de almacenes.",
+                "solicitante": "Logistics Next",
+                "estado": "aprobado",
+                "presupuesto": 120000000,
+                "duracion": 11,
+                "fechaPresentacion": "2025-09-01",
+                "evaluador": "Ing. Ana Gómez",
+                "puntuacion": 4.3
+            },
+            {
+                "id": "PROJ-2025-014",
+                "titulo": "Portal de Datos Abiertos Gubernamentales",
+                "descripcion": "Desarrollo de una interfaz pública para la visualización y descarga de información estadística del gobierno.",
+                "solicitante": "Secretaría de Innovación",
+                "estado": "aprobado",
+                "presupuesto": 95000000,
+                "duracion": 9,
+                "fechaPresentacion": "2025-09-05",
+                "evaluador": "Dr. Roberto Silva",
+                "puntuacion": 3.9
+            },
+            {
+                "id": "PROJ-2025-015",
+                "titulo": "Asistente Virtual para Soporte Técnico",
+                "descripcion": "Chatbot avanzado basado en PNL para la atención de primer nivel en problemas de hardware y software.",
+                "solicitante": "Tech Support Inc.",
+                "estado": "rechazado",
+                "presupuesto": 30000000,
+                "duracion": 4,
+                "fechaPresentacion": "2025-09-10",
+                "evaluador": "Dra. Laura Pérez",
+                "puntuacion": 2.5
+            },
+            {
+                "id": "PROJ-2025-016",
+                "titulo": "Plataforma de Telemedicina para Zonas Rurales",
+                "descripcion": "Sistema para conectar pacientes en áreas remotas con médicos especialistas a través de videoconsultas.",
+                "solicitante": "Rural Health Now",
+                "estado": "aprobado",
+                "presupuesto": 130000000,
+                "duracion": 10,
+                "fechaPresentacion": "2025-09-15",
+                "evaluador": "Ing. Ana Gómez",
+                "puntuacion": 4.7
+            },
+            {
+                "id": "PROJ-2025-017",
+                "titulo": "Herramienta de Monitoreo de Redes de Fibra Óptica",
+                "descripcion": "Software para detectar automáticamente fallas y optimizar el rendimiento en infraestructuras de telecomunicaciones.",
+                "solicitante": "Telecom Infra S.A.",
+                "estado": "en_evaluacion",
+                "presupuesto": 100000000,
+                "duracion": 12,
+                "fechaPresentacion": "2025-09-20",
+                "evaluador": "Dr. Roberto Silva",
+                "puntuacion": null
+            },
+            {
+                "id": "PROJ-2025-018",
+                "titulo": "Sistema de Pagos Móviles por Código QR",
+                "descripcion": "Desarrollo de una solución de pago sin contacto para pequeños comerciantes y usuarios individuales.",
+                "solicitante": "PayFast Latam",
+                "estado": "aprobado",
+                "presupuesto": 80000000,
+                "duracion": 7,
+                "fechaPresentacion": "2025-09-25",
+                "evaluador": "Dra. Laura Pérez",
+                "puntuacion": 4.4
+            },
+            {
+                "id": "PROJ-2025-019",
+                "titulo": "Auditoría de Ciberseguridad basada en IA",
+                "descripcion": "Herramienta que utiliza el aprendizaje automático para identificar vulnerabilidades y patrones de ataque en la red corporativa.",
+                "solicitante": "Security Shield",
+                "estado": "aprobado",
+                "presupuesto": 140000000,
+                "duracion": 9,
+                "fechaPresentacion": "2025-10-01",
+                "evaluador": "Ing. Ana Gómez",
+                "puntuacion": 4.9
+            },
+            {
+                "id": "PROJ-2025-020",
+                "titulo": "App de Realidad Aumentada para Guías Turísticas",
+                "descripcion": "Aplicación que superpone información histórica y multimedia sobre sitios turísticos a través de la cámara del móvil.",
+                "solicitante": "Tourism AR",
+                "estado": "rechazado",
+                "presupuesto": 50000000,
+                "duracion": 6,
+                "fechaPresentacion": "2025-10-05",
+                "evaluador": "Dr. Roberto Silva",
+                "puntuacion": 2.9
+            },
+            {
+                "id": "PROJ-2025-021",
+                "titulo": "Plataforma de Contratación de Freelancers por Blockchain",
+                "descripcion": "Sistema descentralizado para la gestión de contratos inteligentes y pagos seguros para trabajadores independientes.",
+                "solicitante": "DecentralTalent",
+                "estado": "en_evaluacion",
+                "presupuesto": 160000000,
+                "duracion": 14,
+                "fechaPresentacion": "2025-10-10",
+                "evaluador": "Dra. Laura Pérez",
+                "puntuacion": null
+            },
+            {
+                "id": "PROJ-2025-022",
+                "titulo": "Sistema de Optimización de Rutas de Entrega",
+                "descripcion": "Algoritmo avanzado para calcular las rutas de distribución más eficientes, minimizando tiempo y consumo de combustible.",
+                "solicitante": "Delivery Max",
+                "estado": "aprobado",
+                "presupuesto": 70000000,
+                "duracion": 8,
+                "fechaPresentacion": "2025-10-15",
+                "evaluador": "Ing. Ana Gómez",
+                "puntuacion": 4.2
+            },
+            {
+                "id": "PROJ-2025-023",
+                "titulo": "Dashboard de Visualización de Big Data Financiera",
+                "descripcion": "Panel interactivo para analistas que consolida y presenta grandes volúmenes de datos transaccionales en tiempo real.",
+                "solicitante": "Finance Insights",
+                "estado": "aprobado",
+                "presupuesto": 90000000,
+                "duracion": 7,
+                "fechaPresentacion": "2025-10-20",
+                "evaluador": "Dr. Roberto Silva",
+                "puntuacion": 3.8
+            },
+            {
+                "id": "PROJ-2025-024",
+                "titulo": "Juego Serio (Serious Game) para Entrenamiento Empresarial",
+                "descripcion": "Videojuego diseñado para simular escenarios de toma de decisiones y entrenamiento de personal en habilidades blandas.",
+                "solicitante": "HR Innovate",
+                "estado": "rechazado",
+                "presupuesto": 45000000,
+                "duracion": 5,
+                "fechaPresentacion": "2025-10-25",
+                "evaluador": "Dra. Laura Pérez",
+                "puntuacion": 2.7
+            },
+            {
+                "id": "PROJ-2025-025",
+                "titulo": "Automatización de Procesos de Recursos Humanos (RPA)",
+                "descripcion": "Implementación de robots de software para automatizar tareas repetitivas como la gestión de nóminas y reclutamiento inicial.",
+                "solicitante": "Automation First",
+                "estado": "aprobado",
+                "presupuesto": 115000000,
+                "duracion": 10,
+                "fechaPresentacion": "2025-11-01",
+                "evaluador": "Ing. Ana Gómez",
+                "puntuacion": 4.6
+            },
+            {
+                "id": "PROJ-2025-026",
+                "titulo": "Sistema de Detección de Fraudes con Deep Learning",
+                "descripcion": "Modelo de inteligencia artificial para identificar transacciones bancarias sospechosas en tiempo real.",
+                "solicitante": "Bank Security Dept.",
+                "estado": "aprobado",
+                "presupuesto": 170000000,
+                "duracion": 15,
+                "fechaPresentacion": "2025-11-05",
+                "evaluador": "Dr. Roberto Silva",
+                "puntuacion": 5.0
+            },
+            {
+                "id": "PROJ-2025-027",
+                "titulo": "App de Conexión Ciudadana y Servicios Municipales",
+                "descripcion": "Plataforma para reportar problemas de infraestructura, pagar servicios y recibir noticias de la alcaldía.",
+                "solicitante": "Gobierno Local",
+                "estado": "en_evaluacion",
+                "presupuesto": 88000000,
+                "duracion": 9,
+                "fechaPresentacion": "2025-11-10",
+                "evaluador": "Dra. Laura Pérez",
+                "puntuacion": null
+            },
+            {
+                "id": "PROJ-2025-028",
+                "titulo": "Control de Calidad en Manufactura con Visión por Computadora",
+                "descripcion": "Uso de cámaras y algoritmos de visión artificial para inspeccionar defectos en líneas de producción.",
+                "solicitante": "Factory Automation",
+                "estado": "aprobado",
+                "presupuesto": 135000000,
+                "duracion": 11,
+                "fechaPresentacion": "2025-11-15",
+                "evaluador": "Ing. Ana Gómez",
+                "puntuacion": 4.3
+            },
+            {
+                "id": "PROJ-2025-029",
+                "titulo": "Plataforma de Préstamos P2P (Peer-to-Peer) Descentralizada",
+                "descripcion": "Sistema de préstamos entre particulares utilizando tecnología blockchain para la transparencia y seguridad.",
+                "solicitante": "Decentral Lend",
+                "estado": "rechazado",
+                "presupuesto": 98000000,
+                "duracion": 12,
+                "fechaPresentacion": "2025-11-20",
+                "evaluador": "Dr. Roberto Silva",
+                "puntuacion": 2.6
+            },
+            {
+                "id": "PROJ-2025-030",
+                "titulo": "Gestor de Reservas de Viajes con Integración API",
+                "descripcion": "Software que consolida ofertas de vuelos, hoteles y alquiler de autos de múltiples proveedores a través de sus APIs.",
+                "solicitante": "Travel Connect",
+                "estado": "aprobado",
+                "presupuesto": 65000000,
+                "duracion": 6,
+                "fechaPresentacion": "2025-11-25",
+                "evaluador": "Dra. Laura Pérez",
+                "puntuacion": 4.0
+            },
+            {
+                "id": "PROJ-2025-031",
+                "titulo": "Sistema de Alerta Temprana de Desastres Naturales",
+                "descripcion": "Plataforma que procesa datos de sensores meteorológicos y satelitales para emitir alertas de riesgo a la población.",
+                "solicitante": "Protección Civil",
+                "estado": "aprobado",
+                "presupuesto": 180000000,
+                "duracion": 16,
+                "fechaPresentacion": "2025-12-01",
+                "evaluador": "Ing. Ana Gómez",
+                "puntuacion": 4.7
+            },
+            {
+                "id": "PROJ-2025-032",
+                "titulo": "Herramienta de Modelado 3D para Arquitectura en la Nube",
+                "descripcion": "Software colaborativo basado en web para el diseño y renderizado de proyectos arquitectónicos (BIM).",
+                "solicitante": "Design Cloud Pro",
+                "estado": "en_evaluacion",
+                "presupuesto": 105000000,
+                "duracion": 10,
+                "fechaPresentacion": "2025-12-05",
+                "evaluador": "Dr. Roberto Silva",
+                "puntuacion": null
+            },
+            {
+                "id": "PROJ-2025-033",
+                "titulo": "Plataforma de Gestión de Ensayos Clínicos",
+                "descripcion": "Sistema para el seguimiento de pacientes, manejo de datos y cumplimiento normativo en estudios médicos.",
+                "solicitante": "Pharma Research",
+                "estado": "aprobado",
+                "presupuesto": 155000000,
+                "duracion": 13,
+                "fechaPresentacion": "2025-12-10",
+                "evaluador": "Dra. Laura Pérez",
+                "puntuacion": 4.5
+            },
+            {
+                "id": "PROJ-2025-034",
+                "titulo": "Sistema de Reclutamiento por Coincidencia Semántica",
+                "descripcion": "Uso de NLP para analizar currículums y descripciones de puestos, sugiriendo candidatos con mayor afinidad.",
+                "solicitante": "Talent Match",
+                "estado": "aprobado",
+                "presupuesto": 78000000,
+                "duracion": 8,
+                "fechaPresentacion": "2025-12-15",
+                "evaluador": "Ing. Ana Gómez",
+                "puntuacion": 4.1
+            },
+            {
+                "id": "PROJ-2025-035",
+                "titulo": "App de Asistencia Legal Basada en Preguntas",
+                "descripcion": "Chatbot que ofrece respuestas a consultas legales básicas utilizando una base de datos de jurisprudencia.",
+                "solicitante": "Legal Aid Bot",
+                "estado": "rechazado",
+                "presupuesto": 52000000,
+                "duracion": 7,
+                "fechaPresentacion": "2025-12-20",
+                "evaluador": "Dr. Roberto Silva",
+                "puntuacion": 2.9
+            },
+            {
+                "id": "PROJ-2025-036",
+                "titulo": "Sistema de Monitoreo Ambiental de Calidad del Aire",
+                "descripcion": "Red de sensores IoT y plataforma de datos para visualizar la contaminación atmosférica en tiempo real.",
+                "solicitante": "EcoSense",
+                "estado": "aprobado",
+                "presupuesto": 125000000,
+                "duracion": 11,
+                "fechaPresentacion": "2025-12-25",
+                "evaluador": "Dra. Laura Pérez",
+                "puntuacion": 4.8
+            },
+            {
+                "id": "PROJ-2025-037",
+                "titulo": "Plataforma de Fidelización de Clientes con Gamificación",
+                "descripcion": "Incorporación de elementos de juego (puntos, insignias, rankings) para aumentar la retención de clientes en un servicio.",
+                "solicitante": "Loyalty Gamers",
+                "estado": "aprobado",
+                "presupuesto": 60000000,
+                "duracion": 6,
+                "fechaPresentacion": "2026-01-01",
+                "evaluador": "Ing. Ana Gómez",
+                "puntuacion": 4.4
+            },
+            {
+                "id": "PROJ-2026-038",
+                "titulo": "Integración de Sistemas Legacy con Microservicios",
+                "descripcion": "Modernización de la infraestructura tecnológica de una empresa mediante la arquitectura de microservicios en la nube.",
+                "solicitante": "Legacy Modernization",
+                "estado": "en_evaluacion",
+                "presupuesto": 190000000,
+                "duracion": 18,
+                "fechaPresentacion": "2026-01-05",
+                "evaluador": "Dr. Roberto Silva",
+                "puntuacion": null
+            },
+            {
+                "id": "PROJ-2026-039",
+                "titulo": "Herramienta de Gestión de Contenido (CMS) Personalizado",
+                "descripcion": "Desarrollo de un sistema de gestión de contenido flexible para manejar múltiples sitios web con diferentes formatos.",
+                "solicitante": "Media Content Hub",
+                "estado": "aprobado",
+                "presupuesto": 95000000,
+                "duracion": 9,
+                "fechaPresentacion": "2026-01-10",
+                "evaluador": "Dra. Laura Pérez",
+                "puntuacion": 4.2
+            },
+            {
+                "id": "PROJ-2026-040",
+                "titulo": "App para la Trazabilidad de Productos Alimenticios (Blockchain)",
+                "descripcion": "Uso de blockchain para registrar el origen, procesamiento y distribución de alimentos, garantizando la transparencia.",
+                "solicitante": "Food Chain Trust",
+                "estado": "aprobado",
+                "presupuesto": 145000000,
+                "duracion": 12,
+                "fechaPresentacion": "2026-01-15",
+                "evaluador": "Ing. Ana Gómez",
+                "puntuacion": 4.9
+            },
+            {
+                "id": "PROJ-2026-041",
+                "titulo": "Sistema de Reconocimiento Facial para Control de Acceso",
+                "descripcion": "Implementación de un sistema biométrico de seguridad para oficinas y áreas restringidas.",
+                "solicitante": "Security Systems Co.",
+                "estado": "rechazado",
+                "presupuesto": 70000000,
+                "duracion": 8,
+                "fechaPresentacion": "2026-01-20",
+                "evaluador": "Dr. Roberto Silva",
+                "puntuacion": 3.0
+            },
+            {
+                "id": "PROJ-2026-042",
+                "titulo": "Plataforma de Crowdfunding para Proyectos Sociales",
+                "descripcion": "Sistema de recaudación de fondos con enfoque en iniciativas de impacto social y evaluación de la huella de carbono.",
+                "solicitante": "Social Impact Funds",
+                "estado": "aprobado",
+                "presupuesto": 58000000,
+                "duracion": 7,
+                "fechaPresentacion": "2026-01-25",
+                "evaluador": "Dra. Laura Pérez",
+                "puntuacion": 4.6
+            },
+            {
+                "id": "PROJ-2026-043",
+                "titulo": "Módulo de Predicción de Demanda en la Cadena de Suministro",
+                "descripcion": "Uso de series de tiempo y modelos predictivos para optimizar los niveles de inventario y evitar desabastecimiento.",
+                "solicitante": "Supply Chain Pro",
+                "estado": "en_evaluacion",
+                "presupuesto": 112000000,
+                "duracion": 10,
+                "fechaPresentacion": "2026-02-01",
+                "evaluador": "Ing. Ana Gómez",
+                "puntuacion": null
+            },
+            {
+                "id": "PROJ-2026-044",
+                "titulo": "App de Asistencia para Personas con Discapacidad Visual (Audio)",
+                "descripcion": "Aplicación que utiliza visión por computadora y audio para describir el entorno y ayudar a la navegación.",
+                "solicitante": "Inclusive Tech",
+                "estado": "aprobado",
+                "presupuesto": 82000000,
+                "duracion": 9,
+                "fechaPresentacion": "2026-02-05",
+                "evaluador": "Dr. Roberto Silva",
+                "puntuacion": 4.5
+            },
+            {
+                "id": "PROJ-2026-045",
+                "titulo": "Sistema de Gestión de Aulas Inteligentes (IoT)",
+                "descripcion": "Red de sensores para controlar la iluminación, temperatura y ocupación de las aulas de manera automatizada.",
+                "solicitante": "University Smart Campus",
+                "estado": "aprobado",
+                "presupuesto": 130000000,
+                "duracion": 11,
+                "fechaPresentacion": "2026-02-10",
+                "evaluador": "Dra. Laura Pérez",
+                "puntuacion": 4.3
+            },
+            {
+                "id": "PROJ-2026-046",
+                "titulo": "Plataforma de Venta de NFTs de Arte Digital",
+                "descripcion": "Marketplace para la tokenización y venta de obras de arte digital como activos no fungibles.",
+                "solicitante": "Digital Art World",
+                "estado": "rechazado",
+                "presupuesto": 90000000,
+                "duracion": 10,
+                "fechaPresentacion": "2026-02-15",
+                "evaluador": "Ing. Ana Gómez",
+                "puntuacion": 2.8
+            },
+            {
+                "id": "PROJ-2026-047",
+                "titulo": "Herramienta de Cifrado y Desclasificación de Documentos",
+                "descripcion": "Software para la gestión segura de documentos confidenciales con múltiples niveles de acceso y auditoría.",
+                "solicitante": "Defense & Security Tech",
+                "estado": "aprobado",
+                "presupuesto": 165000000,
+                "duracion": 14,
+                "fechaPresentacion": "2026-02-20",
+                "evaluador": "Dr. Roberto Silva",
+                "puntuacion": 5.0
+            },
+            {
+                "id": "PROJ-2026-048",
+                "titulo": "Motor de Búsqueda Semántica Empresarial",
+                "descripcion": "Implementación de un buscador interno que entiende el contexto y la intención de la consulta del usuario, no solo palabras clave.",
+                "solicitante": "Corporate Search Solutions",
+                "estado": "en_evaluacion",
+                "presupuesto": 75000000,
+                "duracion": 8,
+                "fechaPresentacion": "2026-02-25",
+                "evaluador": "Dra. Laura Pérez",
+                "puntuacion": null
+            },
+            {
+                "id": "PROJ-2026-049",
+                "titulo": "Sistema de Reservas Hoteleras con Tarifas Dinámicas",
+                "descripcion": "Algoritmo que ajusta automáticamente los precios de las habitaciones basado en la demanda, estacionalidad y competencia (Revenue Management).",
+                "solicitante": "Hospitality Tech",
+                "estado": "aprobado",
+                "presupuesto": 110000000,
+                "duracion": 9,
+                "fechaPresentacion": "2026-03-01",
+                "evaluador": "Ing. Ana Gómez",
+                "puntuacion": 4.0
+            },
+            {
+                "id": "PROJ-2026-050",
+                "titulo": "App de Asistencia Médica por Síntomas (Diagnóstico Preliminar)",
+                "descripcion": "Aplicación que guía al usuario a través de una serie de preguntas para generar un diagnóstico preliminar y recomendar el especialista.",
+                "solicitante": "Digital Health Services",
+                "estado": "aprobado",
+                "presupuesto": 100000000,
+                "duracion": 10,
+                "fechaPresentacion": "2026-03-05",
+                "evaluador": "Dr. Roberto Silva",
+                "puntuacion": 4.4
+            },
+            {
+                "id": "PROJ-2026-051",
+                "titulo": "Plataforma de Gestión de Documentos Legales con Firma Digital",
+                "descripcion": "Sistema para la creación, archivo y firma electrónica certificada de contratos y documentos legales.",
+                "solicitante": "Legal Document Flow",
+                "estado": "rechazado",
+                "presupuesto": 62000000,
+                "duracion": 7,
+                "fechaPresentacion": "2026-03-10",
+                "evaluador": "Dra. Laura Pérez",
+                "puntuacion": 3.1
+            },
+            {
+                "id": "PROJ-2026-052",
+                "titulo": "Sistema de Planificación de Recursos Empresariales (ERP) Modular",
+                "descripcion": "Desarrollo de un ERP adaptable con módulos separados para finanzas, producción y RRHH.",
+                "solicitante": "Business Pro Systems",
+                "estado": "aprobado",
+                "presupuesto": 200000000,
+                "duracion": 18,
+                "fechaPresentacion": "2026-03-15",
+                "evaluador": "Ing. Ana Gómez",
+                "puntuacion": 4.7
+            },
+            {
+                "id": "PROJ-2026-053",
+                "titulo": "Módulo de Predicción de Fallas en Maquinaria (Mantenimiento Predictivo)",
+                "descripcion": "Uso de sensores IoT y Machine Learning para predecir cuándo fallará un equipo industrial, optimizando el mantenimiento.",
+                "solicitante": "Industrial IoT",
+                "estado": "en_evaluacion",
+                "presupuesto": 140000000,
+                "duracion": 12,
+                "fechaPresentacion": "2026-03-20",
+                "evaluador": "Dr. Roberto Silva",
+                "puntuacion": null
+            },
+            {
+                "id": "PROJ-2026-054",
+                "titulo": "Portal de E-Learning Interactivo con Laboratorios Virtuales",
+                "descripcion": "Plataforma educativa que incluye simulaciones y laboratorios virtuales para prácticas de ciencias e ingeniería.",
+                "solicitante": "Virtual Labs Inc.",
+                "estado": "aprobado",
+                "presupuesto": 120000000,
+                "duracion": 11,
+                "fechaPresentacion": "2026-03-25",
+                "evaluador": "Dra. Laura Pérez",
+                "puntuacion": 4.6
             }
+
+
         ];
 
         let proyectosFiltrados = proyectosFicticios.filter(p => p.estado === 'aprobado');
@@ -970,7 +1581,7 @@
 
             const stepsHtml = steps.map((step, index) => {
                 let stepClass = 'pending';
-                
+
                 if (estado === 'rechazado' && index <= 1) {
                     stepClass = index === 1 ? 'current' : 'completed';
                 } else if (index < currentIndex) {
@@ -1005,7 +1616,7 @@
 
             // Solo acción de ver detalles
             actions.push(`<button class="btn btn-secondary" onclick="verDetalles('${proyecto.id}')">👁️ Ver Detalles</button>`);
-            
+
             return actions.join('');
         }
 
@@ -1143,7 +1754,7 @@
             proyectosFiltrados = proyectosFicticios.filter(proyecto => {
                 // Solo mostrar proyectos aprobados
                 const esAprobado = proyecto.estado === 'aprobado';
-                const coincideBusqueda = !busqueda || 
+                const coincideBusqueda = !busqueda ||
                     proyecto.titulo.toLowerCase().includes(busqueda) ||
                     proyecto.id.toLowerCase().includes(busqueda) ||
                     proyecto.solicitante.toLowerCase().includes(busqueda);
@@ -1189,7 +1800,7 @@
         function limpiarFiltros() {
             document.getElementById('buscarProyecto').value = '';
             document.getElementById('ordenarPor').value = 'fecha_desc';
-            
+
             // Solo mostrar proyectos aprobados
             proyectosFiltrados = proyectosFicticios.filter(p => p.estado === 'aprobado');
             paginaActual = 1;
@@ -1199,12 +1810,12 @@
         // Ver detalles del proyecto - Versión completa para visualización
         function verDetalles(proyectoId) {
             const proyecto = proyectosFicticios.find(p => p.id === proyectoId);
-            
+
             // Generar información de estado más detallada
             let estadoInfo = '';
             let estadoColor = '';
-            
-            switch(proyecto.estado) {
+
+            switch (proyecto.estado) {
                 case 'presentado':
                     estadoInfo = '📝 Este proyecto ha sido presentado y está esperando asignación de evaluador.';
                     estadoColor = '#3498db';
@@ -1226,7 +1837,7 @@
                     estadoColor = '#e74c3c';
                     break;
             }
-            
+
             Swal.fire({
                 title: `${proyecto.titulo}`,
                 html: `
@@ -1287,9 +1898,9 @@
         // Remover función verRechazo ya que está integrada en verDetalles
 
         // Inicializar la página
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             renderProyectos();
-            
+
             // Simulación de actualización en tiempo real
             setInterval(() => {
                 // Simular cambios ocasionales en los estados
@@ -1329,10 +1940,10 @@
             const form = document.getElementById('proyectoForm');
 
             // Abrir modal
-            btnAbrir.addEventListener('click', function() {
+            btnAbrir.addEventListener('click', function () {
                 modal.style.display = 'block';
                 document.body.style.overflow = 'hidden';
-                
+
                 // Configurar fechas mínimas
                 const hoy = new Date().toISOString().split('T')[0];
                 document.getElementById('fechaInicio').min = hoy;
@@ -1350,21 +1961,21 @@
             btnCancelar.addEventListener('click', cerrarModal);
 
             // Cerrar al hacer clic fuera del modal
-            window.addEventListener('click', function(event) {
+            window.addEventListener('click', function (event) {
                 if (event.target == modal) {
                     cerrarModal();
                 }
             });
 
             // Llenar datos demo
-            btnDemo.addEventListener('click', function() {
+            btnDemo.addEventListener('click', function () {
                 Object.keys(datosDemo).forEach(key => {
                     const element = document.getElementById(key);
                     if (element) {
                         element.value = datosDemo[key];
                     }
                 });
-                
+
                 Swal.fire({
                     icon: 'success',
                     title: 'Datos de demostración cargados',
@@ -1379,9 +1990,9 @@
             document.getElementById('duracionMeses').addEventListener('change', calcularFechaFinModal);
 
             // Manejar envío del formulario
-            form.addEventListener('submit', function(e) {
+            form.addEventListener('submit', function (e) {
                 e.preventDefault();
-                
+
                 Swal.fire({
                     title: '¿Confirmar presentación?',
                     text: 'Una vez presentado, el proyecto pasará a evaluación',
@@ -1399,11 +2010,11 @@
                                 Swal.showLoading();
                             }
                         });
-                        
+
                         setTimeout(() => {
                             // Generar nuevo ID
                             const nuevoId = `PROJ-2025-${String(proyectosFicticios.length + 1).padStart(3, '0')}`;
-                            
+
                             // Agregar proyecto a la lista (simulación)
                             const nuevoProyecto = {
                                 id: nuevoId,
@@ -1417,10 +2028,10 @@
                                 evaluador: null,
                                 puntuacion: null
                             };
-                            
+
                             proyectosFicticios.unshift(nuevoProyecto);
                             proyectosFiltrados = [...proyectosFicticios];
-                            
+
                             Swal.fire({
                                 icon: 'success',
                                 title: '¡Proyecto Presentado!',
@@ -1437,12 +2048,12 @@
 
             // Manejar subida de archivos
             document.querySelectorAll('input[type="file"]').forEach(input => {
-                input.addEventListener('change', function() {
+                input.addEventListener('change', function () {
                     const label = this.nextElementSibling;
-                    const fileName = this.files.length > 1 ? 
-                        `${this.files.length} archivos seleccionados` : 
+                    const fileName = this.files.length > 1 ?
+                        `${this.files.length} archivos seleccionados` :
                         this.files[0]?.name || label.textContent;
-                    
+
                     if (this.files.length > 0) {
                         label.style.color = '#27ae60';
                         label.style.borderColor = '#27ae60';
@@ -1455,7 +2066,7 @@
         function calcularFechaFinModal() {
             const fechaInicio = document.getElementById('fechaInicio').value;
             const duracion = document.getElementById('duracionMeses').value;
-            
+
             if (fechaInicio && duracion) {
                 const inicio = new Date(fechaInicio);
                 inicio.setMonth(inicio.getMonth() + parseInt(duracion));
@@ -1465,7 +2076,7 @@
 
         function limpiarFormulario() {
             document.getElementById('proyectoForm').reset();
-            
+
             // Limpiar estilos de archivos
             document.querySelectorAll('.file-upload-label-modal').forEach(label => {
                 label.style.color = '';
@@ -1485,4 +2096,5 @@
         }
     </script>
 </body>
+
 </html>

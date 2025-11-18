@@ -58,8 +58,8 @@
                     </button>
 
                     <div class="dropdown-menu" id="userMenu">
-                        <a href="/perfil">Perfil</a>
-                        <a href="/perfilEntidad">Empresa</a>
+                        <a class="perfilUser" id="perfilUser">Perfil</a>
+                        <a href="/miEntidad" id="habilitarMiEmpresa" style="display: none;">Empresa</a>
                         <a href="#" id="cerrarSesion">Cerrar sesión</a>
                     </div>
                 </div>
@@ -101,6 +101,35 @@
 
                 </div>
             </div>
+    <div class="overlay"></div>
+
+    <!-- Modal Crear Entidad -->
+    <div class="overlay"></div>
+    <div id="myModal" class="modal">
+        <div class="modal-content" style="max-width: 900px; max-height: 90vh; overflow-y: auto;">
+            <span class="close">&times;</span>
+            <div class="modal-header">
+                <h3>Crear Nueva Entidad</h3>
+            </div>
+
+            <form id="entidad-form">
+                <div class="datos-entidad" id="datos-entidad-crear">
+                    <!-- Los campos se agregarán dinámicamente -->
+                </div>
+
+                <div class="modal-actions">
+                    <button type="submit" class="modal-button">Crear Entidad</button>
+                    <button type="button" class="modal-button-secondary" id="cerrarModal">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+     <div class="overlay"></div>
+    <div id="myModalAsignarServicio" class="modal">
+      
+            <button class="modal-button-secondary" id="cerrarModalBtn">Cerrar</button>
+        </div>
+            <button id="crearEntidad" style="display: none;"></button>
             <div class="about-section">
 
                 <div style="display: flex; justify-content: center; margin-bottom: 20px;">
@@ -187,11 +216,18 @@
 
 
 
+
+    <script src="/js/config.js"></script>
+    <script src="admin.js"></script>
+    <script src="js/formularios.js"></script>
+    <script src="js/cargarDatos.js"></script>
+    <script src="js/estadisticas.js"></script>
     <script src="js/notificaciones.js"></script>
     <script src="/js/websocket.js"></script>
-    <script src="/js/config.js"></script>
+    <script src="/js/menu.js"></script>
     <script src="/js/enviarInvitacion.js"></script>
 
+    <!-- Cargar datos de entidad -->
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
             const params = new URLSearchParams(window.location.search);
@@ -543,22 +579,7 @@
         };
 
     </script>
-    <!--Menú desplegables-->
-    <script>
-        const userMenuBtn = document.getElementById("userMenuBtn");
-        const dropdown = userMenuBtn.closest(".dropdown");
 
-        // Mostrar / ocultar el menú al hacer clic
-        userMenuBtn.addEventListener("click", (event) => {
-            event.stopPropagation(); // evita que el clic cierre inmediatamente el menú
-            dropdown.classList.toggle("show");
-        });
-
-        // Cerrar el menú si haces clic fuera
-        document.addEventListener("click", () => {
-            dropdown.classList.remove("show");
-        });
-    </script>
     <!-- Utilidades-->
     <script>
         // =========================
@@ -769,34 +790,7 @@
             }
         });
     </script>
-    <script>
-        (function () {
-            // Garantiza que el overlay permanezca al menos 5s desde que se ejecuta este script.
-            const MIN_MS = 3000;
-            const overlay = document.getElementById('page-spinner-overlay');
-            if (!overlay) return;
 
-            // Si ya pasó más de MIN_MS desde la navegación start, aun así mostramos el overlay breve
-            const start = performance.timing ? performance.timing.navigationStart : Date.now();
-            const now = Date.now();
-            const elapsed = Math.max(0, now - start);
-            const remaining = Math.max(0, MIN_MS - elapsed);
-
-            // Evita interacción mientras existe el overlay
-            document.documentElement.style.overflow = 'hidden';
-            document.body.style.overflow = 'hidden';
-
-            setTimeout(() => {
-                overlay.style.opacity = '0';
-                // permitir scroll cuando hide completo
-                setTimeout(() => {
-                    if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
-                    document.documentElement.style.overflow = '';
-                    document.body.style.overflow = '';
-                }, 420);
-            }, remaining);
-        })();
-    </script>
 
 </body>
 

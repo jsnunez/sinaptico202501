@@ -1492,7 +1492,7 @@ td {
 
 /* Hover de los enlaces */
 .dropdown-menu a:hover {
-    background: var(--select-btn, #444);
+    background: var(--blue, #444);
 }
 
 /* Clase que lo muestra */
