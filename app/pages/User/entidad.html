@@ -94,7 +94,8 @@
                         class="informacionGeneral">
                         <h1 class="tituloEntidad" id="modalRazonSocial"></h1>
 
-                        <p style="font-size: 25px; color: rgb(82, 82, 82);"><a id="tipoEntidad"></a> ◦ <span id="descripcionEmpresa"></span></p>
+                        <p style="font-size: 25px; color: rgb(82, 82, 82);"><a id="tipoEntidad"></a> ◦ <span
+                                id="descripcionEmpresa"></span></p>
 
                     </div>
 
@@ -103,8 +104,8 @@
             <div class="about-section">
 
                 <div style="display: flex; justify-content: center; margin-bottom: 20px;">
-                  
-                        <h1 > Nosotros</h1>
+
+                    <h1> Nosotros</h1>
 
                 </div>
                 <div class="info-container">
@@ -132,7 +133,7 @@
             </div>
             <div style="display: flex; justify-content: center; margin-bottom: 20px; margin-top: 20px;">
 
-                        <h1 > Integrantes</h1>
+                <h1> Integrantes</h1>
 
             </div>
             <div class="integrantes-wrapper">
@@ -145,7 +146,7 @@
             <div>
                 <div style="display: flex; justify-content: center; margin-bottom: 20px;">
 
-                        <h1 > Servicios</h1>
+                    <h1> Servicios</h1>
 
                 </div>
                 <div id="serviciosAsociados" class="servicios-container">
@@ -158,29 +159,27 @@
 
 
 
-                                <div class="info-card vision">
-                        <h4>Conocenos</h4>
-                        <p>
-                        <div class="social-icons">
-                            <a href="https://facebook.com" target="_blank"><i class="bi bi-facebook"></i></i></a>
-                            <a href="https://instagram.com" target="_blank"><i class="bi bi-instagram"></i></a>
-                            <a href="https://www.cpcoriente.org/servicios" target="_blank"><i
-                                    class="bi bi-link-45deg"></i></a>
+            <div class="info-card vision">
+                <h4>Conocenos</h4>
+                <p>
+                <div class="social-icons">
+                    <a href="https://facebook.com" target="_blank"><i class="bi bi-facebook"></i></i></a>
+                    <a href="https://instagram.com" target="_blank"><i class="bi bi-instagram"></i></a>
+                    <a href="https://www.cpcoriente.org/servicios" target="_blank"><i class="bi bi-link-45deg"></i></a>
 
-                        </div>
+                </div>
 
-                        <button class="action-button" id="contactarTelBtn"
-                            style=" min-width: 120px; ">Contactar</button>
-                        <p style="font-size: 0.75em; color: #ffffff; margin-top: 5px;">
-                            *Haz clic en contactar para ver más datos de contacto
-                        </p>
-                        <p><b>Telefono: </b> <span id="telefonoEntidad"></span></p>
-                        <p><b>Email: </b><span id="emailEntidad"></span></p>
-                             <p> <i class="bi bi-geo-alt-fill"></i> <span id="UbicacionEntidad"></span> <a id="ciudad">
-                            </a>
-                            - <a id="departamento"></a></p>
-                        </p>
-                    </div>
+                <button class="action-button" id="contactarTelBtn" style=" min-width: 120px; ">Contactar</button>
+                <p style="font-size: 0.75em; color: #ffffff; margin-top: 5px;">
+                    *Haz clic en contactar para ver más datos de contacto
+                </p>
+                <p><b>Telefono: </b> <span id="telefonoEntidad"></span></p>
+                <p><b>Email: </b><span id="emailEntidad"></span></p>
+                <p> <i class="bi bi-geo-alt-fill"></i> <span id="UbicacionEntidad"></span> <a id="ciudad">
+                    </a>
+                    - <a id="departamento"></a></p>
+                </p>
+            </div>
 
         </div>
     </div>
@@ -237,7 +236,7 @@
         });
         async function llamarservicios(idEntidad) {
             try {
-                const url = `${API_BASE_URL}/api/servicio/entidad/${idEntidad}`;
+                const url = `/api/servicio/entidad/${idEntidad}`;
                 const data = await fetch(url);
                 const datos = await data.json();
 
@@ -273,8 +272,7 @@
             }
         }
         async function llamarIntegrantes(idEntidad) {
-            const url = `${API_BASE_URL}/api/usuarioempresa/empresa/${idEntidad}`;
-
+            const url = `/api/usuarioempresa/empresa/${idEntidad}`;
             try {
                 const response = await fetch(url);
                 const datos = await response.json();
@@ -300,40 +298,53 @@
                 // Construir tarjetas
                 const container = document.getElementById('integrantesAsociados');
                 container.innerHTML = '';
-                integrantes.forEach(i => container.appendChild(crearTarjeta(i)));
-                // Duplicar contenido para loop infinito
-                integrantes.forEach(i => container.appendChild(crearTarjeta(i)));
 
-                // Variables de animación
+                // 🔥 Cantidad de veces a duplicar
+                const multiplicar = 4;
+
+                // Repetir el set completo 4 veces
+                for (let x = 0; x < multiplicar; x++) {
+                    integrantes.forEach(i => container.appendChild(crearTarjeta(i)));
+                }
+
+                // Animación infinita
                 let isHovering = false;
                 let currentOffset = 0;
                 const speedNormal = 0.5;
                 const speedHover = 0.1;
 
+                let totalWidth = 0;
+
+                requestAnimationFrame(() => {
+                    totalWidth = container.scrollWidth / multiplicar;
+                });
+
                 function animate() {
                     const speed = isHovering ? speedHover : speedNormal;
                     currentOffset -= speed;
-                    // Si se mueve todo el contenido duplicado, reiniciamos
-                    const totalWidth = container.scrollWidth / 2;
-                    if (Math.abs(currentOffset) >= totalWidth) currentOffset = 0;
+
+                    if (Math.abs(currentOffset) >= totalWidth) {
+                        currentOffset = 0;
+                    }
+
                     container.style.transform = `translateX(${currentOffset}px)`;
                     requestAnimationFrame(animate);
                 }
+
                 requestAnimationFrame(animate);
 
-                // Hover sobre el contenedor para pausar/centrar
-                container.querySelectorAll('.integrante-card').forEach(card => {
-                    card.addEventListener('mouseenter', () => { isHovering = true; });
-                    card.addEventListener('mouseleave', () => { isHovering = false; });
-                });
+                // Hover
+                container.addEventListener('mouseenter', () => isHovering = true);
+                container.addEventListener('mouseleave', () => isHovering = false);
 
-                // Botones de carrusel
+                // Botones
                 const btnPrev = document.querySelector('.btn-carrusel.prev');
                 const btnNext = document.querySelector('.btn-carrusel.next');
 
-                btnPrev.addEventListener('click', () => { currentOffset += 150; });
-                btnNext.addEventListener('click', () => { currentOffset -= 150; });
-
+                if (btnPrev && btnNext) {
+                    btnPrev.addEventListener('click', () => { currentOffset += 150; });
+                    btnNext.addEventListener('click', () => { currentOffset -= 150; });
+                }
             } catch (error) {
                 console.error('Error al obtener integrantes:', error);
                 document.getElementById('integrantesAsociados').innerHTML = 'Error al cargar integrantes.';
