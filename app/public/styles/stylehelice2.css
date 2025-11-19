@@ -394,6 +394,7 @@ h2 {
 }
 
 
+
 .helix-title,
 .stats-title {
     text-align: center;
@@ -1123,7 +1124,7 @@ form {
 .social-icons a {
     font-size: 2rem;
     text-align: center;
-    color: var(--light-text);
+    color: var(--primary-color);
 
 }
 
@@ -1463,10 +1464,20 @@ form {
     position: relative;
     width: 90%;
     margin: 40px auto;
-    overflow: hidden;
+
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.integrantes-wrapper {
+    overflow-x: hidden;
+    overflow-y: visible;
+}
+
+
+.integrante-card {
+    margin: 8px 0;
 }
 
 /* Contenedor de tarjetas (scroll infinito manejado por JS) */
@@ -1477,17 +1488,16 @@ form {
     width: max-content;
     transform: translateX(0);
     will-change: transform;
+    overflow: visible;
 }
 
 /* Tarjeta */
 .integrante-card {
-
-    border: 1px solid #dde3ff;
-    border-radius: 16px;
+    border: 3px solid #e0e0e0;
+    border-radius: 3%;
     width: 220px;
     padding: 25px 20px;
     text-align: center;
-    box-shadow: 0 6px 14px rgba(84, 127, 245, 0.08);
     transition: all 0.35s ease;
     flex-shrink: 0;
     cursor: pointer;
@@ -1495,8 +1505,8 @@ form {
 }
 
 .integrante-card:hover {
-    transform: translateY(-8px) scale(1.05);
-    box-shadow: 0 12px 24px rgba(84, 127, 245, 0.25);
+    transform: translateY(-1px) scale(1.04);
+    box-shadow: 0 12px 24px #1b3360;
 }
 
 /* Imagen circular */
@@ -1511,7 +1521,7 @@ form {
 }
 
 .integrante-card:hover .integrante-foto {
-    border-color: #d4b68c;
+    border-color: var(--primary-color);
 }
 
 /* Texto */
@@ -1571,7 +1581,7 @@ form {
 }
 
 .btn-carrusel:hover {
-    background: rgba(84, 127, 245, 1);
+    background: #1b3360d5;
 }
 
 .btn-carrusel.prev {
@@ -1618,4 +1628,58 @@ form {
 
 #myModalAsignarServicio .modal-content {
     max-width: 60vw;
+}
+
+
+/* contenedor de mapa y conocenos perfil entidad */
+.content-wrapper {
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+}
+
+.left-column {
+    width: 60%;
+}
+
+.right-column {
+    width: 40%;
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.right-column h3 {
+    font-weight: 600;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.section {
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+
+.right-column i {
+    background-color: #1b3360d5;
+    border-radius: 20%;
+    color: var(--light-text);
+    font-size: 20px;
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+}
+
+.double-column {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+}
+
+.double-column>div {
+    width: 50%;
 }

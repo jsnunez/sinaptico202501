@@ -101,34 +101,34 @@
 
                 </div>
             </div>
-    <div class="overlay"></div>
+            <div class="overlay"></div>
 
-    <!-- Modal Crear Entidad -->
-    <div class="overlay"></div>
-    <div id="myModal" class="modal">
-        <div class="modal-content" style="max-width: 900px; max-height: 90vh; overflow-y: auto;">
-            <span class="close">&times;</span>
-            <div class="modal-header">
-                <h3>Crear Nueva Entidad</h3>
+            <!-- Modal Crear Entidad -->
+            <div class="overlay"></div>
+            <div id="myModal" class="modal">
+                <div class="modal-content" style="max-width: 900px; max-height: 90vh; overflow-y: auto;">
+                    <span class="close">&times;</span>
+                    <div class="modal-header">
+                        <h3>Crear Nueva Entidad</h3>
+                    </div>
+
+                    <form id="entidad-form">
+                        <div class="datos-entidad" id="datos-entidad-crear">
+                            <!-- Los campos se agregarán dinámicamente -->
+                        </div>
+
+                        <div class="modal-actions">
+                            <button type="submit" class="modal-button">Crear Entidad</button>
+                            <button type="button" class="modal-button-secondary" id="cerrarModal">Cancelar</button>
+                        </div>
+                    </form>
+                </div>
             </div>
+            <div class="overlay"></div>
+            <div id="myModalAsignarServicio" class="modal">
 
-            <form id="entidad-form">
-                <div class="datos-entidad" id="datos-entidad-crear">
-                    <!-- Los campos se agregarán dinámicamente -->
-                </div>
-
-                <div class="modal-actions">
-                    <button type="submit" class="modal-button">Crear Entidad</button>
-                    <button type="button" class="modal-button-secondary" id="cerrarModal">Cancelar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-     <div class="overlay"></div>
-    <div id="myModalAsignarServicio" class="modal">
-      
-            <button class="modal-button-secondary" id="cerrarModalBtn">Cerrar</button>
-        </div>
+                <button class="modal-button-secondary" id="cerrarModalBtn">Cerrar</button>
+            </div>
             <button id="crearEntidad" style="display: none;"></button>
             <div class="about-section">
 
@@ -188,34 +188,70 @@
 
 
 
-            <div class="info-card vision">
-                <h4>Conocenos</h4>
-                <p>
-                <div class="social-icons">
-                    <a href="https://facebook.com" target="_blank"><i class="bi bi-facebook"></i></i></a>
-                    <a href="https://instagram.com" target="_blank"><i class="bi bi-instagram"></i></a>
-                    <a href="https://www.cpcoriente.org/servicios" target="_blank"><i class="bi bi-link-45deg"></i></a>
+            <div class="main-content">
+
+                <div class="content-wrapper">
+
+                    <!-- COLUMNA IZQUIERDA -->
+                    <div class="left-column">
+                        <div style="display: flex; justify-content: center; margin-bottom: 20px; margin-top: 20px;">
+
+                            <h1> Conócenos</h1>
+
+                        </div>
+                        <div id="edit-map-container" style="height: 300px; margin: 10px 0;">
+                            <div id="ver-location-map" style="width: 100%; height: 100%;"></div>
+                        </div>
+                    </div>
+
+                    <!-- COLUMNA DERECHA -->
+                    <div class="right-column">
+
+                        <div class="section">
+
+                            <h2 style="margin-top: 50px;">Ubicación</h2>
+                            <p><a id="UbicacionEntidad"></a> <a id="ciudad"></a> • <a id="departamento"></a> </p>
+                        </div>
+
+                        <div class="section double-column">
+
+                            <!-- Columna izquierda: Contáctanos -->
+                            <div class="contact-col">
+
+                                <h2 style="margin-top: 20px;">Contáctanos </h2>
+                                <p><b>Telefono: </b><a id="telefonoEntidad"></a></p>
+                                <p><b>Email: </b><a id="emailEntidad"></a></p>
+                            </div>
+
+                            <!-- Columna derecha: Redes sociales -->
+                            <div class="redes-col">
+                                <div class="social-icons">
+
+                                    <h2 style="margin-top: 20px;">Nuestras redes sociales</h2>
+                                    <a href="https://facebook.com" target="_blank"><i class="bi bi-facebook"></i></a>
+                                    <a href="https://instagram.com" target="_blank"><i class="bi bi-instagram"></i></a>
+                                    <a href="https://www.cpcoriente.org/servicios" target="_blank"><i
+                                            class="bi bi-link-45deg"></i></a>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <button class="action-button" id="contactarTelBtn"
+                            style=" min-width: 120px; ">Contactar</button>
+                        <p style="font-size: 0.75em;  margin-top: 5px;"> *Haz clic en contactar para ver
+                            más datos de contacto </p>
+
+
+                    </div>
 
                 </div>
 
-                <button class="action-button" id="contactarTelBtn" style=" min-width: 120px; ">Contactar</button>
-                <p style="font-size: 0.75em; color: #ffffff; margin-top: 5px;">
-                    *Haz clic en contactar para ver más datos de contacto
-                </p>
-                <p><b>Telefono: </b> <span id="telefonoEntidad"></span></p>
-                <p><b>Email: </b><span id="emailEntidad"></span></p>
-                <p> <i class="bi bi-geo-alt-fill"></i> <span id="UbicacionEntidad"></span> <a id="ciudad">
-                    </a>
-                    - <a id="departamento"></a></p>
-                </p>
             </div>
- <div id="edit-map-container" style="height: 300px; margin: 10px 0;">
-                <div id="edit-location-map" style="width: 100%; height: 100%;"></div>
-            </div>
+
         </div>
     </div>
-
-
 
 
 
@@ -228,39 +264,58 @@
     <script src="/js/websocket.js"></script>
     <script src="/js/menu.js"></script>
     <script src="/js/enviarInvitacion.js"></script>
-<script>
+    <script>
+    function initVerMap(lat, lng) {
+            const mapElement = document.getElementById('ver-location-map');
+            if (!mapElement) {
+                console.error('Elemento del mapa de edición no encontrado');
+                return;
+            }
+            const defaultLat = lat || 7.1193;
+            const defaultLng = lng || -73.1227;
 
-    function initEditMap(   lat, lng) {
-    const mapElement = document.getElementById('edit-location-map');
-    if (!mapElement) {
-        console.error('Elemento del mapa de edición no encontrado');
-        return;
-    }
-     const defaultLat = lat || 7.1193;
-    const defaultLng = lng || -73.1227;
+            // Inicializar el mapa deshabilitando la interacción
+            editMap = L.map('ver-location-map', {
+                dragging: false,
+                touchZoom: false,
+                doubleClickZoom: false,
+                scrollWheelZoom: false,
+                boxZoom: false,
+                keyboard: false,
+                zoomControl: false
+            }).setView([defaultLat, defaultLng], 15);
 
-    // Inicializar el mapa
-    editMap = L.map('edit-location-map').setView([defaultLat, defaultLng], 13);
+            // Agregar tiles de OpenStreetMap
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors',
+                maxZoom: 19
+            }).addTo(editMap);
 
-    // Agregar tiles de OpenStreetMap
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors',
-        maxZoom: 19
-    }).addTo(editMap);
+            // Agregar nuevo marcador
+            editMarker = L.marker([lat, lng], {
+                icon: L.icon({
+                    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+                    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                    iconSize: [25, 41],
+                    iconAnchor: [12, 41],
+                    popupAnchor: [1, -34],
+                    shadowSize: [41, 41]
+                })
+            }).addTo(editMap);
 
-      // Agregar nuevo marcador
-        editMarker = L.marker([lat, lng], {
-            icon: L.icon({
-                iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
-                shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-                iconSize: [25, 41],
-                iconAnchor: [12, 41],
-                popupAnchor: [1, -34],
-                shadowSize: [41, 41]
-            })
-        }).addTo(editMap);
-}
-</script>
+            // Agregar evento de click para abrir en Google Maps
+            editMap.on('click', function() {
+                const googleMapsUrl = `https://www.google.com/maps?q=${lat},${lng}`;
+                window.open(googleMapsUrl, '_blank');
+            });
+
+            // También agregar click al marcador
+            editMarker.on('click', function() {
+                const googleMapsUrl = `https://www.google.com/maps?q=${lat},${lng}`;
+                window.open(googleMapsUrl, '_blank');
+            });
+        }
+    </script>
     <!-- Cargar datos de entidad -->
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
@@ -284,8 +339,8 @@
                     // Si tienes ubicaciones
                     if (entidad.ubicaciones?.length > 0) {
                         document.getElementById('UbicacionEntidad').textContent = entidad.ubicaciones[0].direccionCompleta || '';
-                        
-                           initEditMap( entidad.ubicaciones[0].latitud, entidad.ubicaciones[0].longitud);
+
+                        initVerMap(entidad.ubicaciones[0].latitud, entidad.ubicaciones[0].longitud);
                     } else {
                         document.getElementById('UbicacionEntidad').textContent = 'Sin dirección registrada';
                     }
@@ -298,7 +353,7 @@
                     // Cargar servicios e integrantes
                     llamarservicios(idEntidad);
                     llamarIntegrantes(idEntidad);
-                  
+
                 } else {
                     alert('Entidad no encontrada');
                 }
@@ -350,11 +405,17 @@
                 const response = await fetch(url);
                 const datos = await response.json();
 
+                const container = document.getElementById('integrantesAsociados');
+                const btnPrev = document.querySelector('.btn-carrusel.prev');
+                const btnNext = document.querySelector('.btn-carrusel.next');
+
                 if (!Array.isArray(datos) || datos.length === 0) {
-                    document.getElementById('integrantesAsociados').innerHTML = `
+                    container.innerHTML = `
                 <div style="text-align: center; padding: 40px; color: #7f8c8d;">
                     No se encontraron Integrantes.
                 </div>`;
+                    btnPrev.style.display = "none";
+                    btnNext.style.display = "none";
                     return;
                 }
 
@@ -368,14 +429,27 @@
                         fotoPerfil: item.User?.fotoPerfil || 'sinfoto.jpg'
                     }));
 
-                // Construir tarjetas
-                const container = document.getElementById('integrantesAsociados');
-                container.innerHTML = '';
+                // 🔥 1) CASO: MENOS DE 4 INTEGRANTES → SIN CARRUSEL
+                if (integrantes.length < 4) {
+                    container.innerHTML = '';
+                    btnPrev.style.display = "none";
+                    btnNext.style.display = "none";
 
-                // 🔥 Cantidad de veces a duplicar
+                    container.classList.add("integrantes-centro"); // <-- CSS para centrar
+
+                    integrantes.forEach(i => container.appendChild(crearTarjeta(i)));
+                    return;
+                }
+
+                // 🔥 2) CASO: 4 O MÁS → CARRUSEL
+                container.innerHTML = '';
+                container.classList.remove("integrantes-centro");
+
+                btnPrev.style.display = "flex";
+                btnNext.style.display = "flex";
+
                 const multiplicar = 4;
 
-                // Repetir el set completo 4 veces
                 for (let x = 0; x < multiplicar; x++) {
                     integrantes.forEach(i => container.appendChild(crearTarjeta(i)));
                 }
@@ -387,7 +461,6 @@
                 const speedHover = 0.1;
 
                 let totalWidth = 0;
-
                 requestAnimationFrame(() => {
                     totalWidth = container.scrollWidth / multiplicar;
                 });
@@ -411,18 +484,15 @@
                 container.addEventListener('mouseleave', () => isHovering = false);
 
                 // Botones
-                const btnPrev = document.querySelector('.btn-carrusel.prev');
-                const btnNext = document.querySelector('.btn-carrusel.next');
+                btnPrev.onclick = () => currentOffset += 150;
+                btnNext.onclick = () => currentOffset -= 150;
 
-                if (btnPrev && btnNext) {
-                    btnPrev.addEventListener('click', () => { currentOffset += 150; });
-                    btnNext.addEventListener('click', () => { currentOffset -= 150; });
-                }
             } catch (error) {
                 console.error('Error al obtener integrantes:', error);
                 document.getElementById('integrantesAsociados').innerHTML = 'Error al cargar integrantes.';
             }
         }
+
 
         function crearTarjeta(integrante) {
             const div = document.createElement('div');
