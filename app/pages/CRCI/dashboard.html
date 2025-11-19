@@ -337,39 +337,89 @@
     </div>
   </div>
 
-  <!-- Estadísticas -->
+  <div class="stats-container">
 
+    <!-- TARJETAS A LA IZQUIERDA -->
     <div class="stats-grid">
 
-      <div class="stat-card presentados">
-
-        <div class="stat-label">Proyectos Totales</div>
-        <div class="stat-icon"></div>
+      <div class="stat-card">
+        <div class="top-row">
+          <div class="stat-label">Proyectos Totales</div>
+          <div class="stat-icon"><i class="bi bi-bar-chart-line-fill"></i></div>
+        </div>
         <div class="stat-number">80</div>
-
       </div>
-      <div class="stat-card aprobados">
-        <div class="stat-label">Entidades </div>
-        <div class="stat-icon"></div>
+
+      <div class="stat-card">
+        <div class="top-row">
+          <div class="stat-label">Entidades</div>
+          <div class="stat-icon"><i class="fas fa-building"></i></div>
+        </div>
         <div class="stat-number">30</div>
-
       </div>
 
-      <div class="stat-card evaluacion">
-       <div class="stat-label">Inversión</div>
-        <div class="stat-icon"></div>
-        <div class="stat-number">$ 5.000 mill</div>
+      <div class="stat-card">
+        <div class="top-row">
+          <div class="stat-label">Inversión</div>
+          <div class="stat-icon"><i class="fas fa-dollar-sign"></i></div>
+        </div>
+        <div class="stat-number">5.000 mill</div>
       </div>
 
-      <div class="stat-card comite">
-        <div class="stat-label">Ejecutados</div>
-        <div class="stat-icon"></div>
+      <div class="stat-card">
+        <div class="top-row">
+          <div class="stat-label">Ejecutados</div>
+          <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+        </div>
         <div class="stat-number">30</div>
-        
       </div>
 
+    </div>
+
+    <!-- GRÁFICA Y LISTA A LA DERECHA -->
+    <div class="progress-card">
+
+      <div class="progress-circle">
+        <svg viewBox="0 0 36 36">
+          <circle class="slice slice1" r="15.915" cx="18" cy="18">
+            <title>8 Proyectos</title>
+          </circle>
+
+          <circle class="slice slice2" r="15.915" cx="18" cy="18">
+            <title class="title-stat">12 Proyectos</title>
+          </circle>
+
+          <circle class="slice slice3" r="15.915" cx="18" cy="18">
+            <title class="title-stat">16 Proyectos</title>
+          </circle>
+
+          <circle class="slice slice4" r="15.915" cx="18" cy="18">
+            <title class="title-stat">20 Proyectos </title>
+          </circle>
+
+          <circle class="slice slice5" r="15.915" cx="18" cy="18">
+            <title class="title-stat">24 Proyectos</title>
+          </circle>
+
+        </svg>
+      </div>
+
+      <div class="phase-text">
+        <h4>Fases del Proyecto</h4>
+        <ul>
+          <li><span class="color-box c1"></span> Fase 1: Idea 🠮 10%</li>
+          <li><span class="color-box c2"></span> Fase 2: Prefactibilidad 🠮 15%</li>
+          <li><span class="color-box c3"></span> Fase 3: Factibilidad — 20%</li>
+          <li><span class="color-box c4"></span> Contratación 🠮 25%</li>
+          <li><span class="color-box c5"></span> Ejecución 🠮 30%</li>
+        </ul>
+      </div>
+
+    </div>
 
   </div>
+
+
   <!-- Mis Proyectos -->
   <div class="main-content">
     <div style="display: flex;   justify-content: space-between;">
@@ -818,7 +868,7 @@
     document.getElementById("cerrarSesion").addEventListener("click", () => {
       Swal.fire({
         title: '¿Estás seguro?',
-        text: '¿Querés cerrar sesión?',
+        text: '¿Quieres cerrar sesión?',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Sí, cerrar sesión',
