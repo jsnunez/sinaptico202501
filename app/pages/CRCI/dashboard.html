@@ -336,7 +336,7 @@
             </div> -->
     </div>
   </div>
-
+  <!-- Estadisticas -->
   <div class="stats-container">
 
     <!-- TARJETAS A LA IZQUIERDA -->
@@ -344,18 +344,20 @@
 
       <div class="stat-card">
         <div class="top-row">
-          <div class="stat-label">Proyectos Totales</div>
+          <div class="stat-label">Totales</div>
           <div class="stat-icon"><i class="bi bi-bar-chart-line-fill"></i></div>
         </div>
         <div class="stat-number">80</div>
+        <a>Proyectos</a>
       </div>
 
       <div class="stat-card">
         <div class="top-row">
-          <div class="stat-label">Entidades</div>
+          <div class="stat-label">Responsables</div>
           <div class="stat-icon"><i class="fas fa-building"></i></div>
         </div>
         <div class="stat-number">30</div>
+        <a>Entidades</a>
       </div>
 
       <div class="stat-card">
@@ -363,7 +365,8 @@
           <div class="stat-label">Inversión</div>
           <div class="stat-icon"><i class="fas fa-dollar-sign"></i></div>
         </div>
-        <div class="stat-number">5.000 mill</div>
+        <div class="stat-number">5.000 </div>
+        <a>Millones</a>
       </div>
 
       <div class="stat-card">
@@ -372,6 +375,7 @@
           <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
         </div>
         <div class="stat-number">30</div>
+        <a>Proyectos</a>
       </div>
 
     </div>
@@ -1359,6 +1363,49 @@
       renderizarPagina();
     });
   </script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+    /* ------ SPINNER PARA LOS NÚMEROS (igual que antes) ------ */
+    const statNumbers = document.querySelectorAll(".stat-number");
+
+    statNumbers.forEach(num => {
+        const realValue = num.textContent.trim();
+        num.dataset.value = realValue;
+
+        num.innerHTML = '<div class="stat-spinner"></div>';
+
+        setTimeout(() => {
+            num.textContent = realValue;
+        }, 2500);
+    });
+
+
+    /* ------ SPINNER PARA LA TORTA (CORREGIDO) ------ */
+    const chartContainer = document.querySelector(".progress-circle");
+    const svg = chartContainer.querySelector("svg");
+
+    // Crear spinner sin reemplazar el SVG
+    const spinner = document.createElement("div");
+    spinner.classList.add("chart-spinner");
+
+    // Ocultar el SVG pero dejarlo en el DOM
+    svg.style.visibility = "hidden";
+
+    // Agregar spinner
+    chartContainer.appendChild(spinner);
+
+    // Después de 2s mostrar gráfico y quitar spinner
+    setTimeout(() => {
+        spinner.remove();          // eliminar spinner
+        svg.style.visibility = "visible";  // mostrar gráfico
+    }, 2500);
+
+});
+</script>
+
+
 
 
 </body>

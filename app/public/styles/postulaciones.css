@@ -1399,12 +1399,14 @@ td {
     background: #ffffff;
     padding: 25px;
     border-radius: 6px;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
-    justify-content: space-between;   /* ← Ajusta el alto interno */
+    justify-content: space-between;
+    /* ← Ajusta el alto interno */
     transition: 0.3s;
-    height: 100%;                     /* ← Ajusta la altura */
+    height: 100%;
+    /* ← Ajusta la altura */
 }
 
 .stat-card:hover {
@@ -1420,9 +1422,22 @@ td {
 }
 
 .stat-label {
-    font-size: 1.1em;
+    font-size: 1.5em;
     font-weight: 600;
     color: var(--primary-color);
+}
+
+.stat-card a {
+    font-size: 1.2em;
+    font-weight: 500;
+    color: #606163;
+    justify-content: center;
+    /* centra horizontalmente */
+    align-items: center;
+    /* centra verticalmente */
+    flex-grow: 1;
+    /* ocupa todo el espacio disponible */
+    text-align: center;
 }
 
 .stat-icon i {
@@ -1435,16 +1450,20 @@ td {
     font-weight: bold;
     color: var(--secondary-color);
     display: flex;
-    justify-content: center;   /* centra horizontalmente */
-    align-items: center;       /* centra verticalmente */
-    flex-grow: 1;              /* ocupa todo el espacio disponible */
+    justify-content: center;
+    /* centra horizontalmente */
+    align-items: center;
+    /* centra verticalmente */
+    flex-grow: 1;
+    /* ocupa todo el espacio disponible */
     text-align: center;
 }
 
 
 .stat-card:hover .stat-number,
 .stat-card:hover .stat-label,
-.stat-card:hover .stat-icon i {
+.stat-card:hover .stat-icon i,
+.stat-card:hover a {
     color: #fff;
 }
 
@@ -1455,9 +1474,10 @@ td {
     gap: 20px;
     padding: 25px;
     background: #fff;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
     border-radius: 6px;
-    height: 100%;        /* ← hace que todas coincidan */
+    height: 100%;
+    /* ← hace que todas coincidan */
 }
 
 /* Gráfica */
@@ -1465,6 +1485,7 @@ td {
     width: 160px;
     height: 160px;
 }
+
 .progress-circle svg {
     width: 100%;
     height: 100%;
@@ -1476,11 +1497,35 @@ td {
     stroke-width: 3.5;
 }
 
-.slice1 { stroke: var(--yellow); stroke-dasharray: 10 100; stroke-dashoffset: 0; }
-.slice2 { stroke: var(--red); stroke-dasharray: 15 100; stroke-dashoffset: -10; }
-.slice3 { stroke: var(--naranja-color); stroke-dasharray: 20 100; stroke-dashoffset: -25; }
-.slice4 { stroke: var(--blue); stroke-dasharray: 25 100; stroke-dashoffset: -45; }
-.slice5 { stroke: var(--primary-color); stroke-dasharray: 30 100; stroke-dashoffset: -70; }
+.slice1 {
+    stroke: var(--yellow);
+    stroke-dasharray: 10 100;
+    stroke-dashoffset: 0;
+}
+
+.slice2 {
+    stroke: var(--red);
+    stroke-dasharray: 15 100;
+    stroke-dashoffset: -10;
+}
+
+.slice3 {
+    stroke: var(--naranja-color);
+    stroke-dasharray: 20 100;
+    stroke-dashoffset: -25;
+}
+
+.slice4 {
+    stroke: var(--blue);
+    stroke-dasharray: 25 100;
+    stroke-dashoffset: -45;
+}
+
+.slice5 {
+    stroke: var(--primary-color);
+    stroke-dasharray: 30 100;
+    stroke-dashoffset: -70;
+}
 
 .phase-text ul {
     padding: 0;
@@ -1500,11 +1545,65 @@ td {
     margin-right: 8px;
 }
 
-.c1 { background: var(--yellow); }
-.c2 { background: var(--red); }
-.c3 { background: var(--naranja-color); }
-.c4 { background: var(--blue); }
-.c5 { background: var(--primary-color); }
+.c1 {
+    background: var(--yellow);
+}
+
+.c2 {
+    background: var(--red);
+}
+
+.c3 {
+    background: var(--naranja-color);
+}
+
+.c4 {
+    background: var(--blue);
+}
+
+.c5 {
+    background: var(--primary-color);
+}
+/* Para que el spinner se centre dentro de la torta */
+.progress-circle {
+  position: relative; /* IMPORTANTE */
+}
+
+/* Spinner centrado dentro de la torta */
+.chart-spinner {
+  position: absolute;      /* Se posiciona dentro del contenedor */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);  /* Centrado perfecto */
+  
+  width: 70px;
+  height: 70px;
+  border: 6px solid #dcdcdc;
+  border-top: 6px solid var(--primary-color);
+  border-radius: 50%;
+  animation: chartSpin 0.8s linear infinite;
+}
+
+@keyframes chartSpin {
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Spinner exclusivo para las tarjetas */
+.stat-spinner {
+  width: 24px;
+  height: 24px;
+  border: 4px solid #d9d9d9;
+  border-top: 4px solid var(--primary-color);
+  border-radius: 50%;
+  animation: statSpin 0.8s linear infinite;
+  margin: 0 auto;
+}
+
+@keyframes statSpin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
 
 
 
@@ -1599,24 +1698,22 @@ h2 {
 }
 
 .paginador {
-  margin-top: 15px;
-  text-align: center;
+    margin-top: 15px;
+    text-align: center;
 }
 
 .btn-pagina {
-  margin: 3px;
-  padding: 5px 10px;
-  background-color: #eee;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+    margin: 3px;
+    padding: 5px 10px;
+    background-color: #eee;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
 }
 
 
-  #paginador button.activo {
+#paginador button.activo {
     background: #007bff;
     color: white;
 
-  }
-
-  
+}
