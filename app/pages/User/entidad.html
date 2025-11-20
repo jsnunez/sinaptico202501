@@ -426,7 +426,7 @@
                         id: item.User?.id,
                         nombre: item.User?.name || 'Sin nombre',
                         rol: item.Cargo?.nombre || 'Sin rol',
-                        fotoPerfil: item.User?.fotoPerfil || 'sinfoto.jpg'
+                        fotoPerfil: item.User?.fotoPerfil || '/photo/sinfoto.jpg'
                     }));
 
                 // 🔥 1) CASO: MENOS DE 4 INTEGRANTES → SIN CARRUSEL
@@ -498,7 +498,7 @@
             const div = document.createElement('div');
             div.className = 'integrante-card';
             div.innerHTML = `
-        <img src="/photo/${integrante.fotoPerfil}" alt="${integrante.nombre}" class="integrante-foto">
+        <img src="/photo/${integrante.fotoPerfil}" alt="${integrante.nombre}" class="integrante-foto" onerror="this.onerror=null;this.src='/photo/sinfoto.jpg';">
         <p class="integrante-nombre">${integrante.nombre}</p>
         <p class="integrante-rol">${integrante.rol}</p>
         <button class="btn-contactar action-button" onclick="contactarIntegrante(${integrante.id}, '${integrante.nombre.replace(/'/g, "\\'")}')">
