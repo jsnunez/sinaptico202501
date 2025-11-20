@@ -500,7 +500,7 @@
             const div = document.createElement('div');
             div.className = 'integrante-card';
             div.innerHTML = `
-        <img src="/photo/${integrante.fotoPerfil}" alt="${integrante.nombre}" class="integrante-foto" onerror="this.onerror=null;this.src='/photo/sinfoto.jpg';">
+        <img src="/photo/${integrante.fotoPerfil}" alt="${integrante.nombre}" class="integrante-foto" onerror="this.onerror=null;this.src='/img/sinfoto.jpg';">
         <p class="integrante-nombre">${integrante.nombre}</p>
         <p class="integrante-rol">${integrante.rol}</p>
         <button class="btn-contactar action-button" onclick="contactarIntegrante(${integrante.id}, '${integrante.nombre.replace(/'/g, "\\'")}')">
