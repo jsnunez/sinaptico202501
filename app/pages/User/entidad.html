@@ -66,8 +66,8 @@
             </div>
         </div>
         <nav class="nav">
-            <button class="nav-button pulse" onclick="window.location.href='/helice'" id="inicio">Inicio</button>
-             <button class="nav-button" onclick="window.location.href='/directorio'">Directorio</button>
+            <button class="nav-button " onclick="window.location.href='/helice'" id="inicio">Inicio</button>
+             <button class="nav-button pulse" onclick="window.location.href='/directorio'">Directorio</button>
 
             <button class="nav-button" onclick="window.location.href='/proyectos'">Proyectos</button>
             <button class="nav-button" onclick="window.location.href='/innovacion'">Innovación</button>
@@ -376,6 +376,7 @@
                 if (datos.success && datos.servicios.length > 0) {
                     let html = '';
                     datos.servicios.forEach(servicio => {
+                        console.log(servicio)
                         html += `
                     <div class="servicio-card">
                         <div class="servicio-header">
@@ -387,6 +388,9 @@
                         <div class="servicio-info">
                              <div class="servicio-titulo">${servicio.nombre}</div>
                         <div class="servicio-descripcion">${servicio.descripcion}</div>
+ <p><b>Lider: </b><a style="cursor:pointer;" onclick="contactarIntegrante(${servicio.liderId}, '${servicio.lider.replace(/'/g, "\\'")}')">
+             ${servicio.lider}
+        </a></p>
                         </div>
                     </div>
                 `;

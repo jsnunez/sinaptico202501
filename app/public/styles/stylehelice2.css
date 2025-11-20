@@ -1424,7 +1424,8 @@ form {
 
 /* Hover: texto e ícono en blanco */
 .servicio-card:hover .servicio-titulo,
-.servicio-card:hover .servicio-descripcion {
+.servicio-card:hover .servicio-descripcion,
+.servicio-card:hover p {
     color: var(--primary-color);
 }
 
