@@ -361,6 +361,9 @@ function agregarInteractividad() {
                   <select id="filtro-crci" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; background-color: white;">
                     <option value="">Todos</option>
                     <option value="crci">CRCI</option>
+                    <option value="no-crci">Codecti Santander</option>
+                    <option value="cluster-sb">Clúster SbN</option>
+                    <option value="cluster-construccion">Clúster Construcción</option>
                     
                   </select>
                 </div>
