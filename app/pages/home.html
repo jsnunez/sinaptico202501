@@ -10,13 +10,14 @@
     <link rel="stylesheet" href="styles/colores.css">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
         rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-            <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 
 </head>
@@ -26,13 +27,21 @@
         <div class="header">
             <!-- <span class="logo-icon">⚡</span> -->
             <img src="/img/logo1.png" alt="SINAPTICO" class="logo" style="height:8vh;">
-            <button class="nav-button-inicio" onclick="inicioSesion()">Ingresa</button>
+            <button class="nav-button-inicio" onclick="inicioSesion()">Iniciar Sesión</button>
 
         </div>
         <nav class="nav">
-            <button class="nav-button pulse" onclick="window.location.href='/helice'">Inicio</button>
-            <button class="nav-button " onclick="mensajeRegistrar()">Servicios</button>
-            <button class="nav-button " onclick="mensajeRegistrar()">Retos</button>
+            <button class="nav-button pulse" onclick="window.location.href='/'">Inicio</button>
+
+            <button class="nav-button" onclick="mensajeRegistrar()">Directorio</button>
+
+            <button class="nav-button" onclick="mensajeRegistrar()">Proyectos</button>
+            <button class="nav-button" onclick="mensajeRegistrar()">Innovación</button>
+
+            <button class="nav-button" onclick="mensajeRegistrar()">Conocimiento</button>
+            <button class="nav-button" onclick="mensajeRegistrar()">Convocatorias</button>
+
+            <button class="nav-button" onclick="mensajeRegistrar()">Eventos</button>
 
         </nav>
     </header>
@@ -42,11 +51,18 @@
         <div class="intro-panel">
 
             <div class="intro-content">
-                <img src="/logos/logo2.png" alt="SINAPTICO" class="intro-title" style="max-width: 300px; height: 10vh;">
-                <p class="intro-description">
-                   Sinaptico es una plataforma que, al igual que las neuronas se conectan a través de sinapsis, busca conectar diferentes sectores de la sociedad. Esta interconexión permite generar un flujo constante de ideas, creatividad y soluciones para los retos actuales y futuros. Al igual que los neurotransmisores transmiten impulsos, Sinaptico facilita el intercambio de conocimientos y recursos, como retos, eventos y oportunidades de aprendizaje, para fomentar la innovación y el desarrollo colectivo.
+                <h1 style="text-align: center; font-size: 60px; display: flex; justify-content: center;">¿Qué es <img
+                        src="/logos/logo2.png" alt="SINAPTICO" class="intro-title"
+                        style="max-width: 300px; justify-content: center; margin-left: 10px;">? </h1>
+
+                <p class="intro-description" style="text-align: center;">
+                    Es una plataforma que, al igual que las neuronas se conectan a través de sinapsis, busca conectar
+                    diferentes sectores de la sociedad. Esta interconexión permite generar un flujo constante de ideas,
+                    creatividad y soluciones para los retos actuales y futuros. Al igual que los neurotransmisores
+                    transmiten impulsos, Sinaptico facilita el intercambio de conocimientos y recursos, como retos,
+                    eventos y oportunidades de aprendizaje, para fomentar la innovación y el desarrollo colectivo.
                 </p>
-              
+
 
 
             </div>
@@ -220,7 +236,8 @@
                             plataforma.</p>
                         </p>
                     </div>
-                    <div class="card-back" onclick="mensajeRegistrar()">
+                    <div class="card-back" onclick="mensajeRegistrar()"
+                        style="background-color: var(--secondary-color);">
                         <h3 class="card-title">Ver Contenido</h3>
                         <p class="card-text">Explora el perfil de cada organización registrada y conecta con sus
                             iniciativas.</p>
@@ -245,7 +262,7 @@
                         <p class="card-text">Conecta con empresas que buscan soluciones innovadoras a desafíos reales.
                         </p>
                     </div>
-                    <div class="card-back" onclick="mensajeRegistrar()">
+                    <div class="card-back" onclick="mensajeRegistrar()" style="background-color: var(--orange);">
                         <h3 class="card-title">Ver Contenido</h3>
                         <p class="card-text">Descubre retos abiertos y propón soluciones que generen impacto.</p>
 
@@ -271,7 +288,8 @@
                         <p class="card-text">Accede a programas de formación para fortalecer tus capacidades y
                             conocimientos.</p>
                     </div>
-                    <div class="card-back" onclick="mensajeRegistrar()">
+                    <div class="card-back" onclick="mensajeRegistrar()"
+                        style="background-color: var(--secondary-color);">
                         <h3 class="card-title">Ver Contenido</h3>
                         <p class="card-text">Revisa los cursos disponibles y fortalece tus competencias profesionales.
                         </p>
@@ -297,7 +315,7 @@
                         <p class="card-text">Infórmate sobre eventos, talleres y oportunidades de participación en
                             nuestro ecosistema.</p>
                     </div>
-                    <div class="card-back" onclick="mensajeRegistrar()">
+                    <div class="card-back" onclick="mensajeRegistrar()" style="background-color: var(--orange);">
                         <h3 class="card-title">Ver Contenido</h3>
                         <p class="card-text">Participa en convocatorias, charlas y encuentros del ecosistema de
                             innovación.</p>
@@ -309,43 +327,43 @@
 
         <div class="">
             <div class="stats-title">
-            <h3>Tableros de Control de Proyectos</h3>
-            <p></p>
+                <h3>Tableros de Control de Proyectos</h3>
+                <p></p>
             </div>
             <div class="socios-container">
-            <div class="loginEntidades" onclick="window.location.href='/loginCRCI'"
-                style="  background: linear-gradient(to bottom, #1e4535  33%, white 33%);">
-                <div class="logoEntidad">
-                <img src="/img/logoCRCI.png" alt="CRCI">
-                </div>
+                <div class="loginEntidades" onclick="window.location.href='/loginCRCI'"
+                    style="  background: linear-gradient(to bottom,var(--orange)  33%, white 33%);">
+                    <div class="logoEntidad">
+                        <img src="/img/logoCRCI.png" alt="CRCI">
+                    </div>
 
-                <b>CRCI</b>
-                <p>Comisión Regional de Competitividad e innovación</p>
-            </div>
-            <div class="loginEntidades" onclick="mensajeAdministrador()"
-                style="  background: linear-gradient(to bottom, #af1818  33%, white 33%);">
-                <div class="logoEntidad">
-                <img src="/img/logoCSbN.webp" alt="SbN">
+                    <b>CRCI</b>
+                    <p>Comisión Regional de Competitividad e innovación</p>
                 </div>
-                <b>Cluster SbN</b>
-                <p>Soluciones basadas en naturaleza</p>
-            </div>
-            <div class="loginEntidades" onclick="mensajeAdministrador()"
-                style="  background: linear-gradient(to bottom, #d56e02  33%, white 33%);">
-                <div class="logoEntidad">
-                <img src="/img/logoCEnergia.jpg" alt="CEnergia">
+                <div class="loginEntidades" onclick="mensajeAdministrador()"
+                    style="  background: linear-gradient(to bottom, var(--primary-color)  33%, white 33%);">
+                    <div class="logoEntidad">
+                        <img src="/img/logoCSbN.webp" alt="SbN">
+                    </div>
+                    <b>Cluster SbN</b>
+                    <p>Soluciones basadas en naturaleza</p>
                 </div>
-                <b>Cluster Energía</b>
-                <p>Energia</p>
-            </div>
-            <div class="loginEntidades" onclick="mensajeAdministrador()"
-                style="  background: linear-gradient(to bottom,var(--yellow) 33%, white 33%);">
-                <div class="logoEntidad">
-                <img src="/img/logoCODECTI.png" alt="CODECTI">
+                <div class="loginEntidades" onclick="mensajeAdministrador()"
+                    style="  background: linear-gradient(to bottom,var(--orange) 33%, white 33%);">
+                    <div class="logoEntidad">
+                        <img src="/img/logoCEnergia.jpg" alt="CEnergia">
+                    </div>
+                    <b>Cluster Energía</b>
+                    <p>Energia</p>
                 </div>
-                <b>CODECTI</b>
-                <p>Consejo departamental de ciencia, tecnologia e innovación en Santander</p>
-            </div>
+                <div class="loginEntidades" onclick="mensajeAdministrador()"
+                    style="  background: linear-gradient(to bottom,var(--secondary-color) 33%, white 33%);">
+                    <div class="logoEntidad">
+                        <img src="/img/logoCODECTI.png" alt="CODECTI">
+                    </div>
+                    <b>CODECTI</b>
+                    <p>Consejo departamental de ciencia, tecnologia e innovación en Santander</p>
+                </div>
             </div>
 
         </div>
@@ -443,7 +461,69 @@
             </div>
 
         </div>
-        
+    </div>  
+<footer class="footer">
+
+    <div class="footer-content">
+
+        <!-- Izquierda -->
+        <div class="footer-left">
+            <img src="/img/logo1.png" alt="SINAPTICO" class="footer-logo">
+            <p class="footer-desc">Conectando conocimiento, innovación y tecnología.</p>
+        </div>
+
+        <!-- Enlaces en dos columnas -->
+        <div class="footer-links">
+            <h4>Explorar</h4>
+
+            <div class="links-grid">
+                <a href="/">Inicio</a>
+                <a href="#" onclick="mensajeRegistrar()">Directorio</a>
+                <a href="#" onclick="mensajeRegistrar()">Proyectos</a>
+                <a href="#" onclick="mensajeRegistrar()">Innovación</a>
+                <a href="#" onclick="mensajeRegistrar()">Conocimiento</a>
+                <a href="#" onclick="mensajeRegistrar()">Convocatorias</a>
+                <a href="#" onclick="mensajeRegistrar()">Eventos</a>
+            </div>
+        </div>
+
+        <!-- Redes sociales -->
+        <div class="footer-social">
+            <h4>Síguenos</h4>
+            <div class="social-icons">
+                <a href="#"><i class="bi bi-facebook"></i></a>
+                <a href="#"><i class="bi bi-twitter"></i></a>
+                <a href="#"><i class="bi bi-linkedin"></i></a>
+                <a href="#"><i class="bi bi-instagram"></i></a>
+            </div>
+        </div>
+
+        <!-- Contacto -->
+        <div class="footer-contact">
+            <h4>Contáctanos</h4>
+
+            <p>Cra.19 #35-02 - UIS Bucarica</p>
+            <p>Bucaramanga, Colombia</p>
+
+            <div class="contact-item">
+                <i class="bi bi-envelope"></i>
+                <span>info@cpcoriente.org</span>
+            </div>
+
+            <div class="contact-item">
+                <i class="bi bi-telephone"></i>
+                <span>+57 315 494 0296</span>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+        <p>© 2025 CPC Oriente. Todos los derechos reservados.</p>
+    </div>
+
+</footer>
+
 
         <script src="/js/home.js"></script>
         <script src="/js/login.js"></script>
