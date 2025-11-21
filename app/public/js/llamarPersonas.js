@@ -91,9 +91,9 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener('DOMContentLoaded', function () {
   // Abrir modal con info de la empresa
   document.addEventListener('click', function (e) {
-    if (e.target && (e.target.classList.contains('botonEntidad') || e.target.id === 'masInformacion')) {
+    if (e.target && (e.target.classList.contains('botonPersona') || e.target.id === 'masInformacion')) {
       const id = e.target.dataset.id;
-      window.location.href = `/perfilEntidad?id=${id}`;
+      contactarIntegrante(id, 'Información de Contacto');
     }
 
   });
@@ -240,7 +240,7 @@ async function addColombiaMask() {
 function loadUsers() {
   console.log('🔄 Cargando entidades desde la API...');
   // Cargar entidades desde la API
-  fetch(`${API_BASE_URL}/api/ubicacion-entidad/mapa/entidades`)
+  fetch(`${API_BASE_URL}/api/user/directorio`)
     .then(response => {
       console.log('📡 Respuesta de la API:', response.status);
       if (!response.ok) {
@@ -252,11 +252,7 @@ function loadUsers() {
       console.log('✅ Entidades cargadas:', data);
       usersData = data;
       filteredUsers = [...usersData];
-      updateStatistics();
-      populateCityFilter();
-      populateDptoFilter();
-      populateClaseFilter();
-      displayMarkersOnMap();
+     
       displayUsersList();
     })
     .catch(error => {
@@ -508,12 +504,17 @@ function displayUsersList() {
     <div class="user-item" style="display: flex; justify-content: space-between; align-items: flex-start; padding: 10px; border-bottom: 1px solid #eee; cursor: pointer;">
         <div  onclick="focusOnUser(${user.id})" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #eee; cursor: pointer;">
           
- <img src="/logos/${user.logo}" alt="Logo Empresa" class="card-icon" onerror="this.onerror=null;this.src='/img/sinlogo.jpg';" style="margin-right: 10px; width: 80px; height: 80px; border-radius: 5px;">
+ <img src="/photo/${user.fotoPerfil}" alt="foto perfil" class="card-icon" onerror="this.onerror=null;this.src='/photo/sinfoto.jpg';" style="margin-right: 10px; width: 80px; height: 80px; border-radius: 50px;">
           <div class="user-info">
-            <div class="user-name">${user.name}</div>
-            <div class="user-details">${typeIcons[user.claseEntidad] || '🏢'} ${user.claseEntidad} - ${user.departamento} • ${user.city}</div>
-            <div class="user-details"></div>
-            <button class="botonEntidad" data-id="${user.id}">
+            <div class="user-name">${user.name.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ')}</div>
+            <div class="user-details"> ${user.ciudad?.departamento?.nombre || 'Desconocido'} • ${user.ciudad?.nombre || 'Desconocida'}</div>
+            <div class="user-details"> ${user.UsuarioEmpresaCargos && user.UsuarioEmpresaCargos[0] ? user.UsuarioEmpresaCargos[0].empresa.razonSocial : 'Sin entidad'}</div>
+            <div class="user-details"> Cargo: ${user.UsuarioEmpresaCargos && user.UsuarioEmpresaCargos[0] ? user.UsuarioEmpresaCargos[0].Cargo.nombre : 'Sin cargo'}</div>
+            <div class="user-details"> Actividad: ${user.UsuarioEmpresaCargos && user.UsuarioEmpresaCargos[0] && user.UsuarioEmpresaCargos[0].empresa.actividadEconomica ? user.UsuarioEmpresaCargos[0].empresa.actividadEconomica : 'Sin actividad'}
+          </div>
+        </div>
+            </div>
+            <button class="botonPersona" data-id="${user.id}">
                 Más información
                 </button>
           </div>
@@ -781,6 +782,11 @@ function mostrarContacto(userId, direccion, telefono, email) {
       method: 'PUT'
     }).catch(err => console.error('Error al aumentar contador:', err));
   }
+}
+
+function contactarIntegrante(userId, userName) {
+  // Redirigir al perfil del usuario para contactarlo
+  window.location.href = `/perfilUser?id=${userId}`;
 }
 
 

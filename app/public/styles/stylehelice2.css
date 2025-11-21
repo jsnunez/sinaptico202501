@@ -285,6 +285,29 @@ h2 {
     box-shadow: 0 6px 15px rgba(48, 45, 226, 0.4);
 }
 
+.botonPersona{
+    margin-bottom: 1vh;
+    display: flex;
+    align-items: center;
+    background: white;
+    color: black;
+    border: 1px solid #ddd;
+    border-radius: 11px;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: none;
+
+}
+.botonPersona:hover {
+    transform: translateY(-3px);
+    background: var(--gray-color);
+    box-shadow: 0 6px 15px rgba(48, 45, 226, 0.4);
+}
+
+
 .action-button {
     margin-bottom: 1vh;
     color: var(--text-description);

@@ -115,6 +115,69 @@ router.post('/verificar', async (req, res) => {
         res.status(500).json({ error: 'Error en la base de datos', details: error.message });
     }
 });
+
+
+router.post('/verificarContacto', async (req, res) => {
+    try {
+        const { de, para } = req.body;
+        const deInt = parseInt(de);
+        const paraInt = parseInt(para);
+console.log('Verificando contacto entre:', deInt, 'y', paraInt);
+        // Validar datos básicos
+        if (!de || !para) {
+            return res.status(400).json({
+                ok: false,
+                mensaje: 'Faltan parámetros: de y para son obligatorios'
+            });
+        }
+
+        // Si de y para son iguales, se considera contacto verificado (es el mismo usuario)
+        if (deInt == paraInt) {
+            return res.json({ ok: true, mensaje: 'Contacto verificado (mismo usuario)' });
+        }
+
+        // Buscar invitación entre los dos usuarios en ambos sentidos
+        const invitacion = await Invitacion.findOne({
+            where: {
+                [Op.or]: [
+                    { desdeuserid: deInt,   parauserid: paraInt },
+                    { desdeuserid: paraInt, parauserid: deInt }
+                ]
+            },
+            order: [['updatedAt', 'DESC']],
+        });
+
+        // Si NO hay invitación
+        if (!invitacion) {
+            return res.json({
+                ok: false,
+                mensaje: 'sin invitacion'
+            });
+        }
+
+        // Si la invitación está verificada
+        if (invitacion.verificado === 1 || invitacion.verificado === true) {
+            return res.json({
+                ok: true,
+                mensaje: 'Contacto verificado'
+            });
+        }
+
+        // Si la invitación no está confirmada (verificado = false/0)
+        return res.json({
+            ok: false,
+            mensaje: 'sin confirmar'
+        });
+
+    } catch (error) {
+        console.error('Error al verificar invitación:', error);
+        return res.status(500).json({
+            ok: false,
+            error: 'Error en la base de datos',
+            details: error.message
+        });
+    }
+});
 router.post('/:id/verificar', async (req, res) => {
     try {
         const invitacionId = parseInt(req.params.id);

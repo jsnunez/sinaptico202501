@@ -93,6 +93,55 @@ export const getAllUsers = async (req, res) => {
     res.status(500).json({ error: 'Error al obtener los usuarios' });
   }
 };
+    const UsuarioEmpresaCargo = (await import('../models/usuarioEmpresaCargo.js')).default;
+    const Cargo = (await import('../models/cargo.js')).default;
+export const getAllUsersDirectorio = async (req, res) => {
+  try {
+    const users = await User.findAll({
+      attributes: ['id', 'name', 'telefono', 'fotoPerfil', 'perfilProfesional', 'enlaceHojaDeVida'],
+      where: {
+        primerActualizacionPerfil: true
+      },
+      include: [
+        {
+          model: (await import('../models/ciudad.js')).default,
+          as: 'ciudad',
+          attributes: ['id', 'nombre', 'departamentoId'],
+          required: false,
+          include: [
+            {
+              model: (await import('../models/departamento.js')).default,
+              as: 'departamento',
+              attributes: ['id', 'nombre'],
+              required: false
+            }
+          ]
+        },
+{
+          model: UsuarioEmpresaCargo,
+          attributes: ['id', 'estado'],
+          required: false,
+          include: [
+            {
+              model: Entidad,
+              as: 'empresa',    // 👈 alias EXACTO del belongsTo
+              attributes: ['id', 'razonSocial']
+            },
+            {
+              model: Cargo,
+              attributes: ['id', 'nombre']
+            }
+          ]
+        }
+      ]
+      
+    });
+    res.status(200).json(users);
+  } catch (error) {
+    console.error('Error al obtener usuarios:', error);
+    res.status(500).json({ error: 'Error al obtener los usuarios' });
+  }
+};
 
 // Obtener solo el correo por ID
 export const getUserEmailById = async (req, res) => {

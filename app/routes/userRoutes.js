@@ -15,13 +15,15 @@ import {
   deleteUserWithEntidades,
   cambiarFoto,
   getUsersWithLocations,
-  actualizarPerfil,cambiarCv
+  actualizarPerfil,cambiarCv,
+  getAllUsersDirectorio
 } from '../controllers/userController.js';
 
 const router = express.Router();
 router.put('/actualizarPerfil/:id', actualizarPerfil);
 router.get('/count', countUsers);
 router.get('/mapa/locations', getUsersWithLocations);
+router.get('/directorio', getAllUsersDirectorio);
 router.get('/', getAllUsers);
 router.post('/', authorization.soloAdmin, createUser);
 router.get('/:id', getUserById);
@@ -31,5 +33,6 @@ router.delete('/:id', authorization.soloAdmin, deleteUser);
 router.delete('/:id/with-entidades', authorization.soloAdmin, deleteUserWithEntidades);
 router.put('/cambiarFoto/:id', cambiarFoto);
 router.put('/cambiarCv/:id', cambiarCv);
+
 
 export default router;

@@ -1,6 +1,43 @@
 function contactarIntegrante(id, nombre) {
     const miNombre = obtenerCookie("user");
-    Swal.fire({
+    const miId=obtenerCookie("userId");
+console.log('Iniciando proceso de contacto con:', miNombre);
+    // Verificar invitación antes de proceder
+    fetch(`${API_BASE_URL}/api/invitacion/verificarContacto`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            de: miId,
+            para: id
+        })
+    })
+    .then(res => res.json())
+    .then(verificacionData => {
+        console.log('Verificación de invitación:', verificacionData);
+        if (verificacionData.ok) {
+            // Contacto no verificado, ir al perfil directamente
+            window.location.href = `perfilUser?id=${id}`;
+        } else {
+            if (verificacionData.mensaje === "sin confirmar") {
+                Swal.fire(
+                    'Invitación enviada',
+                    'Invitación enviada en espera',
+                    'info'
+                );
+            } else {
+                // Contacto verificado, mostrar diálogo
+                mostrarDialogoContacto();
+            }
+        }
+    })
+    .catch(err => {
+        mostrarDialogoContacto(); // Continuar aunque falle la verificación
+    });
+
+    function mostrarDialogoContacto() {
+        Swal.fire({
         title: 'Contactar Integrante',
         text: `¿Deseas contactar a ${nombre}?`,
         icon: 'question',
@@ -52,11 +89,15 @@ function contactarIntegrante(id, nombre) {
                     'success'
                 );
                 } else {
-                Swal.fire(
-                    'Error',
-                    'No se pudo enviar la invitación: ' + (data.error || 'Error desconocido.'),
-                    'error'
-                );
+                    if (data.error === 'Ya se encuentra en tus contactos') {
+                        window.location.href = `perfilUser?id=${id}`;
+                    } else {
+                        Swal.fire(
+                        'Error',
+                        'No se pudo enviar la invitación: ' + (data.error || 'Error desconocido.'),
+                        'error'
+                    );
+                    }
                 }
             })
             .catch(err => {
@@ -76,4 +117,4 @@ function contactarIntegrante(id, nombre) {
             }
         }
     });
-}
+}}
