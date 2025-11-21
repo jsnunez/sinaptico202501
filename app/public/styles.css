@@ -2,6 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: "Inter", sans-serif;
 }
 
 body {
@@ -9,6 +10,7 @@ body {
   line-height: 1.6;
   color: #333;
   background-color: #f9f9f9;
+
 }
 
 .header {
@@ -45,15 +47,15 @@ body {
 
 }
 
+
 .nav {
   display: flex;
   align-items: center;
   background-color: var(--secondary-color);
-  padding: 0.5rem 11%;
+  padding: 0.5rem 5%;
   align-items: center;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   z-index: 10;
-
 }
 
 .nav-button {
@@ -70,6 +72,7 @@ body {
   height: 40px;
 
 }
+
 
 .nav-button-inicio {
   background-color: var(--orange);
@@ -113,11 +116,6 @@ body {
   transform-origin: 50% 50%;
 }
 
-
-.nav-button.pulse:hover::after {
-  animation: ripple 1s ease-out;
-}
-
 .nav-button.pulse:hover::after {
   animation: ripple 1s ease-out;
 
@@ -127,6 +125,136 @@ body {
   border-radius: 20px;
   background-color: var(--naranja-color);
 }
+
+
+
+.footer {
+  padding: 5rem 12% 1.5rem;
+  position: relative;
+  margin-top: 20px;
+  background-color: var(--secondary-color);
+  color: var(--light-text);
+  justify-content: center;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 2.5rem;
+}
+
+/* Logo */
+.footer-logo {
+  height: 60px;
+  margin-bottom: 1rem;
+}
+
+.footer-desc {
+  max-width: 250px;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+/* Títulos */
+.footer-links h4,
+.footer-social h4,
+.footer-contact h4 {
+  font-size: 1.1rem;
+  margin-bottom: 0.9rem;
+  font-weight: 600;
+}
+
+/* Grid de enlaces */
+.links-grid {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  gap: 0.4rem 1.5rem;
+}
+
+.footer-links a {
+  color: var(--light-text);
+  opacity: 0.8;
+  font-size: 0.9rem;
+  transition: var(--transition);
+  cursor: pointer;
+}
+
+.footer-links a:hover {
+  opacity: 1;
+  transform: translateX(4px);
+}
+
+/* Redes sociales */
+.social-icons {
+  display: flex;
+  gap: 0.9rem;
+ 
+}
+
+.social-icons a {
+  font-size: 1.4rem;
+  padding: 8px;
+  border-radius: 10%;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  transition: var(--transition);
+  opacity: 0.85;
+   color: var(--light-text);
+}
+
+.social-icons a:hover {
+  transform: scale(1.15);
+  opacity: 1;
+  background: rgba(255,255,255,0.1);
+   color: var(--light-text);
+
+}
+
+/* Contacto */
+.footer-contact p {
+  margin: 0.2rem 0;
+  opacity: 0.85;
+  font-size: 0.9rem;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.4rem;
+  opacity: 0.9;
+}
+
+.contact-item i {
+  font-size: 1.2rem;
+}
+
+.footer-bottom {
+  text-align: center;
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  font-size: 0.85rem;
+  opacity: 0.8;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .footer-content {
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+  }
+
+  .links-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .contact-item {
+    justify-content: center;
+  }
+}
+
 
 .container {
   display: flex;
@@ -181,7 +309,7 @@ body {
 .intro-content {
   position: relative;
   z-index: 10;
-  max-width: 500px;
+
   text-align: left;
   padding: 2rem 0;
 }
@@ -617,7 +745,7 @@ input:focus {
 }
 
 .card-back {
-  background: var(--secondary-color);
+
   color: white;
   transform: rotateY(180deg);
 }
@@ -625,7 +753,7 @@ input:focus {
 .card-icon {
   width: 30%;
   margin-bottom: 1.5rem;
-  color: var(--text-color);
+  color: var(--primary-color);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -641,7 +769,7 @@ svg path {
   transition: fill 0.3s;
   cursor: pointer;
   height: 50vh;
-  fill: var(--primary-color);
+
 }
 
 svg path:hover {
@@ -669,8 +797,8 @@ svg path:hover {
 }
 
 .counter {
-  width: 120px;
-  height: 120px;
+  width: 150px;
+  height: 150px;
   background: var(--primary-color);
   border-radius: 50%;
   display: flex;
@@ -734,7 +862,7 @@ svg path:hover {
   height: 80px;
   border-radius: 50%;
   background-color: #ffffff;
-  border: 3px solid var(--secondary-color);
+  border: 2px solid var(--secondary-color);
   z-index: 10000;
   display: flex;
   justify-content: center;

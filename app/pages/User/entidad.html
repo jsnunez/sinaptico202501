@@ -29,7 +29,134 @@
 </head>
 
 <body>
+    <style>
+        /* === CONTENEDOR PRINCIPAL === */
+        .servicio-content {
+            display: flex;
+            width: 90%;
+            max-width: 1200px;
+            min-height: 70vh;
+            margin: 3rem auto;
+            border-radius: 25px;
+            background: white;
+            overflow: hidden;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.12);
+            padding: 0;
+        }
 
+        /* === SISTEMA DE DOS COLUMNAS === */
+        .servicio-columns {
+            display: grid;
+            grid-template-columns: 40% 60%;
+            width: 100%;
+        }
+
+        /* === COLUMNA IZQUIERDA  === */
+        .servicio-column-left {
+            /* background: linear-gradient(180deg, #1c3d70, #6a8bf8); */
+            background: var(--secondary-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 0;
+        }
+
+        .servicio-foto-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .servicio-foto-custom {
+            width: 260px;
+            height: 260px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: white;
+            padding: 10px;
+            box-shadow: 0px 6px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        /* === COLUMNA DERECHA === */
+        .servicio-column-right {
+            background: white;
+            padding: 50px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .servicio-datos-custom {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        #MiNombreCompleto {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #222;
+        }
+
+        #MiservicioProfesional {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #555;
+            text-align: justify;
+        }
+
+        /* Caja con datos básicos */
+        .servicio-datos-custom>div {
+            background: rgba(193, 198, 255, 0.28);
+            padding: 20px;
+            border-radius: 12px;
+        }
+
+        .servicio-dato-linea-custom strong {
+            min-width: 150px;
+            display: inline-block;
+            font-weight: 700;
+        }
+
+
+        /* === Modal y hoja de vida === */
+        #iframeHojaVida {
+            width: 100%;
+            height: 700px;
+            border: none;
+        }
+
+        /* === Spinner === */
+        #page-spinner-overlay {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.95);
+            z-index: 99999;
+            transition: opacity .4s ease;
+            -webkit-backdrop-filter: blur(2px);
+            backdrop-filter: blur(2px);
+        }
+
+        #page-spinner-overlay .spinner {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            border: 6px solid rgba(0, 0, 0, 0.08);
+            border-top-color: #007bff;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
 
     <!-- Encabezado -->
     <header>
@@ -49,7 +176,7 @@
                 <div class="dropdown">
                     <button id="userMenuBtn" style="display: flex; align-items: center;">
                         <div id="userPhoto ">
-                            <img class="imagenPerfil" id="imagenPerfilSecundaria" src="img/sinfoto.jpg" 
+                            <img class="imagenPerfil" id="imagenPerfilSecundaria" src="img/sinfoto.jpg"
                                 alt="Foto de perfil" onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
 
                         </div>
@@ -67,7 +194,7 @@
         </div>
         <nav class="nav">
             <button class="nav-button " onclick="window.location.href='/helice'" id="inicio">Inicio</button>
-             <button class="nav-button pulse" onclick="window.location.href='/directorio'">Directorio</button>
+            <button class="nav-button pulse" onclick="window.location.href='/directorio'">Directorio</button>
 
             <button class="nav-button" onclick="window.location.href='/proyectos'">Proyectos</button>
             <button class="nav-button" onclick="window.location.href='/innovacion'">Innovación</button>
@@ -86,12 +213,12 @@
         <div class="modalPerfilEntidad" id="infoEmpresas">
 
             <div class="modal-info">
-                <div style="display: flex;">
+                <div style="display: flex; margin-left: 220px;">
                     <img src="/img/sinlogo.jpg" alt="Logo Empresa" class="card-icon" id="logo-perfilEntidad"
                         onerror="this.onerror=null;this.src='/img/sinlogo.jpg';"
-                        style="margin-right: 10px; width: 180px; height: 180px; border-radius: 5px;">
+                        style="margin-right: 10px; width: 180px; height: 180px; border-radius: 50%;">
 
-                  
+
                     <div style="display: flex;flex-direction: column; justify-content: center; margin-left: 20px; "
                         class="informacionGeneral">
                         <h1 class="tituloEntidad" id="modalRazonSocial"></h1>
@@ -134,31 +261,31 @@
             <button id="crearEntidad" style="display: none;"></button>
             <div class="about-section">
 
-                <div style="display: flex; justify-content: center; margin-bottom: 20px;">
 
-                    <h1> Nosotros</h1>
-
-                </div>
-                <div class="info-container">
-
-                    <div class="info-card mision">
-                        <h4>Misión</h4>
-                        <p>
-                            Impulsar la transformación digital ofreciendo soluciones tecnológicas innovadoras que
-                            optimicen los procesos, mejoren la productividad y generen valor sostenible para
-                            nuestros
-                            clientes.
-                        </p>
+                <div class="intro-content">
+                    <h1 style="text-align: center; font-size: 40px; display: flex; justify-content: center;">¿Quienes
+                        somos?
+                    </h1>
+                    <div class="intro" style="text-align: center;  padding: 1% 15%; ">
+                        <p class="intro-description"
+                            style="text-align: center;   font-weight: 400;
+                    font-size: 20px; color: rgb(82, 82, 82); background-color: rgba(193, 198, 255, 0.28); padding: 15px;"> Nuestra
+                            ferretería funciona como un
+                            espacio donde cada herramienta, material y solución se conectan para impulsar la
+                            construcción de
+                            nuevas ideas y proyectos. Así como las piezas de una estructura trabajan juntas para dar
+                            firmeza
+                            y estabilidad, buscamos unir a profesionales, aficionados y comunidades a través de
+                            productos
+                            confiables y asesoría experta. Esta conexión constante permite que el conocimiento fluya y
+                            se
+                            transforme en resultados prácticos, brindando apoyo a retos de mantenimiento, construcción y
+                            renovación. Más que un punto de venta, somos un aliado que facilita recursos, orientación y
+                            oportunidades para que cada cliente pueda materializar sus proyectos con seguridad,
+                            eficiencia e
+                            innovación. </p>
                     </div>
-
-                    <div class="info-card vision">
-                        <h4>Visión</h4>
-                        <p>
-                            Ser líderes en el desarrollo tecnológico, reconocidos por nuestra capacidad de
-                            innovación,
-                            excelencia y compromiso con el progreso digital de las organizaciones a nivel global.
-                        </p>
-                    </div>
+                    <button class="btn-brochure">Explora Nuestro Portafolio</button>
 
                 </div>
             </div>
@@ -177,7 +304,7 @@
             <div>
                 <div style="display: flex; justify-content: center; margin-bottom: 20px;">
 
-                    <h1> Servicios</h1>
+                    <h1>Nuestros Servicios</h1>
 
                 </div>
                 <div id="serviciosAsociados" class="servicios-container">
@@ -255,6 +382,51 @@
         </div>
     </div>
 
+    <!-- modal servicio -->
+    <div class="modal" id="modalInfServicios">
+        <div class="modal-content" style="max-width: 1000px;">
+            <div class="servicio-columns">
+                <span class="close" id="cerrarModalServicio">&times;</span>
+
+                <!-- COLUMNA IZQUIERDA -->
+                <div class="servicio-column-left">
+                    <div class="servicio-foto-container">
+                        <div style="position:relative; display:inline-block;">
+                            <!-- Ícono del servicio -->
+                            <i id="modalServicioIcono" class="bi" style="font-size: 90px; color:#ff8400;"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- COLUMNA DERECHA -->
+                <div class="servicio-column-right">
+                    <div class="servicio-datos-custom">
+
+                        <h2 id="modalServicioNombre" class="tittle" style="text-transform: capitalize;"></h2>
+
+                        <p id="modalServicioDescripcion"></p>
+                        <p style="margin-bottom: 15px; text-align: justify;"> Nuestro servicio de venta está diseñado para ofrecer a nuestros
+                            clientes una experiencia de compra ágil, segura y totalmente personalizada. Nos enfocamos en
+                            entender las necesidades individuales de cada cliente, brindando asesoría experta y
+                            productos de alta calidad que se adaptan a sus requerimientos. Desde la selección hasta la
+                            entrega, garantizamos un proceso transparente y confiable que prioriza la satisfacción del
+                            cliente en cada etapa.
+
+                            Además, nuestro equipo de ventas está capacitado para ofrecer soluciones innovadoras y
+                            competitivas, asegurando que cada transacción sea eficiente y beneficiosa. Nos comprometemos
+                            a mantener una comunicación constante y soporte postventa, creando relaciones duraderas y
+                            confiables con nuestros clientes. Con nuestro servicio de venta, cada cliente recibe
+                            atención dedicada y productos que cumplen con los más altos estándares de calidad.</p>
+                        <p class="servicio-dato-linea-custom">
+                            <strong>Líder del servicio:</strong>
+                            <span id="modalServicioLider" style="text-transform:capitalize;"></span>
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
     <script src="/js/config.js"></script>
@@ -267,7 +439,7 @@
     <script src="/js/menu.js"></script>
     <script src="/js/enviarInvitacion.js"></script>
     <script>
-    function initVerMap(lat, lng) {
+        function initVerMap(lat, lng) {
             const mapElement = document.getElementById('ver-location-map');
             if (!mapElement) {
                 console.error('Elemento del mapa de edición no encontrado');
@@ -306,13 +478,13 @@
             }).addTo(editMap);
 
             // Agregar evento de click para abrir en Google Maps
-            editMap.on('click', function() {
+            editMap.on('click', function () {
                 const googleMapsUrl = `https://www.google.com/maps?q=${lat},${lng}`;
                 window.open(googleMapsUrl, '_blank');
             });
 
             // También agregar click al marcador
-            editMarker.on('click', function() {
+            editMarker.on('click', function () {
                 const googleMapsUrl = `https://www.google.com/maps?q=${lat},${lng}`;
                 window.open(googleMapsUrl, '_blank');
             });
@@ -376,23 +548,36 @@
                 if (datos.success && datos.servicios.length > 0) {
                     let html = '';
                     datos.servicios.forEach(servicio => {
-                        console.log(servicio)
+
                         html += `
-                    <div class="servicio-card">
-                        <div class="servicio-header">
-                            <div class="servicio-icono" style="font-size: 2em;">
-                                <i class="bi ${servicio.icono}"></i>
-                            </div>
-                           
-                        </div>
-                        <div class="servicio-info">
-                             <div class="servicio-titulo">${servicio.nombre}</div>
-                        <div class="servicio-descripcion">${servicio.descripcion}</div>
- <p><b>Lider: </b><a style="cursor:pointer;" onclick="contactarIntegrante(${servicio.liderId}, '${servicio.lider.replace(/'/g, "\\'")}')">
-             ${servicio.lider}
-        </a></p>
-                        </div>
-                    </div>
+<div class="servicio-card">
+    <div class="servicio-header">
+        <div class="servicio-icono" style="font-size: 2em;">
+            <i class="bi ${servicio.icono}"></i>
+        </div>
+    </div>
+
+    <div class="servicio-info">
+
+        <!-- NUEVO CONTENEDOR -->
+        <div class="servicio-textos">
+            <div class="servicio-titulo">${servicio.nombre}</div>
+
+            <div class="servicio-descripcion">${servicio.descripcion}</div>
+
+            <p><b>Lider: </b><a>${servicio.lider}</a></p>
+        </div>
+
+        <!-- ESTE QUEDA COMO COLUMNA 3 -->
+        <button class="action-button"
+            style="cursor:pointer;" 
+            onclick="modalInfServicios(${servicio.id})">
+            Más información
+        </button>
+
+    </div>
+</div>
+
                 `;
                     });
                     contenedor.innerHTML = html;
@@ -405,6 +590,48 @@
                     `<p style="color:#b00;">Error al cargar los servicios.</p>`;
             }
         }
+        function modalInfServicios(idServicio) {
+            document.getElementById("modalInfServicios").style.display = "flex";
+
+            llamarServicio(idServicio);
+
+        }
+        async function llamarServicio(idServicio) {
+            console.log("id del servicio", idServicio);
+            try {
+                let url = `${API_BASE_URL}/api/servicio/${idServicio}`;
+                let response = await fetch(url);
+                let data = await response.json();
+                console.log("id del servicio", !data.success);
+                if (!data || Object.keys(data).length === 0) {
+                    console.error("Servicio no encontrado");
+                    return;
+                }
+                const s = data;
+
+                // PINTAR DATOS EN EL MODAL
+                document.getElementById("modalServicioIcono").className = "bi " + (s.icono || "bi-gear");
+
+                document.getElementById("modalServicioNombre").textContent = s.nombre || "";
+
+                document.getElementById("modalServicioDescripcion").textContent = s.descripcion || "";
+
+                document.getElementById("modalServicioLider").textContent = s.lider || "Sin asignar";
+
+
+
+            } catch (error) {
+                console.error("Error cargando servicio:", error);
+            }
+        }
+
+
+        // Función para cerrar el modal
+        document.getElementById("cerrarModalServicio").addEventListener("click", () => {
+            document.getElementById('modalInfServicios').style.display = 'none';
+
+
+        })
         async function llamarIntegrantes(idEntidad) {
             const url = `/api/usuarioempresa/empresa/${idEntidad}`;
             try {

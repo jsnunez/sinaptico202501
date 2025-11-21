@@ -73,7 +73,7 @@
         </div>
         <nav class="nav">
             <button class="nav-button" onclick="window.location.href='/helice'" id="inicio">Inicio</button>
-             <button class="nav-button" onclick="window.location.href='/directorio'">Directorio</button>
+            <button class="nav-button" onclick="window.location.href='/directorio'">Directorio</button>
 
             <button class="nav-button" onclick="window.location.href='/proyectos'">Proyectos</button>
             <button class="nav-button" onclick="window.location.href='/innovacion'">Innovación</button>
@@ -268,7 +268,10 @@
                         </p>
                         <p class="perfil-dato-linea-custom"><strong>Correo Electrónico:</strong> <span
                                 id="MiCorreo"></span></p>
-                        <p class="perfil-dato-linea-custom"><strong>Vinculado a:</strong> <span id="MiVinculado"></span>
+                        <p class="perfil-dato-linea-custom"><strong>Vinculado a:</strong>
+                            <a id="miEntidadRef" class="miEntidadRef" style="cursor:pointer;">
+                                <span id="MiVinculado"></span>
+                            </a>
                         </p>
                     </div>
 
@@ -348,7 +351,8 @@
                     </div>
 
                 </div>
-
+                <h1 style="display: none;" id="departamentoPerfilValor"></h1>
+                <h1 style="display: none;" id="ciudadPerfilValor"></h1>
                 <!--Actualizar CV-->
                 <div class="form-section">
                     <h3 class="section-title">Perfil profesional:</h3>
@@ -413,57 +417,6 @@
             }
         };
 
-        // === Cargar información del usuario ===
-        async function cargarPerfilUsuario(userId) {
-            try {
-                const res = await fetch(`/api/user/${userId}`);
-                if (!res.ok) throw new Error('No se pudo obtener el perfil');
-                const data = await res.json();
-
-                document.getElementById('MiNombreCompleto').textContent = data.name || '';
-                document.getElementById('MiPerfilProfesional').textContent = data.perfilProfesional || '';
-                document.getElementById('MiTelefono').textContent = data.telefono || '';
-                document.getElementById('MiUbicacion').textContent =
-                    data.ciudad?.nombre && data.ciudad?.departamento?.nombre
-                        ? `${data.ciudad.nombre} - ${data.ciudad.departamento.nombre}`
-                        : '';
-                document.getElementById('MiCorreo').textContent = data.email || '';
-                document.getElementById("imagenPerfilIntegrante").src =
-                    data.fotoPerfil ? "photo/" + data.fotoPerfil : "photo/sinfoto.jpg";
-
-                // ✅ Mostrar botón solo si existe hoja de vida
-                const btnHoja = document.getElementById("btnHojaVida");
-                if (data.enlaceHojaDeVida && data.enlaceHojaDeVida.trim() !== "") {
-                    hojaVidaURL = "CV/" + data.enlaceHojaDeVida;
-                    btnHoja.style.display = "inline-block";
-                } else {
-                    hojaVidaURL = "";
-                    btnHoja.style.display = "none";
-                }
-
-                // Verificar si hay entidad asociada
-                const entidadRes = await fetch(`/api/entidad/verificar-entidad/${userId}`);
-                if (entidadRes.ok) {
-                    const entidadData = await entidadRes.json();
-                    const entidadNombre = entidadData.success
-                        ? entidadData.entidad.razonSocial
-                        : "Sin entidad asociada";
-                    document.getElementById('MiVinculado').textContent = entidadNombre;
-                }
-
-            } catch (err) {
-                console.error("Error cargando datos de usuario:", err);
-            }
-        }
-
-        // === Cargar al inicio ===
-        document.addEventListener("DOMContentLoaded", () => {
-            const params = new URLSearchParams(window.location.search);
-            const userId = params.get("id");
-            if (userId) {
-                cargarPerfilUsuario(userId);
-            }
-        });
     </script>
 
     <script>
@@ -548,96 +501,172 @@
 
     </script>
 
-
-    <!--Cargar Datos mi Perfil-->
     <script>
-        async function cargarDatosMiPerfil() {
-            try {
-                const userId = obtenerCookie("userId");
-                if (!userId) return;
 
-                const res = await fetch(`/api/user/${userId}`);
-                if (!res.ok) throw new Error('No se pudo obtener el perfil');
-                const data = await res.json();
-                console.log("DATOS DEL USUARIO", data);
-
-
-                // Cargar Datos para actualizar Perfil
-
-                document.getElementById("nombrePerfil").value = data.name || '';
-                document.getElementById("telefonoPerfil").value = data.telefono || '';
-                document.getElementById("perfilProfesional").value = data.perfilProfesional || '';
-                document.getElementById("previewFotoPerfil").src = data.fotoPerfil ? "photo/" + data.fotoPerfil : "photo/sinfoto.jpg";
-
-
-                if (data.ciudadId) {
-                    try {
-                        const resp = await fetch(`/api/ciudades/ciudad/${data.ciudadId}`);
-                        const ciudadData = await resp.json();
-                        document.getElementById("departamentoPerfilValor").innerHTML = ciudadData.ciudad.departamentoId || '';
-                    } catch (err) {
-                        document.getElementById("departamentoPerfilValor").innerHTML = '';
-                        console.error('Error al consultar el departamento:', err);
-                    }
-                } else {
-                    document.getElementById("departamentoPerfilValor").innerHTML = '';
-                }
-
-                document.getElementById("ciudadPerfilValor").innerHTML = data.ciudadId || '';
-
-
-
-                // Si tienes la URL del CV PDF (usando data.enlaceHojaDeVida)
-                if (data.enlaceHojaDeVida) {
-                    const iframe = document.querySelector('iframe');
-                    if (iframe) {
-                        iframe.src = "CV/" + data.enlaceHojaDeVida;
-                        iframe.style.display = 'block';
-                    }
-                }
-
-            } catch (err) {
-                console.error('Error cargando datos de usuario:', err);
-            }
-
-            // Verificar si hay una entidad asociada al usuario
-            try {
-                const entidadRes = await fetch(`/api/entidad/verificar-entidad/${userId}`);
-                if (entidadRes.ok) {
-                    const entidadData = await entidadRes.json();
-                    console.log('Entidad asociada:', entidadData.success);
-                    // Si hay entidad asociada, muestra el nombre, si no, muestra "Sin entidad asociada"
-                    if (entidadData.success) {
-                        console.log('Entidad asociada:', entidadData.entidad.razonSocial);
-                        var entidadNombre = entidadData.entidad.razonSocial;
-                    } else {
-                        console.log('Entidad asociada: Sin entidad asociada');
-                        var entidadNombre = "Sin entidad asociada";
-                    }
-                    // Busca la celda correspondiente y actualiza el texto
-                    document.getElementById('MiVinculado').textContent = entidadNombre;
-                }
-            } catch (e) {
-                console.error('Error verificando entidad asociada:', e);
-            }
-        }
-        // Función para obtener el valor de una cookie por su nombre
+        // =============================
+        //     FUNCIÓN: OBTENER COOKIE
+        // =============================
         function obtenerCookie(nombre) {
             const nombreCookie = `${nombre}=`;
             const cookies = document.cookie.split(';');
-
-            for (let i = 0; i < cookies.length; i++) {
-                let cookie = cookies[i].trim();
-
+            for (let cookie of cookies) {
+                cookie = cookie.trim();
                 if (cookie.indexOf(nombreCookie) === 0) {
-                    return cookie.substring(nombreCookie.length, cookie.length);
+                    return cookie.substring(nombreCookie.length);
                 }
             }
-
-            return null; // Retorna null si no se encuentra la cookie
+            return null;
         }
-        // Llama a la función al cargar la página
-        window.addEventListener('DOMContentLoaded', cargarDatosMiPerfil);
+
+        // =============================
+        //  FUNCIÓN: CARGAR MI PERFIL
+        // =============================
+        async function cargarDatosMiPerfil(userId) {
+            try {
+
+                if (!userId) return;
+
+                console.log("Cargando MI PERFIL…", userId);
+
+                const res = await fetch(`/api/user/${userId}`);
+                if (!res.ok) throw new Error("Error obteniendo mi perfil");
+                const data = await res.json();
+
+                document.getElementById('MiNombreCompleto').textContent = data.name || '';
+                document.getElementById('MiPerfilProfesional').textContent = data.perfilProfesional || '';
+                document.getElementById('MiTelefono').textContent = data.telefono || '';
+                document.getElementById('MiCorreo').textContent = data.email || '';
+
+                document.getElementById("imagenPerfilIntegrante").src =
+                    data.fotoPerfil ? "photo/" + data.fotoPerfil : "photo/sinfoto.jpg";
+
+                document.getElementById('MiUbicacion').textContent =
+                    data.ciudad?.nombre && data.ciudad?.departamento?.nombre
+                        ? `${data.ciudad.nombre} - ${data.ciudad.departamento.nombre}`
+                        : "";
+
+                // Mostrar hoja de vida
+                const btnHoja = document.getElementById("btnHojaVida");
+                if (data.enlaceHojaDeVida && data.enlaceHojaDeVida.trim() !== "") {
+                    hojaVidaURL = "CV/" + data.enlaceHojaDeVida;
+                    btnHoja.style.display = "inline-block";
+                } else {
+                    btnHoja.style.display = "none";
+                }
+
+                // Verificar entidad asociada
+                const entidadRes = await fetch(`/api/entidad/verificar-entidad/${userId}`);
+                if (entidadRes.ok) {
+                    const entidadData = await entidadRes.json();
+                    const nombre =
+                        entidadData.success ? entidadData.entidad.razonSocial : "Sin entidad asociada";
+
+                    document.getElementById("MiVinculado").textContent = nombre;
+
+                    // Ir al perfil de la entidad
+                    document.addEventListener("click", function (e) {
+                        const link = e.target.closest(".miEntidadRef");
+                        if (link) {
+                            window.location.href = `/perfilEntidad?id=${entidadData.entidad.id}`;
+                        }
+                    });
+                }
+
+            } catch (err) {
+                console.error("Error cargando MI perfil:", err);
+            }
+        }
+
+        // =============================
+        //  FUNCIÓN: CARGAR PERFIL AJENO
+        // =============================
+        async function cargarPerfilUsuario(id) {
+            try {
+                console.log("Cargando PERFIL VISITADO…", id);
+
+                const res = await fetch(`/api/user/${id}`);
+                if (!res.ok) throw new Error("No se pudo obtener el perfil visitado");
+                const data = await res.json();
+
+                document.getElementById('MiNombreCompleto').textContent = data.name || '';
+                document.getElementById('MiPerfilProfesional').textContent = data.perfilProfesional || '';
+                document.getElementById('MiTelefono').textContent = data.telefono || '';
+                document.getElementById('MiCorreo').textContent = data.email || '';
+
+                document.getElementById("imagenPerfilIntegrante").src =
+                    data.fotoPerfil ? "photo/" + data.fotoPerfil : "photo/sinfoto.jpg";
+
+                document.getElementById('MiUbicacion').textContent =
+                    data.ciudad?.nombre && data.ciudad?.departamento?.nombre
+                        ? `${data.ciudad.nombre} - ${data.ciudad.departamento.nombre}`
+                        : "";
+
+                // Mostrar hoja de vida
+                const btnHoja = document.getElementById("btnHojaVida");
+                if (data.enlaceHojaDeVida && data.enlaceHojaDeVida.trim() !== "") {
+                    hojaVidaURL = "CV/" + data.enlaceHojaDeVida;
+                    btnHoja.style.display = "inline-block";
+                } else {
+                    btnHoja.style.display = "none";
+                }
+
+                // Verificar entidad asociada
+                const entidadRes = await fetch(`/api/entidad/verificar-entidad/${id}`);
+                if (entidadRes.ok) {
+                    const entidadData = await entidadRes.json();
+                    const nombre = entidadData.success
+                        ? entidadData.entidad.razonSocial
+                        : "Sin entidad asociada";
+
+                    document.getElementById('MiVinculado').textContent = nombre;
+
+                    // Ir al perfil de la entidad
+                    document.addEventListener("click", function (e) {
+                        const link = e.target.closest(".miEntidadRef");
+                        if (link) {
+                            window.location.href = `/perfilEntidad?id=${entidadData.entidad.id}`;
+                        }
+                    });
+                }
+
+            } catch (err) {
+                console.error("Error cargando perfil visitado:", err);
+            }
+        }
+
+        // ====================================================
+        //   CONTROL GLOBAL DE LÓGICA (IGUAL AL PRIMER SCRIPT)
+        // ====================================================
+        document.addEventListener("DOMContentLoaded", () => {
+
+            const params = new URLSearchParams(window.location.search);
+            const profileId = params.get("id");             // ID en la URL
+            const currentUserId = obtenerCookie("userId");  // Cookie del usuario logueado
+
+            const perfilIcon = document.getElementById("perfil");
+
+            // === LÓGICA EXACTA DEL PRIMER SCRIPT ===
+            const esMiPerfil =
+                (profileId && currentUserId && profileId === currentUserId) ||
+                (!profileId && currentUserId);
+
+            // Mostrar/ocultar ícono perfil
+            if (perfilIcon) {
+                perfilIcon.style.display = esMiPerfil ? "inline-block" : "none";
+            }
+
+            // === CARGA DE DATOS SEGÚN LA VALIDACIÓN ===
+
+            if (esMiPerfil) {
+                cargarDatosMiPerfil(currentUserId);
+            } else if (profileId) {
+                cargarPerfilUsuario(profileId);
+            } else {
+                console.log("No hay perfil para mostrar");
+            }
+
+        });
+
     </script>
 
     <!--Modal Actualizar Perfil-->
@@ -817,11 +846,7 @@
 
     <script src="js/helice2.js"></script>
     <script src="/js/config.js"></script>
-    <script src="js/enviarformulario.js"></script>
     <script src="admin.js"></script>
-    <script src="js/formularios.js"></script>
-    <script src="js/llamarEntidades.js"></script>
-    <script src="js/editarEntidad.js"></script>
     <script src="js/cargarDatos.js"></script>
     <script src="js/estadisticas.js"></script>
     <script src="js/notificaciones.js"></script>
