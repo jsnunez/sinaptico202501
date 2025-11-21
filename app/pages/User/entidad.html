@@ -29,134 +29,7 @@
 </head>
 
 <body>
-    <style>
-        /* === CONTENEDOR PRINCIPAL === */
-        .servicio-content {
-            display: flex;
-            width: 90%;
-            max-width: 1200px;
-            min-height: 70vh;
-            margin: 3rem auto;
-            border-radius: 25px;
-            background: white;
-            overflow: hidden;
-            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.12);
-            padding: 0;
-        }
 
-        /* === SISTEMA DE DOS COLUMNAS === */
-        .servicio-columns {
-            display: grid;
-            grid-template-columns: 40% 60%;
-            width: 100%;
-        }
-
-        /* === COLUMNA IZQUIERDA  === */
-        .servicio-column-left {
-            /* background: linear-gradient(180deg, #1c3d70, #6a8bf8); */
-            background: var(--secondary-color);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 40px 0;
-        }
-
-        .servicio-foto-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .servicio-foto-custom {
-            width: 260px;
-            height: 260px;
-            border-radius: 50%;
-            object-fit: cover;
-            background: white;
-            padding: 10px;
-            box-shadow: 0px 6px 25px rgba(0, 0, 0, 0.15);
-        }
-
-        /* === COLUMNA DERECHA === */
-        .servicio-column-right {
-            background: white;
-            padding: 50px;
-            display: flex;
-            align-items: flex-start;
-        }
-
-        .servicio-datos-custom {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-        }
-
-        #MiNombreCompleto {
-            font-size: 2.2rem;
-            font-weight: bold;
-            color: #222;
-        }
-
-        #MiservicioProfesional {
-            font-size: 1.1rem;
-            line-height: 1.6;
-            color: #555;
-            text-align: justify;
-        }
-
-        /* Caja con datos básicos */
-        .servicio-datos-custom>div {
-            background: rgba(193, 198, 255, 0.28);
-            padding: 20px;
-            border-radius: 12px;
-        }
-
-        .servicio-dato-linea-custom strong {
-            min-width: 150px;
-            display: inline-block;
-            font-weight: 700;
-        }
-
-
-        /* === Modal y hoja de vida === */
-        #iframeHojaVida {
-            width: 100%;
-            height: 700px;
-            border: none;
-        }
-
-        /* === Spinner === */
-        #page-spinner-overlay {
-            position: fixed;
-            inset: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            background: rgba(255, 255, 255, 0.95);
-            z-index: 99999;
-            transition: opacity .4s ease;
-            -webkit-backdrop-filter: blur(2px);
-            backdrop-filter: blur(2px);
-        }
-
-        #page-spinner-overlay .spinner {
-            width: 64px;
-            height: 64px;
-            border-radius: 50%;
-            border: 6px solid rgba(0, 0, 0, 0.08);
-            border-top-color: #007bff;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-    </style>
 
     <!-- Encabezado -->
     <header>
@@ -382,51 +255,7 @@
         </div>
     </div>
 
-    <!-- modal servicio -->
-    <div class="modal" id="modalInfServicios">
-        <div class="modal-content" style="max-width: 1000px;">
-            <div class="servicio-columns">
-                <span class="close" id="cerrarModalServicio">&times;</span>
 
-                <!-- COLUMNA IZQUIERDA -->
-                <div class="servicio-column-left">
-                    <div class="servicio-foto-container">
-                        <div style="position:relative; display:inline-block;">
-                            <!-- Ícono del servicio -->
-                            <i id="modalServicioIcono" class="bi" style="font-size: 90px; color:#ff8400;"></i>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- COLUMNA DERECHA -->
-                <div class="servicio-column-right">
-                    <div class="servicio-datos-custom">
-
-                        <h2 id="modalServicioNombre" class="tittle" style="text-transform: capitalize;"></h2>
-
-                        <p id="modalServicioDescripcion"></p>
-                        <p style="margin-bottom: 15px; text-align: justify;"> Nuestro servicio de venta está diseñado para ofrecer a nuestros
-                            clientes una experiencia de compra ágil, segura y totalmente personalizada. Nos enfocamos en
-                            entender las necesidades individuales de cada cliente, brindando asesoría experta y
-                            productos de alta calidad que se adaptan a sus requerimientos. Desde la selección hasta la
-                            entrega, garantizamos un proceso transparente y confiable que prioriza la satisfacción del
-                            cliente en cada etapa.
-
-                            Además, nuestro equipo de ventas está capacitado para ofrecer soluciones innovadoras y
-                            competitivas, asegurando que cada transacción sea eficiente y beneficiosa. Nos comprometemos
-                            a mantener una comunicación constante y soporte postventa, creando relaciones duraderas y
-                            confiables con nuestros clientes. Con nuestro servicio de venta, cada cliente recibe
-                            atención dedicada y productos que cumplen con los más altos estándares de calidad.</p>
-                        <p class="servicio-dato-linea-custom">
-                            <strong>Líder del servicio:</strong>
-                            <span id="modalServicioLider" style="text-transform:capitalize;"></span>
-                        </p>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
 
     <script src="/js/config.js"></script>
@@ -550,33 +379,31 @@
                     datos.servicios.forEach(servicio => {
 
                         html += `
-<div class="servicio-card">
-    <div class="servicio-header">
-        <div class="servicio-icono" style="font-size: 2em;">
-            <i class="bi ${servicio.icono}"></i>
-        </div>
-    </div>
+                            <div class="servicio-card">
+                                <div class="servicio-header">
+                                    <div class="servicio-icono" style="font-size: 2em;">
+                                        <i class="bi ${servicio.icono}"></i>
+                                    </div>
+                                </div>
 
-    <div class="servicio-info">
+                                <div class="servicio-info">
 
-        <!-- NUEVO CONTENEDOR -->
-        <div class="servicio-textos">
-            <div class="servicio-titulo">${servicio.nombre}</div>
+                                    <!-- NUEVO CONTENEDOR -->
+                                    <div class="servicio-textos">
+                                        <div class="servicio-titulo">${servicio.nombre}</div>
 
-            <div class="servicio-descripcion">${servicio.descripcion}</div>
+                                        <div class="servicio-descripcion">${servicio.descripcion}</div>
 
-            <p><b>Lider: </b><a>${servicio.lider}</a></p>
-        </div>
+                                        <p><b>Lider: </b><a>${servicio.lider}</a></p>
+                                    </div>
 
-        <!-- ESTE QUEDA COMO COLUMNA 3 -->
-        <button class="action-button"
-            style="cursor:pointer;" 
-            onclick="modalInfServicios(${servicio.id})">
-            Más información
-        </button>
+                                    <!-- ESTE QUEDA COMO COLUMNA 3 -->
+                                    <button class="action-button botonServicio" data-id="${servicio.id}">
+                                        Más información
+                                        </button>
 
-    </div>
-</div>
+                                </div>
+                            </div>
 
                 `;
                     });
@@ -590,48 +417,15 @@
                     `<p style="color:#b00;">Error al cargar los servicios.</p>`;
             }
         }
-        function modalInfServicios(idServicio) {
-            document.getElementById("modalInfServicios").style.display = "flex";
-
-            llamarServicio(idServicio);
-
-        }
-        async function llamarServicio(idServicio) {
-            console.log("id del servicio", idServicio);
-            try {
-                let url = `${API_BASE_URL}/api/servicio/${idServicio}`;
-                let response = await fetch(url);
-                let data = await response.json();
-                console.log("id del servicio", !data.success);
-                if (!data || Object.keys(data).length === 0) {
-                    console.error("Servicio no encontrado");
-                    return;
-                }
-                const s = data;
-
-                // PINTAR DATOS EN EL MODAL
-                document.getElementById("modalServicioIcono").className = "bi " + (s.icono || "bi-gear");
-
-                document.getElementById("modalServicioNombre").textContent = s.nombre || "";
-
-                document.getElementById("modalServicioDescripcion").textContent = s.descripcion || "";
-
-                document.getElementById("modalServicioLider").textContent = s.lider || "Sin asignar";
-
-
-
-            } catch (error) {
-                console.error("Error cargando servicio:", error);
+        document.addEventListener('click', function (e) {
+            if (e.target && (e.target.classList.contains('botonServicio'))) {
+                const id = e.target.dataset.id;
+                window.location.href = `/servicio?id=${id}`;
             }
-        }
+
+        });
 
 
-        // Función para cerrar el modal
-        document.getElementById("cerrarModalServicio").addEventListener("click", () => {
-            document.getElementById('modalInfServicios').style.display = 'none';
-
-
-        })
         async function llamarIntegrantes(idEntidad) {
             const url = `/api/usuarioempresa/empresa/${idEntidad}`;
             try {
