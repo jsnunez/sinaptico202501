@@ -104,6 +104,8 @@ app.get('/perfilUser', authorization.soloUser, (req, res) => res.sendFile(path.j
 app.get('/perfilEntidad', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/entidad.html')));
 app.get('/miEntidad', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/perfilEntidad.html')));
 app.get('/servicio', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/servicio.html')));
+app.get('/directorioPersonas', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/directorioPersonas.html')));
+
 
 
 app.get('/mapa-publico', (req, res) => res.sendFile(path.join(__dirname, 'pages/User/mapa-usuarios.html')));
