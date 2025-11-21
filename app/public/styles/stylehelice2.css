@@ -257,9 +257,12 @@ h2 {
 
 .tituloEntidad {
     color: var(--primary-color);
-    font-size: 50px;
+    font-size: 40px;
 }
+.intro-content{
+  justify-content: center; align-items: center;
 
+}
 
 .botonEntidad {
     margin-bottom: 1vh;
@@ -1539,7 +1542,7 @@ form {
     margin-bottom: 18px;
 }
 
-/* Botón Contactar */
+/* Botón Contactar
 .btn-contactar {
     background: var(--orange);
     color: #fff;
@@ -1557,6 +1560,30 @@ form {
 }
 
 .btn-contactar:hover {
+    background: var(--hover-btn);
+    transform: scale(1.05);
+} */
+
+/* Botón Contactar */
+.btn-brochure {
+    background: var(--orange);
+    color: var(--light-text);
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin: 0 auto;
+    width: 300px;
+    height: 50px;
+}
+
+.btn-brochure:hover {
     background: var(--hover-btn);
     transform: scale(1.05);
 }
