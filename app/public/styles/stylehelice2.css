@@ -1406,10 +1406,21 @@ form {
 /* Contenido textual a la derecha */
 .servicio-info {
     display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+.servicio-textos {
+    display: flex;
     flex-direction: column;
-    justify-content: center;
+    flex: 1; /* ocupa todo lo posible */
+    margin-right: 15px;
 }
 
+/* El botón en su propia columna */
+.servicio-info button {
+    flex-shrink: 0; /* evita que se achique */
+}
 .servicio-titulo {
     font-weight: bold;
     color: #333;

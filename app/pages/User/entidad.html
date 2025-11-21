@@ -118,21 +118,6 @@
             font-weight: 700;
         }
 
-        /* Botón */
-        .action-button {
-            background: #ff7b00;
-            color: #fff;
-            padding: 12px 24px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 16px;
-            width: fit-content;
-        }
-
-        .action-button:hover {
-            background: #d46300;
-        }
 
         /* === Modal y hoja de vida === */
         #iframeHojaVida {
@@ -398,64 +383,51 @@
     </div>
 
     <!-- modal servicio -->
-    <div class="servicio-content">
+    <div class="modal" id="modalInfServicios">
+        <div class="modal-content" style="max-width: 1000px;">
+            <div class="servicio-columns">
+                <span class="close" id="cerrarModalServicio">&times;</span>
 
-        <div class="servicio-columns">
-
-            <!-- COLUMNA IZQUIERDA -->
-            <div class="servicio-column-left">
-                <div class="servicio-foto-container">
-                    <div style="position:relative; display:inline-block;">
-                        <img id="" src="img/sinfoto.jpg" alt="Foto de servicio"
-                            class="servicio-foto-custom" onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
-                       
+                <!-- COLUMNA IZQUIERDA -->
+                <div class="servicio-column-left">
+                    <div class="servicio-foto-container">
+                        <div style="position:relative; display:inline-block;">
+                            <!-- Ícono del servicio -->
+                            <i id="modalServicioIcono" class="bi" style="font-size: 90px; color:#ff8400;"></i>
+                        </div>
                     </div>
-
                 </div>
 
-            </div>
+                <!-- COLUMNA DERECHA -->
+                <div class="servicio-column-right">
+                    <div class="servicio-datos-custom">
 
-            <!-- COLUMNA DERECHA -->
-            <div class="servicio-column-right">
-                <div class="servicio-datos-custom">
-                    <h2 id="" class="tittle" style="text-transform: capitalize;"></h2>
+                        <h2 id="modalServicioNombre" class="tittle" style="text-transform: capitalize;"></h2>
 
-                    <span id=""></span>
+                        <p id="modalServicioDescripcion"></p>
+                        <p style="margin-bottom: 15px; text-align: justify;"> Nuestro servicio de venta está diseñado para ofrecer a nuestros
+                            clientes una experiencia de compra ágil, segura y totalmente personalizada. Nos enfocamos en
+                            entender las necesidades individuales de cada cliente, brindando asesoría experta y
+                            productos de alta calidad que se adaptan a sus requerimientos. Desde la selección hasta la
+                            entrega, garantizamos un proceso transparente y confiable que prioriza la satisfacción del
+                            cliente en cada etapa.
 
-                    <div>
-                        <p class="servicio-dato-linea-custom"><strong>Teléfono:</strong> <span id=""></span></p>
-                        <p class="servicio-dato-linea-custom"><strong>Ubicación:</strong> <span id=""></span>
+                            Además, nuestro equipo de ventas está capacitado para ofrecer soluciones innovadoras y
+                            competitivas, asegurando que cada transacción sea eficiente y beneficiosa. Nos comprometemos
+                            a mantener una comunicación constante y soporte postventa, creando relaciones duraderas y
+                            confiables con nuestros clientes. Con nuestro servicio de venta, cada cliente recibe
+                            atención dedicada y productos que cumplen con los más altos estándares de calidad.</p>
+                        <p class="servicio-dato-linea-custom">
+                            <strong>Líder del servicio:</strong>
+                            <span id="modalServicioLider" style="text-transform:capitalize;"></span>
                         </p>
-                        <p class="servicio-dato-linea-custom"><strong>Correo Electrónico:</strong> <span
-                                id=""></span></p>
-                        <p class="servicio-dato-linea-custom"><strong>Vinculado a:</strong>
-                            <a id="" class="" style="cursor:pointer;">
-                                <span id=""></span>
-                            </a>
-                        </p>
+
                     </div>
-
-                    <button id="" class="action-button" style="display:none;">
-                        Ver Hoja de Vida
-                    </button>
                 </div>
-            </div>
-
-        </div>
-
-        <!-- Modal Hoja de vida -->
-        <div id="modalHojaVida" class="modal">
-            <div class="modal-content">
-                <div class="servicio-modal-header-custom">
-                    <h2 class="title" id="tituloHojaVida">Hoja de Vida</h2>
-                    <span class="close" onclick="cerrarModal()">&times;</span>
-                </div>
-
-                <iframe id="iframeHojaVida" src=""></iframe>
             </div>
         </div>
-
     </div>
+
 
     <script src="/js/config.js"></script>
     <script src="admin.js"></script>
@@ -576,27 +548,36 @@
                 if (datos.success && datos.servicios.length > 0) {
                     let html = '';
                     datos.servicios.forEach(servicio => {
-                        console.log(servicio)
-                        html += `
-                    <div class="servicio-card" >
-                        <div class="servicio-header">
-                            <div class="servicio-icono" style="font-size: 2em;">
-                                <i class="bi ${servicio.icono}"></i>
-                            </div>
-                           
-                        </div>
-                        <div class="servicio-info">
-                             <div class="servicio-titulo">${servicio.nombre}
-                            </div>
 
-                            <div class="servicio-descripcion">${servicio.descripcion}
-                            </div>
-                            <p><b>Lider: </b><a> ${servicio.lider}  </a></p>
-                                   <button class="action-button" style="cursor:pointer;" onclick="modalInfServicios(${servicio.id})">Mas</button>
-                            
-                          
-                        </div>
-                    </div>
+                        html += `
+<div class="servicio-card">
+    <div class="servicio-header">
+        <div class="servicio-icono" style="font-size: 2em;">
+            <i class="bi ${servicio.icono}"></i>
+        </div>
+    </div>
+
+    <div class="servicio-info">
+
+        <!-- NUEVO CONTENEDOR -->
+        <div class="servicio-textos">
+            <div class="servicio-titulo">${servicio.nombre}</div>
+
+            <div class="servicio-descripcion">${servicio.descripcion}</div>
+
+            <p><b>Lider: </b><a>${servicio.lider}</a></p>
+        </div>
+
+        <!-- ESTE QUEDA COMO COLUMNA 3 -->
+        <button class="action-button"
+            style="cursor:pointer;" 
+            onclick="modalInfServicios(${servicio.id})">
+            Más información
+        </button>
+
+    </div>
+</div>
+
                 `;
                     });
                     contenedor.innerHTML = html;
@@ -611,9 +592,46 @@
         }
         function modalInfServicios(idServicio) {
             document.getElementById("modalInfServicios").style.display = "flex";
-            // llamarServicio(idServicio);
+
+            llamarServicio(idServicio);
 
         }
+        async function llamarServicio(idServicio) {
+            console.log("id del servicio", idServicio);
+            try {
+                let url = `${API_BASE_URL}/api/servicio/${idServicio}`;
+                let response = await fetch(url);
+                let data = await response.json();
+                console.log("id del servicio", !data.success);
+                if (!data || Object.keys(data).length === 0) {
+                    console.error("Servicio no encontrado");
+                    return;
+                }
+                const s = data;
+
+                // PINTAR DATOS EN EL MODAL
+                document.getElementById("modalServicioIcono").className = "bi " + (s.icono || "bi-gear");
+
+                document.getElementById("modalServicioNombre").textContent = s.nombre || "";
+
+                document.getElementById("modalServicioDescripcion").textContent = s.descripcion || "";
+
+                document.getElementById("modalServicioLider").textContent = s.lider || "Sin asignar";
+
+
+
+            } catch (error) {
+                console.error("Error cargando servicio:", error);
+            }
+        }
+
+
+        // Función para cerrar el modal
+        document.getElementById("cerrarModalServicio").addEventListener("click", () => {
+            document.getElementById('modalInfServicios').style.display = 'none';
+
+
+        })
         async function llamarIntegrantes(idEntidad) {
             const url = `/api/usuarioempresa/empresa/${idEntidad}`;
             try {
