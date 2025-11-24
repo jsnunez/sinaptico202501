@@ -709,31 +709,31 @@
             </div>
             <div class="about-section">
 
-                <div style="display: flex; justify-content: center; margin-bottom: 20px;">
 
-                    <h1 style="color: var(--secondary-color);"> Nosotros</h1>
-
-                </div>
-                <div class="info-container">
-
-                    <div class="info-card mision">
-                        <h4>Misión</h4>
-                        <p>
-                            Impulsar la transformación digital ofreciendo soluciones tecnológicas innovadoras que
-                            optimicen los procesos, mejoren la productividad y generen valor sostenible para
-                            nuestros
-                            clientes.
-                        </p>
+                <div class="intro-content">
+                    <h1 style="text-align: center; font-size: 40px; display: flex; justify-content: center;">¿Quienes
+                        somos?
+                    </h1>
+                    <div class="intro" style="text-align: center;  padding: 1% 15%; ">
+                        <p class="intro-description"
+                            style="text-align: center;   font-weight: 400;
+                    font-size: 20px; color: rgb(82, 82, 82); background-color: rgba(193, 198, 255, 0.28); padding: 15px;"> Nuestra
+                            ferretería funciona como un
+                            espacio donde cada herramienta, material y solución se conectan para impulsar la
+                            construcción de
+                            nuevas ideas y proyectos. Así como las piezas de una estructura trabajan juntas para dar
+                            firmeza
+                            y estabilidad, buscamos unir a profesionales, aficionados y comunidades a través de
+                            productos
+                            confiables y asesoría experta. Esta conexión constante permite que el conocimiento fluya y
+                            se
+                            transforme en resultados prácticos, brindando apoyo a retos de mantenimiento, construcción y
+                            renovación. Más que un punto de venta, somos un aliado que facilita recursos, orientación y
+                            oportunidades para que cada cliente pueda materializar sus proyectos con seguridad,
+                            eficiencia e
+                            innovación. </p>
                     </div>
-
-                    <div class="info-card vision">
-                        <h4>Visión</h4>
-                        <p>
-                            Ser líderes en el desarrollo tecnológico, reconocidos por nuestra capacidad de
-                            innovación,
-                            excelencia y compromiso con el progreso digital de las organizaciones a nivel global.
-                        </p>
-                    </div>
+                    <button class="btn-brochure">Explora Nuestro Portafolio</button>
 
                 </div>
             </div>
@@ -752,7 +752,7 @@
             <div>
                 <div style="display: flex; justify-content: center; margin-bottom: 20px;">
 
-                    <h1 style="color: var(--secondary-color);"> Servicios</h1>
+                    <h1>Nuestros Servicios</h1>
 
                 </div>
                 <div id="serviciosAsociados" class="servicios-container">
@@ -1395,22 +1395,34 @@
                 if (datos.success && datos.servicios.length > 0) {
                     let html = '';
                     datos.servicios.forEach(servicio => {
+
                         html += `
-                    <div class="servicio-card">
-                        <div class="servicio-header">
-                            <div class="servicio-icono" style="font-size: 2em;">
-                                <i class="bi ${servicio.icono}"></i>
+                            <div class="servicio-card">
+                                <div class="servicio-header">
+                                    <div class="servicio-icono" style="font-size: 2em;">
+                                        <i class="bi ${servicio.icono}"></i>
+                                    </div>
+                                </div>
+
+                                <div class="servicio-info">
+
+                                    <!-- NUEVO CONTENEDOR -->
+                                    <div class="servicio-textos">
+                                        <div class="servicio-titulo">${servicio.nombre}</div>
+
+                                        <div class="servicio-descripcion">${servicio.descripcion}</div>
+
+                                        <p><b>Lider: </b><a>${servicio.lider}</a></p>
+                                    </div>
+
+                                    <!-- ESTE QUEDA COMO COLUMNA 3 -->
+                                    <button class="action-button botonServicio" data-id="${servicio.id}">
+                                        Más información
+                                        </button>
+
+                                </div>
                             </div>
-                           
-                        </div>
-                        <div class="servicio-info">
-                             <div class="servicio-titulo">${servicio.nombre}</div>
-                        <div class="servicio-descripcion">${servicio.descripcion}</div>
- <p><b>Lider: </b><a style="cursor:pointer;" onclick="contactarIntegrante(${servicio.liderId}, '${servicio.lider.replace(/'/g, "\\'")}')">
-             ${servicio.lider}
-        </a></p>
-                        </div>
-                    </div>
+
                 `;
                     });
                     contenedor.innerHTML = html;
@@ -1423,6 +1435,14 @@
                     `<p style="color:#b00;">Error al cargar los servicios.</p>`;
             }
         }
+        document.addEventListener('click', function (e) {
+            if (e.target && (e.target.classList.contains('botonServicio'))) {
+                const id = e.target.dataset.id;
+                window.location.href = `/servicio?id=${id}`;
+            }
+
+        });
+
         async function llamarIntegrantes(idEntidad) {
             const url = `/api/usuarioempresa/empresa/${idEntidad}`;
             try {
