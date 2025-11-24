@@ -123,7 +123,7 @@
           <th>Entidad</th>
           <th>Líder PPI</th>
           <th>Duración</th>
-          <th>Estado</th>
+          <th>Fase</th>
           <th>Ver</th>
         
         </tr>
@@ -488,7 +488,8 @@
                 duracion: 8,
                 fechaPresentacion: '2025-07-25',
                 evaluador: 'Dra. María González',
-                puntuacion: 4.08
+                puntuacion: 4.08,
+                fase: 'Fase 1: Idea'
             },
             {
                 id: 'PROJ-2025-002',
@@ -500,7 +501,8 @@
                 duracion: 12,
                 fechaPresentacion: '2025-07-28',
                 evaluador: 'Dr. Carlos Mendoza',
-                puntuacion: null
+                puntuacion: null,
+                fase: 'Fase 1: Idea'
             },
             {
                 id: 'PROJ-2025-003',
@@ -512,7 +514,8 @@
                 duracion: 6,
                 fechaPresentacion: '2025-07-15',
                 evaluador: 'Dra. Ana Rodríguez',
-                puntuacion: 4.5
+                puntuacion: 4.5,
+                fase: 'Fase 1: Idea'
             },
             {
                 id: 'PROJ-2025-004',
@@ -524,7 +527,8 @@
                 duracion: 10,
                 fechaPresentacion: '2025-07-30',
                 evaluador: null,
-                puntuacion: null
+                puntuacion: null,
+                fase: 'Fase 1: Idea'
             },
             {
                 id: 'PROJ-2025-005',
@@ -536,7 +540,9 @@
                 duracion: 8,
                 fechaPresentacion: '2025-07-20',
                 evaluador: 'Dr. Roberto Silva',
-                puntuacion: 2.8
+                puntuacion: 2.8,
+                          fase: 'Fase 2: Formulación o Prefactibilidad'
+
             },
             {
                 id: 'PROJ-2025-006',
@@ -1768,7 +1774,7 @@
         // En demo usamos el evaluador como "líder" solo para mostrar algo
         usuarioLider: { name: p.evaluador || 'Líder no asignado' },
         duracionPPI: p.duracion, // en meses (número)
-        fasePPI: 'Aprobado'
+        fasePPI: p.fase || ['Fase 1: Idea', 'Fase 2: Formulación o Prefactibilidad', 'Fase 3: Factibilidad', 'Contratación', 'Ejecución'][Math.floor(Math.random() * 5)]
       }
     }));
 
