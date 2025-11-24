@@ -63,6 +63,72 @@ document.addEventListener('click', function (e) {
 });
 
 
+const currentPath = window.location.pathname;
+
+// Botones del menú general
+const menuButtons = document.querySelectorAll(".dropdown-btnG, .nav-button[data-link]");
+
+// Dropdowns del menú general
+const dropdownsG = document.querySelectorAll(".menuG");
+
+let activeButton = null;
+
+// Marcar activo según URL
+menuButtons.forEach(btn => {
+    if (btn.dataset.link && currentPath.startsWith(btn.dataset.link)) {
+        btn.classList.add("pulse");
+        activeButton = btn;
+    }
+});
+
+// Control de los dropdown del menú general
+dropdownsG.forEach(drop => {
+    const btn = drop.querySelector(".dropdown-btnG");
+
+    btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+
+        dropdownsG.forEach(d => {
+            if (d !== drop) d.classList.remove("show");
+        });
+
+        const isOpen = drop.classList.toggle("show");
+
+        if (isOpen) {
+            btn.classList.add("pulse");
+            if (activeButton && activeButton !== btn) activeButton.classList.remove("pulse");
+        } else {
+            btn.classList.remove("pulse");
+            if (activeButton) activeButton.classList.add("pulse");
+        }
+    });
+});
+
+// Cerrar dropdown generales al hacer clic fuera
+document.addEventListener("click", () => {
+    dropdownsG.forEach(drop => {
+        drop.classList.remove("show");
+        drop.querySelector(".dropdown-btnG").classList.remove("pulse");
+    });
+
+    if (activeButton) activeButton.classList.add("pulse");
+});
+
+// Botones normales (que no son dropdown)
+document.querySelectorAll(".nav-button:not(.dropdown-btnG)").forEach(btn => {
+    btn.addEventListener("click", () => {
+        // Quitar pulse de todos los botones
+        menuButtons.forEach(b => b.classList.remove("pulse"));
+
+        // Activar el botón pulsado
+        btn.classList.add("pulse");
+
+        // Redirigir
+        window.location.href = btn.dataset.link;
+    });
+});
+
+
 // Cerrar Sesion
 
 document.getElementById("cerrarSesion").addEventListener("click", () => {

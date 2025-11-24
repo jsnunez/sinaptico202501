@@ -459,18 +459,41 @@
             </div>
         </div>
         <nav class="nav">
-            <button class="nav-button pulse" onclick="window.location.href='/helice'" id="inicio">Inicio</button>
-            <button class="nav-button" onclick="window.location.href='/directorio'">Directorio</button>
 
-            <button class="nav-button" onclick="window.location.href='/proyectos'">Proyectos</button>
-            <button class="nav-button" onclick="window.location.href='/innovacion'">Innovación</button>
+            <button class="nav-button" data-link="/helice" id="inicio">Inicio</button>
 
-            <button class="nav-button" onclick="window.location.href='/Conocimiento'">Conocimiento</button>
-            <button class="nav-button" onclick="window.location.href='/convocatorias'">Convocatorias</button>
+            <div class="dropdown menuG">
+                <button class="nav-button dropdown-btnG" data-link="/directorio">Directorio</button>
+                <div class="dropdown-menu dropdown-menuG">
+                    <a href="/directorio">Entidades</a>
+                    <a href="/directorioPersonas">Personas</a>
+                </div>
+            </div>
 
-            <button class="nav-button" onclick="window.location.href='/eventos'">Eventos</button>
+       
+            <div class="dropdown menuG">
+                <button class="nav-button dropdown-btnG" data-link="/innovacion">Innovación</button>
+                <div class="dropdown-menu dropdown-menuG">
+                    <a href="/retos">Retos</a>
+                    <a href="/muroServicios">Muro de Servicios</a>
+                </div>
+            </div>
+
+            <div class="dropdown menuG">
+                <button class="nav-button dropdown-btnG" data-link="/conocimiento">Conocimiento</button>
+                <div class="dropdown-menu dropdown-menuG">
+                    <a href="/cursos">Cursos</a>
+                    <a href="/biblioteca">Biblioteca</a>
+                </div>
+            </div>
+
+            <button class="nav-button" data-link="/proyectos">Proyectos</button>
+            <button class="nav-button" data-link="/convocatorias">Convocatorias</button>
+            <button class="nav-button" data-link="/eventos">Eventos</button>
+
 
         </nav>
+
     </header>
 
     </div>

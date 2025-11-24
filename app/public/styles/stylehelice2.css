@@ -72,6 +72,7 @@ body {
     align-items: center;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     z-index: 10;
+    gap: 1rem;
 }
 
 .nav-button {
@@ -87,12 +88,12 @@ body {
     overflow: hidden;
     height: 40px;
 
+
 }
 
 .nav-button:hover {
     background-color: var(--orange);
-    border-radius: 20px;
-    transform: translateY(-2px);
+    border-radius: 12px;
 }
 
 .nav-button.pulse::after {
@@ -115,7 +116,7 @@ body {
 }
 
 .nav-button.pulse {
-    border-radius: 20px;
+    border-radius: 12px;
     background-color: var(--naranja-color);
 }
 
@@ -212,6 +213,65 @@ body {
         transform: translateY(0);
     }
 }
+/* ================================
+   ESTILOS PARA DROPDOWN
+   MENÚ PRINCIPAL (menuG)
+================================ */
+
+.menuG {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-menuG {
+    display: none;
+    position: absolute;
+    top: 110%;
+    left: 0;
+    background-color: var(--background-color, #222);
+    color: var(--text-color, #fff);
+    border-radius: 10px;
+    width: 120px;
+    max-width: 180px;
+    overflow: hidden;
+    z-index: 999;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+ 
+}
+
+.dropdown-menuG a {
+    display: block;
+    padding: 0.75rem 1rem;
+    color: inherit;
+    text-decoration: none;
+    transition: background .25s ease;
+}
+
+.dropdown-menuG a:hover {
+    background: var(--orange);
+    color: var(--light-text);
+}
+
+/* Mostrar menú desplegable del menú general */
+.menuG.show .dropdown-menuG {
+    display: block;
+    animation: fadeIn .2s ease-in-out;
+}
+
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+
 
 /* Contenedor de bienvenida */
 .welcome-container {
@@ -259,8 +319,10 @@ h2 {
     color: var(--primary-color);
     font-size: 40px;
 }
-.intro-content{
-  justify-content: center; align-items: center;
+
+.intro-content {
+    justify-content: center;
+    align-items: center;
 
 }
 
@@ -290,7 +352,7 @@ h2 {
     box-shadow: 0 6px 15px rgba(48, 45, 226, 0.4);
 }
 
-.botonPersona{
+.botonPersona {
     margin-bottom: 1vh;
     display: flex;
     align-items: center;
@@ -308,6 +370,7 @@ h2 {
     margin: 0 auto;
 margin-top: 10px;
 }
+
 .botonPersona:hover {
     transform: translateY(-3px);
     background: var(--gray-color);
@@ -1440,17 +1503,21 @@ form {
     align-items: center;
     width: 100%;
 }
+
 .servicio-textos {
     display: flex;
     flex-direction: column;
-    flex: 1; /* ocupa todo lo posible */
+    flex: 1;
+    /* ocupa todo lo posible */
     margin-right: 15px;
 }
 
 /* El botón en su propia columna */
 .servicio-info button {
-    flex-shrink: 0; /* evita que se achique */
+    flex-shrink: 0;
+    /* evita que se achique */
 }
+
 .servicio-titulo {
     font-weight: bold;
     color: #333;
@@ -1752,4 +1819,3 @@ form {
 .double-column>div {
     width: 50%;
 }
-
