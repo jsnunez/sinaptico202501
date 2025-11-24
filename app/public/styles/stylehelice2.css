@@ -281,7 +281,9 @@ h2 {
 
 
 }
-
+.info-user{
+ height: 20vh;   
+}
 .botonEntidad:hover {
     transform: translateY(-3px);
     background: var(--gray-color);
@@ -292,8 +294,8 @@ h2 {
     margin-bottom: 1vh;
     display: flex;
     align-items: center;
-    background: white;
-    color: black;
+    background: var(--primary-color);
+    color: white;
     border: 1px solid #ddd;
     border-radius: 11px;
     padding: 0.5rem 1rem;
@@ -302,7 +304,9 @@ h2 {
     cursor: pointer;
     transition: var(--transition);
     box-shadow: none;
-
+    display: block;
+    margin: 0 auto;
+margin-top: 10px;
 }
 .botonPersona:hover {
     transform: translateY(-3px);
@@ -310,6 +314,9 @@ h2 {
     box-shadow: 0 6px 15px rgba(48, 45, 226, 0.4);
 }
 
+.info-user{
+    
+}
 
 .action-button {
     margin-bottom: 1vh;

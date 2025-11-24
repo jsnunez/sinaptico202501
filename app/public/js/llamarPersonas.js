@@ -501,16 +501,15 @@ function displayUsersList() {
     fetch(`${API_BASE_URL}/api/departamentos/${user.departamentoId}`)
 
     return `
-    <div class="user-item" style="display: flex; justify-content: space-between; align-items: flex-start; padding: 10px; border-bottom: 1px solid #eee; cursor: pointer;">
-        <div  onclick="focusOnUser(${user.id})" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #eee; cursor: pointer;">
+    <div class="user-item" style="display: flex; justify-content: space-between; align-items: center; padding: 20px; cursor: pointer; flex-direction: column; border: 1px solid rgb(236, 240, 241); border-radius: 12px; background-color: white; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 8px; transition: transform 0.3s, box-shadow 0.3s; transform: translateY(0px);">
+        <div class="info-user" onclick="focusOnUser(${user.id})" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #eee; cursor: pointer;">
           
- <img src="/photo/${user.fotoPerfil}" alt="foto perfil" class="card-icon" onerror="this.onerror=null;this.src='/photo/sinfoto.jpg';" style="margin-right: 10px; width: 80px; height: 80px; border-radius: 50px;">
+ <img src="/photo/${user.fotoPerfil}" alt="foto perfil" class="card-icon" onerror="this.onerror=null;this.src='/photo/sinfoto.jpg';" style="margin-right: 20px; margin-bottom:0; width: 80px; height: 80px; border-radius: 50px; object-fit: cover;">
           <div class="user-info">
             <div class="user-name">${user.name.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ')}</div>
             <div class="user-details"> ${user.ciudad?.departamento?.nombre || 'Desconocido'} • ${user.ciudad?.nombre || 'Desconocida'}</div>
-            <div class="user-details"> ${user.UsuarioEmpresaCargos && user.UsuarioEmpresaCargos[0] ? user.UsuarioEmpresaCargos[0].empresa.razonSocial : 'Sin entidad'}</div>
-            <div class="user-details"> Cargo: ${user.UsuarioEmpresaCargos && user.UsuarioEmpresaCargos[0] ? user.UsuarioEmpresaCargos[0].Cargo.nombre : 'Sin cargo'}</div>
-            <div class="user-details"> Actividad: ${user.UsuarioEmpresaCargos && user.UsuarioEmpresaCargos[0] && user.UsuarioEmpresaCargos[0].empresa.actividadEconomica ? user.UsuarioEmpresaCargos[0].empresa.actividadEconomica : 'Sin actividad'}
+            <div class="empresa-details"> ${user.UsuarioEmpresaCargos && user.UsuarioEmpresaCargos[0] ? user.UsuarioEmpresaCargos[0].Cargo.nombre : 'Sin cargo'} - ${user.UsuarioEmpresaCargos && user.UsuarioEmpresaCargos[0] ? user.UsuarioEmpresaCargos[0].empresa.razonSocial : 'Sin entidad'}</div>
+            <div class="user-details"> Actividad: ${user.UsuarioEmpresaCargos && user.UsuarioEmpresaCargos[0] && user.UsuarioEmpresaCargos[0].empresa.actividadEconomica ? user.UsuarioEmpresaCargos[0].empresa.actividadEconomica : getRandomActivity()}
           </div>
         </div>
             </div>
@@ -527,6 +526,8 @@ function displayUsersList() {
 
 
         `;
+
+
     // return `
     //     <div class="user-item" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #eee; cursor: pointer;">
     //           <div  onclick="focusOnUser(${user.id})" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #eee; cursor: pointer;">
@@ -556,8 +557,20 @@ function displayUsersList() {
   }).join('');
 
   listContent.innerHTML = usersHtml;
-  focusOnCity(filteredUsers[0].id);
-  focusOnDpto(filteredUsers[0].id);
+
+  // Add hover effects to user items
+  document.querySelectorAll('.user-item').forEach(item => {
+    item.onmouseenter = function () {
+      this.style.transform = 'translateY(-5px)';
+      this.style.boxShadow = '0 4px 15px rgba(0,0,0,0.15)';
+    };
+
+    item.onmouseleave = function () {
+      this.style.transform = 'translateY(0)';
+      this.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)';
+    };
+  });
+  
 }
 
 function setupEventListeners() {
@@ -649,7 +662,6 @@ function applyFilters() {
     return typeMatch && searchMatch && cityMatch && dptoMatch && claseEntidadMatch;
   });
 
-  displayMarkersOnMap();
   displayUsersList();
 }
 
@@ -760,6 +772,28 @@ function viewProfile(userId) {
       }
     });
   }
+}
+
+function getRandomActivity() {
+  const activities = [
+    'Tecnología y Software',
+    'Consultoría Empresarial',
+    'Servicios Financieros',
+    'Educación y Formación',
+    'Salud y Bienestar',
+    'Comercio y Retail',
+    'Manufactura',
+    'Construcción',
+    'Transporte y Logística',
+    'Turismo y Hospitalidad',
+    'Agricultura',
+    'Energía y Servicios Públicos',
+    'Marketing y Publicidad',
+    'Investigación y Desarrollo',
+    'Servicios Profesionales'
+  ];
+  
+  return activities[Math.floor(Math.random() * activities.length)];
 }
 
 function clearCookies() {
