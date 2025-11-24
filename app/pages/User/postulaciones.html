@@ -1011,62 +1011,14 @@
       });
     })();
   </script>
-  <!--Cargar foto Perfil-->
-  <script>
-    // Abrir modal al hacer clic en la foto de usuario
-    document.getElementById('userPhoto').onclick = function () {
-      document.getElementById('modalFotoPerfil').style.display = 'block';
-
-      // Opcional: cargar foto actual si tienes la URL
-      // document.getElementById('previewFotoPerfil').src = 'URL_DE_LA_FOTO_ACTUAL';
-    };
-    // Cerrar modal
-    document.getElementById('cerrarModalFotoPerfil').onclick = function () {
-      document.getElementById('modalFotoPerfil').style.display = 'none';
-    };
-    // Vista previa de la imagen seleccionada
-    document.getElementById('inputFotoPerfil').onchange = function (e) {
-      const file = e.target.files[0];
-      if (file) {
-        document.getElementById('previewFotoPerfil').src = URL.createObjectURL(file);
-      }
-    };
-    // Guardar foto (debes implementar la lógica de subida en tu backend)
-    document.getElementById('formFotoPerfil').onsubmit = function (e) {
-      e.preventDefault();
-      const userId = obtenerCookie("userId");
-
-      // Ejemplo de subida con fetch y FormData
-      const formData = new FormData();
-      console.log(document.getElementById('inputFotoPerfil').files[0]);
-      formData.append('fotoPerfil', document.getElementById('inputFotoPerfil').files[0]);
-      alert('subiendo');
-      fetch(`/api/user/cambiarFoto/${userId}`, {
-        method: 'PUT',
-        body: formData
-      }).then(res => res.json())
-        .then(data => {
-          // Actualiza la foto en la interfaz si es necesario
-          document.getElementById('modalFotoPerfil').style.display = 'none';
-          // document.getElementById('userPhoto').innerHTML = '<img src="URL_NUEVA_FOTO" ...>';
-          location.reload(); // O actualiza solo la foto
-        }).catch(() => {
-          alert('Error al subir la foto');
-        });
-    };
-
-  </script>
+ 
 
   <!-- Scripts -->
 
    <script src="js/helice2.js"></script>
     <script src="/js/config.js"></script>
-    <script src="js/enviarformulario.js"></script>
     <script src="admin.js"></script>
-    <script src="js/formularios.js"></script>
     <script src="js/llamarEntidades.js"></script>
-    <script src="js/editarEntidad.js"></script>
-    <script src="js/cargarDatos.js"></script>
     <script src="js/estadisticas.js"></script>
     <script src="js/notificaciones.js"></script>
     <script src="/js/websocket.js"></script>
@@ -1255,6 +1207,7 @@
           !texto ||
           p.nombrePPI?.toLowerCase().includes(texto) ||
           p.objetivo?.toLowerCase().includes(texto) ||
+          p.usuarioLider?.name?.toLowerCase().includes(texto) ||
           p.entidad?.razonSocial?.toLowerCase().includes(texto);
 
         const coincideResponsable = !responsable || p.usuarioLider?.name === responsable;

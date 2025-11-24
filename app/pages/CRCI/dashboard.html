@@ -1286,8 +1286,9 @@
         const nombre = p.proyecto?.nombrePPI?.toLowerCase() || '';
         const objetivo = p.proyecto?.objetivo?.toLowerCase() || '';
         const entidad = p.proyecto?.entidad?.razonSocial?.toLowerCase() || '';
+        const lider = p.proyecto?.usuarioLider?.name?.toLowerCase() || '';
 
-        const coincideTexto = !texto || nombre.includes(texto) || objetivo.includes(texto) || entidad.includes(texto);
+        const coincideTexto = !texto || nombre.includes(texto) || objetivo.includes(texto) || entidad.includes(texto) || lider.includes(texto);
         const coincideResponsable = !responsable || p.proyecto?.usuarioLider?.name === responsable;
         const coincideEstado = !estado || p.proyecto?.fasePPI === estado;
         const coincideDuracion = !duracionPPI || p.proyecto?.duracionPPI === duracionPPI;
