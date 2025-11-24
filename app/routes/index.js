@@ -39,6 +39,7 @@ router.use('/retos', RetoRoutes);
 router.use('/clasificados', ClasificadoRoutes); 
 router.use('/contactarSolicitud', ContactarSolicitudRoutes); 
 router.use('/servicio',ServicioRoutes)
+
 router.use('/convocatorias', ConvocatoriaRoutes); // Descomentar si se necesita la ruta de convocatorias
 router.use('/tipoConvocatorias', TipoConvocatoriaRoutes); // Descomentar si se necesita la ruta de tipoConvocatorias
 router.use('/recurso', RecursosRoute); // Descomentar si se necesita la ruta de aplicarReto

@@ -87,6 +87,8 @@ dropdownsG.forEach(drop => {
 
     btn.addEventListener("click", (e) => {
         e.stopPropagation();
+     // Quitar pulse de todos los botones
+        menuButtons.forEach(b => b.classList.remove("pulse"));
 
         dropdownsG.forEach(d => {
             if (d !== drop) d.classList.remove("show");
@@ -114,19 +116,7 @@ document.addEventListener("click", () => {
     if (activeButton) activeButton.classList.add("pulse");
 });
 
-// Botones normales (que no son dropdown)
-document.querySelectorAll(".nav-button:not(.dropdown-btnG)").forEach(btn => {
-    btn.addEventListener("click", () => {
-        // Quitar pulse de todos los botones
-        menuButtons.forEach(b => b.classList.remove("pulse"));
 
-        // Activar el botón pulsado
-        btn.classList.add("pulse");
-
-        // Redirigir
-        window.location.href = btn.dataset.link;
-    });
-});
 
 
 // Cerrar Sesion

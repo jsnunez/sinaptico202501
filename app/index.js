@@ -91,7 +91,6 @@ app.get('/compartir-datos',  (req, res) => res.sendFile(path.join(__dirname, 'pa
 // Rutas HTML para usuarios
 app.get('/helice', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/helice.html')));
 app.get('/directorio', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/directorio.html')));
-
 app.get('/innovacion', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/innovacion.html')));
 app.get('/eventos', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/eventos.html')));
 app.get('/convocatorias', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/convocatorias.html')));
