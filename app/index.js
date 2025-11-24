@@ -103,6 +103,7 @@ app.get('/proyectos', authorization.soloUser, (req, res) => res.sendFile(path.jo
 app.get('/perfilUser', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/perfilUSer.html')));
 app.get('/perfilEntidad', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/entidad.html')));
 app.get('/miEntidad', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/perfilEntidad.html')));
+app.get('/servicio', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/servicio.html')));
 app.get('/directorioPersonas', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/directorioPersonas.html')));
 
 
