@@ -75,7 +75,7 @@ formulario.addEventListener('submit', async (event) => {
     return;
   }
   const liderIdServicio = document.getElementById('nombreLiderServicio').value;
-console.log("Líder seleccionado inicialmente:", liderIdServicio);
+  console.log("Líder seleccionado inicialmente:", liderIdServicio);
 
   try {
     const respuesta = await fetch(`${API_BASE_URL}/api/servicio`, {
@@ -183,13 +183,13 @@ async function editarServicio(id) {
   try {
     // Obtener los datos actuales del servicio
     const responseServicio = await fetch(`${API_BASE_URL}/api/servicio/${id}`);
-    
+
     // Verificar si la respuesta es HTML (error de servidor)
     const contentType = responseServicio.headers.get('content-type');
     if (!contentType || !contentType.includes('application/json')) {
       throw new Error(`El servidor no devolvió JSON. Verifica la ruta de la API.`);
     }
-    
+
     if (!responseServicio.ok) {
       throw new Error(`Error ${responseServicio.status}: No se pudo obtener el servicio`);
     }
@@ -198,37 +198,43 @@ async function editarServicio(id) {
     const { value: formValues } = await Swal.fire({
       title: 'Editar Servicio',
       html: `
-      <div style="text-align: left; padding: 10px;">
-        <label for="swal-nombre" style="display: block; margin-bottom: 5px; font-weight: bold;">Nombre del servicio:</label>
-        <input id="swal-nombre" class="swal2-input" style="width: 90%; margin-bottom: 15px;" placeholder="Nombre" value="${servicioActual.nombre || ''}">
-        
-        <label for="swal-descripcion" style="display: block; margin-bottom: 5px; font-weight: bold;">Descripción:</label>
-        <input id="swal-descripcion" class="swal2-input" style="width: 90%; margin-bottom: 15px;" placeholder="Descripción" value="${servicioActual.descripcion || ''}">
-        
-        <label for="swal-icono" style="display: block; margin-bottom: 5px; font-weight: bold;">Icono:</label>
-        <select id="swal-icono" class="swal2-input" style="width: 90%; margin-bottom: 15px;">
-        <option value="">Seleccione un icono</option>
-        <option value="bi-briefcase">💼 Negocios</option>
-        <option value="bi-lightbulb">💡 Innovación</option>
-        <option value="bi-graph-up">📈 Crecimiento</option>
-        <option value="bi-people">👥 Equipo</option>
-        <option value="bi-gear">⚙️ Configuración</option>
-        <option value="bi-shield-check">🛡️ Seguridad</option>
-        <option value="bi-chat-dots">💬 Comunicación</option>
-        <option value="bi-laptop">💻 Tecnología</option>
-        <option value="bi-book">📚 Educación</option>
-        <option value="bi-trophy">🏆 Logros</option>
-        <option value="bi-heart">❤️ Salud</option>
-        <option value="bi-cart">🛒 Ventas</option>
-        <option value="bi-globe">🌍 Global</option>
-        <option value="bi-star">⭐ Premium</option>
-        <option value="bi-camera">📷 Multimedia</option>
-        </select>
-        
-        <label for="swal-lider" style="display: block; margin-bottom: 5px; font-weight: bold;">Líder:</label>
-        <select id="swal-lider" class="swal2-input" style="width: 90%; margin-bottom: 15px;">
-        <option value="">Cargando líderes...</option>
-        </select>
+   
+          <div class="input-box full-width">
+              <label for="swal-nombre" style"text-aling:left;">Nombre del servicio:</label>
+              <input id="swal-nombre"  placeholder="Nombre" value="${servicioActual.nombre || ''}">
+          </div>
+          <div class="input-box full-width">
+              <label for="swal-descripcion" >Descripción:</label>
+              <input id="swal-descripcion" placeholder="Descripción" value="${servicioActual.descripcion || ''}">
+          </div>
+          <div class="input-box full-width">
+              <label for="swal-icono" >Icono:</label>
+              <select id="swal-icono" >
+              <option value="">Seleccione un icono</option>
+              <option value="bi-briefcase">💼 Negocios</option>
+              <option value="bi-lightbulb">💡 Innovación</option>
+              <option value="bi-graph-up">📈 Crecimiento</option>
+              <option value="bi-people">👥 Equipo</option>
+              <option value="bi-gear">⚙️ Configuración</option>
+              <option value="bi-shield-check">🛡️ Seguridad</option>
+              <option value="bi-chat-dots">💬 Comunicación</option>
+              <option value="bi-laptop">💻 Tecnología</option>
+              <option value="bi-book">📚 Educación</option>
+              <option value="bi-trophy">🏆 Logros</option>
+              <option value="bi-heart">❤️ Salud</option>
+              <option value="bi-cart">🛒 Ventas</option>
+              <option value="bi-globe">🌍 Global</option>
+              <option value="bi-star">⭐ Premium</option>
+              <option value="bi-camera">📷 Multimedia</option>
+              </select>
+          </div>
+          <div class="input-box full-width">
+              <label for="swal-lider" >Líder:</label>
+              <select id="swal-lider" >
+              <option value="">Cargando líderes...</option>
+              </select>
+          </div>
+       
       </div>
       `,
       showCancelButton: true,
@@ -236,53 +242,53 @@ async function editarServicio(id) {
       cancelButtonText: 'Cancelar',
       width: '600px',
       didOpen: async () => {
-      const selectLider = document.getElementById('swal-lider');
-      const selectIcono = document.getElementById('swal-icono');
-      const liderIdActual = servicioActual.servicio?.liderId;
-      const iconoActual = servicioActual.icono;
-      
-      console.log('Líder actual del servicio:', liderIdActual);
-      console.log('Icono actual del servicio:', iconoActual);
-      
-      // Establecer el icono seleccionado
-      if (iconoActual) {
-        selectIcono.value = iconoActual;
-      }
-      
-      try {
-        const res = await fetch(`/api/usuarioempresa/empresa/${idEntidad}`);
-        const data = await res.json();
-        console.log('Líderes disponibles:', data);
-        
-        selectLider.innerHTML = '';
-        (data || []).forEach(item => {
-        const option = document.createElement('option');
-        option.value = item.User.id;
-        option.text = `${item.User.name} (${item.Cargo?.nombre || 'Sin cargo'})`;
-        selectLider.appendChild(option);
-        });
-        
-        // Establecer el valor seleccionado después de poblar las opciones
-        if (liderIdActual) {
-        selectLider.value = liderIdActual;
+        const selectLider = document.getElementById('swal-lider');
+        const selectIcono = document.getElementById('swal-icono');
+        const liderIdActual = servicioActual.servicio?.liderId;
+        const iconoActual = servicioActual.icono;
+
+        console.log('Líder actual del servicio:', liderIdActual);
+        console.log('Icono actual del servicio:', iconoActual);
+
+        // Establecer el icono seleccionado
+        if (iconoActual) {
+          selectIcono.value = iconoActual;
         }
-      } catch (err) {
-        console.error('Error cargando líderes:', err);
-        selectLider.innerHTML = '<option value="">Error al cargar líderes</option>';
-      }
+
+        try {
+          const res = await fetch(`/api/usuarioempresa/empresa/${idEntidad}`);
+          const data = await res.json();
+          console.log('Líderes disponibles:', data);
+
+          selectLider.innerHTML = '';
+          (data || []).forEach(item => {
+            const option = document.createElement('option');
+            option.value = item.User.id;
+            option.text = `${item.User.name} (${item.Cargo?.nombre || 'Sin cargo'})`;
+            selectLider.appendChild(option);
+          });
+
+          // Establecer el valor seleccionado después de poblar las opciones
+          if (liderIdActual) {
+            selectLider.value = liderIdActual;
+          }
+        } catch (err) {
+          console.error('Error cargando líderes:', err);
+          selectLider.innerHTML = '<option value="">Error al cargar líderes</option>';
+        }
       },
       preConfirm: () => {
-      const nombre = document.getElementById('swal-nombre').value;
-      const descripcion = document.getElementById('swal-descripcion').value;
-      const icono = document.getElementById('swal-icono').value;
-      const liderId = document.getElementById('swal-lider').value;
-      
-      if (!nombre || !descripcion) {
-        Swal.showValidationMessage('El nombre y la descripción son obligatorios');
-        return false;
-      }
-      
-      return { nombre, descripcion, icono, liderId };
+        const nombre = document.getElementById('swal-nombre').value;
+        const descripcion = document.getElementById('swal-descripcion').value;
+        const icono = document.getElementById('swal-icono').value;
+        const liderId = document.getElementById('swal-lider').value;
+
+        if (!nombre || !descripcion) {
+          Swal.showValidationMessage('El nombre y la descripción son obligatorios');
+          return false;
+        }
+
+        return { nombre, descripcion, icono, liderId };
       }
     });
 
