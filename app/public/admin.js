@@ -153,7 +153,9 @@ document.addEventListener("DOMContentLoaded", async function () {
       document.getElementById('bienvenido').innerHTML +=
         `<button style="background: white; border-radius: 20px; border: 1px solid var(--primary-color); padding: 5px 12px;">${estado}</button>`;
       document.getElementById("solicitudes").style.display = "block";
+       
       document.getElementById('nombreUsuarioHeader').innerHTML = `${nombreUsuario} <i class="bi bi-chevron-down"></i>`;
+       document.getElementById("btn-empresa").style.display = "block";
       await fetchSolicitudes(idEntidad);
 
     } else {

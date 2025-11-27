@@ -2,7 +2,9 @@ import express from 'express';
 import Proyectos from '../models/proyectos.js';
 import User from '../models/user.js';
 import Entidad from '../models/entidad.js';
-import AliadosProyectosAplicados from '../models/aliadosProyectosApliacdos.js';
+import AliadosProyectosAplicados from '../models/aliadosProyectosAplicados.js';
+import ConvocatoriaProyectos from '../models/convocatoriaProyectos.js';
+import Convocatoria from '../models/convocatoria.js';
 
 const router = express.Router();
 
@@ -28,8 +30,25 @@ export const getProyectos = async (_, res) => {
     try {
         const proyectos = await Proyectos.findAll({
             include: [
-                { model: User, as: 'usuario' },
-                { model: Entidad, as: 'entidad' }
+                { 
+                    model: User, 
+                    as: 'usuario' 
+                },
+                { 
+                    model: Entidad, 
+                    as: 'entidad' 
+                },
+                {
+                    model: ConvocatoriaProyectos,
+                    as: 'convocatoriasAplicadas',
+                    include: [
+                        {
+                            model: Convocatoria,
+                            as: 'convocatoria',
+                            attributes: ['id','numero' ,'nombre', 'titulo', 'descripcion', 'fechaApertura', 'fechaCierre', 'estado']
+                        }
+                    ]
+                }
             ]
         });
         res.json(proyectos);
@@ -43,8 +62,25 @@ export const getProyectoById = async (req, res) => {
     try {
         const proyecto = await Proyectos.findByPk(req.params.id, {
             include: [
-                { model: User, as: 'usuarioLider' },
-                { model: Entidad, as: 'entidad' }
+                { 
+                    model: User, 
+                    as: 'usuarioLider' 
+                },
+                { 
+                    model: Entidad, 
+                    as: 'entidad' 
+                },
+                {
+                    model: ConvocatoriaProyectos,
+                    as: 'convocatoriasAplicadas',
+                    include: [
+                        {
+                            model: Convocatoria,
+                            as: 'convocatoria',
+                            attributes: ['id','numero' ,'nombre', 'titulo', 'descripcion', 'fechaApertura', 'fechaCierre', 'estado']
+                        }
+                    ]
+                }
             ]
         });
         if (!proyecto) return res.status(404).json({ error: 'Proyecto no encontrado' });
@@ -129,7 +165,18 @@ export const getProyectosDeMiEntidadOCreadosPorMi = async (req, res) => {
       include: [
         { model: User, as: 'usuario',attributes: ['name'] },
         { model: User, as: 'usuarioLider',attributes: ['name'] },
-        { model: Entidad, as: 'entidad',attributes: ['razonSocial'] }
+        { model: Entidad, as: 'entidad',attributes: ['razonSocial'] },
+        {
+          model: ConvocatoriaProyectos,
+          as: 'convocatoriasAplicadas',
+          include: [
+            {
+              model: Convocatoria,
+              as: 'convocatoria',
+              attributes: ['id','numero' ,'nombre', 'titulo', 'descripcion', 'fechaApertura', 'fechaCierre', 'estado']
+            }
+          ]
+        }
       ],
       order: [['createdAt', 'DESC']]
     });

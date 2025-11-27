@@ -1,4 +1,4 @@
-import AliadosProyectosAplicados from '../models/aliadosProyectosApliacdos.js';
+import AliadosProyectosAplicados from '../models/aliadosProyectosAplicados.js';
 import Entidad from '../models/entidad.js';
 import Proyectos from '../models/proyectos.js';
 import User from '../models/user.js';
@@ -51,8 +51,10 @@ export const getAliadoByAliadoProyectoId = async (req, res) => {
             return res.status(404).json({ message: 'No se encontraron aliados' });
         }
 
-        res.status(200).json(aliados);
-    } catch (error) {
+     res.json({
+            success: true,
+            data: aliados
+        });    } catch (error) {
         res.status(500).json({ message: 'Error al obtener aliados', error: error.message });
     }
 };

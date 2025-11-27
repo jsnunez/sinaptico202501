@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Evaluación con 5 Criterios - SINAPTICO CRCI</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .evaluation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .criterion-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            border-left: 5px solid;
+            transition: all 0.3s ease;
+        }
+
+        .criterion-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .criterion-card:nth-child(1) { border-left-color: #007bff; }
+        .criterion-card:nth-child(2) { border-left-color: #28a745; }
+        .criterion-card:nth-child(3) { border-left-color: #ffc107; }
+        .criterion-card:nth-child(4) { border-left-color: #17a2b8; }
+        .criterion-card:nth-child(5) { border-left-color: #dc3545; }
+
+        .criterion-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .criterion-title i {
+            font-size: 1.5em;
+        }
+
+        .criterion-card:nth-child(1) .criterion-title i { color: #007bff; }
+        .criterion-card:nth-child(2) .criterion-title i { color: #28a745; }
+        .criterion-card:nth-child(3) .criterion-title i { color: #ffc107; }
+        .criterion-card:nth-child(4) .criterion-title i { color: #17a2b8; }
+        .criterion-card:nth-child(5) .criterion-title i { color: #dc3545; }
+
+        .criterion-description {
+            font-size: 0.9em;
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .score-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .score-input {
+            flex: 1;
+            max-width: 100px;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1.2em;
+            font-weight: bold;
+            text-align: center;
+            transition: border-color 0.3s ease;
+        }
+
+        .score-input:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        .score-display {
+            font-size: 1.5em;
+            font-weight: bold;
+            padding: 10px 15px;
+            background: #e9ecef;
+            border-radius: 10px;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .observations-textarea {
+            width: 100%;
+            min-height: 80px;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-family: inherit;
+            resize: vertical;
+            transition: border-color 0.3s ease;
+        }
+
+        .observations-textarea:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        .summary-section {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 40px 0;
+        }
+
+        .summary-title {
+            font-size: 1.5em;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .summary-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .recommendation-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .form-select, .form-textarea {
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-family: inherit;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 40px;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 123, 255, 0.3);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #28a745, #1e7e34);
+            color: white;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(40, 167, 69, 0.3);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #6c757d, #545b62);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(108, 117, 125, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .evaluation-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .recommendation-section {
+                grid-template-columns: 1fr;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>
+                <i class="bi bi-clipboard2-check"></i>
+                Sistema de Evaluación Avanzado
+            </h1>
+            <p>Evaluación integral con 5 criterios especializados</p>
+        </div>
+
+        <div class="content">
+            <!-- Información del proyecto -->
+            <div class="project-info" style="background: #e3f2fd; padding: 20px; border-radius: 10px; margin-bottom: 30px;">
+                <h3 style="color: #1976d2; margin-bottom: 10px;">
+                    <i class="bi bi-folder"></i>
+                    Proyecto: <span id="proyectoNombre">Cargando...</span>
+                </h3>
+                <p><strong>Convocatoria:</strong> <span id="convocatoriaNombre">Cargando...</span></p>
+                <p><strong>Evaluador:</strong> <span id="evaluadorNombre">Cargando...</span></p>
+            </div>
+
+            <!-- Grid de criterios de evaluación -->
+            <div class="evaluation-grid">
+                <!-- Criterio 1: Viabilidad Técnica -->
+                <div class="criterion-card">
+                    <div class="criterion-title">
+                        <i class="bi bi-gear-fill"></i>
+                        Viabilidad Técnica
+                    </div>
+                    <div class="criterion-description">
+                        Evalúa la factibilidad técnica del proyecto, metodología propuesta, recursos tecnológicos necesarios y capacidad de implementación.
+                    </div>
+                    <div class="score-container">
+                        <input type="number" class="score-input" id="criterio1" 
+                               min="0" max="100" placeholder="0" onchange="calcularTotales()">
+                        <div class="score-display" id="display1">0</div>
+                        <span>/100</span>
+                    </div>
+                    <textarea class="observations-textarea" id="obs1" 
+                              placeholder="Observaciones sobre viabilidad técnica..."></textarea>
+                </div>
+
+                <!-- Criterio 2: Impacto Social -->
+                <div class="criterion-card">
+                    <div class="criterion-title">
+                        <i class="bi bi-people-fill"></i>
+                        Impacto Social
+                    </div>
+                    <div class="criterion-description">
+                        Analiza los beneficios para la comunidad, número de beneficiarios directos e indirectos, y contribución al desarrollo social.
+                    </div>
+                    <div class="score-container">
+                        <input type="number" class="score-input" id="criterio2" 
+                               min="0" max="100" placeholder="0" onchange="calcularTotales()">
+                        <div class="score-display" id="display2">0</div>
+                        <span>/100</span>
+                    </div>
+                    <textarea class="observations-textarea" id="obs2" 
+                              placeholder="Observaciones sobre impacto social..."></textarea>
+                </div>
+
+                <!-- Criterio 3: Sostenibilidad Financiera -->
+                <div class="criterion-card">
+                    <div class="criterion-title">
+                        <i class="bi bi-cash-stack"></i>
+                        Sostenibilidad Financiera
+                    </div>
+                    <div class="criterion-description">
+                        Evalúa la viabilidad económica, presupuesto detallado, fuentes de financiación y plan de sostenibilidad a largo plazo.
+                    </div>
+                    <div class="score-container">
+                        <input type="number" class="score-input" id="criterio3" 
+                               min="0" max="100" placeholder="0" onchange="calcularTotales()">
+                        <div class="score-display" id="display3">0</div>
+                        <span>/100</span>
+                    </div>
+                    <textarea class="observations-textarea" id="obs3" 
+                              placeholder="Observaciones sobre sostenibilidad financiera..."></textarea>
+                </div>
+
+                <!-- Criterio 4: Innovación -->
+                <div class="criterion-card">
+                    <div class="criterion-title">
+                        <i class="bi bi-lightbulb-fill"></i>
+                        Innovación
+                    </div>
+                    <div class="criterion-description">
+                        Considera el grado de innovación, diferenciación respecto a soluciones existentes y potencial de escalabilidad.
+                    </div>
+                    <div class="score-container">
+                        <input type="number" class="score-input" id="criterio4" 
+                               min="0" max="100" placeholder="0" onchange="calcularTotales()">
+                        <div class="score-display" id="display4">0</div>
+                        <span>/100</span>
+                    </div>
+                    <textarea class="observations-textarea" id="obs4" 
+                              placeholder="Observaciones sobre innovación..."></textarea>
+                </div>
+
+                <!-- Criterio 5: Capacidad de Ejecución -->
+                <div class="criterion-card">
+                    <div class="criterion-title">
+                        <i class="bi bi-person-check-fill"></i>
+                        Capacidad de Ejecución
+                    </div>
+                    <div class="criterion-description">
+                        Evalúa la experiencia y competencias del equipo, plan de trabajo, cronograma y capacidad de gestión de riesgos.
+                    </div>
+                    <div class="score-container">
+                        <input type="number" class="score-input" id="criterio5" 
+                               min="0" max="100" placeholder="0" onchange="calcularTotales()">
+                        <div class="score-display" id="display5">0</div>
+                        <span>/100</span>
+                    </div>
+                    <textarea class="observations-textarea" id="obs5" 
+                              placeholder="Observaciones sobre capacidad de ejecución..."></textarea>
+                </div>
+            </div>
+
+            <!-- Resumen de puntuación -->
+            <div class="summary-section">
+                <div class="summary-title">
+                    <i class="bi bi-graph-up"></i>
+                    Resumen de Evaluación
+                </div>
+                
+                <div class="summary-stats">
+                    <div class="stat-card">
+                        <div class="stat-value" id="puntuacionTotal">0</div>
+                        <div class="stat-label">Puntuación Total</div>
+                        <div class="stat-label">(máx. 500)</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="puntuacionPromedio">0.0</div>
+                        <div class="stat-label">Promedio</div>
+                        <div class="stat-label">(máx. 100)</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="criteriosCompletados">0</div>
+                        <div class="stat-label">Criterios Evaluados</div>
+                        <div class="stat-label">de 5</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="progresoEvaluacion">0%</div>
+                        <div class="stat-label">Progreso</div>
+                        <div class="stat-label">Completado</div>
+                    </div>
+                </div>
+
+                <div class="recommendation-section">
+                    <div class="form-group">
+                        <label class="form-label">Recomendación Final</label>
+                        <select class="form-select" id="recomendacion">
+                            <option value="">Seleccionar...</option>
+                            <option value="Aprobado">Aprobado</option>
+                            <option value="Aprobado_Con_Condiciones">Aprobado con Condiciones</option>
+                            <option value="Rechazado">Rechazado</option>
+                            <option value="Requiere_Revision">Requiere Revisión</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Prioridad</label>
+                        <select class="form-select" id="prioridad">
+                            <option value="">Seleccionar...</option>
+                            <option value="Alta">Alta</option>
+                            <option value="Media">Media</option>
+                            <option value="Baja">Baja</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-top: 20px;">
+                    <label class="form-label">Observaciones Generales</label>
+                    <textarea class="form-textarea" id="observacionesGenerales" 
+                              placeholder="Comentarios generales sobre la evaluación del proyecto..."></textarea>
+                </div>
+            </div>
+
+            <!-- Botones de acción -->
+            <div class="action-buttons">
+                <button class="btn btn-secondary" onclick="guardarBorrador()">
+                    <i class="bi bi-save"></i>
+                    Guardar Borrador
+                </button>
+                <button class="btn btn-primary" onclick="guardarEvaluacion()">
+                    <i class="bi bi-check-circle"></i>
+                    Guardar Evaluación
+                </button>
+                <button class="btn btn-success" onclick="completarEvaluacion()">
+                    <i class="bi bi-check2-all"></i>
+                    Completar Evaluación
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Variables globales
+        let asignacionId = 1; // Se obtendría de la URL o parámetros
+
+        // Función para calcular totales
+        function calcularTotales() {
+            const criterios = [];
+            let criteriosCompletados = 0;
+            
+            for (let i = 1; i <= 5; i++) {
+                const valor = parseFloat(document.getElementById(`criterio${i}`).value) || 0;
+                criterios.push(valor);
+                document.getElementById(`display${i}`).textContent = valor;
+                
+                if (valor > 0) criteriosCompletados++;
+            }
+
+            const total = criterios.reduce((sum, val) => sum + val, 0);
+            const promedio = criteriosCompletados > 0 ? total / criteriosCompletados : 0;
+            const progreso = (criteriosCompletados / 5) * 100;
+
+            document.getElementById('puntuacionTotal').textContent = total.toFixed(0);
+            document.getElementById('puntuacionPromedio').textContent = promedio.toFixed(1);
+            document.getElementById('criteriosCompletados').textContent = criteriosCompletados;
+            document.getElementById('progresoEvaluacion').textContent = progreso.toFixed(0) + '%';
+        }
+
+        // Función para recopilar datos de evaluación
+        function recopilarDatos() {
+            return {
+                criterio1_viabilidad_tecnica: parseFloat(document.getElementById('criterio1').value) || null,
+                criterio2_impacto_social: parseFloat(document.getElementById('criterio2').value) || null,
+                criterio3_sostenibilidad_financiera: parseFloat(document.getElementById('criterio3').value) || null,
+                criterio4_innovacion: parseFloat(document.getElementById('criterio4').value) || null,
+                criterio5_capacidad_ejecucion: parseFloat(document.getElementById('criterio5').value) || null,
+                observaciones_criterio1: document.getElementById('obs1').value,
+                observaciones_criterio2: document.getElementById('obs2').value,
+                observaciones_criterio3: document.getElementById('obs3').value,
+                observaciones_criterio4: document.getElementById('obs4').value,
+                observaciones_criterio5: document.getElementById('obs5').value,
+                observacionesGenerales: document.getElementById('observacionesGenerales').value,
+                recomendacion: document.getElementById('recomendacion').value,
+                prioridad: document.getElementById('prioridad').value
+            };
+        }
+
+        // Función para guardar borrador
+        async function guardarBorrador() {
+            try {
+                const datos = recopilarDatos();
+                datos.completarEvaluacion = false;
+
+                const response = await fetch(`/api/asignacion-evaluadores/${asignacionId}/evaluacion`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(datos)
+                });
+
+                const resultado = await response.json();
+
+                if (response.ok) {
+                    Swal.fire({
+                        title: 'Borrador Guardado',
+                        text: 'Su evaluación parcial se ha guardado correctamente.',
+                        icon: 'success',
+                        timer: 2000
+                    });
+                } else {
+                    throw new Error(resultado.message);
+                }
+            } catch (error) {
+                Swal.fire('Error', error.message, 'error');
+            }
+        }
+
+        // Función para guardar evaluación
+        async function guardarEvaluacion() {
+            await guardarBorrador();
+        }
+
+        // Función para completar evaluación
+        async function completarEvaluacion() {
+            const datos = recopilarDatos();
+
+            // Validar que todos los criterios estén evaluados
+            const criteriosCompletos = [
+                datos.criterio1_viabilidad_tecnica,
+                datos.criterio2_impacto_social,
+                datos.criterio3_sostenibilidad_financiera,
+                datos.criterio4_innovacion,
+                datos.criterio5_capacidad_ejecucion
+            ].every(criterio => criterio !== null && criterio !== undefined);
+
+            if (!criteriosCompletos) {
+                Swal.fire('Error', 'Debe completar todos los 5 criterios antes de finalizar la evaluación.', 'warning');
+                return;
+            }
+
+            if (!datos.recomendacion) {
+                Swal.fire('Error', 'Debe seleccionar una recomendación final.', 'warning');
+                return;
+            }
+
+            const confirmacion = await Swal.fire({
+                title: '¿Completar Evaluación?',
+                text: 'Una vez completada, la evaluación será enviada y no podrá modificarse.',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, Completar',
+                cancelButtonText: 'Cancelar'
+            });
+
+            if (!confirmacion.isConfirmed) return;
+
+            try {
+                datos.completarEvaluacion = true;
+
+                const response = await fetch(`/api/asignacion-evaluadores/${asignacionId}/evaluacion`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(datos)
+                });
+
+                const resultado = await response.json();
+
+                if (response.ok) {
+                    Swal.fire({
+                        title: '¡Evaluación Completada!',
+                        text: 'Su evaluación se ha registrado exitosamente.',
+                        icon: 'success',
+                        confirmButtonText: 'Continuar'
+                    }).then(() => {
+                        // Redireccionar o recargar página
+                        window.location.href = '/pages/CRCI/portalEvaluador.html';
+                    });
+                } else {
+                    throw new Error(resultado.message);
+                }
+            } catch (error) {
+                Swal.fire('Error', error.message, 'error');
+            }
+        }
+
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', function() {
+            // Aquí cargarías los datos del proyecto y evaluador desde la API
+            document.getElementById('proyectoNombre').textContent = 'Proyecto de Innovación Tecnológica';
+            document.getElementById('convocatoriaNombre').textContent = 'Convocatoria CRCI 2024';
+            document.getElementById('evaluadorNombre').textContent = 'Dr. Juan Pérez';
+            
+            calcularTotales();
+        });
+    </script>
+</body>
+</html>

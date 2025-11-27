@@ -25,6 +25,9 @@ import Contactar from "./contactar.Routes.js"; // Importar las rutas de Contacta
 import mapa from "./mapa.Routes.js"; // Importar las rutas de Mapa
 import AliadosProyectos from "./aliadosProyectos.Routes.js";
 import AliadosProyectosAplicados from "./aliadosProyectosApliacados.Routes.js";
+import MiembroComiteRoutes from "./miembroComiteRoutes.js"; // Importar las rutas de MiembroComite
+import ConvocatoriaProyectosRoutes from "./convocatoriaProyectosRoutes.js"; // Importar las rutas de ConvocatoriaProyectos
+import AsignacionEvaluadorRoutes from "./asignacionEvaluadorRoutes.js"; // Importar las rutas de AsignacionEvaluador
 const router = express.Router();
 
 router.use('/entidad', entidadRoutes);
@@ -54,4 +57,7 @@ router.use('/contactar', Contactar); // Rutas de contactar
 router.use('/mapa', mapa); // Rutas de mapa
 router.use('/aliados-proyectos', AliadosProyectos); // Rutas de aliados y proyectos
 router.use('/aliados-proyectos-aplicados', AliadosProyectosAplicados); // Rutas de aliados y proyectos aplicados
+router.use('/miembros-comite', MiembroComiteRoutes); // Rutas de miembros del comité
+router.use('/convocatoria-proyectos', ConvocatoriaProyectosRoutes); // Rutas de aplicaciones de proyectos a convocatorias
+router.use('/asignacion-evaluadores', AsignacionEvaluadorRoutes); // Rutas de asignación de evaluadores con 5 criterios
 export default router;

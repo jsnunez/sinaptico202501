@@ -44,6 +44,202 @@ export const getConvocatorias = async (req, res) => {
   }
 };
 
+// Obtener convocatorias con paginación y filtros extendidos
+export const obtenerConvocatorias = async (req, res) => {
+  try {
+    const { estado, activo = true, page = 1, limit = 10 } = req.query;
+    
+    const filtros = { activo };
+    
+    if (estado) {
+      filtros.estado = estado;
+    }
+
+    const offset = (page - 1) * limit;
+
+    const { count, rows: convocatorias } = await Convocatoria.findAndCountAll({
+      where: filtros,
+      include: [
+        {
+          model: TipoConvocatorias,
+          as: 'tipoConvocatoria',
+          required: false
+        }
+      ],
+      order: [['createdAt', 'DESC']],
+      limit: parseInt(limit),
+      offset: parseInt(offset)
+    });
+
+    res.status(200).json({
+      convocatorias,
+      pagination: {
+        total: count,
+        page: parseInt(page),
+        limit: parseInt(limit),
+        totalPages: Math.ceil(count / limit)
+      }
+    });
+  } catch (error) {
+    console.error('Error al obtener convocatorias:', error);
+    res.status(500).json({ 
+      error: 'Error interno del servidor',
+      details: error.message 
+    });
+  }
+};
+
+// Obtener convocatoria por ID con detalles completos
+export const obtenerConvocatoriaPorId = async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    const convocatoria = await Convocatoria.findByPk(id, {
+      include: [
+        {
+          model: TipoConvocatorias,
+          as: 'tipoConvocatoria',
+          required: false
+        }
+      ]
+    });
+    
+    if (!convocatoria) {
+      return res.status(404).json({ error: 'Convocatoria no encontrada' });
+    }
+
+    res.status(200).json(convocatoria);
+  } catch (error) {
+    console.error('Error al obtener convocatoria:', error);
+    res.status(500).json({ 
+      error: 'Error interno del servidor',
+      details: error.message 
+    });
+  }
+};
+
+// Crear una nueva convocatoria con validaciones extendidas
+export const crearConvocatoriaCompleta = async (req, res) => {
+  try {
+    const {
+      titulo,
+      numero,
+      descripcion,
+      presupuestoTotal,
+      maxProyectos,
+      fechaApertura,
+      fechaCierre,
+      fechaResultados,
+      areasTematicas,
+      presupuestoMinimo,
+      presupuestoMaximo,
+      duracionMinima,
+      duracionMaxima,
+      requisitos,
+      documentosRequeridos,
+      palabrasClave,
+      contacto,
+      observaciones,
+      estado = 'borrador',
+      tipoConvocatoriaId,
+      organizador = 'CRCI Santander'
+    } = req.body;
+
+    // Validar número único
+    const numeroExistente = await Convocatoria.findOne({ where: { numero } });
+    if (numeroExistente) {
+      return res.status(400).json({ error: 'Ya existe una convocatoria con ese número' });
+    }
+
+    // Validar fechas
+    if (new Date(fechaCierre) <= new Date(fechaApertura)) {
+      return res.status(400).json({ error: 'La fecha de cierre debe ser posterior a la fecha de apertura' });
+    }
+
+    if (new Date(fechaResultados) <= new Date(fechaCierre)) {
+      return res.status(400).json({ error: 'La fecha de resultados debe ser posterior a la fecha de cierre' });
+    }
+
+    const nuevaConvocatoria = await Convocatoria.create({
+      titulo,
+      numero,
+      descripcion,
+      presupuestoTotal,
+      maxProyectos,
+      fechaApertura,
+      fechaCierre,
+      fechaResultados,
+      areasTematicas: areasTematicas || [],
+      presupuestoMinimo,
+      presupuestoMaximo,
+      duracionMinima,
+      duracionMaxima,
+      requisitos,
+      documentosRequeridos: documentosRequeridos || [],
+      palabrasClave: palabrasClave || [],
+      contacto,
+      observaciones,
+      estado,
+      tipoConvocatoriaId,
+      organizador,
+      // Campos compatibilidad
+      nombre: titulo,
+      fechaLimite: fechaCierre
+    });
+
+    res.status(201).json({
+      message: 'Convocatoria creada exitosamente',
+      convocatoria: nuevaConvocatoria
+    });
+  } catch (error) {
+    console.error('Error al crear convocatoria:', error);
+    
+    if (error.name === 'SequelizeValidationError') {
+      return res.status(400).json({
+        error: 'Datos de validación incorrectos',
+        details: error.errors.map(e => e.message)
+      });
+    }
+    
+    res.status(500).json({ 
+      error: 'Error interno del servidor',
+      details: error.message 
+    });
+  }
+};
+
+// Obtener convocatorias activas para el público
+export const obtenerConvocatoriasActivas = async (req, res) => {
+  try {
+    const ahora = new Date();
+    
+    const convocatorias = await Convocatoria.findAll({
+      where: {
+        activo: true,
+        estado: 'publicada',
+        fechaApertura: { [Op.lte]: ahora },
+        fechaCierre: { [Op.gte]: ahora }
+      },
+      include: [
+        {
+          model: TipoConvocatorias,
+          as: 'tipoConvocatoria',
+          required: false
+        }
+      ],
+      order: [['fechaCierre', 'ASC']]
+    });
+
+    res.status(200).json(convocatorias);
+  } catch (error) {
+    console.error('Error al obtener convocatorias activas:', error);
+    res.status(500).json({ 
+      error: 'Error interno del servidor',
+      details: error.message 
+    });
+  }
+};
+
 
 // Crear una nueva convocatoria
 export const createConvocatoria = async (req, res) => {

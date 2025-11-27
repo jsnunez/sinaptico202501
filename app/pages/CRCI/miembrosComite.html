@@ -1,0 +1,1297 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Miembros del Comité - SINAPTICO</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="stylesheet" href="styles/stylehelice2.css">
+  <link rel="stylesheet" href="styles/styles.css">
+  <link rel="stylesheet" href="styles/colores.css">
+  <link rel="stylesheet" href="styles/postulaciones.css">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    /* Contenedor de las tarjetas */
+    .members-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      /* separación entre tarjetas */
+    }
+
+    /* Cada tarjeta ocupará el 50%, es decir dos por fila */
+    .member-card {
+      width: calc(50% - 20px);
+    }
+
+    @media (max-width: 768px) {
+      .member-card {
+        width: 100%;
+      }
+    }
+
+    .member-card {
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      padding: 25px;
+      margin-bottom: 20px;
+      transition: all 0.3s ease;
+
+    }
+
+    .member-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .member-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      gap: 20px;
+    }
+
+    .member-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: var(--secondary-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2em;
+      color: white;
+      font-weight: bold;
+    }
+
+    .member-info h3 {
+
+      color: #2c3e50;
+      font-size: 1.4em;
+    }
+
+    .member-role {
+      color: var(--orange);
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    .member-status {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.8em;
+      font-weight: 600;
+    }
+
+    .status-activo {
+      background: white;
+      border-radius: 20px;
+      border: 1px solid var(--primary-color);
+      padding: 5px 12px;
+      ;
+    }
+
+    .status-inactivo {
+      background: #f8d7da;
+      color: #721c24;
+      border-radius: 20px;
+      border: 1px solid var(--naranja-color);
+      padding: 5px 12px;
+    }
+
+    .member-details {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .detail-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px;
+      background: #f8f9fa;
+      border-radius: 8px;
+    }
+
+    .detail-item i {
+      color: var(--orange);
+      width: 20px;
+    }
+
+    .member-expertise {
+      margin-top: 15px;
+    }
+
+    .expertise-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .expertise-tag {
+      background: #e3f2fd;
+      color: #1976d2;
+      padding: 4px 12px;
+      border-radius: 15px;
+      font-size: 0.85em;
+      font-weight: 500;
+    }
+
+    .search-filter-container {
+      background: white;
+      border-radius: 15px;
+      padding: 20px;
+      margin-bottom: 30px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .filter-row {
+      display: flex;
+      gap: 20px;
+      align-items: end;
+      flex-wrap: wrap;
+    }
+
+    .filter-group {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .filter-label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #2c3e50;
+    }
+
+    .filter-input,
+    .filter-select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 1em;
+    }
+
+
+    .btn-contact,
+    .btn-view {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9em;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .btn-contact {
+      background: #28a745;
+      color: white;
+    }
+
+    .btn-contact:hover {
+      background: #218838;
+    }
+
+    .btn-view {
+      background: #6c757d;
+      color: white;
+    }
+
+    .btn-view:hover {
+      background: #5a6268;
+    }
+
+    @media (max-width: 768px) {
+      .member-header {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .member-details {
+        grid-template-columns: 1fr;
+      }
+
+      .filter-row {
+        flex-direction: column;
+      }
+
+      .filter-group {
+        min-width: auto;
+      }
+    }
+
+    /* Estilos para la tabla de gestión de miembros */
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 15px;
+      font-size: 0.8em;
+      font-weight: 600;
+    }
+
+    .bg-success {
+      background-color: #d4edda;
+      color: #155724;
+    }
+
+    .bg-secondary {
+      background-color: #e2e3e5;
+      color: #383d41;
+    }
+
+    .btn {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9em;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-weight: 500;
+    }
+
+    .btn-sm {
+      padding: 6px 12px;
+      font-size: 0.8em;
+    }
+
+    .btn-primary {
+      background-color: #007bff;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: #0056b3;
+    }
+
+    .btn-danger {
+      background-color: #dc3545;
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background-color: #c82333;
+    }
+
+    /* Estilos específicos para la tabla de gestión */
+    .gestion-table {
+      font-size: 0.9em;
+    }
+
+    .gestion-table td {
+      vertical-align: middle;
+      padding: 0.75rem;
+    }
+
+    .gestion-table .user-info {
+      line-height: 1.3;
+    }
+
+    .gestion-table .user-info strong {
+      color: #2c3e50;
+    }
+
+    .gestion-table .user-info small {
+      color: #6c757d;
+      font-size: 0.85em;
+    }
+
+    /* Estilos para formularios en SweetAlert2 */
+    .form-group {
+      margin-bottom: 1rem;
+      text-align: left;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: #007bff;
+      box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+    }
+
+    .modal-verAsociados {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      backdrop-filter: blur(4px);
+      z-index: 2000;
+    }
+
+    .modal-verAsociados.activo {
+      display: flex;
+    }
+
+  
+  </style>
+</head>
+
+<body>
+
+  <!-- Encabezado -->
+  <header>
+    <div class="header">
+      <div onclick="window.location.href='/'">
+        <!-- <span class="logo-icon">⚡</span> -->
+        <img src="/img/logo1.png" alt="SINAPTICO" class="logo" style="height:8vh;">
+      </div>
+      <div style="display: flex; align-items: center; gap: 20px;">
+        <!-- <div style="font-size:1.5em;cursor:pointer;">
+          <span id="icono-notif">🔔 <span
+              style='background:red;color:white;border-radius:50%;padding:2px 7px;font-size:0.9em;'>0</span></span>
+        </div>
+        <div class="notificaciones" id="notificaciones"></div> -->
+
+
+        <div class="dropdown">
+          <button id="userMenuBtn" style="display: flex; align-items: center;">
+            <div id="userPhoto ">
+              <img class="imagenPerfil" id="imagenPerfilSecundaria" src="img/sinfoto.jpg" alt="Foto de perfil"
+                onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
+
+            </div>
+            <h3 id="nombreUsuarioHeader" style="color:white; margin-left:10px;">CRCI <i class="bi bi-chevron-down"></i>
+            </h3>
+          </button>
+
+          <div class="dropdown-menu" id="userMenu">
+            <!-- <a href="/perfil">Perfil</a>
+            <a href="/perfilEntidad">Empresa</a> -->
+            <a href="#" id="cerrarSesion">Cerrar sesión</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <nav class="nav">
+      <button class="nav-button " onclick="window.location.href='/dashboardCRCI'" id="inicio">Inicio</button>
+      <button class="nav-button" onclick="window.location.href='/dashboardCRCIAplicados'">Banco de Proyectos</button>
+      <button class="nav-button pulse" onclick="window.location.href='/miembrosComite'">Asociados</button>
+      <button class="nav-button" onclick="window.location.href='/generarConvocatoria'">Gestion de Convocatorias</button>
+      <button class="nav-button" onclick="window.location.href='/gestionEvaluacion'">Gestión de Evaluación</button>
+      <button class="nav-button" onclick="window.location.href='/portalEvaluador'">Evaluación</button>
+    </nav>
+  </header>
+
+  <!-- Spinner de carga de página -->
+  <div id="page-spinner-overlay" aria-hidden="true" role="status" aria-label="Cargando">
+    <div class="spinner" aria-hidden="true"></div>
+    <div class="spinner-text">Cargando...</div>
+  </div>
+
+  <!-- Contenido Principal -->
+  <div class="main-content">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+      <h2 class="title">Miembros del Comité CRCI Santander</h2>
+      <div>
+        <button class=" action-button" onclick="mostrarGestionMiembros()" style="margin-right: 10px;">
+          <i class="bi bi-person-plus"></i> Gestionar Miembros
+        </button>
+        <button class="action-button" onclick="actualizarMiembros()">
+          <i class="bi bi-arrow-clockwise"></i> Actualizar
+        </button>
+      </div>
+    </div>
+
+    <!-- Estadísticas -->
+    <div class="stats-container" style="width: 100%;">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="top-row">
+            <div class="stat-label">Total Miembros</div>
+            <div class="stat-icon"><i class="bi bi-person-bounding-box"></i></div>
+          </div>
+          <div class="stat-number" id="totalMiembros">12</div>
+
+        </div>
+        <div class="stat-card">
+          <div class="top-row">
+            <div class="stat-label">Activos</div>
+            <div class="stat-icon"><i class="bi bi-person-bounding-box"></i></div>
+          </div>
+          <div class="stat-number" id="miembrosActivos">9</div>
+
+        </div>
+        <div class="stat-card">
+          <div class="top-row">
+            <div class="stat-label">Especialidades</div>
+            <div class="stat-icon"><i class="bi bi-person-bounding-box"></i></div>
+          </div>
+          <div class="stat-number" id="especialidades">8</div>
+
+        </div>
+        <div class="stat-card">
+          <div class="top-row">
+            <div class="stat-label">Proyectos Evaluados</div>
+            <div class="stat-icon"><i class="bi bi-person-bounding-box"></i></div>
+          </div>
+          <div class="stat-number" id="proyectosEvaluados">45</div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Filtros y búsqueda -->
+    <div class="search-filter-container">
+      <div class="filter-row">
+        <div class="filter-group">
+          <label class="filter-label">Buscar miembro</label>
+          <input type="text" id="buscarMiembro" class="filter-input" placeholder="Nombre, cargo, especialidad...">
+        </div>
+        <div class="filter-group">
+          <label class="filter-label">Estado</label>
+          <select id="filtroEstado" class="filter-select">
+            <option value="">Todos los estados</option>
+            <option value="activo">Activos</option>
+            <option value="inactivo">Inactivos</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label class="filter-label">Especialidad</label>
+          <select id="filtroEspecialidad" class="filter-select">
+            <option value="">Todas las especialidades</option>
+          </select>
+        </div>
+        <button class="filter-btn" onclick="limpiarFiltros()">
+          <i class="bi bi-arrow-clockwise"></i> Limpiar
+        </button>
+      </div>
+    </div>
+
+    <!-- Lista de Miembros -->
+
+    <div class="members-container" id="listaMiembros">
+
+      <!-- Los miembros se cargarán dinámicamente aquí -->
+    </div>
+  </div>
+  <div class="modal-verAsociados "></div>
+
+  <footer class="footer">
+
+    <div class="footer-content">
+
+      <!-- Izquierda -->
+      <div class="footer-left">
+        <img src="/img/logo1.png" alt="SINAPTICO" class="footer-logo">
+        <p class="footer-desc">Conectando conocimiento, innovación y tecnología.</p>
+
+
+      </div>
+
+      <!-- Enlaces en dos columnas -->
+      <div class="footer-links">
+        <h4>Explorar</h4>
+
+        <div class="links-grid">
+          <a href="/">Inicio</a>
+          <a href="/dashboardCRCI">Inicio</a>
+          <a href="/dashboardCRCIAplicados">Banco de Proyectos</a>
+          <a href="/miembrosComite">Asociados</a>
+          <a href="/generarConvocatoria">Gestion de Convocatorias</a>
+          <a href="/gestionEvaluacion">Gestión de Evaluación</a>
+          <a href="/portalEvaluador">Evaluación</a>
+
+
+        </div>
+      </div>
+
+      <!-- Redes sociales -->
+      <div class="footer-social">
+        <h4>Síguenos</h4>
+        <div class="social-icons">
+          <a href="#"><i class="bi bi-facebook"></i></a>
+          <a href="#"><i class="bi bi-twitter"></i></a>
+          <a href="#"><i class="bi bi-linkedin"></i></a>
+          <a href="#"><i class="bi bi-instagram"></i></a>
+        </div>
+      </div>
+
+      <!-- Contacto -->
+      <div class="footer-contact">
+        <h4>Contáctanos</h4>
+
+        <p>Cra.19 #35-02 - UIS Bucarica</p>
+        <p>Bucaramanga, Colombia</p>
+
+        <div class="contact-item">
+          <i class="bi bi-envelope"></i>
+          <span>info@cpcoriente.org</span>
+        </div>
+
+        <div class="contact-item">
+          <i class="bi bi-telephone"></i>
+          <span>+57 315 494 0296</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <img src="/logos/logoCPCblanco.png" alt="SINAPTICO" class="footer-logoCPC">
+      <p>© 2025 CPC Oriente. Todos los derechos reservados.</p>
+
+    </div>
+
+  </footer>
+  <!-- Script principal -->
+  <script>
+    // Datos ficticios de miembros del comité
+    let miembrosComite = [
+
+    ];
+
+    let miembrosFiltrados = [...miembrosComite];
+
+    // Utilidades
+    function obtenerCookie(nombre) {
+      const nombreCookie = `${nombre}=`;
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        let cookie = cookies[i].trim();
+        if (cookie.indexOf(nombreCookie) === 0) {
+          return cookie.substring(nombreCookie.length, cookie.length);
+        }
+      }
+      return null;
+    }
+
+    const userId = obtenerCookie("userId");
+
+    // Funciones principales
+    function inicializarPagina() {
+      cargarEspecialidades();
+      cargarMiembrosReales(); // Cambiado para usar datos reales
+      configurarEventListeners();
+    }
+
+    function cargarEspecialidades() {
+      // Usar miembrosFiltrados si está disponible, sino miembrosComite
+      const miembros = window.miembrosActuales || miembrosComite;
+
+      let especialidadesSet = new Set();
+      miembros.forEach(miembro => {
+        if (miembro.especialidades) {
+          if (Array.isArray(miembro.especialidades)) {
+            miembro.especialidades.forEach(esp => especialidadesSet.add(esp));
+          } else if (typeof miembro.especialidades === 'string') {
+            try {
+              const especialidadesArray = JSON.parse(miembro.especialidades);
+              especialidadesArray.forEach(esp => especialidadesSet.add(esp));
+            } catch {
+              especialidadesSet.add(miembro.especialidades);
+            }
+          }
+        }
+      });
+
+      const especialidades = Array.from(especialidadesSet);
+      const select = document.getElementById('filtroEspecialidad');
+
+      // Limpiar opciones existentes excepto la primera
+      while (select.children.length > 1) {
+        select.removeChild(select.lastChild);
+      }
+
+      especialidades.forEach(esp => {
+        const option = document.createElement('option');
+        option.value = esp;
+        option.textContent = esp;
+        select.appendChild(option);
+      });
+    }
+
+    function renderizarMiembros() {
+      const container = document.getElementById('listaMiembros');
+
+      if (miembrosFiltrados.length === 0) {
+        container.innerHTML = `
+          <div style="text-align: center; padding: 50px; color: #666;">
+            <i class="bi bi-people" style="font-size: 4em; margin-bottom: 20px;"></i>
+            <h3>No se encontraron miembros</h3>
+            <p>No hay miembros que coincidan con los filtros seleccionados.</p>
+          </div>
+        `;
+        return;
+      }
+
+      const miembrosHTML = miembrosFiltrados.map(miembro => {
+        // Compatibilidad con datos de BD y datos demo
+        const nombre = miembro.nombre || (miembro.User ? `${miembro.User.nombreCompleto}` : 'Sin nombre');
+        const cargo = miembro.cargo || 'Miembro';
+        const estado = miembro.estado || (miembro.activo ? 'activo' : 'inactivo');
+        const institucion = miembro.institucion || (miembro.User && miembro.User.Entidad ? miembro.User.Entidad.nombre : 'Sin institución');
+        const email = miembro.email || (miembro.User ? miembro.User.email : 'Sin email');
+        const telefono = miembro.telefono || (miembro.User ? miembro.User.telefono || 'Sin teléfono' : 'Sin teléfono');
+        const proyectosEvaluados = miembro.proyectosEvaluados || 0;
+        const fechaIngreso = miembro.fechaIngreso || miembro.createdAt || new Date();
+        const formacion = miembro.formacion || 'No especificada';
+
+        // Manejo de especialidades
+        let especialidades = [];
+        console.log(`Procesando especialidades para ${nombre}:`, miembro.especialidades, typeof miembro.especialidades);
+        if (miembro.especialidades) {
+          if (Array.isArray(miembro.especialidades)) {
+            especialidades = miembro.especialidades;
+          } else if (typeof miembro.especialidades === 'string') {
+            try {
+              especialidades = JSON.parse(miembro.especialidades);
+            } catch {
+              especialidades = [miembro.especialidades];
+            }
+          }
+        }
+        console.log(`Especialidades finales para ${nombre}:`, especialidades);
+
+        return `
+        <div class="member-card">
+          <div class="member-header">
+            <div style="display: flex; align-items: center; gap: 20px; flex: 1;">
+            <div class="member-avatar">
+              ${nombre.split(' ').map(n => n[0]).slice(0, 2).join('')}
+            </div>
+            <div class="member-info">
+              <h3>${nombre}</h3>
+              <div class="member-role">${cargo}</div>
+              <span class="member-status status-${estado} ">
+                ${estado === 'activo' ? ' Activo' : ' Inactivo'}
+              </span>
+            </div>
+            </div>
+                      <div class="action-buttons">
+            <a href="mailto:${email}" class="action-button " style="text-decoration: none;">
+              <i class="bi bi-envelope"></i> Contactar
+            </a>
+            <button class="action-button" onclick="verDetallesMiembro(${miembro.id})" >
+              <i class="bi bi-eye"></i> Ver más
+            </button>
+          </div>
+          </div>
+
+          <div class="member-details">
+            <div class="detail-item">
+              <i class="bi bi-building"></i>
+              <span>${institucion}</span>
+            </div>
+            <div class="detail-item">
+              <i class="bi bi-envelope"></i>
+              <a href="mailto:${email}" style="color: inherit; text-decoration: none;">
+                ${email}
+              </a>
+            </div>
+            <div class="detail-item">
+              <i class="bi bi-telephone"></i>
+              <a href="tel:${telefono}" style="color: inherit; text-decoration: none;">
+                ${telefono}
+              </a>
+            </div>
+            <div class="detail-item">
+              <i class="bi bi-clipboard-check"></i>
+              <span>${proyectosEvaluados} proyectos evaluados</span>
+            </div>
+            <div class="detail-item">
+              <i class="bi bi-calendar"></i>
+              <span>Desde ${new Date(fechaIngreso).toLocaleDateString('es-ES')}</span>
+            </div>
+            <div class="detail-item">
+              <i class="bi bi-mortarboard"></i>
+              <span>${formacion}</span>
+            </div>
+          </div>
+
+          <div class="member-expertise">
+            <strong>Especialidades:</strong>
+            <div class="expertise-tags">
+              ${especialidades.map(esp => `<span class="expertise-tag">${esp}</span>`).join('')}
+            </div>
+          </div>
+
+
+        </div>
+      `;
+      }).join('');
+
+      container.innerHTML = miembrosHTML;
+    }
+
+    function actualizarEstadisticas(miembros = miembrosComite) {
+      const total = miembros.length;
+      const activos = miembros.filter(m => m.estado === 'activo' || m.activo === true || m.activo === 1).length;
+
+      // Para datos de BD, las especialidades pueden venir como array o string
+      let especialidadesSet = new Set();
+      miembros.forEach(m => {
+        if (m.especialidades) {
+          if (Array.isArray(m.especialidades)) {
+            m.especialidades.forEach(esp => especialidadesSet.add(esp));
+          } else if (typeof m.especialidades === 'string') {
+            try {
+              const especialidadesArray = JSON.parse(m.especialidades);
+              especialidadesArray.forEach(esp => especialidadesSet.add(esp));
+            } catch {
+              // Si no es JSON válido, tratar como string simple
+              especialidadesSet.add(m.especialidades);
+            }
+          }
+        }
+      });
+
+      const especialidades = especialidadesSet.size;
+      const proyectos = miembros.reduce((sum, m) => sum + (m.proyectosEvaluados || 0), 0);
+
+      document.getElementById('totalMiembros').textContent = total;
+      document.getElementById('miembrosActivos').textContent = activos;
+      document.getElementById('especialidades').textContent = especialidades;
+      document.getElementById('proyectosEvaluados').textContent = proyectos;
+    }
+
+    function aplicarFiltros() {
+      const busqueda = document.getElementById('buscarMiembro').value.toLowerCase();
+      const estado = document.getElementById('filtroEstado').value;
+      const especialidad = document.getElementById('filtroEspecialidad').value;
+
+      const miembrosBase = window.miembrosActuales || miembrosComite;
+      miembrosFiltrados = miembrosBase.filter(miembro => {
+        // Compatibilidad con datos de BD y datos demo
+        const nombre = miembro.nombre || (miembro.User ? `${miembro.User.nombreCompleto}` : '');
+        const cargo = miembro.cargo || 'Miembro';
+        const estadoMiembro = miembro.estado || (miembro.activo ? 'activo' : 'inactivo');
+        const institucion = miembro.institucion || (miembro.User && miembro.User.Entidad ? miembro.User.Entidad.nombre : '');
+
+        // Manejo de especialidades
+        let especialidades = [];
+        if (miembro.especialidades) {
+          if (Array.isArray(miembro.especialidades)) {
+            especialidades = miembro.especialidades;
+          } else if (typeof miembro.especialidades === 'string') {
+            try {
+              especialidades = JSON.parse(miembro.especialidades);
+            } catch {
+              especialidades = [miembro.especialidades];
+            }
+          }
+        }
+
+        const coincideBusqueda = !busqueda ||
+          nombre.toLowerCase().includes(busqueda) ||
+          cargo.toLowerCase().includes(busqueda) ||
+          institucion.toLowerCase().includes(busqueda) ||
+          especialidades.some(esp => esp.toLowerCase().includes(busqueda));
+
+        const coincideEstado = !estado || estadoMiembro === estado;
+        const coincideEspecialidad = !especialidad || especialidades.includes(especialidad);
+
+        return coincideBusqueda && coincideEstado && coincideEspecialidad;
+      });
+
+      renderizarMiembros();
+    }
+
+    function limpiarFiltros() {
+      document.getElementById('buscarMiembro').value = '';
+      document.getElementById('filtroEstado').value = '';
+      document.getElementById('filtroEspecialidad').value = '';
+      miembrosFiltrados = [...(window.miembrosActuales || miembrosComite)];
+      renderizarMiembros();
+    }
+
+    // Funciones para gestión de miembros desde usuarios
+    async function mostrarGestionMiembros() {
+      try {
+        Swal.fire({
+          title: 'Cargando usuarios administradores...',
+          allowOutsideClick: false,
+          didOpen: () => { Swal.showLoading(); }
+        });
+
+        const response = await fetch('/api/miembros-comite/usuarios-admin');
+        if (!response.ok) throw new Error('Error al cargar usuarios');
+
+        const usuarios = await response.json();
+        console.log(usuarios);
+        let usuariosHTML = '';
+        if (usuarios.length === 0) {
+          usuariosHTML = '<p class="text-center">No hay usuarios administradores de entidades disponibles.</p>';
+        } else {
+          usuariosHTML = `
+            <div style="max-height: 500px; overflow-y: auto;">
+              <table class="data-table gestion-table">
+                <thead>
+                  <tr>
+                    <th>Usuario</th>
+                    <th>Entidad</th>
+                    <th>Estado</th>
+                    <th style="text-align: center;">Acción</th>
+                  </tr>
+                </thead>
+                <tbody>
+          `;
+
+          usuarios.forEach(usuario => {
+            const estadoClass = usuario.esMiembro ? 'success' : 'secondary';
+            const estadoTexto = usuario.esMiembro ? 'Es Miembro' : 'No es Miembro';
+            const botonTexto = usuario.esMiembro ? 'Remover' : 'Agregar';
+            const botonClass = usuario.esMiembro ? 'btn-danger' : 'btn-primary';
+            const accion = usuario.esMiembro ? 'removerMiembroComite' : 'agregarMiembroComite';
+
+            usuariosHTML += `
+              <tr>
+                <td>
+                  <div class="user-info">
+                    <strong>${usuario.nombreCompleto}</strong><br>
+                    <small>${usuario.email}</small>
+                  </div>
+                </td>
+                <td>${usuario.entidad.razonSocial}</td>
+                <td><span class="badge bg-${estadoClass}">${estadoTexto}</span></td>
+                <td style="text-align: center;">
+                  <button class="btn btn-sm ${botonClass}" onclick="${accion}(${usuario.id}, '${usuario.nombreCompleto}')">
+                    ${botonTexto}
+                  </button>
+                </td>
+              </tr>
+            `;
+          });
+
+          usuariosHTML += '</tbody></table></div>';
+        }
+
+        Swal.fire({
+          title: 'Gestión de Miembros del Comité',
+          html: usuariosHTML,
+          width: '800px',
+          showCloseButton: true,
+          confirmButtonText: 'Cerrar',
+          customClass: {
+            htmlContainer: 'text-left'
+          }
+        });
+
+      } catch (error) {
+        console.error('Error:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No se pudieron cargar los usuarios administradores'
+        });
+      }
+    }
+
+    async function agregarMiembroComite(userId, nombreUsuario) {
+      try {
+        const { value: formValues } = await Swal.fire({
+          title: `Agregar ${nombreUsuario} al Comité`,
+          html: `
+            <div style="text-align: left;">
+              <div class="form-group">
+                <label for="cargo">Cargo en el Comité:</label>
+                <select id="cargo" class="form-control">
+                  <option value="Miembro">Miembro</option>
+                  <option value="Coordinador Técnico">Coordinador Técnico</option>
+                  <option value="Secretario">Secretario</option>
+                  <option value="Evaluador Senior">Evaluador Senior</option>
+                  <option value="Especialista">Especialista</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="especialidades">Especialidades (separadas por coma):</label>
+                <input type="text" id="especialidades" class="form-control" placeholder="Ej: Innovación, I+D+i, Gestión">
+              </div>
+            </div>
+          `,
+          showCancelButton: true,
+          confirmButtonText: 'Agregar',
+          cancelButtonText: 'Cancelar',
+          preConfirm: () => {
+            const cargoElement = document.getElementById('cargo');
+            const especialidadesElement = document.getElementById('especialidades');
+
+            if (!cargoElement || !especialidadesElement) {
+              Swal.showValidationMessage('Error: No se pudieron encontrar los elementos del formulario');
+              return false;
+            }
+
+            const cargo = cargoElement.value;
+            const especialidadesValue = especialidadesElement.value || '';
+            const especialidades = especialidadesValue
+              .split(',')
+              .map(e => e.trim())
+              .filter(e => e.length > 0);
+
+            if (!cargo) {
+              Swal.showValidationMessage('Por favor seleccione un cargo');
+              return false;
+            }
+
+            return { cargo, especialidades };
+          }
+        });
+
+        if (formValues) {
+          console.log('FormValues enviados:', formValues);
+
+          Swal.fire({
+            title: 'Agregando miembro...',
+            allowOutsideClick: false,
+            didOpen: () => { Swal.showLoading(); }
+          });
+
+          const requestBody = {
+            userId,
+            cargo: formValues.cargo,
+            especialidades: formValues.especialidades
+          };
+          console.log('Request body:', requestBody);
+
+          const response = await fetch('/api/miembros-comite/desde-usuario', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestBody)
+          });
+
+          if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.error || 'Error al agregar miembro');
+          }
+
+          const result = await response.json();
+          const accion = result.reactivated ? 'reactivado' : 'agregado';
+
+          Swal.fire({
+            icon: 'success',
+            title: `¡Miembro ${accion}!`,
+            text: `${nombreUsuario} ha sido ${accion} al comité exitosamente`,
+            timer: 2000
+          }).then(() => {
+            cargarMiembrosReales();
+          });
+        }
+
+      } catch (error) {
+        console.error('Error:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: error.message || 'No se pudo agregar el miembro al comité'
+        });
+      }
+    }
+
+    async function removerMiembroComite(userId, nombreUsuario) {
+      try {
+        const result = await Swal.fire({
+          title: '¿Remover miembro?',
+          text: `¿Está seguro de remover a ${nombreUsuario} del comité?`,
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Sí, remover',
+          cancelButtonText: 'Cancelar',
+          confirmButtonColor: '#d33'
+        });
+
+        if (result.isConfirmed) {
+          // Buscar el miembro por userId
+          const response = await fetch('/api/miembros-comite');
+          const miembros = await response.json();
+          const miembro = miembros.find(m => m.userId === userId && m.activo);
+
+          if (!miembro) {
+            throw new Error('Miembro no encontrado');
+          }
+
+          const removeResponse = await fetch(`/api/miembros-comite/remover/${miembro.id}`, {
+            method: 'DELETE'
+          });
+
+          if (!removeResponse.ok) {
+            const error = await removeResponse.json();
+            throw new Error(error.error || 'Error al remover miembro');
+          }
+
+          Swal.fire({
+            icon: 'success',
+            title: '¡Miembro removido!',
+            text: `${nombreUsuario} ha sido removido del comité`,
+            timer: 2000
+          }).then(() => {
+            cargarMiembrosReales();
+          });
+        }
+
+      } catch (error) {
+        console.error('Error:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: error.message || 'No se pudo remover el miembro del comité'
+        });
+      }
+    }
+
+    async function cargarMiembrosReales() {
+      try {
+        const response = await fetch('/api/miembros-comite');
+        if (response.ok) {
+          const miembrosReales = await response.json();
+          mostrarMiembros(miembrosReales);
+          actualizarEstadisticas(miembrosReales);
+        } else {
+          // Si falla, usar datos de demostración
+          console.log('Usando datos de demostración');
+          mostrarMiembros(miembrosComite);
+          actualizarEstadisticas(miembrosComite);
+        }
+      } catch (error) {
+        console.error('Error al cargar miembros reales:', error);
+        // Mantener los datos de demostración si falla
+        mostrarMiembros(miembrosComite);
+        actualizarEstadisticas(miembrosComite);
+      }
+    }
+
+    function mostrarMiembros(miembros) {
+      // Actualizar variables globales
+      miembrosComite = miembros;
+      window.miembrosActuales = miembros;
+      miembrosFiltrados = [...miembros];
+
+      // Recargar especialidades con los nuevos datos
+      cargarEspecialidades();
+
+      // Renderizar miembros
+      renderizarMiembros();
+    }
+
+    function actualizarMiembros() {
+      Swal.fire({
+        title: 'Actualizando...',
+        text: 'Obteniendo la información más reciente de los miembros',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
+
+      setTimeout(() => {
+        cargarMiembrosReales();
+        Swal.fire({
+          icon: 'success',
+          title: '¡Actualizado!',
+          text: 'La información de los miembros ha sido actualizada',
+          timer: 1500,
+          showConfirmButton: false
+        });
+      }, 1000);
+    }
+
+    function verDetallesMiembro(id) {
+      const miembro = miembrosComite.find(m => m.id === id);
+console.log('Miembro seleccionado para ver detalles:', miembro);
+      const modal = document.querySelector(".modal-verAsociados");
+      modal.innerHTML = ` 
+    <div class="modal-overlay"></div>
+<div class="modal-content" style="max-width:800px;>
+
+  <span class="close" onclick="cerrarModalAsociados()">&times;</span>
+
+  <div style="text-align:center; margin-bottom:25px;">
+      <h2>${miembro.nombre}</h2>
+      <h4 style="color:var(--orange)">${miembro.cargo}</h4>
+  </div>
+
+  <!-- SECCIÓN 1: DATOS PRINCIPALES (Con layout tipo imagen) -->
+  <div class="form-section input-row">
+      <div class="input-box">
+          <label>Nombre:</label>
+          <p>${miembro.nombre}</p>
+      </div>
+
+      <div class="input-box">
+          <label>Teléfono:</label>
+          <p>${miembro.telefono}</p>
+      </div>
+
+      <div class="input-box">
+          <label>Departamento:</label>
+          <p>${miembro.departamento}</p>
+      </div>
+
+      <div class="input-box">
+          <label>Ciudad:</label>
+          <p>${miembro.ciudad}</p>
+      </div>
+  </div>
+
+  <!-- SECCIÓN 2 -->
+  <div class="form-section input-row">
+      <div class="input-box">
+          <label>Institución:</label>
+          <p>${miembro.institucion}</p>
+      </div>
+
+      <div class="input-box">
+          <label>Email:</label>
+          <p><a href="mailto:${miembro.email}">${miembro.email}</a></p>
+      </div>
+
+      <div class="input-box">
+          <label>Estado:</label>
+          <p>${miembro.estado}</p>
+      </div>
+
+      <div class="input-box">
+          <label>Fecha de ingreso:</label>
+          <p>${new Date(miembro.fechaIngreso).toLocaleDateString('es-ES')}</p>
+      </div>
+  </div>
+
+  <!-- SECCIÓN 3 -->
+  <div class="form-section input-row">
+      <div class="input-box">
+          <label>Proyectos evaluados:</label>
+          <p>${miembro.proyectosEvaluados}</p>
+      </div>
+
+      <div class="input-box">
+          <label>Formación:</label>
+          <p>${miembro.formacion}</p>
+      </div>
+
+      <div class="input-box">
+          <label>Experiencia:</label>
+          <p>${miembro.experiencia}</p>
+      </div>
+  </div>
+
+  <!-- ESPECIALIDADES -->
+  <div class="form-section input-row" style="flex-direction:column;">
+      <label><strong>Especialidades:</strong></label>
+      <div style="display:flex; flex-wrap:wrap; gap:8px;">
+          ${miembro.especialidades.map(esp =>
+              `<span style="background:#e3f2fd;padding:4px 12px;border-radius:15px;font-size:.9em;color:#1976d2;">${esp}</span>`
+          ).join('')}
+      </div>
+  </div>
+
+</div>
+
+  `;
+
+      modal.classList.add("activo"); // 🔥 muestra el modal
+    }
+
+    function cerrarModalAsociados() {
+      document.querySelector(".modal-verAsociados").classList.remove("activo");
+    }
+
+    function configurarEventListeners() {
+      document.getElementById('buscarMiembro').addEventListener('input', aplicarFiltros);
+      document.getElementById('filtroEstado').addEventListener('change', aplicarFiltros);
+      document.getElementById('filtroEspecialidad').addEventListener('change', aplicarFiltros);
+    }
+
+    // Cerrar sesión
+    document.getElementById("cerrarSesion").addEventListener("click", () => {
+      Swal.fire({
+        title: '¿Estás seguro?',
+        text: '¿Quieres cerrar sesión?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, cerrar sesión',
+        cancelButtonText: 'Cancelar',
+        reverseButtons: true
+      }).then((result) => {
+        if (result.isConfirmed) {
+          document.cookie = 'jwt=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+          document.cookie = 'user=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+          document.cookie = 'userId=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+          document.location.href = "/";
+        }
+      });
+    });
+
+    // Menú desplegable
+    const userMenuBtn = document.getElementById("userMenuBtn");
+    const dropdown = userMenuBtn.closest(".dropdown");
+
+    userMenuBtn.addEventListener("click", (event) => {
+      event.stopPropagation();
+      dropdown.classList.toggle("show");
+    });
+
+    document.addEventListener("click", () => {
+      dropdown.classList.remove("show");
+    });
+
+    // Spinner de carga
+    (function () {
+      const MIN_MS = 2000;
+      const overlay = document.getElementById('page-spinner-overlay');
+      if (!overlay) return;
+
+      const start = performance.timing ? performance.timing.navigationStart : Date.now();
+      const now = Date.now();
+      const elapsed = Math.max(0, now - start);
+      const remaining = Math.max(0, MIN_MS - elapsed);
+
+      document.documentElement.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden';
+
+      setTimeout(() => {
+        overlay.style.opacity = '0';
+        setTimeout(() => {
+          if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
+          document.documentElement.style.overflow = '';
+          document.body.style.overflow = '';
+        }, 420);
+      }, remaining);
+    })();
+
+    // Inicializar página cuando el DOM esté listo
+    document.addEventListener('DOMContentLoaded', inicializarPagina);
+  </script>
+</body>
+
+</html>

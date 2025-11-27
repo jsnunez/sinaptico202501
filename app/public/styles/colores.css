@@ -16,7 +16,7 @@
     --synapse-color-1: #6e48aa;
     --synapse-color-2: #9d50bb;
     --synapse-pulse: rgba(110, 72, 170, 0.5);
-    --gradient-1: linear-gradient(135deg, #3366CC 0%, #5f86d4 50%, #84a3e2 100%);;
+    --gradient-1: linear-gradient(135deg, #3366CC 0%, #5f86d4 50%, #84a3e2 100%);
     --gradient-2: linear-gradient(135deg, #FF8200 0%, #FF8200 100%);
     --shadow: 0 10px 20px rgba(110, 72, 170, 0.1);
     --card-shadow: 0 15px 25px rgba(110, 72, 170, 0.08);

@@ -461,7 +461,8 @@
         </div>
         <nav class="nav">
 
-            <button class="nav-button" data-link="/helice" id="inicio" onclick="window.location.href='/helice'">Inicio</button>
+            <button class="nav-button" data-link="/helice" id="inicio"
+                onclick="window.location.href='/helice'">Inicio</button>
 
             <div class="dropdown menuG">
                 <button class="nav-button dropdown-btnG" data-link="/directorio">Directorio</button>
@@ -471,32 +472,17 @@
                 </div>
             </div>
 
-         <button class="nav-button" data-link="/proyectos" onclick="window.location.href='/proyectos'">Proyectos</button>
-            <div class="dropdown menuG">
-                <button class="nav-button dropdown-btnG" data-link="/innovacion">Innovación</button>
-                <div class="dropdown-menu dropdown-menuG">
-                    <a href="/retos">Retos</a>
-                    <a href="/muroServicios">Muro de Servicios</a>
-                </div>
-            </div>
+            <button class="nav-button" data-link="/proyectos"
+                onclick="window.location.href='/proyectos'">Proyectos</button>
 
-            <div class="dropdown menuG">
-                <button class="nav-button dropdown-btnG" data-link="/conocimiento">Conocimiento</button>
-                <div class="dropdown-menu dropdown-menuG">
-                    <a href="/cursos">Cursos</a>
-                    <a href="/biblioteca">Biblioteca</a>
-                </div>
-            </div>
-
-          
-            <button class="nav-button" data-link="/convocatorias" onclick="window.location.href='/convocatorias'">Convocatorias</button>
-            <button class="nav-button" data-link="/eventos" onclick="window.location.href='/eventos'">Eventos</button>
-
-
+            <button class="nav-button" data-link="/convocatorias"
+                onclick="window.location.href='/convocatorias'">Convocatorias</button>
+<button class="nav-button" id="btnEvaluador" style="display: none;" data-link="/portalEvaluadorUser"
+                onclick="window.location.href='/portalEvaluadorUser'">Evaluación</button>
         </nav>
 
     </header>
-
+<div hidden> <button id="btn-empresa" class="menu-btn nav-button" onclick="mostrarStats('empresa')" >Estadísticas Empresariales</button></div>
     </div>
     <!-- Bienvenida y botones de acción -->
     <div class="welcome-container" id="welcome-container">
@@ -1047,6 +1033,69 @@
         </div>
     </div>
 
+    <footer class="footer">
+
+        <div class="footer-content">
+
+            <!-- Izquierda -->
+            <div class="footer-left">
+                <img src="/img/logo1.png" alt="SINAPTICO" class="footer-logo">
+                <p class="footer-desc">Conectando conocimiento, innovación y tecnología.</p>
+
+
+            </div>
+
+            <!-- Enlaces en dos columnas -->
+            <div class="footer-links">
+                <h4>Explorar</h4>
+
+                <div class="links-grid">
+                    <a href="/helice">Inicio</a>
+                    <a href="/directorio">Directorio</a>
+                    <a href="/proyectos">Proyectos</a>
+                    <a href="/convocatorias">Convocatorias</a>
+
+                </div>
+            </div>
+
+            <!-- Redes sociales -->
+            <div class="footer-social">
+                <h4>Síguenos</h4>
+                <div class="social-icons">
+                    <a href="#"><i class="bi bi-facebook"></i></a>
+                    <a href="#"><i class="bi bi-twitter"></i></a>
+                    <a href="#"><i class="bi bi-linkedin"></i></a>
+                    <a href="#"><i class="bi bi-instagram"></i></a>
+                </div>
+            </div>
+
+            <!-- Contacto -->
+            <div class="footer-contact">
+                <h4>Contáctanos</h4>
+
+                <p>Cra.19 #35-02 - UIS Bucarica</p>
+                <p>Bucaramanga, Colombia</p>
+
+                <div class="contact-item">
+                    <i class="bi bi-envelope"></i>
+                    <span>info@cpcoriente.org</span>
+                </div>
+
+                <div class="contact-item">
+                    <i class="bi bi-telephone"></i>
+                    <span>+57 315 494 0296</span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+            <img src="/logos/logoCPCblanco.png" alt="SINAPTICO" class="footer-logoCPC">
+            <p>© 2025 CPC Oriente. Todos los derechos reservados.</p>
+
+        </div>
+
+    </footer>
     <!-- Scripts -->
 
     <script src="/js/config.js"></script>
@@ -1062,6 +1111,7 @@
 
     <script src="js/notificaciones.js"></script>
     <script src="/js/websocket.js"></script>
+    <script src="/js/habilitarEvaluador.js"></script>
 
     <script>
 

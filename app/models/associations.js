@@ -22,9 +22,15 @@ import Invitacion from './invitaciones.js';
 import UbicacionEntidad from './ubicacionEntidad.js'; 
 import Proyectos from './proyectos.js';
 import AliadosProyectos from './aliadosProyectos.js';
-import AliadosProyectosAplicados from './aliadosProyectosApliacdos.js';
+import AliadosProyectosAplicados from './aliadosProyectosAplicados.js';
+import AsignacionEvaluador from './asignacionEvaluador.js';
+import ConvocatoriaProyectos from './convocatoriaProyectos.js';
+import MiembroComite from './miembroComite.js';
 
 // Definir todas las asociaciones aquí
+AsignacionEvaluador.belongsTo(User, { as: "Evaluador", foreignKey: "evaluadorId" });
+AsignacionEvaluador.belongsTo(Convocatoria, { foreignKey: "convocatoriaId" });
+AsignacionEvaluador.belongsTo(Proyectos, { foreignKey: "proyectoId" });
 
 // Asociaciones User - Entidad
 User.hasOne(Entidad, { foreignKey: 'UserAdminId', as: 'entidadAdministrada' });
@@ -58,7 +64,8 @@ TipoConvocatorias.hasMany(Convocatoria, {
 
 Convocatoria.belongsTo(TipoConvocatorias, {
     foreignKey: 'tipoConvocatoriaId',
-    as: 'tipoConvocatoria'
+    as: 'tipoConvocatoria',
+    onDelete: 'RESTRICT'  // Cambiar de SET NULL a RESTRICT
 });
 
 Invitacion.belongsTo(User, { as: 'desdeUser', foreignKey: 'desdeuserid' });
@@ -87,29 +94,43 @@ Proyectos.belongsTo(Entidad, { foreignKey: 'entidadId', as: 'entidad' });
 
 User.hasMany(Proyectos, { foreignKey: 'userId', as: 'proyectosDiligenciados' });
 Proyectos.belongsTo(User, { foreignKey: 'userId', as: 'usuarioDiligencia' });
-export default () => {
-  // Esto asegura que las asociaciones se definan solo una vez
-  User.sync();
-  Entidad.sync();
-  Cargo.sync();
-  Ciudad.sync();
-  Departamento.sync();
-  Contacto.sync();
-  Reto.sync();
-  AplicarReto.sync();
-  Clasificado.sync();
-  UsuarioEmpresaCargo.sync();
-  Servicio.sync();
-  TipoConvocatorias.sync(); 
-  Convocatoria.sync();
-  Recurso.sync();
-  Curso.sync();
-  AplicarCurso.sync();
-  VideosCurso.sync();
-  UsuarioVideos.sync();
-  Invitacion.sync();
-  UbicacionEntidad.sync(); 
-  Proyectos.sync();
-  AliadosProyectos.sync();
-  AliadosProyectosAplicados.sync();
-};
+
+// Asociaciones MiembroComite - User
+User.hasMany(MiembroComite, { foreignKey: 'userId', as: 'miembrosComite' });
+MiembroComite.belongsTo(User, { foreignKey: 'userId', as: 'Usuario' });
+
+// Asociaciones ConvocatoriaProyectos
+Proyectos.hasMany(ConvocatoriaProyectos, { foreignKey: 'proyectoId', as: 'convocatoriasAplicadas' });
+ConvocatoriaProyectos.belongsTo(Proyectos, { 
+    foreignKey: 'proyectoId', 
+    as: 'proyecto'
+});
+
+Convocatoria.hasMany(ConvocatoriaProyectos, { foreignKey: 'convocatoriaId', as: 'proyectosAplicados' });
+ConvocatoriaProyectos.belongsTo(Convocatoria, { 
+    foreignKey: 'convocatoriaId', 
+    as: 'convocatoria'
+});
+
+// Asociaciones AsignacionEvaluador
+Convocatoria.hasMany(AsignacionEvaluador, { foreignKey: 'convocatoriaId', as: 'asignacionesEvaluadores' });
+AsignacionEvaluador.belongsTo(Convocatoria, { 
+    foreignKey: 'convocatoriaId', 
+    as: 'convocatoria'
+});
+
+Proyectos.hasMany(AsignacionEvaluador, { foreignKey: 'proyectoId', as: 'asignacionesEvaluadores' });
+AsignacionEvaluador.belongsTo(Proyectos, { 
+    foreignKey: 'proyectoId', 
+    as: 'proyecto'
+});
+
+MiembroComite.hasMany(AsignacionEvaluador, { foreignKey: 'evaluadorId', as: 'asignaciones' });
+AsignacionEvaluador.belongsTo(MiembroComite, { 
+    foreignKey: 'evaluadorId', 
+    as: 'evaluador'
+});
+
+// Al final del archivo - ejecutar las asociaciones automáticamente
+// Las asociaciones se definen automáticamente al importar este archivo
+console.log('✅ Asociaciones de modelos configuradas correctamente');

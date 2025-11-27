@@ -56,14 +56,15 @@
         </div>
       </div>
     </div>
-    <nav class="nav">
-      <button class="nav-button " onclick="window.location.href='/dashboardCRCI'" id="inicio">Inicio</button>
-      <button class="nav-button pulse" onclick="window.location.href='/dashboardCRCIAplicados'">Proyectos ADCI</button>
-
-
+      <nav class="nav">
+      <button class="nav-button" onclick="window.location.href='/dashboardCRCI'" id="inicio">Inicio</button>
+      <button class="nav-button pulse" onclick="window.location.href='/dashboardCRCIAplicados'">Banco de Proyectos</button>
+      <button class="nav-button " onclick="window.location.href='/miembrosComite'">Asociados</button>
+      <button class="nav-button" onclick="window.location.href='/generarConvocatoria'">Gestion de Convocatorias</button>
+         <button class="nav-button" onclick="window.location.href='/gestionEvaluacion'">Gestión de Evaluación</button>
+            <button class="nav-button" onclick="window.location.href='/portalEvaluador'">Evaluación</button>
     </nav>
   </header>
-
   <!-- Spinner de carga de página -->
   <div id="page-spinner-overlay" aria-hidden="true" role="status" aria-label="Cargando">
     <div class="spinner" aria-hidden="true"></div>
@@ -78,8 +79,6 @@
       </h2>
 
     </div>
-
-
 
     <!-- Filtros -->
     <div class="proyecto-controls">
@@ -140,7 +139,73 @@
   </div>
 
 
-  
+        <footer class="footer">
+
+        <div class="footer-content">
+
+            <!-- Izquierda -->
+            <div class="footer-left">
+                <img src="/img/logo1.png" alt="SINAPTICO" class="footer-logo">
+                <p class="footer-desc">Conectando conocimiento, innovación y tecnología.</p>
+
+
+            </div>
+
+            <!-- Enlaces en dos columnas -->
+            <div class="footer-links">
+                <h4>Explorar</h4>
+
+                <div class="links-grid">
+                    <a href="/">Inicio</a>
+                    <a href="/dashboardCRCI">Inicio</a>
+                    <a href="/dashboardCRCIAplicados">Banco de Proyectos</a>
+                    <a href="/miembrosComite">Asociados</a>
+                    <a href="/generarConvocatoria">Gestion de Convocatorias</a>
+                    <a href="/gestionEvaluacion">Gestión de Evaluación</a>
+                    <a href="/portalEvaluador">Evaluación</a>
+     
+
+                </div>
+            </div>
+
+            <!-- Redes sociales -->
+            <div class="footer-social">
+                <h4>Síguenos</h4>
+                <div class="social-icons">
+                    <a href="#"><i class="bi bi-facebook"></i></a>
+                    <a href="#"><i class="bi bi-twitter"></i></a>
+                    <a href="#"><i class="bi bi-linkedin"></i></a>
+                    <a href="#"><i class="bi bi-instagram"></i></a>
+                </div>
+            </div>
+
+            <!-- Contacto -->
+            <div class="footer-contact">
+                <h4>Contáctanos</h4>
+
+                <p>Cra.19 #35-02 - UIS Bucarica</p>
+                <p>Bucaramanga, Colombia</p>
+
+                <div class="contact-item">
+                    <i class="bi bi-envelope"></i>
+                    <span>info@cpcoriente.org</span>
+                </div>
+
+                <div class="contact-item">
+                    <i class="bi bi-telephone"></i>
+                    <span>+57 315 494 0296</span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+            <img src="/logos/logoCPCblanco.png" alt="SINAPTICO" class="footer-logoCPC">
+            <p>© 2025 CPC Oriente. Todos los derechos reservados.</p>
+
+        </div>
+
+    </footer>
 
   <!-- Utilidades-->
   <script>

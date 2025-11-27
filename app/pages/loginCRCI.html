@@ -27,16 +27,13 @@
         </div>
         <nav class="nav">
             <button class="nav-button pulse" onclick="window.location.href='/'">Inicio</button>
-
+            <button class="nav-button " onclick="window.location.href='/nosotros'">Nosotros</button>
             <button class="nav-button" onclick="mensajeRegistrar()">Directorio</button>
 
             <button class="nav-button" onclick="mensajeRegistrar()">Proyectos</button>
-            <button class="nav-button" onclick="mensajeRegistrar()">Innovación</button>
 
-            <button class="nav-button" onclick="mensajeRegistrar()">Conocimiento</button>
             <button class="nav-button" onclick="mensajeRegistrar()">Convocatorias</button>
 
-            <button class="nav-button" onclick="mensajeRegistrar()">Eventos</button>
 
         </nav>
     </header>
@@ -86,51 +83,117 @@ align-items: center; flex-direction: column;">
 
                     </form>
 
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+
+        <div class="footer-content">
+
+            <!-- Izquierda -->
+            <div class="footer-left">
+                <img src="/img/logo1.png" alt="SINAPTICO" class="footer-logo">
+                <p class="footer-desc">Conectando conocimiento, innovación y tecnología.</p>
+
+
+            </div>
+
+            <!-- Enlaces en dos columnas -->
+            <div class="footer-links">
+                <h4>Explorar</h4>
+
+                <div class="links-grid">
+                    <a href="/">Inicio</a>
+                    <a href="/nosotros">Nosotros</a>
+                    <a href="#" onclick="mensajeRegistrar()">Directorio</a>
+                    <a href="#" onclick="mensajeRegistrar()">Proyectos</a>
+                    <a href="#" onclick="mensajeRegistrar()">Convocatorias</a>
 
                 </div>
+            </div>
 
-                <script src="/js/home.js"></script>
-                <script src="/js/login.js"></script>
-                <script src="/js/config.js"></script>
+            <!-- Redes sociales -->
+            <div class="footer-social">
+                <h4>Síguenos</h4>
+                <div class="social-icons">
+                    <a href="#"><i class="bi bi-facebook"></i></a>
+                    <a href="#"><i class="bi bi-twitter"></i></a>
+                    <a href="#"><i class="bi bi-linkedin"></i></a>
+                    <a href="#"><i class="bi bi-instagram"></i></a>
+                </div>
+            </div>
 
-                <script>
-                window.addEventListener('load', function() {
-                    document.body.style.opacity = '0';
-                    document.body.style.transform = 'translateY(20px)';
-                    
-                    setTimeout(function() {
-                        document.body.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
-                        document.body.style.opacity = '1';
-                        document.body.style.transform = 'translateY(0)';
-                    }, 100);
-                    
-                    // Animar elementos del formulario secuencialmente
-                    setTimeout(function() {
-                        const formElements = document.querySelectorAll('.form-group, .btn-primary');
-                        formElements.forEach((el, index) => {
-                            el.style.opacity = '0';
-                            el.style.transform = 'translateX(-20px)';
-                            setTimeout(() => {
-                                el.style.transition = 'opacity 0.5s ease-out, transform 0.5s ease-out';
-                                el.style.opacity = '1';
-                                el.style.transform = 'translateX(0)';
-                            }, index * 100);
-                        });
-                    }, 300);
-                    
-                    // Efecto hover en inputs
-                    const inputs = document.querySelectorAll('input');
-                    inputs.forEach(input => {
-                        input.addEventListener('focus', function() {
-                            this.style.transform = 'scale(1.02)';
-                            this.style.transition = 'transform 0.2s ease';
-                        });
-                        input.addEventListener('blur', function() {
-                            this.style.transform = 'scale(1)';
-                        });
-                    });
+            <!-- Contacto -->
+            <div class="footer-contact">
+                <h4>Contáctanos</h4>
+
+                <p>Cra.19 #35-02 - UIS Bucarica</p>
+                <p>Bucaramanga, Colombia</p>
+
+                <div class="contact-item">
+                    <i class="bi bi-envelope"></i>
+                    <span>info@cpcoriente.org</span>
+                </div>
+
+                <div class="contact-item">
+                    <i class="bi bi-telephone"></i>
+                    <span>+57 315 494 0296</span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+            <img src="/logos/logoCPCblanco.png" alt="SINAPTICO" class="footer-logoCPC">
+            <p>© 2025 CPC Oriente. Todos los derechos reservados.</p>
+
+        </div>
+
+    </footer>
+    <script src="/js/home.js"></script>
+    <script src="/js/login.js"></script>
+    <script src="/js/config.js"></script>
+
+    <script>
+        window.addEventListener('load', function () {
+            document.body.style.opacity = '0';
+            document.body.style.transform = 'translateY(20px)';
+
+            setTimeout(function () {
+                document.body.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+                document.body.style.opacity = '1';
+                document.body.style.transform = 'translateY(0)';
+            }, 100);
+
+            // Animar elementos del formulario secuencialmente
+            setTimeout(function () {
+                const formElements = document.querySelectorAll('.form-group, .btn-primary');
+                formElements.forEach((el, index) => {
+                    el.style.opacity = '0';
+                    el.style.transform = 'translateX(-20px)';
+                    setTimeout(() => {
+                        el.style.transition = 'opacity 0.5s ease-out, transform 0.5s ease-out';
+                        el.style.opacity = '1';
+                        el.style.transform = 'translateX(0)';
+                    }, index * 100);
                 });
-                </script>
+            }, 300);
+
+            // Efecto hover en inputs
+            const inputs = document.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.addEventListener('focus', function () {
+                    this.style.transform = 'scale(1.02)';
+                    this.style.transition = 'transform 0.2s ease';
+                });
+                input.addEventListener('blur', function () {
+                    this.style.transform = 'scale(1)';
+                });
+            });
+        });
+    </script>
 
 </body>
 

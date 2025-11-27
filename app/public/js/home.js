@@ -343,6 +343,7 @@ function agregarInteractividad() {
       }
     });
 
+
     path.addEventListener('click', function () {
       const departamento = this.getAttribute('data-name') || this.getAttribute('title') || 'Departamento';
 
@@ -448,6 +449,7 @@ function agregarInteractividad() {
                 //   populateDptoFilter();
                 //   populateClaseFilter();
                 displayMarkersOnMap();
+                 addColombiaMask();
                 // displayUsersList();
               })
               .catch(error => {
@@ -461,6 +463,67 @@ function agregarInteractividad() {
 
             // Cargar datos del departamento específico si están disponibles
             // Aquí puedes agregar lógica para centrar el mapa en el departamento seleccionado
+async function addColombiaMask() {
+  try {
+    // GeoJSON mundial (Natural Earth simplificado)
+    const url = `/api/mapa/coordenadas`;
+    const world = await fetch(url);
+    const worldGeoJSON = await world.json();
+    console.log('GeoJSON mundial cargado:', worldGeoJSON.data.geometry, 'features');
+    // Busca la feature de Colombia (ISO_A3 = COL o ADMIN = Colombia)
+    const colFeature = worldGeoJSON.data.geometry;
+    if (!colFeature) {
+      console.warn('No se encontró la geometría de Colombia en el GeoJSON.');
+      return;
+    }
+
+    // Crea un rectángulo grande (mundo) para restarle Colombia
+    // Evitamos los polos extremos para mayor estabilidad geométrica
+    const worldBBox = [-180, -85, 180, 85];
+    const worldPoly = turf.bboxPolygon(worldBBox);
+
+    // Asegura que la geometría de Colombia sea válida (por si viene como MultiPolygon)
+    const colGeom = colFeature;
+    const colPoly = turf.feature(colGeom);
+
+    // Calcula: máscara = mundo - Colombia
+    const maskGeom = turf.difference(worldPoly, colPoly);
+    if (!maskGeom) {
+      console.warn('No fue posible crear la máscara (difference retornó null).');
+      return;
+    }
+
+    // Dibuja la máscara (exterior de Colombia en azul)
+    const maskLayer = L.geoJSON(maskGeom, {
+      pane: 'overlayPane',   // se dibuja sobre los tiles
+      interactive: false
+    });
+    maskLayer.setStyle({
+      fillColor: '#a8d5f7',
+      fillOpacity: 1,
+      stroke: false
+    });
+    maskLayer.addTo(modalMap);
+
+    // Dibuja la silueta de Colombia encima para resaltarla
+    const colombiaOutline = L.geoJSON(colPoly, {
+      style: {
+        color: '#1f4e79',
+        weight: 2,
+        fill: false
+      }
+    }).addTo(modalMap);
+
+    // (Opcional) Enfoca el mapa a Colombia respetando tu lógica de markers
+    // Solo si aún no hay markers colocados:
+    if (!markers || markers.length === 0) {
+      const b = colombiaOutline.getBounds();
+      modalMap.fitBounds(b.pad(0.05));
+    }
+  } catch (e) {
+    console.error('Error creando la máscara de Colombia:', e);
+  }
+}
 
             // Forzar redimensionamiento del mapa
             modalMap.invalidateSize();

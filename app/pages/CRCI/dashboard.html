@@ -19,6 +19,48 @@
     href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
+  <style>
+    .badge {
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 0.8em;
+      font-weight: 600;
+      display: inline-block;
+      text-align: center;
+      min-width: 80px;
+    }
+
+    .badge-postulado {
+      background: #e3f2fd;
+      color: #1976d2;
+    }
+
+    .badge-enevaluacion {
+      background: #fff3cd;
+      color: #856404;
+    }
+
+    .badge-preseleccionado {
+      background: #f3e5f5;
+      color: #7b1fa2;
+    }
+
+    .badge-aprobado {
+      background: #e8f5e8;
+      color: #2e7d32;
+    }
+
+    .badge-rechazado {
+      background: #ffebee;
+      color: #c62828;
+    }
+
+    .badge-retirado {
+      background: #f5f5f5;
+      color: #616161;
+    }
+  </style>
+
 </head>
 
 <body>
@@ -56,11 +98,13 @@
         </div>
       </div>
     </div>
-    <nav class="nav">
+      <nav class="nav">
       <button class="nav-button pulse" onclick="window.location.href='/dashboardCRCI'" id="inicio">Inicio</button>
-      <button class="nav-button" onclick="window.location.href='/dashboardCRCIAplicados'">Proyectos ADCI</button>
-
-
+      <button class="nav-button" onclick="window.location.href='/dashboardCRCIAplicados'">Banco de Proyectos</button>
+      <button class="nav-button " onclick="window.location.href='/miembrosComite'">Asociados</button>
+      <button class="nav-button" onclick="window.location.href='/generarConvocatoria'">Gestion de Convocatorias</button>
+         <button class="nav-button" onclick="window.location.href='/gestionEvaluacion'">Gestión de Evaluación</button>
+            <button class="nav-button" onclick="window.location.href='/portalEvaluador'">Evaluación</button>
     </nav>
   </header>
 
@@ -337,7 +381,7 @@
     </div>
   </div>
   <!-- Estadisticas -->
-  <div class="stats-container">
+  <div class="stats-container" style="width: 90%;">
 
     <!-- TARJETAS A LA IZQUIERDA -->
     <div class="stats-grid">
@@ -491,6 +535,75 @@
 
 
   </div>
+
+
+      <footer class="footer">
+
+        <div class="footer-content">
+
+            <!-- Izquierda -->
+            <div class="footer-left">
+                <img src="/img/logo1.png" alt="SINAPTICO" class="footer-logo">
+                <p class="footer-desc">Conectando conocimiento, innovación y tecnología.</p>
+
+
+            </div>
+
+            <!-- Enlaces en dos columnas -->
+            <div class="footer-links">
+                <h4>Explorar</h4>
+
+                <div class="links-grid">
+                    <a href="/">Inicio</a>
+                    <a href="/dashboardCRCI">Inicio</a>
+                    <a href="/dashboardCRCIAplicados">Banco de Proyectos</a>
+                    <a href="/miembrosComite">Asociados</a>
+                    <a href="/generarConvocatoria">Gestion de Convocatorias</a>
+                    <a href="/gestionEvaluacion">Gestión de Evaluación</a>
+                    <a href="/portalEvaluador">Evaluación</a>
+     
+
+                </div>
+            </div>
+
+            <!-- Redes sociales -->
+            <div class="footer-social">
+                <h4>Síguenos</h4>
+                <div class="social-icons">
+                    <a href="#"><i class="bi bi-facebook"></i></a>
+                    <a href="#"><i class="bi bi-twitter"></i></a>
+                    <a href="#"><i class="bi bi-linkedin"></i></a>
+                    <a href="#"><i class="bi bi-instagram"></i></a>
+                </div>
+            </div>
+
+            <!-- Contacto -->
+            <div class="footer-contact">
+                <h4>Contáctanos</h4>
+
+                <p>Cra.19 #35-02 - UIS Bucarica</p>
+                <p>Bucaramanga, Colombia</p>
+
+                <div class="contact-item">
+                    <i class="bi bi-envelope"></i>
+                    <span>info@cpcoriente.org</span>
+                </div>
+
+                <div class="contact-item">
+                    <i class="bi bi-telephone"></i>
+                    <span>+57 315 494 0296</span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+            <img src="/logos/logoCPCblanco.png" alt="SINAPTICO" class="footer-logoCPC">
+            <p>© 2025 CPC Oriente. Todos los derechos reservados.</p>
+
+        </div>
+
+    </footer>
   <!--Crear idea PPI-->
   <script>
     document.getElementById('guardarFichaPPI').onclick = async function () {
@@ -604,31 +717,37 @@
         console.log('Entidad ID seleccionada:', entidadId);
 
         // Cargar proyectos por entidad o propios
-        const resProy = await fetch(`/api/aliados-proyectos-aplicados/postulado/1`);
+        const resProy = await fetch(`/api/convocatoria-proyectos`);
+                // const resProy = await fetch(`/api/aliados-proyectos-aplicados/postulado/1`);
+
         const dataProy = await resProy.json();
-        // console.log('Proyectos cargados:', dataProy);
+        console.log('Datos recibidos:', dataProy);
+        
+        // Extraer datos del response
+        const proyectos = dataProy.success ? dataProy.data : [];
+        console.log('Proyectos cargados:', proyectos);
         const tbody = document.getElementById('cuerpoTablaPostulaciones');
         if (tbody) {
           tbody.innerHTML = '';
-          if (Array.isArray(dataProy) && dataProy.length > 0) {
-            dataProy.forEach(proyecto => {
-              console.log(proyecto)
+          if (Array.isArray(proyectos) && proyectos.length > 0) {
+            proyectos.forEach(aplicacion => {
+              console.log(aplicacion)
               const tr = document.createElement('tr');
               tr.innerHTML = `
-              <td>${proyecto.proyecto.id || ''}</td>
-              <td>${proyecto.proyecto.nombrePPI || ''}</td>
-              <td>${proyecto.proyecto.objetivo || ''}</td>
-              <td>${proyecto.proyecto.entidad?.razonSocial ? proyecto.proyecto.entidad.razonSocial : 'Independiente'}</td>
-              <td>${proyecto.proyecto.usuarioLider.name || ''}</td>
-              <td>${proyecto.proyecto.duracionPPI || ''}</td>
-              <td>${proyecto.proyecto.fasePPI || ''}</td>
+              <td>${aplicacion.proyecto?.id || ''}</td>
+              <td>${aplicacion.proyecto?.nombrePPI || ''}</td>
+              <td>${aplicacion.proyecto?.objetivo || ''}</td>
+              <td>${aplicacion.proyecto?.entidad?.razonSocial ? aplicacion.proyecto.entidad.razonSocial : 'Independiente'}</td>
+              <td>${aplicacion.proyecto?.usuarioLider?.name || ''}</td>
+              <td>${aplicacion.proyecto?.duracionPPI || ''}</td>
+              <td><span class="badge badge-${aplicacion.estado?.toLowerCase().replace(' ', '')}">${aplicacion.estado || 'Postulado'}</span></td>
               <td>
-                <button class="action-button" onclick="verMasProyecto(${proyecto.proyecto.id})" style="justify-content:center;">
+                <button class="action-button" onclick="verMasProyecto(${aplicacion.proyecto?.id})" style="justify-content:center;">
                 <i class="bi bi-clipboard-fill"></i>
                 </button>
               </td>
               <td>
-                <button class="action-button" onclick="evaluarProyecto(${proyecto.proyecto.id})" style="justify-content:center;">
+                <button class="action-button" onclick="evaluarProyecto(${aplicacion.proyecto?.id})" style="justify-content:center;">
                   <i class="bi bi-star-fill"></i> Evaluar
                 </button>
               </td>
@@ -1148,14 +1267,148 @@
       }, remaining);
     })();
 
+    // Función para cambiar estado de la aplicación
+    async function cambiarEstadoAplicacion(proyectoId, nuevoEstado, evaluador = null) {
+      try {
+        // Buscar la aplicación de convocatoria para este proyecto
+        const aplicacion = proyectosCargados.find(app => app.proyecto?.id === proyectoId);
+        
+        if (!aplicacion) {
+          throw new Error('No se encontró la aplicación para este proyecto');
+        }
 
-    function evaluarProyecto(proyectoId) {
-      Swal.fire({
-        title: 'En construcción',
-        text: 'La funcionalidad de evaluación de proyectos estará disponible próximamente.',
-        icon: 'info',
-        confirmButtonText: 'Entendido'
-      });
+        const response = await fetch(`/api/convocatoria-proyectos/${aplicacion.id}/evaluacion`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            estado: nuevoEstado,
+            evaluadorAsignado: evaluador,
+            fechaEvaluacion: new Date().toISOString()
+          })
+        });
+
+        if (!response.ok) {
+          const error = await response.json();
+          throw new Error(error.message || 'Error al actualizar estado');
+        }
+
+        return await response.json();
+      } catch (error) {
+        console.error('Error al cambiar estado:', error);
+        throw error;
+      }
+    }
+
+    async function evaluarProyecto(proyectoId) {
+      try {
+        // Buscar el proyecto y su estado actual
+        const aplicacion = proyectosCargados.find(app => app.proyecto?.id === proyectoId);
+        
+        if (!aplicacion) {
+          throw new Error('No se encontró la aplicación para este proyecto');
+        }
+
+        const estadoActual = aplicacion.estado || 'Postulado';
+        const nombreProyecto = aplicacion.proyecto?.nombrePPI || `Proyecto ${proyectoId}`;
+
+        // Manejar según el estado actual
+        switch (estadoActual) {
+          case 'Postulado':
+            // Confirmar inicio de evaluación
+            const result = await Swal.fire({
+              title: '¿Iniciar evaluación?',
+              html: `<strong>Proyecto:</strong> ${nombreProyecto}<br><br>Esto cambiará el estado a "En Evaluación" y asignará la fecha de inicio.`,
+              icon: 'question',
+              showCancelButton: true,
+              confirmButtonText: 'Sí, iniciar evaluación',
+              cancelButtonText: 'Cancelar',
+              confirmButtonColor: '#007bff',
+              cancelButtonColor: '#6c757d'
+            });
+
+            if (result.isConfirmed) {
+              // Mostrar indicador de carga
+              Swal.fire({
+                title: 'Iniciando evaluación...',
+                text: 'Por favor espere',
+                allowOutsideClick: false,
+                didOpen: () => {
+                  Swal.showLoading();
+                }
+              });
+
+              // Cambiar estado a "En Evaluacion"
+              await cambiarEstadoAplicacion(proyectoId, 'En Evaluacion', 'CRCI Evaluador');
+              
+              // Recargar datos para mostrar el cambio
+              await cargarProyectos();
+              
+              Swal.fire({
+                title: '¡Evaluación iniciada!',
+                text: 'El proyecto ha sido marcado como "En Evaluación"',
+                icon: 'success',
+                timer: 3000,
+                timerProgressBar: true
+              });
+            }
+            break;
+
+          case 'En Evaluacion':
+            // Mostrar información y opciones para proyecto en evaluación
+            Swal.fire({
+              title: 'Proyecto en Evaluación',
+              html: `<strong>Proyecto:</strong> ${nombreProyecto}<br>
+                     <strong>Estado:</strong> En Evaluación<br>
+                     <strong>Evaluador:</strong> ${aplicacion.evaluadorAsignado || 'CRCI Evaluador'}<br><br>
+                     <em>El proyecto está siendo evaluado actualmente.</em>`,
+              icon: 'info',
+              confirmButtonText: 'Entendido',
+              confirmButtonColor: '#007bff'
+            });
+            break;
+
+          case 'Preseleccionado':
+          case 'Aprobado':
+          case 'Rechazado':
+            // Mostrar información del proyecto evaluado
+            const iconoEstado = estadoActual === 'Aprobado' ? 'success' : 
+                               estadoActual === 'Rechazado' ? 'error' : 'info';
+            
+            Swal.fire({
+              title: 'Proyecto Evaluado',
+              html: `<strong>Proyecto:</strong> ${nombreProyecto}<br>
+                     <strong>Estado Final:</strong> ${estadoActual}<br>
+                     <strong>Evaluador:</strong> ${aplicacion.evaluadorAsignado || 'CRCI Evaluador'}<br>
+                     ${aplicacion.puntuacionTotal ? `<strong>Puntuación:</strong> ${aplicacion.puntuacionTotal}/100<br>` : ''}
+                     ${aplicacion.fechaEvaluacion ? `<strong>Fecha Evaluación:</strong> ${new Date(aplicacion.fechaEvaluacion).toLocaleDateString('es-ES')}<br>` : ''}
+                     <br><em>La evaluación de este proyecto ha sido completada.</em>`,
+              icon: iconoEstado,
+              confirmButtonText: 'Entendido',
+              confirmButtonColor: '#007bff'
+            });
+            break;
+
+          default:
+            // Estado desconocido
+            Swal.fire({
+              title: 'Estado no reconocido',
+              text: `El proyecto tiene un estado no reconocido: ${estadoActual}`,
+              icon: 'warning',
+              confirmButtonText: 'Entendido'
+            });
+        }
+
+      } catch (error) {
+        console.error('Error al evaluar proyecto:', error);
+        Swal.fire({
+          title: 'Error',
+          text: error.message || 'No se pudo procesar la evaluación. Inténtelo de nuevo.',
+          icon: 'error',
+          confirmButtonText: 'Entendido'
+        });
+      }
     }
   </script>
   <script>
@@ -1190,8 +1443,9 @@
     // =========================
     async function cargarProyectos() {
       try {
-        const resProy = await fetch(`/api/aliados-proyectos-aplicados/postulado/1`);
-        const dataProy = await resProy.json();
+        const resProy = await fetch(`/api/convocatoria-proyectos`);
+        const response = await resProy.json();
+        const dataProy = response.success ? response.data : [];
 
         proyectosCargados = Array.isArray(dataProy) ? dataProy : [];
         console.log("✅ Proyectos cargados:", proyectosCargados);
@@ -1223,6 +1477,38 @@
       }
 
       lista.forEach(p => {
+        // Determinar texto y estilo del botón según el estado
+        let botonEvaluar = '';
+        const estado = p.estado || 'Postulado';
+        
+        switch (estado) {
+          case 'Postulado':
+            botonEvaluar = `
+              <button class="action-button" onclick="evaluarProyecto(${p.proyecto?.id})" style="background: #007bff;">
+                <i class="bi bi-play-fill"></i> Iniciar Evaluación
+              </button>`;
+            break;
+          case 'En Evaluacion':
+            botonEvaluar = `
+              <button class="action-button" onclick="evaluarProyecto(${p.proyecto?.id})" style="background: #ffc107; color: #000;">
+                <i class="bi bi-clock-fill"></i> Evaluando...
+              </button>`;
+            break;
+          case 'Preseleccionado':
+          case 'Aprobado':
+          case 'Rechazado':
+            botonEvaluar = `
+              <button class="action-button" onclick="evaluarProyecto(${p.proyecto?.id})" style="background: #6c757d;">
+                <i class="bi bi-check-circle-fill"></i> Evaluado
+              </button>`;
+            break;
+          default:
+            botonEvaluar = `
+              <button class="action-button" onclick="evaluarProyecto(${p.proyecto?.id})">
+                <i class="bi bi-star-fill"></i> Evaluar
+              </button>`;
+        }
+
         const tr = document.createElement('tr');
         tr.innerHTML = `
         <td>${p.proyecto?.id || ''}</td>
@@ -1231,16 +1517,14 @@
         <td>${p.proyecto?.entidad?.razonSocial || 'Independiente'}</td>
         <td>${p.proyecto?.usuarioLider?.name || ''}</td>
         <td>${p.proyecto?.duracionPPI || ''}</td>
-        <td>${p.proyecto?.fasePPI || ''}</td>
+        <td><span class="badge badge-${estado.toLowerCase().replace(' ', '')}">${estado}</span></td>
         <td>
           <button class="action-button" onclick="verMasProyecto(${p.proyecto?.id})">
             <i class="bi bi-clipboard-fill"></i>
           </button>
         </td>
         <td>
-          <button class="action-button" onclick="evaluarProyecto(${p.proyecto?.id})">
-            <i class="bi bi-star-fill"></i> Evaluar
-          </button>
+          ${botonEvaluar}
         </td>
       `;
         tbody.appendChild(tr);

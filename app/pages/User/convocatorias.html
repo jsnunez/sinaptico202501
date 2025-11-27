@@ -3,113 +3,646 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SINAPTICO</title>
+  <title>Convocatorias - SINAPTICO</title>
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
-
-  <link rel="stylesheet" href="styles/colores.css">
   <link rel="stylesheet" href="styles/stylehelice2.css">
-  <link rel="stylesheet" href="styles/eventos.css">
+  <link rel="stylesheet" href="styles/colores.css">
+  <link rel="stylesheet" href="styles/postulaciones.css">
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
 
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
+  <style>
+    .convocatoria-card {
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      padding: 25px;
+      margin-bottom: 20px;
+      transition: all 0.3s ease;
+      border-left: 4px solid #007bff;
+    }
+
+    .convocatoria-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .convocatoria-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      margin-bottom: 15px;
+    }
+
+    .convocatoria-title {
+      font-size: 1.4em;
+      font-weight: bold;
+      color: #2c3e50;
+      margin: 0;
+    }
+
+    .convocatoria-status {
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.8em;
+      font-weight: 600;
+    }
+
+    .status-abierta {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .status-cerrada {
+      background: #f8d7da;
+      color: #721c24;
+    }
+
+    .status-proximamente {
+      background: #fff3cd;
+      color: #856404;
+    }
+
+    .badge {
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 0.8em;
+      font-weight: 600;
+      display: inline-block;
+    }
+
+    .badge-postulado {
+      background: #e3f2fd;
+      color: #1976d2;
+    }
+
+    .badge-enevaluacion {
+      background: #fff3cd;
+      color: #856404;
+    }
+
+    .badge-preseleccionado {
+      background: #f3e5f5;
+      color: #7b1fa2;
+    }
+
+    .badge-aprobado {
+      background: #e8f5e8;
+      color: #2e7d32;
+    }
+
+    .badge-rechazado {
+      background: #ffebee;
+      color: #c62828;
+    }
+
+    .badge-primary {
+      background: #007bff;
+      color: white;
+    }
+
+    .convocatoria-info {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin: 15px 0;
+    }
+
+    .info-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9em;
+      color: #666;
+    }
+
+    .info-item i {
+      color: #007bff;
+      width: 16px;
+    }
+
+    .convocatoria-description {
+      color: #555;
+      line-height: 1.5;
+      margin: 15px 0;
+    }
+
+    .convocatoria-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .btn-postular {
+      background: linear-gradient(135deg, #007bff, #0056b3);
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-postular:hover {
+      background: linear-gradient(135deg, #0056b3, #003d82);
+      transform: translateY(-2px);
+    }
+
+    .btn-postular:disabled {
+      background: #6c757d;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-ver-mas {
+      background: transparent;
+      color: #007bff;
+      padding: 10px 20px;
+      border: 2px solid #007bff;
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+
+    .btn-ver-mas:hover {
+      background: #007bff;
+      color: white;
+    }
+
+    .filters-container {
+      background: white;
+      border-radius: 15px;
+      padding: 20px;
+      margin-bottom: 30px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .filters-row {
+      display: flex;
+      gap: 20px;
+      align-items: end;
+      flex-wrap: wrap;
+    }
+
+    .filter-group {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .filter-label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #2c3e50;
+    }
+
+    .filter-input,
+    .filter-select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 1em;
+    }
+
+    .no-convocatorias {
+      text-align: center;
+      padding: 50px;
+      color: #666;
+    }
+
+    .no-convocatorias i {
+      font-size: 4em;
+      margin-bottom: 20px;
+      color: #ddd;
+    }
+
+    @media (max-width: 768px) {
+      .convocatoria-info {
+        grid-template-columns: 1fr;
+      }
+
+      .filters-row {
+        flex-direction: column;
+      }
+
+      .filter-group {
+        min-width: auto;
+      }
+
+      .convocatoria-actions {
+        flex-direction: column;
+      }
+    }
+  </style>
 </head>
 
 <body>
-  <!-- Fondo de animación neuronal -->
-  <div class="neural-background">
-    <canvas id="neuralCanvas"></canvas>
-  </div>
   <!-- Encabezado -->
-  <header class="header">
-    <div onclick="window.location.href='/helice'" class="logo">
-      <!-- <span class="logo-icon">⚡</span> -->
-      <span class="logo-text">SINAPTICO</span>
-    </div>
-    <nav class="nav">
-      <button class="nav-button pulse" onclick="window.location.href='/helice'">Hélice</button>
-      <button class="nav-button pulse" onclick="window.location.href='/proyectos'">Proyectos</button>
-      <button class="nav-button pulse" onclick="window.location.href='/innovacion'">Innovación</button>
+    <header>
+        <div class="header">
+            <div onclick="window.location.href='/helice'">
+                <!-- <span class="logo-icon">⚡</span> -->
+                <img src="/img/logo1.png" alt="SINAPTICO" class="logo" style="height:8vh;">
+            </div>
+            <div style="display: flex; align-items: center; gap: 20px;">
+                <div style="font-size:1.5em;cursor:pointer;">
+                    <span id="icono-notif">🔔 <span
+                            style='background:red;color:white;border-radius:50%;padding:2px 7px;font-size:0.9em;'>0</span></span>
+                </div>
+                <div class="notificaciones" id="notificaciones"></div>
 
-      <button class="nav-button pulse" onclick="window.location.href='/Conocimiento'">Conocimiento</button>
-      <button class="nav-button pulse" onclick="window.location.href='/convocatorias'">Convocatorias</button>
 
-      <button class="nav-button pulse" onclick="window.location.href='/eventos'">Eventos</button>
+                <div class="dropdown">
+                    <button id="userMenuBtn" style="display: flex; align-items: center;">
+                        <div id="userPhoto ">
+                            <img class="imagenPerfil" id="imagenPerfilSecundaria" src="img/sinfoto.jpg"
+                                alt="Foto de perfil" onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
 
-      <button class="nav-button pulse" onclick="window.location.href='/mapa-usuarios'">Mapa</button>
-      <div style="position:fixed;top:10px;right:20px;z-index:1000;font-size:1.5em;cursor:pointer;">
-        <span id="icono-notif">🔔 <span
-            style='background:red;color:white;border-radius:50%;padding:2px 7px;font-size:0.9em;'>0</span></span>
-      </div>
-      <div class="notificaciones" id="notificaciones"></div>
+                        </div>
+                        <h3 id="nombreUsuarioHeader" style="color:white; margin-left:10px;">Usuario <i
+                                class="bi bi-chevron-down"></i> </h3>
+                    </button>
 
-      <!-- <button class="nav-button pulse" id="cerrarSesion">Cerrar sesión</button> -->
-      <!-- Botón con menú desplegable -->
-      <div class="dropdown">
-        <button class=" " id="userMenuBtn">
-          <div id="userPhoto ">
-            <img class="imagenPerfil" id="imagenPerfilSecundaria" src="img/sinfoto.jpg" alt="Foto de perfil"
-              onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
-          </div>
-
-        </button>
-
-        <div class="dropdown-menu" id="userMenu">
-          <a href="/perfil">Perfil</a>
-          <a href="/configuracion">Configuración</a>
-          <a href="#" id="cerrarSesion">Cerrar sesión</a>
+                    <div class="dropdown-menu" id="userMenu">
+                        <a class="perfilUser" id="perfilUser">Perfil</a>
+                        <a href="/miEntidad" id="habilitarMiEmpresa" style="display: none;">Empresa</a>
+                        <a href="#" id="cerrarSesion">Cerrar sesión</a>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </nav>
-  </header>
+        <nav class="nav">
 
-  <!-- Bienvenida y botones de acción -->
-  <div class="welcome-container">
-    <div class="welcome-text">
-      <h2 id="title">Convocatorias </h2>
-      <p class="subtitle">consulta las oportunidades activas para fortalece tu participacion en el ecosistema CTEI
-        de santander</p>
+            <button class="nav-button" data-link="/helice" id="inicio"
+                onclick="window.location.href='/helice'">Inicio</button>
+
+            <div class="dropdown menuG">
+                <button class="nav-button dropdown-btnG" data-link="/directorio">Directorio</button>
+                <div class="dropdown-menu dropdown-menuG">
+                    <a href="/directorio">Entidades</a>
+                    <a href="/directorioPersonas">Personas</a>
+                </div>
+            </div>
+            <button class="nav-button" data-link="/proyectos"
+                onclick="window.location.href='/proyectos'">Proyectos</button>
+
+            <button class="nav-button" data-link="/convocatorias"
+                onclick="window.location.href='/convocatorias'">Convocatorias</button>
+   <button class="nav-button" id="btnEvaluador" style="display: none;" data-link="/portalEvaluadorUser"
+                onclick="window.location.href='/portalEvaluadorUser'">Evaluación</button>
+
+        </nav>
+
+    </header>
+    <style>
+        /* === CONTENEDOR PRINCIPAL === */
+        .perfil-content {
+            display: flex;
+            width: 90%;
+            max-width: 1200px;
+            min-height: 70vh;
+            margin: 3rem auto;
+            border-radius: 25px;
+            background: white;
+            overflow: hidden;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.12);
+            padding: 0;
+        }
+
+        /* === SISTEMA DE DOS COLUMNAS === */
+        .perfil-columns {
+            display: grid;
+            grid-template-columns: 40% 60%;
+            width: 100%;
+        }
+
+        /* === COLUMNA IZQUIERDA  === */
+        .perfil-column-left {
+            /* background: linear-gradient(180deg, #1c3d70, #6a8bf8); */
+            background: var(--secondary-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 0;
+        }
+
+        .perfil-foto-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .perfil-foto-custom {
+            width: 260px;
+            height: 260px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: white;
+            padding: 10px;
+            box-shadow: 0px 6px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        /* === COLUMNA DERECHA === */
+        .perfil-column-right {
+            background: white;
+            padding: 50px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .perfil-datos-custom {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        #MiNombreCompleto {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #222;
+        }
+
+        #MiPerfilProfesional {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #555;
+            text-align: justify;
+        }
+
+        /* Caja con datos básicos */
+        .perfil-datos-custom>div {
+            background: rgba(193, 198, 255, 0.28);
+            padding: 20px;
+            border-radius: 12px;
+        }
+
+        .perfil-dato-linea-custom strong {
+            min-width: 150px;
+            display: inline-block;
+            font-weight: 700;
+        }
+
+        /* Botón */
+        .action-button {
+            background: #ff7b00;
+            color: #fff;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            width: fit-content;
+        }
+
+        .action-button:hover {
+            background: #d46300;
+        }
+
+        /* === Modal y hoja de vida === */
+        #iframeHojaVida {
+            width: 100%;
+            height: 700px;
+            border: none;
+        }
+
+        /* === Spinner === */
+        #page-spinner-overlay {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.95);
+            z-index: 99999;
+            transition: opacity .4s ease;
+            -webkit-backdrop-filter: blur(2px);
+            backdrop-filter: blur(2px);
+        }
+
+        #page-spinner-overlay .spinner {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            border: 6px solid rgba(0, 0, 0, 0.08);
+            border-top-color: #007bff;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+    <!-- Spinner -->
+    <div id="page-spinner-overlay" aria-hidden="true" role="status" aria-label="Cargando">
+        <div class="spinner"></div>
+        <div class="spinner-text">Cargando...</div>
     </div>
-    <div class="action-buttons" style="display: none;">
-      <button class="action-button" id="btnNuevoReto">
-        <i class="fas fa-plus button-icon"></i>
-        Nueva convocatoria
+
+  <!-- Contenido Principal -->
+  <div class="main-content">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+      <h2 class="title">Convocatorias Disponibles</h2>
+      <button class="filter-btn" onclick="cargarConvocatorias()" style="background: #28a745;">
+        <i class="bi bi-arrow-clockwise"></i> Actualizar
       </button>
     </div>
 
+    <!-- Filtros -->
+    <div class="filters-container">
+      <div class="filters-row">
+        <div class="filter-group">
+          <label class="filter-label">Buscar convocatoria</label>
+          <input type="text" id="buscarConvocatoria" class="filter-input" 
+                 placeholder="Título, descripción, tipo..." onkeyup="filtrarConvocatorias()">
+        </div>
+        <div class="filter-group">
+          <label class="filter-label">Estado</label>
+          <select id="filtroEstado" class="filter-select" onchange="filtrarConvocatorias()">
+            <option value="">Todos los estados</option>
+            <option value="abierta">Abiertas</option>
+            <option value="cerrada">Cerradas</option>
+            <option value="proximamente">Próximamente</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label class="filter-label">Tipo</label>
+          <select id="filtroTipo" class="filter-select" onchange="filtrarConvocatorias()">
+            <option value="">Todos los tipos</option>
+          </select>
+        </div>
+        <button class="filter-btn" onclick="limpiarFiltros()">
+          <i class="bi bi-arrow-clockwise"></i> Limpiar
+        </button>
+      </div>
+    </div>
+
+    <!-- Lista de Convocatorias -->
+    <div id="listaConvocatorias">
+      <!-- Las convocatorias se cargarán dinámicamente aquí -->
+    </div>
   </div>
 
-  <!-- Filtros -->
-  <div class="filter-container" id="filtros">
-    <input type="text" id="buscarConvocatoria" placeholder="Nombre Convocatoria" class="filter-input">
+  <!-- Modal para Postulación -->
+  <div id="modalPostulacion" class="modal">
+    <div class="modal-content" style="max-width:900px;">
+      <span class="close" id="cerrarModalPostulacion">&times;</span>
+      <h2>Ficha Técnica de PPI - Postulación a Convocatoria</h2>
+      
+      <div id="infoConvocatoria" style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+        <!-- Info de la convocatoria seleccionada -->
+      </div>
 
-    <!-- Menú desplegable para Tipo -->
-    <select id="tipoFiltro" class="filter-select" style="display: none;">
-      <option value="">Todos los Tipos</option>
-      <option value="1">Convocatoria</option>
-      <option value="2">Eventos</option>
-    </select>
+      <div class="form-section">
+        <h3 class="section-title">Contacto Líder PPI</h3>
+        <div class="input-box full-width">
+          <label for="nombreEntidad">Nombre de la Institución responsable</label>
+          <input disabled type="text" id="nombreEntidad" name="nombreEntidad" required>
+        </div>
 
-    <!-- Menú desplegable para Estado -->
-    <select id="estadoFiltro" class="filter-select">
-      <option value="">Todos los Estados</option>
-      <option value="Abierto">Abierto</option>
-      <option value="Cerrado">Cerrado</option>
-    </select>
+        <div class="input-row">
+          <div class="input-box">
+            <label for="nombreLider">Nombre y Cargo</label>
+            <input type="text" id="nombreLider" name="nombreLider" placeholder="Ingrese el nombre del Líder PPI" required>
+          </div>
+          <div class="input-box">
+            <label for="telefonoLider">Teléfono / Celular</label>
+            <input disabled type="text" id="telefonoLider" name="telefonoLider" placeholder="Ingrese el teléfono o celular" required>
+          </div>
+        </div>
 
-    <!-- <button class="filter-button" id="filtrarBtn">Filtrar</button> -->
+        <div class="input-row">
+          <div class="input-box full-width">
+            <label for="correoLider">Correo Electrónico</label>
+            <input disabled type="email" id="correoLider" name="correo" placeholder="Ingrese el correo" required>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3 class="section-title">Información del Proyecto</h3>
+        
+        <div class="input-box full-width">
+          <label for="nombreProyecto">Nombre del Proyecto</label>
+          <input type="text" id="nombreProyecto" name="nombreProyecto" placeholder="Ingrese el nombre del proyecto" required>
+        </div>
+
+        <div class="input-row">
+          <div class="input-box">
+            <label for="duracionProyecto">Duración (meses)</label>
+            <input type="number" id="duracionProyecto" name="duracionProyecto" placeholder="12" min="1" max="60" required>
+          </div>
+          <div class="input-box">
+            <label for="presupuestoProyecto">Presupuesto Solicitado</label>
+            <input type="number" id="presupuestoProyecto" name="presupuestoProyecto" placeholder="0" min="0" required>
+          </div>
+        </div>
+
+        <div class="input-box full-width">
+          <label for="objetivoGeneral">Objetivo General</label>
+          <textarea id="objetivoGeneral" name="objetivoGeneral" rows="3" 
+                    placeholder="Describa el objetivo principal del proyecto" required></textarea>
+        </div>
+
+        <div class="input-box full-width">
+          <label for="descripcionProyecto">Descripción del Proyecto</label>
+          <textarea id="descripcionProyecto" name="descripcionProyecto" rows="4" 
+                    placeholder="Describa detalladamente el proyecto" required></textarea>
+        </div>
+
+        <div class="input-box full-width">
+          <label for="justificacionProyecto">Justificación</label>
+          <textarea id="justificacionProyecto" name="justificacionProyecto" rows="3" 
+                    placeholder="Explique la necesidad y justificación del proyecto" required></textarea>
+        </div>
+
+        <div class="input-row">
+          <div class="input-box">
+            <label for="sectoresBeneficiados">Sectores Beneficiados</label>
+            <input type="text" id="sectoresBeneficiados" name="sectoresBeneficiados" 
+                   placeholder="Ej: Salud, Educación, Agricultura" required>
+          </div>
+          <div class="input-box">
+            <label for="nivelTRL">Nivel TRL</label>
+            <select id="nivelTRL" name="nivelTRL" required>
+              <option value="">Seleccione nivel TRL</option>
+              <option value="1">TRL 1 - Principios básicos observados</option>
+              <option value="2">TRL 2 - Concepto de tecnología formulado</option>
+              <option value="3">TRL 3 - Prueba experimental de concepto</option>
+              <option value="4">TRL 4 - Tecnología validada en laboratorio</option>
+              <option value="5">TRL 5 - Tecnología validada en entorno relevante</option>
+              <option value="6">TRL 6 - Tecnología demostrada en entorno relevante</option>
+              <option value="7">TRL 7 - Demostración del prototipo del sistema en entorno operacional</option>
+              <option value="8">TRL 8 - Sistema completo y calificado</option>
+              <option value="9">TRL 9 - Sistema real probado en entorno operacional</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3 class="section-title">Equipo de Trabajo</h3>
+        
+        <div class="input-row">
+          <div class="input-box">
+            <label for="equipoTecnico">Equipo Técnico (personas)</label>
+            <input type="number" id="equipoTecnico" name="equipoTecnico" placeholder="0" min="0" required>
+          </div>
+          <div class="input-box">
+            <label for="equipoApoyo">Equipo de Apoyo (personas)</label>
+            <input type="number" id="equipoApoyo" name="equipoApoyo" placeholder="0" min="0" required>
+          </div>
+        </div>
+
+        <div class="input-box full-width">
+          <label for="experienciaEquipo">Experiencia del Equipo</label>
+          <textarea id="experienciaEquipo" name="experienciaEquipo" rows="3" 
+                    placeholder="Describa la experiencia y competencias del equipo" required></textarea>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3 class="section-title">Resultados Esperados</h3>
+        
+        <div class="input-box full-width">
+          <label for="resultadosEsperados">Resultados y Productos Esperados</label>
+          <textarea id="resultadosEsperados" name="resultadosEsperados" rows="4" 
+                    placeholder="Describa los resultados, productos y impactos esperados" required></textarea>
+        </div>
+
+        <div class="input-box full-width">
+          <label for="indicadoresExito">Indicadores de Éxito</label>
+          <textarea id="indicadoresExito" name="indicadoresExito" rows="2" 
+                    placeholder="Defina los indicadores para medir el éxito del proyecto" required></textarea>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 15px; justify-content: flex-end; margin-top: 30px;">
+        <button type="button" onclick="cerrarModalPostulacion()" class="btn-secondary">Cancelar</button>
+        <button type="button" onclick="enviarPostulacion()" class="btn-primary">Enviar Postulación</button>
+      </div>
+    </div>
   </div>
 
-  <div class="main-content" id="convocatorias">
-
-  </div>
-
-  <!-- Modal de edición y creación -->
+  <!-- Modal de edición y creación (conservamos el existente para compatibilidad) -->
   <div id="modalEdicion" class="modal">
     <div class="modal-content">
       <div class="modal-header">
@@ -154,347 +687,1004 @@
     </div>
   </div>
 
-  <script src="/js/config.js"></script>
+      <footer class="footer">
 
-  <!-- Utilidades -->
-  <script>
-    // =========================
-    // Utilidades
-    // =========================
-    function obtenerCookie(nombre) {
-      const nombreCookie = `${nombre}=`;
-      const cookies = document.cookie.split(';');
-      for (let i = 0; i < cookies.length; i++) {
-        let cookie = cookies[i].trim();
-        if (cookie.indexOf(nombreCookie) === 0) {
-          return cookie.substring(nombreCookie.length, cookie.length);
+        <div class="footer-content">
+
+            <!-- Izquierda -->
+            <div class="footer-left">
+                <img src="/img/logo1.png" alt="SINAPTICO" class="footer-logo">
+                <p class="footer-desc">Conectando conocimiento, innovación y tecnología.</p>
+
+
+            </div>
+
+            <!-- Enlaces en dos columnas -->
+            <div class="footer-links">
+                <h4>Explorar</h4>
+
+                <div class="links-grid">
+                    <a href="/helice">Inicio</a>
+                    <a href="/directorio">Directorio</a>
+                    <a href="/proyectos">Proyectos</a>
+                    <a href="/convocatorias">Convocatorias</a>
+           
+                </div>
+            </div>
+
+            <!-- Redes sociales -->
+            <div class="footer-social">
+                <h4>Síguenos</h4>
+                <div class="social-icons">
+                    <a href="#"><i class="bi bi-facebook"></i></a>
+                    <a href="#"><i class="bi bi-twitter"></i></a>
+                    <a href="#"><i class="bi bi-linkedin"></i></a>
+                    <a href="#"><i class="bi bi-instagram"></i></a>
+                </div>
+            </div>
+
+            <!-- Contacto -->
+            <div class="footer-contact">
+                <h4>Contáctanos</h4>
+
+                <p>Cra.19 #35-02 - UIS Bucarica</p>
+                <p>Bucaramanga, Colombia</p>
+
+                <div class="contact-item">
+                    <i class="bi bi-envelope"></i>
+                    <span>info@cpcoriente.org</span>
+                </div>
+
+                <div class="contact-item">
+                    <i class="bi bi-telephone"></i>
+                    <span>+57 315 494 0296</span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+            <img src="/logos/logoCPCblanco.png" alt="SINAPTICO" class="footer-logoCPC">
+            <p>© 2025 CPC Oriente. Todos los derechos reservados.</p>
+
+        </div>
+
+    </footer>
+   <!-- Utilidades-->
+        <script src="/js/habilitarEvaluador.js"></script>
+
+    <script>
+        // =========================
+        // Utilidades
+        // =========================
+        function obtenerCookie(nombre) {
+            const nombreCookie = `${nombre}=`;
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                let cookie = cookies[i].trim();
+                if (cookie.indexOf(nombreCookie) === 0) {
+                    return cookie.substring(nombreCookie.length, cookie.length);
+                }
+            }
+            return null;
         }
-      }
-      return null;
-    }
 
-    const userId = obtenerCookie("userId");
+        const userId = obtenerCookie("userId");
+ 
+        // =========================
+        // Inicialización de usuario (nombre, foto) y carga de proyectos
+        // =========================
+        (async () => {
+            try {
+                // Cargar usuario (para cabecera y foto)
+                const resUser = await fetch(`/api/user/${userId}`);
+                const dataUser = await resUser.json();
 
-    (async () => {
+                if (dataUser?.name) {
+                    document.getElementById('nombreUsuarioHeader').innerText = ` ${dataUser.name.split(" ")[0]}`;
+                }
+
+                document.getElementById("imagenPerfilSecundaria").src = dataUser.fotoPerfil ? "photo/" + dataUser.fotoPerfil : "photo/sinfoto.jpg";
+
+                if (dataUser?.fotoPerfil) {
+                    const img = document.getElementById('imagenPerfil');
+                    if (img) img.src = dataUser.fotoPerfil;
+                }
+
+                // Determinar entidad y setear input nombreEntidad
+                let entidadId = null;
+                const resUE = await fetch(`/api/usuarioempresa/user/${userId}`);
+                const dataUE = await resUE.json();
+
+                if (Array.isArray(dataUE) && dataUE.length > 0 && dataUE[0].empresa) {
+                    entidadId = dataUE[0].empresa.id;
+                } else {
+                    entidadId = 'null';
+                }
+
+                const inputEntidad = document.getElementById('nombreEntidad');
+                if (inputEntidad) inputEntidad.value = entidadId;
+
+                console.log('Entidad ID seleccionada:', entidadId);
+
+
+            } catch (err) {
+                console.error('Error inicializando la vista:', err);
+            }
+        })();
+
+        // =========================
+        // Cerrar modal de postulaciones
+        // =========================
+        const btnCerrar = document.getElementById('cerrarModalPostulaciones');
+        if (btnCerrar) {
+            btnCerrar.onclick = function () {
+                const modal = document.getElementById('modalPostulaciones');
+                if (modal) modal.style.display = 'none';
+            };
+        }
+
+        // =========================
+        // Helpers para renderizar select de Líder
+        // =========================
+        async function renderLiderEmpresa(empresaId) {
+            const nombreLiderInput = document.getElementById('nombreLider');
+            const correoLiderInput = document.getElementById('correoLider');
+            const telefonoLiderInput = document.getElementById('telefonoLider');
+
+            const selectLider = document.createElement('select');
+            selectLider.id = 'nombreLider';
+            selectLider.name = 'nombreLider';
+            selectLider.required = true;
+
+            const res = await fetch(`/api/usuarioempresa/empresa/${empresaId}`);
+            const data = await res.json();
+
+            (data || []).forEach(item => {
+                const option = document.createElement('option');
+                option.value = item.User.id;
+                option.text = `${item.User.name} (${item.Cargo?.nombre || 'Sin cargo'})`;
+
+                option.dataset.email = item.User.email || '';
+                option.dataset.telefono = item.User.telefono || '';
+                selectLider.appendChild(option);
+            });
+
+            // Seleccionar el primero y actualizar campos
+            if (selectLider.options.length > 0) {
+                const selectedOption = selectLider.options[0];
+                if (correoLiderInput) correoLiderInput.value = selectedOption.dataset.email || '';
+                if (telefonoLiderInput) telefonoLiderInput.value = selectedOption.dataset.telefono || '';
+            } else {
+                if (correoLiderInput) correoLiderInput.value = '';
+                if (telefonoLiderInput) telefonoLiderInput.value = '';
+            }
+
+            // Cambiar correo y teléfono al cambiar líder
+            selectLider.onchange = function () {
+                const selectedOption = selectLider.options[selectLider.selectedIndex];
+                if (correoLiderInput) correoLiderInput.value = selectedOption.dataset.email || '';
+                if (telefonoLiderInput) telefonoLiderInput.value = selectedOption.dataset.telefono || '';
+            };
+
+            if (nombreLiderInput && nombreLiderInput.parentNode) {
+                nombreLiderInput.parentNode.replaceChild(selectLider, nombreLiderInput);
+            } else {
+                // Si no existe el input a reemplazar, intenta anexar en un contenedor conocido
+                const cont = document.getElementById('contenedorLider') || document.body;
+                cont.appendChild(selectLider);
+            }
+        }
+
+        async function renderLiderIndependiente() {
+            const nombreLiderInput = document.getElementById('nombreLider');
+            const correoLiderInput = document.getElementById('correoLider');
+            const telefonoLiderInput = document.getElementById('telefonoLider');
+
+            const selectLider = document.createElement('select');
+            selectLider.id = 'nombreLider';
+            selectLider.name = 'nombreLider';
+            selectLider.required = true;
+
+            const uid = obtenerCookie("userId");
+            const resUser = await fetch(`/api/user/${uid}`);
+            const user = await resUser.json();
+
+            const optionUsuario = document.createElement('option');
+            optionUsuario.value = uid;
+
+            // Tomar nombre desde #bienvenido si existe ("Hola Nombre")
+
+            optionUsuario.dataset.name = user.name || '';
+            optionUsuario.dataset.email = user.email || '';
+            optionUsuario.dataset.telefono = user.telefono || '';
+            selectLider.appendChild(optionUsuario);
+            optionUsuario.text = user.name || 'Usuario Actual';
+
+            // Rellenar inputs con datos del usuario
+            if (nombreLiderInput) nombreLiderInput.value = user.name || '';
+            if (correoLiderInput) correoLiderInput.value = user.email || '';
+            if (telefonoLiderInput) telefonoLiderInput.value = user.telefono || '';
+
+            // Listener (aunque solo haya uno)
+            selectLider.onchange = function () {
+
+                const selectedOption = selectLider.options[selectLider.selectedIndex];
+                if (correoLiderInput) correoLiderInput.value = selectedOption.dataset.email || '';
+                if (telefonoLiderInput) telefonoLiderInput.value = selectedOption.dataset.telefono || '';
+            };
+
+            if (nombreLiderInput && nombreLiderInput.parentNode) {
+                nombreLiderInput.parentNode.replaceChild(selectLider, nombreLiderInput);
+            } else {
+                const cont = document.getElementById('contenedorLider') || document.body;
+                cont.appendChild(selectLider);
+            }
+        }
+
+        // =========================
+        // Listeners de cambio
+        // =========================
+        // Cambiar líderes al cambiar el select de entidad (nombreEntidad)
+        document.addEventListener('change', async function (e) {
+            if (e.target && e.target.id === 'nombreEntidad') {
+                const empresaId = e.target.value;
+                if (empresaId && empresaId !== "null") {
+                    await renderLiderEmpresa(empresaId);
+                } else {
+                    await renderLiderIndependiente();
+                }
+            }
+        });
+
+        // Cambiar correo y teléfono al cambiar líder (nombreLider), incluso si no cambia la entidad
+        document.addEventListener('change', function (e) {
+            if (e.target && e.target.id === 'nombreLider') {
+                const selectedOption = e.target.options[e.target.selectedIndex];
+                const correoLiderInput = document.getElementById('correoLider');
+                const telefonoLiderInput = document.getElementById('telefonoLider');
+                if (correoLiderInput) correoLiderInput.value = selectedOption.dataset.email || '';
+                if (telefonoLiderInput) telefonoLiderInput.value = selectedOption.dataset.telefono || '';
+            }
+        });
+
+        // =========================
+        // (Opcional) Si deseas forzar que al inicio se renderice el líder acorde al valor cargado de nombreEntidad
+        // =========================
+        window.addEventListener('DOMContentLoaded', async () => {
+            const inputEntidad = document.getElementById('nombreEntidad');
+            if (inputEntidad) {
+                if (inputEntidad.value && inputEntidad.value !== 'null') {
+                    await renderLiderEmpresa(inputEntidad.value);
+                } else {
+                    await renderLiderIndependiente();
+                }
+            }
+        });
+    </script>
+
+  <script>
+    // Variables globales
+    let convocatorias = [];
+    let convocatoriasFiltradas = [];
+    let convocatoriaSeleccionada = null;
+
+    // Utilidades: reutilizar obtenerCookie y userId definidos en el script anterior
+    // (Se omite la redefinición para evitar "Cannot redeclare block-scoped variable 'userId'.)
+
+    // Función principal para cargar convocatorias desde nuestra base de datos
+    async function cargarConvocatorias() {
       try {
-        // Cargar usuario (para cabecera y foto)
-        const resUser = await fetch(`/api/user/${userId}`);
-        const dataUser = await resUser.json();
+        const response = await fetch('/api/convocatorias/');
+        if (response.ok) {
+          const convocatoriasDB = await response.json();
+          console.log('Convocatorias cargadas desde la base de datos:', convocatoriasDB);
+          // Procesar las convocatorias para el formato necesario
+          convocatorias = convocatoriasDB.map(conv => {
+            const fechaApertura = new Date(conv.fechaApertura);
+            const fechaCierre = new Date(conv.fechaCierre || conv.fechaLimite);
+            const hoy = new Date();
+            let estado = 'cerrada';
+            
+            if (fechaApertura > hoy) {
+              estado = 'proximamente';
+            } else if (fechaCierre > hoy) {
+              estado = 'abierta';
+            }
+            
+            return {
+              id: conv.id,
+              titulo: conv.titulo || conv.nombre,
+              descripcion: conv.descripcion || 'Convocatoria para el fortalecimiento del ecosistema de innovación tecnológica.',
+              fechaApertura: conv.fechaApertura,
+              fechaCierre: conv.fechaCierre || conv.fechaLimite,
+              presupuestoTotal: conv.presupuestoTotal || 2000000000,
+              estado: estado,
+              tipoConvocatoria: {
+                nombre: conv.tipoConvocatoria?.nombre || 'Innovación Tecnológica'
+              },
+              requisitos: conv.requisitos || 'Entidades registradas en el ecosistema de innovación de Santander',
+              sectores: conv.areasTematicas || ['Innovación', 'Tecnología'],
+              duracionMaxima: conv.duracionMaxima || 18,
+              montoMaximo: conv.presupuestoMaximo || 200000000,
+              financiamiento: conv.financiamiento || 'CRCI Santander',
+              organizador: conv.organizador || 'CRCI Santander',
+              urlConvocatoria: conv.urlConvocatoria,
+              numero: conv.numero,
+              maxProyectos: conv.maxProyectos,
+              presupuestoMinimo: conv.presupuestoMinimo,
+              duracionMinima: conv.duracionMinima,
+              documentosRequeridos: conv.documentosRequeridos || [],
+              palabrasClave: conv.palabrasClave || [],
+              contacto: conv.contacto,
+              observaciones: conv.observaciones
+            };
+          });
 
-        document.getElementById("imagenPerfilSecundaria").src = dataUser.fotoPerfil ? "photo/" + dataUser.fotoPerfil : "photo/sinfoto.jpg";
-        document.getElementById("imagenPerfil").src = dataUser.fotoPerfil ? "photo/" + dataUser.fotoPerfil : "photo/sinfoto.jpg";
-
+          convocatoriasFiltradas = [...convocatorias];
+          cargarTiposConvocatoria();
+          renderizarConvocatorias();
+        } else {
+          console.error('Error al cargar convocatorias:', response.status);
+          usarDatosDemostracion();
+        }
       } catch (error) {
-        console.error("Error al inicializar usuario:", error);
+        console.error('Error:', error);
+        usarDatosDemostracion();
       }
-    })();
-
-  </script>
-  <!-- Menu desplegable Perfil -->
-  <script>
-    const userMenuBtn = document.getElementById("userMenuBtn");
-    const dropdown = userMenuBtn.closest(".dropdown");
-
-    // Mostrar / ocultar el menú al hacer clic
-    userMenuBtn.addEventListener("click", (event) => {
-      event.stopPropagation(); // evita que el clic cierre inmediatamente el menú
-      dropdown.classList.toggle("show");
-    });
-
-    // Cerrar el menú si haces clic fuera
-    document.addEventListener("click", () => {
-      dropdown.classList.remove("show");
-    });
-  </script>
-  <!-- Cerrar Sesión -->
-  <script>
-    document.getElementById("cerrarSesion").addEventListener("click", () => {
-      Swal.fire({
-        title: '¿Estás seguro?',
-        text: '¿Quieres cerrar sesión?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Sí, cerrar sesión',
-        cancelButtonText: 'Cancelar',
-        reverseButtons: true
-      }).then((result) => {
-        if (result.isConfirmed) {
-          // Borrar cookies y redirigir
-          document.cookie = 'jwt=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-          document.cookie = 'user=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-          document.cookie = 'userId=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-          document.location.href = "/";
-        }
-        // Si el usuario cancela, no pasa nada
-      });
-    });
-
-    document.getElementById("biblioteca").addEventListener("click", () => {
-      document.getElementById("conocimientoMainContent").style.display = "none";
-      document.getElementById("bibliotecaSection").style.display = "flex";
-      document.getElementById("cursosSection").style.display = "none";
-    });
-    document.getElementById("Recursos").addEventListener("click", () => {
-      document.getElementById("conocimientoMainContent").style.display = "none";
-      document.getElementById("bibliotecaSection").style.display = "none";
-      document.getElementById("cursosSection").style.display = "block";
-    });
-
-
-  </script>
-  <!-- Convocatorias -->
-  <script>
-    document.getElementById("cerrarSesion").addEventListener("click", () => {
-      Swal.fire({
-        title: '¿Estás seguro?',
-        text: '¿Quieres cerrar sesión?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Sí, cerrar sesión',
-        cancelButtonText: 'Cancelar',
-        reverseButtons: true
-      }).then((result) => {
-        if (result.isConfirmed) {
-          // Borrar cookies y redirigir
-          document.cookie = 'jwt=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-          document.cookie = 'user=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-          document.cookie = 'userId=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-          document.location.href = "/";
-        }
-        // Si el usuario cancela, no pasa nada
-      });
-    });
-    function irEnConstruccion() {
-      window.location.href = "/construccion"; // o la ruta que tengas
     }
-    // Función para cargar convocatorias (con o sin filtros)
-    async function cargarConvocatorias(apiUrl = '/api/convocatorias') {
-      try {
-        const response = await fetch(apiUrl);
-        const data = await response.json();
 
-        const container = document.getElementById('convocatorias');
-        container.innerHTML = '';
-
-        if (!data.length) {
-          container.innerHTML = '<p>No se encontraron convocatorias.</p>';
-          return;
+    // Datos de demostración
+    function usarDatosDemostracion() {
+      convocatorias = [
+        {
+          id: 1,
+          titulo: "Convocatoria de Innovación en Salud Digital 2025",
+          descripcion: "Convocatoria dirigida a proyectos de innovación que desarrollen soluciones tecnológicas para mejorar la atención en salud, con enfoque en telemedicina, inteligencia artificial aplicada a diagnósticos, y sistemas de información hospitalaria.",
+          fechaApertura: "2025-01-15",
+          fechaCierre: "2025-03-30",
+          presupuestoTotal: 500000000,
+          estado: "abierta",
+          tipoConvocatoria: {
+            nombre: "Salud Digital"
+          },
+          requisitos: "Entidades con experiencia en desarrollo tecnológico, equipo multidisciplinario con al menos un profesional de la salud",
+          sectores: ["Salud", "TIC", "Innovación"],
+          duracionMaxima: 24,
+          montoMaximo: 150000000,
+          financiamiento: "Banco Santander",
+          organizador: "SINAPTICO CRCI"
+        },
+        {
+          id: 2,
+          titulo: "Convocatoria Agtech Santander 2025",
+          descripcion: "Proyectos orientados al desarrollo de tecnologías para el sector agropecuario, incluyendo agricultura de precisión, biotecnología agrícola, sistemas de monitoreo ambiental y cadenas de valor sostenibles.",
+          fechaApertura: "2025-02-01",
+          fechaCierre: "2025-04-15",
+          presupuestoTotal: 800000000,
+          estado: "abierta",
+          tipoConvocatoria: {
+            nombre: "Agtech"
+          },
+          requisitos: "Alianza entre instituciones de investigación y sector productivo agrícola",
+          sectores: ["Agricultura", "Biotecnología", "Sostenibilidad"],
+          duracionMaxima: 36,
+          montoMaximo: 200000000,
+          financiamiento: "Banco Santander",
+          organizador: "SINAPTICO CRCI"
+        },
+        {
+          id: 3,
+          titulo: "Convocatoria Fintech e Inclusión Financiera",
+          descripcion: "Desarrollo de soluciones financieras tecnológicas que promuevan la inclusión financiera en poblaciones rurales y urbanas vulnerables, incluyendo blockchain, criptomonedas y sistemas de pago móvil.",
+          fechaApertura: "2025-03-01",
+          fechaCierre: "2025-05-30",
+          presupuestoTotal: 400000000,
+          estado: "proximamente",
+          tipoConvocatoria: {
+            nombre: "Fintech"
+          },
+          requisitos: "Experiencia en desarrollo de software financiero, alianzas con entidades financieras",
+          sectores: ["Finanzas", "TIC", "Inclusión Social"],
+          duracionMaxima: 18,
+          montoMaximo: 100000000,
+          financiamiento: "Banco Santander",
+          organizador: "SINAPTICO CRCI"
         }
+      ];
 
-        data.forEach((convocatoria, index) => {
+      convocatoriasFiltradas = [...convocatorias];
+      cargarTiposConvocatoria();
+      renderizarConvocatorias();
+      verificarPostulacionesExistentes();
+    }
 
-          if (convocatoria.tipoConvocatoriaId === 1 && convocatoria.habilitado == true) {
-            // Crear un elemento de tarjeta para cada convocatoria
+    // Verificar postulaciones existentes para todas las convocatorias
+    async function verificarPostulacionesExistentes() {
+      if (!convocatoriasFiltradas.length) return;
+      
+      try {
+        const promises = convocatoriasFiltradas.map(async (convocatoria) => {
+          const yaPostulado = await verificarPostulacionExistente(convocatoria.id);
+          return { id: convocatoria.id, yaPostulado };
+        });
+        
+        const resultados = await Promise.all(promises);
+        
+        resultados.forEach(resultado => {
+          const boton = document.getElementById(`btnPostular${resultado.id}`);
+          const texto = document.getElementById(`textoBoton${resultado.id}`);
+          
+          if (boton && texto && resultado.yaPostulado) {
+            boton.disabled = true;
+            boton.style.background = '#6c757d';
+            boton.style.cursor = 'not-allowed';
+            texto.innerHTML = '<i class="bi bi-check-circle"></i> Ya Postulado';
+          }
+        });
+      } catch (error) {
+        console.error('Error al verificar postulaciones existentes:', error);
+      }
+    }
 
-            const card = document.createElement('div');
-            card.classList.add('convocatorias-container');
+    // Cargar tipos de convocatoria para filtros
+    function cargarTiposConvocatoria() {
+      const tipos = [...new Set(convocatorias.map(c => c.tipoConvocatoria.nombre))];
+      const select = document.getElementById('filtroTipo');
+      
+      // Limpiar opciones existentes excepto la primera
+      while (select.children.length > 1) {
+        select.removeChild(select.lastChild);
+      }
 
-            // Asegura que la URL externa tenga https://
-            const url = convocatoria.urlConvocatoria?.startsWith('http')
-              ? convocatoria.urlConvocatoria
-              : `https://${convocatoria.urlConvocatoria}`;
+      tipos.forEach(tipo => {
+        const option = document.createElement('option');
+        option.value = tipo;
+        option.textContent = tipo;
+        select.appendChild(option);
+      });
+    }
 
-            card.innerHTML = `
-          <div class="convocatorias-card" id="convocatoria${index}">
-            <div class="convocatoria-header">
-              <h3 class="convocatoria-title">${convocatoria.nombre}</h3>
-              <p class="convocatoria-subtitle">Financiamiento: ${convocatoria.financiamiento || 'No especificado'}</p>
-              <p class="convocatoria-subtitle-color">Organizador: ${convocatoria.organizador || 'No especificado'}</p>
-             <p class="convocatoria-subtitle-color">
-  Fecha límite: ${convocatoria.fechaLimite
-                ? new Date(convocatoria.fechaLimite).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })
-                : 'Sin fecha'}
-</p>
-
-            </div>
-          </div>
-          <div class="lateral-derecho">
-            <div class="tipo-convocatoria">
-              <span class="tipo-convocatoria-text">${convocatoria.tipoConvocatoria?.nombre || 'Tipo no asignado'}</span>
-            </div>
-            <a href="${url}" target="_blank" rel="noopener noreferrer" class="action-button">Ver más</a>
+    // Renderizar convocatorias
+    function renderizarConvocatorias() {
+      const container = document.getElementById('listaConvocatorias');
+      
+      if (convocatoriasFiltradas.length === 0) {
+        container.innerHTML = `
+          <div class="no-convocatorias">
+            <i class="bi bi-megaphone"></i>
+            <h3>No se encontraron convocatorias</h3>
+            <p>No hay convocatorias que coincidan con los filtros seleccionados.</p>
           </div>
         `;
-
-            container.appendChild(card);
-          } return; // Ignorar si el tipo es "Convocatoria"
-        });
-      } catch (error) {
-        console.error('Error al cargar convocatorias:', error);
-        document.getElementById('convocatorias').innerHTML = '<p>Error al cargar convocatorias.</p>';
-      }
-    }
-
-    // Escuchar el botón "Filtrar"
-    document.addEventListener('DOMContentLoaded', () => {
-      cargarConvocatorias(); // Cargar todas inicialmente
-      const buscarInput = document.getElementById('buscarConvocatoria');
-      const tipoFiltro = document.getElementById('tipoFiltro');
-      const estadoFiltro = document.getElementById('estadoFiltro');
-      const filtrarBtn = document.getElementById('filtrarBtn');
-
-      // Función para construir y cargar la URL con filtros
-      function aplicarFiltros() {
-        const nombre = buscarInput.value.trim();
-        const tipo = 1;
-        const estado = estadoFiltro.value;
-
-        const query = [];
-
-        if (nombre) query.push(`nombre=${encodeURIComponent(nombre)}`);
-        if (tipo) query.push(`tipo=${tipo}`);
-        if (estado) query.push(`estado=${estado}`);
-
-        const url = `/api/convocatorias${query.length ? '?' + query.join('&') : ''}`;
-        cargarConvocatorias(url);
-      }
-
-
-      // Búsqueda automática mientras escribe
-      buscarInput.addEventListener('input', () => {
-        aplicarFiltros();
-      });
-
-      //   // Filtrar con el botón
-      //   filtrarBtn.addEventListener('click', () => {
-      //     aplicarFiltros();
-      //   });
-
-      // También podrías agregar eventos para tipo y estado si quieres que se apliquen automáticamente
-      tipoFiltro.addEventListener('change', aplicarFiltros);
-      estadoFiltro.addEventListener('change', aplicarFiltros);
-    });
-
-
-    document.getElementById('btnNuevoReto').addEventListener('click', () => {
-      document.getElementById('modalEdicion').style.display = 'block';
-      document.getElementById('opcionConvocatoria').textContent = 'Nueva Convocatoria';
-      document.getElementById('formEditarConvocatoria').reset();
-    });
-
-    // Cerrar modal al hacer clic en la X
-    document.getElementById('closeModalEdicion').addEventListener('click', () => {
-      document.getElementById('modalEdicion').style.display = 'none';
-    });
-
-    // Cerrar modal al hacer clic fuera del contenido
-    window.addEventListener('click', (event) => {
-      const modal = document.getElementById('modalEdicion');
-      if (event.target === modal) {
-        modal.style.display = 'none';
-      }
-    });
-
-
-    // Manejar el formulario de edición
-    formEditarConvocatoria.addEventListener('submit', async (e) => {
-
-
-      e.preventDefault();
-
-      const nombre = document.getElementById('nombreConvocatoria').value;
-      const financiamiento = document.getElementById('financiamiento').value;
-      const organizador = document.getElementById('organizador').value;
-      const urlConvocatoria = document.getElementById('urlConvocatoria').value;
-      const tipoConvocatoriaId = document.getElementById('tipoConvocatoria').value;
-      const fechaInput = document.getElementById('fechaLimite').value;
-      const fechaLimite = new Date(fechaInput + 'T00:00:00'); // Agrega la hora local explícita
-      // Construir objeto de datos
-      const datosConvocatoria = {
-        nombre,
-        financiamiento,
-        organizador,
-        urlConvocatoria,
-        tipoConvocatoriaId,
-        fechaLimite
-      };
-
-      try {
-        let response;
-
-
-        // CREAR (POST)
-        response = await fetch('/api/convocatorias', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(datosConvocatoria)
-        });
-
-
-        if (response.ok) {
-          Swal.fire('¡Éxito!', `La convocatoria ha sido creada. Espera que el administrador la revise y la habilite.`, 'success');
-
-          modalEdicion.style.display = "none"; // Cerrar el modal
-
-          // Limpiar campos del formulario
-          document.getElementById('formEditarConvocatoria').reset();
-
-          // Recargar la tabla
-
-        }
-        else {
-          Swal.fire(
-            'Error',
-            'Hubo un problema al actualizar la convocatoria.',
-            'error'
-          );
-        }
-      } catch (error) {
-        console.error('Error al actualizar la convocatoria:', error);
-        Swal.fire(
-          'Error',
-          'Hubo un error al intentar actualizar la convocatoria.',
-          'error'
-        );
-      }
-    });
-
-    document.addEventListener("DOMContentLoaded", async function () {
-      function obtenerCookie(nombre) {
-        const nombreCookie = `${nombre}=`;
-        const cookies = document.cookie.split(';');
-
-        for (let i = 0; i < cookies.length; i++) {
-          let cookie = cookies[i].trim();
-
-          if (cookie.indexOf(nombreCookie) === 0) {
-            return cookie.substring(nombreCookie.length, cookie.length);
-          }
-        }
-
-        return null; // Retorna null si no se encuentra la cookie
-      }
-      const usuario = obtenerCookie("user");
-      const userId = obtenerCookie("userId");
-      // ✅ Verificación de cookies
-      if (!usuario || !userId) {
-        document.getElementById('bienvenido').innerText = "Error: No se encontró la información del usuario.";
         return;
       }
 
-      // ✅ Limpieza del nombre del usuario
-      let cleanedStr = decodeURIComponent(usuario.replace(/%20/g, " "));
-      let nombreUsuario = cleanedStr.split(" ")[0];
+      const convocatoriasHTML = convocatoriasFiltradas.map(convocatoria => {
+        const fechaCierre = new Date(convocatoria.fechaCierre);
+        const hoy = new Date();
+        const diasRestantes = Math.ceil((fechaCierre - hoy) / (1000 * 60 * 60 * 24));
+        
+        let estadoInfo = '';
+        let puedePostular = false;
+        
+        switch (convocatoria.estado) {
+          case 'abierta':
+            estadoInfo = `<span class="convocatoria-status status-abierta">Abierta - ${diasRestantes} días restantes</span>`;
+            puedePostular = true;
+            break;
+          case 'cerrada':
+            estadoInfo = '<span class="convocatoria-status status-cerrada">Cerrada</span>';
+            break;
+          case 'proximamente':
+            estadoInfo = '<span class="convocatoria-status status-proximamente">Próximamente</span>';
+            break;
+        }
+
+        return `
+          <div class="convocatoria-card">
+            <div class="convocatoria-header">
+              <h3 class="convocatoria-title">${convocatoria.titulo}</h3>
+              ${estadoInfo}
+            </div>
+
+            <div class="convocatoria-info">
+              <div class="info-item">
+                <i class="bi bi-calendar"></i>
+                <span>Cierre: ${new Date(convocatoria.fechaCierre).toLocaleDateString('es-ES')}</span>
+              </div>
+              <div class="info-item">
+                <i class="bi bi-cash"></i>
+                <span>Hasta: $${convocatoria.montoMaximo.toLocaleString('es-CO')}</span>
+              </div>
+              <div class="info-item">
+                <i class="bi bi-clock"></i>
+                <span>Máx: ${convocatoria.duracionMaxima} meses</span>
+              </div>
+              <div class="info-item">
+                <i class="bi bi-tag"></i>
+                <span>${convocatoria.tipoConvocatoria.nombre}</span>
+              </div>
+            </div>
+
+            <div class="convocatoria-description">
+              ${convocatoria.descripcion}
+            </div>
+
+            <div class="convocatoria-actions">
+              <button class="btn-postular" ${!puedePostular ? 'disabled' : ''} 
+                      onclick="abrirModalPostulacion(${convocatoria.id})" 
+                      id="btnPostular${convocatoria.id}">
+                <i class="bi bi-send"></i>
+                <span id="textoBoton${convocatoria.id}">${puedePostular ? 'Postular Proyecto' : 'No Disponible'}</span>
+              </button>
+              <button class="btn-ver-mas" onclick="verDetallesConvocatoria(${convocatoria.id})">
+                <i class="bi bi-eye"></i>
+                Ver Más
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      container.innerHTML = convocatoriasHTML;
+    }
+
+    // Filtrar convocatorias
+    function filtrarConvocatorias() {
+      const busqueda = document.getElementById('buscarConvocatoria').value.toLowerCase();
+      const estado = document.getElementById('filtroEstado').value;
+      const tipo = document.getElementById('filtroTipo').value;
+
+      convocatoriasFiltradas = convocatorias.filter(convocatoria => {
+        const coincideBusqueda = !busqueda || 
+          convocatoria.titulo.toLowerCase().includes(busqueda) ||
+          convocatoria.descripcion.toLowerCase().includes(busqueda) ||
+          convocatoria.tipoConvocatoria.nombre.toLowerCase().includes(busqueda);
+
+        const coincideEstado = !estado || convocatoria.estado === estado;
+        const coincideTipo = !tipo || convocatoria.tipoConvocatoria.nombre === tipo;
+
+        return coincideBusqueda && coincideEstado && coincideTipo;
+      });
+
+      renderizarConvocatorias();
+    }
+
+    // Limpiar filtros
+    function limpiarFiltros() {
+      document.getElementById('buscarConvocatoria').value = '';
+      document.getElementById('filtroEstado').value = '';
+      document.getElementById('filtroTipo').value = '';
+      convocatoriasFiltradas = [...convocatorias];
+      renderizarConvocatorias();
+    }
+
+    // Ver detalles de convocatoria
+    function verDetallesConvocatoria(id) {
+      const convocatoria = convocatorias.find(c => c.id === id);
+      
+      let urlInfo = '';
+      if (convocatoria.urlConvocatoria) {
+        const url = convocatoria.urlConvocatoria.startsWith('http') 
+          ? convocatoria.urlConvocatoria 
+          : `https://${convocatoria.urlConvocatoria}`;
+        urlInfo = `<p><strong>URL:</strong> <a href="${url}" target="_blank" style="color: #007bff;">${url}</a></p>`;
+      }
+      
+      const documentosInfo = convocatoria.documentosRequeridos?.length > 0 
+        ? `<div style="margin-bottom: 15px;">
+             <h4 style="color: #007bff; margin-bottom: 10px;">Documentos Requeridos</h4>
+             <ul>${convocatoria.documentosRequeridos.map(doc => `<li>${doc}</li>`).join('')}</ul>
+           </div>` 
+        : '';
+      
+      const contactoInfo = convocatoria.contacto 
+        ? `<div style="margin-bottom: 15px;">
+             <h4 style="color: #007bff; margin-bottom: 10px;">Contacto</h4>
+             <p style="white-space: pre-line;">${convocatoria.contacto}</p>
+           </div>`
+        : '';
+      
+      const observacionesInfo = convocatoria.observaciones 
+        ? `<div style="margin-bottom: 15px;">
+             <h4 style="color: #007bff; margin-bottom: 10px;">Observaciones</h4>
+             <p style="white-space: pre-line;">${convocatoria.observaciones}</p>
+           </div>`
+        : '';
+      
+      Swal.fire({
+        title: convocatoria.titulo,
+        html: `
+          <div style="text-align: left; max-height: 600px; overflow-y: auto;">
+            <div style="margin-bottom: 20px;">
+              <h4 style="color: #007bff; margin-bottom: 10px;">Información General</h4>
+              ${convocatoria.numero ? `<p><strong>Número:</strong> ${convocatoria.numero}</p>` : ''}
+              <p><strong>Tipo:</strong> ${convocatoria.tipoConvocatoria.nombre}</p>
+              <p><strong>Estado:</strong> ${convocatoria.estado}</p>
+              <p><strong>Fecha Apertura:</strong> ${new Date(convocatoria.fechaApertura).toLocaleDateString('es-ES')}</p>
+              <p><strong>Fecha de Cierre:</strong> ${new Date(convocatoria.fechaCierre).toLocaleDateString('es-ES')}</p>
+              <p><strong>Presupuesto Total:</strong> $${convocatoria.presupuestoTotal.toLocaleString('es-CO')}</p>
+              ${convocatoria.presupuestoMinimo ? `<p><strong>Presupuesto Mínimo:</strong> $${convocatoria.presupuestoMinimo.toLocaleString('es-CO')}</p>` : ''}
+              <p><strong>Presupuesto Máximo:</strong> $${convocatoria.montoMaximo.toLocaleString('es-CO')}</p>
+              ${convocatoria.duracionMinima ? `<p><strong>Duración Mínima:</strong> ${convocatoria.duracionMinima} meses</p>` : ''}
+              <p><strong>Duración Máxima:</strong> ${convocatoria.duracionMaxima} meses</p>
+              ${convocatoria.maxProyectos ? `<p><strong>Máximo Proyectos:</strong> ${convocatoria.maxProyectos}</p>` : ''}
+              <p><strong>Organizador:</strong> ${convocatoria.organizador}</p>
+              ${urlInfo}
+            </div>
+            
+            <div style="margin-bottom: 20px;">
+              <h4 style="color: #007bff; margin-bottom: 10px;">Descripción</h4>
+              <p style="white-space: pre-line;">${convocatoria.descripcion}</p>
+            </div>
+            
+            <div style="margin-bottom: 20px;">
+              <h4 style="color: #007bff; margin-bottom: 10px;">Requisitos</h4>
+              <p style="white-space: pre-line;">${convocatoria.requisitos}</p>
+            </div>
+            
+            <div style="margin-bottom: 20px;">
+              <h4 style="color: #007bff; margin-bottom: 10px;">Áreas Temáticas</h4>
+              <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                ${convocatoria.sectores.map(sector => `<span style="background: #e3f2fd; color: #1976d2; padding: 4px 12px; border-radius: 15px; font-size: 0.9em;">${sector}</span>`).join('')}
+              </div>
+            </div>
+            
+            ${documentosInfo}
+            ${contactoInfo}
+            ${observacionesInfo}
+          </div>
+        `,
+        width: 900,
+        showCloseButton: true,
+        confirmButtonText: 'Cerrar',
+        confirmButtonColor: '#007bff'
+      });
+    }
+
+    // Verificar si ya existe una postulación
+    async function verificarPostulacionExistente(convocatoriaId) {
+      try {
+        const response = await fetch(`/api/convocatoria-proyectos/verificar/${userId}/${convocatoriaId}`);
+        if (response.ok) {
+          const data = await response.json();
+          return data.existePostulacion;
+        }
+      } catch (error) {
+        console.error('Error al verificar postulación:', error);
+      }
+      return false;
+    }
+
+    // Abrir modal de postulación
+    async function abrirModalPostulacion(id) {
+      // Verificar si ya tiene una postulación
+      const yaPostulado = await verificarPostulacionExistente(id);
+      
+      if (yaPostulado) {
+        const response = await fetch(`/api/convocatoria-proyectos/verificar/${userId}/${id}`);
+        const data = await response.json();
+        
+        Swal.fire({
+          icon: 'info',
+          title: 'Ya has postulado',
+          html: `Ya tienes una postulación activa para esta convocatoria.<br><br>
+                 <strong>Proyecto:</strong> ${data.postulacion?.proyecto || 'Sin nombre'}<br>
+                 <strong>Estado:</strong> <span class="badge badge-${data.postulacion?.estado?.toLowerCase().replace(' ', '')}">${data.postulacion?.estado || 'Postulado'}</span><br>
+                 <strong>Fecha de aplicación:</strong> ${data.postulacion?.fechaAplicacion ? new Date(data.postulacion.fechaAplicacion).toLocaleDateString('es-ES') : 'N/A'}<br><br>
+                 Puedes revisar el estado de tu postulación en la sección "Mis Proyectos".`,
+          confirmButtonText: 'Entendido',
+          confirmButtonColor: '#007bff',
+          width: 500
+        });
+        return;
+      }
+
+      convocatoriaSeleccionada = convocatorias.find(c => c.id === id);
+      
+      // Mostrar información de la convocatoria
+      document.getElementById('infoConvocatoria').innerHTML = `
+        <h4 style="margin: 0 0 10px 0; color: #007bff;">Postulación a: ${convocatoriaSeleccionada.titulo}</h4>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; font-size: 0.9em;">
+          <p><strong>Tipo:</strong> ${convocatoriaSeleccionada.tipoConvocatoria.nombre}</p>
+          <p><strong>Monto Máximo:</strong> $${convocatoriaSeleccionada.montoMaximo.toLocaleString('es-CO')}</p>
+          <p><strong>Duración Máxima:</strong> ${convocatoriaSeleccionada.duracionMaxima} meses</p>
+          <p><strong>Cierre:</strong> ${new Date(convocatoriaSeleccionada.fechaCierre).toLocaleDateString('es-ES')}</p>
+        </div>
+      `;
+
+      // Cargar datos del usuario
+      cargarDatosUsuario();
+      
+      document.getElementById('modalPostulacion').style.display = 'block';
+    }
+
+    // Cargar datos del usuario en el formulario
+    async function cargarDatosUsuario() {
+      try {
+        const response = await fetch(`/api/user/${userId}`);
+        if (response.ok) {
+          const usuario = await response.json();
+          
+          // Cargar información de la entidad asociada si existe
+          if (usuario.entidad) {
+            document.getElementById('nombreEntidad').value = usuario.entidad.razonSocial || '';
+          } else {
+            // Si no hay entidad asociada directamente, buscar si es administrador de alguna
+            const responseEntidad = await fetch(`/api/entidad/verificar-entidad/${userId}`);
+            if (responseEntidad.ok) {
+              const dataEntidad = await responseEntidad.json();
+              if (dataEntidad.entidad) {
+                document.getElementById('nombreEntidad').value = dataEntidad.entidad.razonSocial || '';
+              }
+            }
+          }
+          
+          document.getElementById('telefonoLider').value = usuario.telefono || '';
+          document.getElementById('correoLider').value = usuario.email || '';
+        }
+      } catch (error) {
+        console.error('Error al cargar datos del usuario:', error);
+      }
+    }
+
+    // Cerrar modal de postulación
+    function cerrarModalPostulacion() {
+      document.getElementById('modalPostulacion').style.display = 'none';
+      convocatoriaSeleccionada = null;
+      limpiarFormulario();
+    }
+
+    // Limpiar formulario
+    function limpiarFormulario() {
+      const campos = ['nombreLider', 'nombreProyecto', 'duracionProyecto', 'presupuestoProyecto', 
+                     'objetivoGeneral', 'descripcionProyecto', 'justificacionProyecto', 
+                     'sectoresBeneficiados', 'nivelTRL', 'equipoTecnico', 'equipoApoyo', 
+                     'experienciaEquipo', 'resultadosEsperados', 'indicadoresExito'];
+      
+      campos.forEach(campo => {
+        const elemento = document.getElementById(campo);
+        if (elemento.type === 'number') {
+          elemento.value = '';
+        } else if (elemento.tagName === 'SELECT') {
+          elemento.selectedIndex = 0;
+        } else {
+          elemento.value = '';
+        }
+      });
+    }
+
+    // Validar formulario
+    function validarFormulario() {
+      const camposRequeridos = [
+        'nombreLider', 'nombreProyecto', 'duracionProyecto', 'presupuestoProyecto', 
+        'objetivoGeneral', 'descripcionProyecto', 'justificacionProyecto', 
+        'sectoresBeneficiados', 'nivelTRL', 'equipoTecnico', 'equipoApoyo', 
+        'experienciaEquipo', 'resultadosEsperados', 'indicadoresExito'
+      ];
+
+      for (let campo of camposRequeridos) {
+        const elemento = document.getElementById(campo);
+        if (!elemento.value.trim()) {
+          Swal.fire({
+            icon: 'warning',
+            title: 'Campo requerido',
+            text: `El campo "${elemento.previousElementSibling.textContent}" es obligatorio`
+          });
+          elemento.focus();
+          return false;
+        }
+      }
+
+      // Validar duración máxima
+      const duracion = parseInt(document.getElementById('duracionProyecto').value);
+      if (duracion > convocatoriaSeleccionada.duracionMaxima) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Duración excedida',
+          text: `La duración máxima permitida es de ${convocatoriaSeleccionada.duracionMaxima} meses`
+        });
+        return false;
+      }
+
+      // Validar presupuesto máximo
+      const presupuesto = parseInt(document.getElementById('presupuestoProyecto').value);
+      if (presupuesto > convocatoriaSeleccionada.montoMaximo) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Presupuesto excedido',
+          text: `El presupuesto máximo permitido es de $${convocatoriaSeleccionada.montoMaximo.toLocaleString('es-CO')}`
+        });
+        return false;
+      }
+
+      return true;
+    }
+
+    // Enviar postulación
+    async function enviarPostulacion() {
+      if (!validarFormulario()) {
+        return;
+      }
 
       try {
-        const response = await fetch(`${API_BASE_URL}/api/entidad/verificar-entidad/${userId}`);
-        const data = await response.json();
-        console.log(data);
-        if (data.mensaje === 'Entidad encontrada') {
-          document.querySelector('.action-buttons').style.display = 'block';
+        Swal.fire({
+          title: 'Enviando postulación...',
+          text: 'Por favor espere mientras procesamos su postulación',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          }
+        });
+
+        // Obtener la información del usuario y entidad
+        let entidadId = null;
+        try {
+          const responseEntidad = await fetch(`/api/entidad/verificar-entidad/${userId}`);
+          if (responseEntidad.ok) {
+            const dataEntidad = await responseEntidad.json();
+            if (dataEntidad.entidad) {
+              entidadId = dataEntidad.entidad.id;
+            }
+          }
+        } catch (error) {
+          console.error('Error al obtener entidad:', error);
+        }
+
+        // Mapear datos del formulario al modelo Proyectos existente
+        const datosProyecto = {
+          // Campos requeridos del modelo Proyectos
+          entidadId: entidadId,
+          userId: parseInt(userId),
+          userLiderId: parseInt(userId), // El mismo usuario será el líder por ahora
+          
+          // Mapear campos del formulario a campos del modelo
+          nombrePPI: document.getElementById('nombreProyecto').value,
+          determinanteProductividad: convocatoriaSeleccionada.tipoConvocatoria.nombre,
+          componenteProductividad: document.getElementById('sectoresBeneficiados').value,
+          objetivo: document.getElementById('objetivoGeneral').value,
+          necesidadProblema: document.getElementById('justificacionProyecto').value,
+          impactos: document.getElementById('resultadosEsperados').value,
+          objetivosEspecificos: document.getElementById('descripcionProyecto').value,
+          
+          // Mapear duración a enum
+          duracionPPI: (() => {
+            const duracion = parseInt(document.getElementById('duracionProyecto').value);
+            if (duracion < 12) return 'Menos de un año';
+            if (duracion <= 36) return 'Entre un año y tres años';
+            return 'Más de tres años';
+          })(),
+          
+          // Mapear presupuesto a enum
+          presupuestoPPI: (() => {
+            const presupuesto = parseInt(document.getElementById('presupuestoProyecto').value);
+            if (presupuesto <= 100000000) return 'De 0 a 100 millones de pesos';
+            if (presupuesto <= 500000000) return 'De 101 a 500 millones de pesos';
+            if (presupuesto <= 1000000000) return 'De 501 a 1000 millones de pesos';
+            if (presupuesto <= 5000000000) return 'De 1001 a 5000 millones de pesos';
+            return 'Más de 5000 millones de pesos';
+          })(),
+          
+          // Determinar fase según nivel TRL
+          fasePPI: (() => {
+            const trl = parseInt(document.getElementById('nivelTRL').value);
+            if (trl <= 2) return 'Fase 1: Idea';
+            if (trl <= 4) return 'Fase 2: Formulación o Prefactibilidad';
+            if (trl <= 6) return 'Fase 3: Factibilidad';
+            return 'Ejecución';
+          })(),
+          
+          // Campos adicionales con información del equipo
+          rangoDeEmpleos: `Equipo técnico: ${document.getElementById('equipoTecnico').value || 0} personas, Equipo apoyo: ${document.getElementById('equipoApoyo').value || 0} personas`,
+          estratosBeneficiarios: 'Estratos 1-6', // Valor por defecto
+          potencialEmpleo: document.getElementById('experienciaEquipo').value,
+          impactoEmpleo: document.getElementById('indicadoresExito').value,
+          impactoEquidad: 'Proyecto orientado a la inclusión y el desarrollo tecnológico',
+          politicasPPI: `Postulación a convocatoria: ${convocatoriaSeleccionada.titulo}. TRL: ${document.getElementById('nivelTRL').value}. Líder: ${document.getElementById('nombreLider').value}`
+        };
+
+        console.log('Datos a enviar:', datosProyecto);
+
+        const response = await fetch('/api/proyectos', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(datosProyecto)
+        });
+
+        if (response.ok) {
+          const proyectoCreado = await response.json();
+          
+          // Crear registro en ConvocatoriaProyectos
+          try {
+            const convocatoriaProyectoData = {
+              proyectoId: proyectoCreado.id,
+              convocatoriaId: convocatoriaSeleccionada.id,
+              documentosPresentados: JSON.stringify({
+                fichaTecnica: true,
+                planEjecucion: document.getElementById('descripcionProyecto').value ? true : false,
+                presupuestoDetallado: true
+              }),
+              observacionesAplicacion: `Aplicación desde portal web. TRL: ${document.getElementById('nivelTRL').value}. Líder: ${document.getElementById('nombreLider').value}`
+            };
+
+            const responseConvocatoria = await fetch('/api/convocatoria-proyectos', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(convocatoriaProyectoData)
+            });
+
+            if (!responseConvocatoria.ok) {
+              console.error('Error al registrar aplicación de convocatoria:', await responseConvocatoria.json());
+            } else {
+              console.log('Aplicación de convocatoria registrada exitosamente');
+            }
+          } catch (error) {
+            console.error('Error al registrar aplicación de convocatoria:', error);
+          }
+          
+          await Swal.fire({
+            icon: 'success',
+            title: '¡Postulación enviada!',
+            html: `Su proyecto <strong>"${datosProyecto.nombrePPI}"</strong> ha sido enviado exitosamente a la convocatoria <strong>"${convocatoriaSeleccionada.titulo}"</strong>.<br><br>
+                   Estado: <span class="badge badge-primary">Postulado</span><br>
+                   ID del Proyecto: ${proyectoCreado.id}<br>
+                   Puede revisar el estado de su postulación en la sección "Mis Proyectos".`,
+            timer: 6000,
+            timerProgressBar: true
+          });
+          
+          cerrarModalPostulacion();
+        } else {
+          const error = await response.json();
+          throw new Error(error.message || 'Error al enviar la postulación');
         }
 
       } catch (error) {
         console.error('Error:', error);
-        document.getElementById('bienvenido').innerText =
-          "Ocurrió un error al verificar tu entidad. Por favor intenta más tarde.";
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: error.message || 'No se pudo enviar la postulación. Intente nuevamente.'
+        });
+      }
+    }
+
+    // Event listeners para el modal
+    document.getElementById('cerrarModalPostulacion').addEventListener('click', cerrarModalPostulacion);
+
+    // Cerrar modal al hacer clic fuera
+    window.addEventListener('click', function(event) {
+      const modal = document.getElementById('modalPostulacion');
+      if (event.target === modal) {
+        cerrarModalPostulacion();
       }
     });
 
-  </script>
 
-   <script src="js/notificaciones.js"></script>
-  <script src="/js/websocket.js"></script>
+    
+
+    // Inicializar página cuando el DOM esté listo
+    document.addEventListener('DOMContentLoaded', function() {
+      cargarConvocatorias();
+    });
+  </script>
+ 
+    <script src="/js/config.js"></script>
+    <script src="admin.js"></script>
+    <script src="js/formularios.js"></script>
+    <script src="js/cargarDatos.js"></script>
+    <script src="js/estadisticas.js"></script>
+    <script src="js/notificaciones.js"></script>
+    <script src="/js/websocket.js"></script>
+    <script src="/js/menu.js"></script>
+    <script src="/js/enviarInvitacion.js"></script>
+
+   <script src="/js/menu.js"></script>
 </body>
 
 </html>

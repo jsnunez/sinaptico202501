@@ -49,35 +49,7 @@
             opacity: 0.9;
         }
 
-        /* Estadísticas */
-        .stats-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .stat-card {
-            background: white;
-            padding: 5px;
-            border-radius: 10px;
-            text-align: center;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            border-left: 4px solid var(--naranja-color);
-        }
-
-        .stat-number {
-            font-size: 2em;
-            font-weight: bold;
-            color: #2c3e50;
-            margin-bottom: 5px;
-        }
-
-        .stat-label {
-            color: #7f8c8d;
-            font-size: 0.9em;
-        }
-
+ 
         .contact-controls {
             padding: 20px;
             border-radius: 10px;
@@ -460,7 +432,8 @@
         </div>
         <nav class="nav">
 
-            <button class="nav-button" data-link="/helice" id="inicio" onclick="window.location.href='/helice'">Inicio</button>
+            <button class="nav-button" data-link="/helice" id="inicio"
+                onclick="window.location.href='/helice'">Inicio</button>
 
             <div class="dropdown menuG">
                 <button class="nav-button dropdown-btnG" data-link="/directorio">Directorio</button>
@@ -469,29 +442,14 @@
                     <a href="/directorioPersonas">Personas</a>
                 </div>
             </div>
+            <button class="nav-button" data-link="/proyectos"
+                onclick="window.location.href='/proyectos'">Proyectos</button>
 
-         <button class="nav-button" data-link="/proyectos" onclick="window.location.href='/proyectos'">Proyectos</button>
-            <div class="dropdown menuG">
-                <button class="nav-button dropdown-btnG" data-link="/innovacion">Innovación</button>
-                <div class="dropdown-menu dropdown-menuG">
-                    <a href="/retos">Retos</a>
-                    <a href="/muroServicios">Muro de Servicios</a>
-                </div>
-            </div>
-
-            <div class="dropdown menuG">
-                <button class="nav-button dropdown-btnG" data-link="/conocimiento">Conocimiento</button>
-                <div class="dropdown-menu dropdown-menuG">
-                    <a href="/cursos">Cursos</a>
-                    <a href="/biblioteca">Biblioteca</a>
-                </div>
-            </div>
-
-          
-            <button class="nav-button" data-link="/convocatorias" onclick="window.location.href='/convocatorias'">Convocatorias</button>
-            <button class="nav-button" data-link="/eventos" onclick="window.location.href='/eventos'">Eventos</button>
-
-
+            <button class="nav-button" data-link="/convocatorias"
+                onclick="window.location.href='/convocatorias'">Convocatorias</button>
+   
+<button class="nav-button" id="btnEvaluador" style="display: none;" data-link="/portalEvaluadorUser"
+                onclick="window.location.href='/portalEvaluadorUser'">Evaluación</button>
         </nav>
 
     </header>
@@ -714,14 +672,14 @@
     <!-- Contenido principal - Entidades -->
     <div class="main-content" id="entidades">
         <!-- Tarjetas de la triple hélice -->
-        <div class="helix-title">
+        <!-- <div class="helix-title">
             <h3>Modelo de cuadruple Hélice</h3>
             <p>Interacción entre Estado, Academia y Sociedad para impulsar la innovación</p>
-        </div>
-
-        <div class="cards-container">
-            <!-- Estado Card -->
-            <div id="" onclick="window.location.href='/directorio'" class="card">
+        </div> -->
+        <!-- 
+        <div class="cards-container"> -->
+        <!-- Estado Card -->
+        <!-- <div id="" onclick="window.location.href='/directorio'" class="card">
                 <div class="card-inner">
                     <div class="card-front">
                         <div class="card-icon">
@@ -743,8 +701,8 @@
                         </p>
                     </div>
                 </div>
-            </div>
-            <div class="card">
+            </div> -->
+        <!-- <div class="card">
                 <div class="card-inner" onclick="window.location.href='/proyectos'">
                     <div class="card-front">
                         <div class="card-icon">
@@ -765,8 +723,8 @@
 
                     </div>
                 </div>
-            </div>
-            <div class="card">
+            </div> -->
+        <!-- <div class="card">
                 <div class="card-inner" onclick="window.location.href='/innovacion'">
                     <div class="card-front">
                         <div class="card-icon">
@@ -782,18 +740,18 @@
                         <p class="card-text">Conecta con empresas que buscan soluciones innovadoras a desafíos
                             reales.
                         </p>
-                    </div>
-                    <div class="card-back">
+                    </div> -->
+        <!-- <div class="card-back">
                         <h3 class="card-title">Ver Contenido</h3>
                         <p class="card-text">Descubre retos abiertos y propón soluciones que generen impacto.</p>
 
 
                     </div>
                 </div>
-            </div>
+            </div> -->
 
-            <!-- Academia Card -->
-            <div class="card">
+        <!-- Academia Card -->
+        <!-- <div class="card">
                 <div class="card-inner" onclick="window.location.href='/innovacion'">
                     <div class="card-front">
                         <div class="card-icon">
@@ -815,10 +773,10 @@
 
                     </div>
                 </div>
-            </div>
+            </div> -->
 
-            <!-- Sociedad Card -->
-            <div class="card">
+        <!-- Sociedad Card -->
+        <!-- <div class="card">
                 <div class="card-inner" onclick="window.location.href='/Conocimiento'">
                     <div class="card-front">
                         <div class="card-icon">
@@ -842,10 +800,10 @@
 
                     </div>
                 </div>
-            </div>
+            </div> -->
 
-            <!-- Innovación Card -->
-            <div class="card">
+        <!-- Innovación Card -->
+        <!-- <div class="card">
                 <div class="card-inner" onclick="window.location.href='/convocatorias'">
                     <div class="card-front">
                         <div class="card-icon">
@@ -868,12 +826,12 @@
 
                     </div>
                 </div>
-            </div>
+            </div> -->
 
-        </div>
+        <!-- </div> -->
 
         <!-- Contadores -->
-        <div class="stats-title">
+        <!-- <div class="stats-title">
             <h3>Estadísticas del Ecosistema</h3>
             <p>Nodos activos en nuestra red neural de innovación</p>
         </div>
@@ -902,7 +860,260 @@
 
 
 
+        </div> -->
+ <div class="stats-title">
+    <h3>Panel de Estadísticas</h3>
+    <p>Visualización general del comportamiento de la plataforma</p>
+</div>
+
+<!-- BOTONES DE CONTROL -->
+<div class="stats-menu" style="display: flex; justify-content: center;">
+    <button id="btn-general"  class="menu-btn nav-button active" onclick="mostrarStats('general')">Visión General</button>
+    <button id="btn-empresa" style="display: none;" class="menu-btn nav-button" onclick="mostrarStats('empresa')">Estadísticas Empresariales</button>
+    <button id="btn-usuario"  class="menu-btn nav-button" onclick="mostrarStats('usuario')">Mis Métricas</button>
+</div>
+
+<!-- =======================  VISTA 1 → GENERALES ======================= -->
+<div id="stats-general" class="stats-container">
+
+    <div class="stats-grid">
+
+        <div class="stat-card">
+            <div class="top-row">
+                <div class="stat-label">Usuarios Registrados</div>
+                <div class="stat-icon"><i class="bi bi-person-bounding-box"></i></div>
+            </div>
+            <div class="stat-number">80</div>
         </div>
+
+        <div class="stat-card">
+            <div class="top-row">
+                <div class="stat-label">Entidades Vinculadas</div>
+                <div class="stat-icon"><i class="fas fa-building"></i></div>
+            </div>
+            <div class="stat-number">14</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="top-row">
+                <div class="stat-label">Retos Activos</div>
+                <div class="stat-icon"><i class="bi bi-pass"></i></div>
+            </div>
+            <div class="stat-number">10</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="top-row">
+                <div class="stat-label">Convocatorias Publicadas</div>
+                <div class="stat-icon"><i class="bi bi-megaphone-fill"></i></div>
+            </div>
+            <div class="stat-number">5</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="top-row">
+                <div class="stat-label">Eventos Realizados</div>
+                <div class="stat-icon"><i class="bi bi-calendar-check-fill"></i></div>
+            </div>
+            <div class="stat-number">7</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="top-row">
+                <div class="stat-label">Cursos Disponibles</div>
+                <div class="stat-icon"><i class="bi bi-book-fill"></i></div>
+            </div>
+            <div class="stat-number">20</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="top-row">
+                <div class="stat-label">Interacciones Totales</div>
+                <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+            </div>
+            <div class="stat-number">55</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="top-row">
+                <div class="stat-label">Servicios Ofertados</div>
+                <div class="stat-icon"><i class="bi bi-arrow-repeat"></i></div>
+            </div>
+            <div class="stat-number">55</div>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- =======================  VISTA 2 → EMPRESA ======================= -->
+<div id="stats-empresa" class="stats-container" style="display:none;">
+
+    <div class="stats-grid">
+
+        <div class="stat-card">
+            <div class="top-row">
+                <div class="stat-label">Proveedores Vinculados</div>
+                <div class="stat-icon"><i class="fas fa-users"></i></div>
+            </div>
+            <div class="stat-number">32</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="top-row">
+                <div class="stat-label">Clientes Activos</div>
+                <div class="stat-icon"><i class="bi bi-people-fill"></i></div>
+            </div>
+            <div class="stat-number">18</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="top-row">
+                <div class="stat-label">Proyectos en Ejecución</div>
+                <div class="stat-icon"><i class="bi bi-diagram-3"></i></div>
+            </div>
+            <div class="stat-number">12</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="top-row">
+                <div class="stat-label">Retos Empresariales</div>
+                <div class="stat-icon"><i class="bi bi-lightbulb"></i></div>
+            </div>
+            <div class="stat-number">8</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="top-row">
+                <div class="stat-label">Eventos Corporativos</div>
+                <div class="stat-icon"><i class="bi bi-calendar-event-fill"></i></div>
+            </div>
+            <div class="stat-number">11</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="top-row">
+                <div class="stat-label">Formaciones Internas</div>
+                <div class="stat-icon"><i class="bi bi-journal-richtext"></i></div>
+            </div>
+            <div class="stat-number">6</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="top-row">
+                <div class="stat-label">Innovaciones Presentadas</div>
+                <div class="stat-icon"><i class="bi bi-award-fill"></i></div>
+            </div>
+            <div class="stat-number">9</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="top-row">
+                <div class="stat-label">Convenios Activos</div>
+                <div class="stat-icon"><i class="bi bi-handshake-fill"></i></div>
+            </div>
+            <div class="stat-number">13</div>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- =======================  VISTA 3 → USUARIO ======================= -->
+<div id="stats-usuario" class="stats-container" style="display:none;">
+
+    <div class="stats-grid">
+
+        <div class="stat-card">
+            <div class="top-row">
+                <div class="stat-label">Proyectos Participados</div>
+                <div class="stat-icon"><i class="bi bi-folder-check"></i></div>
+            </div>
+            <div class="stat-number">4</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="top-row">
+                <div class="stat-label">Servicios Solicitados</div>
+                <div class="stat-icon"><i class="bi bi-tools"></i></div>
+            </div>
+            <div class="stat-number">7</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="top-row">
+                <div class="stat-label">Eventos Asistidos</div>
+                <div class="stat-icon"><i class="bi bi-calendar2-check"></i></div>
+            </div>
+            <div class="stat-number">3</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="top-row">
+                <div class="stat-label">Cursos Realizados</div>
+                <div class="stat-icon"><i class="bi bi-book-half"></i></div>
+            </div>
+            <div class="stat-number">5</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="top-row">
+                <div class="stat-label">Retos Propuestos</div>
+                <div class="stat-icon"><i class="bi bi-lightning-fill"></i></div>
+            </div>
+            <div class="stat-number">2</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="top-row">
+                <div class="stat-label">Interacciones Propias</div>
+                <div class="stat-icon"><i class="bi bi-activity"></i></div>
+            </div>
+            <div class="stat-number">14</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="top-row">
+                <div class="stat-label">Propuestas Enviadas</div>
+                <div class="stat-icon"><i class="fas fa-share-square"></i></div>
+            </div>
+            <div class="stat-number">6</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="top-row">
+                <div class="stat-label">Documentos Cargados</div>
+                <div class="stat-icon"><i class="bi bi-file-earmark-arrow-up"></i></div>
+            </div>
+            <div class="stat-number">9</div>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- SCRIPT ACTUALIZADO -->
+<script>
+function mostrarStats(tipo) {
+
+    // Ocultar todas las vistas
+    document.getElementById("stats-general").style.display = "none";
+    document.getElementById("stats-empresa").style.display = "none";
+    document.getElementById("stats-usuario").style.display = "none";
+
+    // Mostrar la vista seleccionada
+    document.getElementById("stats-" + tipo).style.display = "block";
+
+    // Remover clase pulse de todos
+    document.getElementById("btn-general").classList.remove("active");
+    document.getElementById("btn-empresa").classList.remove("active");
+    document.getElementById("btn-usuario").classList.remove("active");
+
+    // Activar solo el botón seleccionado
+    document.getElementById("btn-" + tipo).classList.add("active");
+}
+</script>
+
     </div>
 
     <!-- Modal Foto de Perfil -->
@@ -1277,6 +1488,69 @@
         <div class="spinner-text">Cargando...</div>
     </div>
 
+    <footer class="footer">
+
+        <div class="footer-content">
+
+            <!-- Izquierda -->
+            <div class="footer-left">
+                <img src="/img/logo1.png" alt="SINAPTICO" class="footer-logo">
+                <p class="footer-desc">Conectando conocimiento, innovación y tecnología.</p>
+
+
+            </div>
+
+            <!-- Enlaces en dos columnas -->
+            <div class="footer-links">
+                <h4>Explorar</h4>
+
+                <div class="links-grid">
+                    <a href="/helice">Inicio</a>
+                    <a href="/directorio">Directorio</a>
+                    <a href="/proyectos">Proyectos</a>
+                    <a href="/convocatorias">Convocatorias</a>
+           
+                </div>
+            </div>
+
+            <!-- Redes sociales -->
+            <div class="footer-social">
+                <h4>Síguenos</h4>
+                <div class="social-icons">
+                    <a href="#"><i class="bi bi-facebook"></i></a>
+                    <a href="#"><i class="bi bi-twitter"></i></a>
+                    <a href="#"><i class="bi bi-linkedin"></i></a>
+                    <a href="#"><i class="bi bi-instagram"></i></a>
+                </div>
+            </div>
+
+            <!-- Contacto -->
+            <div class="footer-contact">
+                <h4>Contáctanos</h4>
+
+                <p>Cra.19 #35-02 - UIS Bucarica</p>
+                <p>Bucaramanga, Colombia</p>
+
+                <div class="contact-item">
+                    <i class="bi bi-envelope"></i>
+                    <span>info@cpcoriente.org</span>
+                </div>
+
+                <div class="contact-item">
+                    <i class="bi bi-telephone"></i>
+                    <span>+57 315 494 0296</span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+            <img src="/logos/logoCPCblanco.png" alt="SINAPTICO" class="footer-logoCPC">
+            <p>© 2025 CPC Oriente. Todos los derechos reservados.</p>
+
+        </div>
+
+    </footer>
 
 
     <!-- Scripts -->
@@ -1296,7 +1570,7 @@
     <script src="/js/websocket.js"></script>
     <script src="js/enviarInvitacion.js"></script>
     <script src="/js/menu.js"></script>
-
+    <script src="/js/habilitarEvaluador.js"></script>
 
     <!-- Mis contactos -->
     <script>

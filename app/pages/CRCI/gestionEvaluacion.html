@@ -1,0 +1,1874 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestión de Evaluación - SINAPTICO CRCI</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="stylesheet" href="styles/stylehelice2.css">
+  <link rel="stylesheet" href="styles/colores.css">
+  <link rel="stylesheet" href="styles/postulaciones.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    .evaluation-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .project-card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      padding: 25px;
+      margin-bottom: 20px;
+   
+    }
+
+    .project-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      margin-bottom: 20px;
+    }
+
+    .project-title {
+      font-size: 1.3em;
+      font-weight: bold;
+      color: #2c3e50;
+      margin: 0;
+    }
+
+    .project-meta {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 15px;
+      margin: 15px 0;
+      padding: 15px;
+      background: #f8f9fa;
+      border-radius: 8px;
+    }
+
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9em;
+      color: #666;
+    }
+
+    .meta-item i {
+      color: #007bff;
+      width: 16px;
+    }
+
+    .evaluation-section {
+      background: white;
+      border-radius: 8px;
+      border: 1px solid #e3e6ea;
+      margin-top: 20px;
+    }
+
+    .section-header {
+      background: #f8f9fa;
+      padding: 15px 20px;
+      border-bottom: 1px solid #e3e6ea;
+      border-radius: 8px 8px 0 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .section-title {
+      font-weight: 600;
+      color: #2c3e50;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-content {
+      padding: 20px;
+    }
+
+    .committee-members {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 15px;
+    }
+
+    .member-card {
+      border: 2px solid #e3e6ea;
+      border-radius: 8px;
+      padding: 15px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .member-card:hover {
+      border-color: #007bff;
+      background: #f8f9fa;
+    }
+
+    .member-card.selected {
+      border-color: #28a745;
+      background: #e8f5e9;
+    }
+
+    .member-card.assigned {
+      border-color: #ffc107;
+      background: #fff8e1;
+    }
+
+    .member-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .member-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #007bff;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+
+    .member-details h4 {
+      margin: 0 0 4px 0;
+      color: #2c3e50;
+      font-size: 0.95em;
+    }
+
+    .member-details p {
+      margin: 0;
+      color: #666;
+      font-size: 0.85em;
+    }
+
+    .member-status {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #28a745;
+    }
+
+    .member-status.assigned {
+      background: #ffc107;
+    }
+
+    .evaluation-criteria {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .criteria-card {
+      border: 1px solid #e3e6ea;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .criteria-header {
+      background: #007bff;
+      color: white;
+      padding: 12px 15px;
+      font-weight: 600;
+      font-size: 0.9em;
+    }
+
+    .criteria-content {
+      padding: 15px;
+    }
+
+    .score-input {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 1em;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .score-range {
+      font-size: 0.8em;
+      color: #666;
+      text-align: center;
+      margin-top: 5px;
+    }
+
+    .total-score {
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 20px;
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .total-score h3 {
+      margin: 0 0 10px 0;
+      color: #2c3e50;
+    }
+
+    .score-display {
+      font-size: 2.5em;
+      font-weight: bold;
+      color: #007bff;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 15px;
+      justify-content: flex-end;
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid #e3e6ea;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: #007bff;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #0056b3;
+      transform: translateY(-2px);
+    }
+
+    .btn-success {
+      background: #28a745;
+      color: white;
+    }
+
+    .btn-success:hover {
+      background: #1e7e34;
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: #6c757d;
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background: #545b62;
+    }
+
+    .btn-warning {
+      background: #ffc107;
+      color: #000;
+    }
+
+    .btn-warning:hover {
+      background: #e0a800;
+    }
+
+    .badge {
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 0.8em;
+      font-weight: 600;
+      display: inline-block;
+      text-align: center;
+    }
+
+    .badge-postulado {
+      background: #e3f2fd;
+      color: #1976d2;
+    }
+
+    .badge-enevaluacion {
+      background: #fff3cd;
+      color: #856404;
+    }
+
+    .badge-preseleccionado {
+      background: #f3e5f5;
+      color: #7b1fa2;
+    }
+
+    .badge-aprobado {
+      background: #e8f5e8;
+      color: #2e7d32;
+    }
+
+    .badge-rechazado {
+      background: #ffebee;
+      color: #c62828;
+    }
+
+    .filters-section {
+      background: white;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .filters-row {
+      display: flex;
+      gap: 20px;
+      align-items: end;
+      flex-wrap: wrap;
+    }
+
+    .filter-group {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .filter-label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #2c3e50;
+    }
+
+    .filter-input,
+    .filter-select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 1em;
+    }
+
+    .progress-bar {
+      background: #e9ecef;
+      border-radius: 10px;
+      height: 20px;
+      overflow: hidden;
+      margin: 10px 0;
+    }
+
+    .progress-fill {
+      background: linear-gradient(90deg, #007bff, #0056b3);
+      height: 100%;
+      transition: width 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 0.8em;
+      font-weight: bold;
+    }
+
+    .evaluation-status {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .status-indicator {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #28a745;
+    }
+
+    .status-indicator.pending {
+      background: #ffc107;
+    }
+
+    .status-indicator.not-started {
+      background: #6c757d;
+    }
+
+    @media (max-width: 768px) {
+      .filters-row {
+        flex-direction: column;
+      }
+
+      .filter-group {
+        min-width: auto;
+      }
+
+      .committee-members {
+        grid-template-columns: 1fr;
+      }
+
+      .evaluation-criteria {
+        grid-template-columns: 1fr;
+      }
+
+      .action-buttons {
+        flex-direction: column;
+      }
+    }
+
+    /* Estilos para asignación múltiple */
+    #asignacionControls {
+      animation: slideIn 0.3s ease-out;
+      background: linear-gradient(135deg, #f8f9fa, #e9ecef) !important;
+      border-left: 4px solid #007bff !important;
+    }
+
+    #asignacionControls .btn-primary {
+      background: linear-gradient(45deg, #007bff, #0056b3);
+      border: none;
+      box-shadow: 0 2px 4px rgba(0, 123, 255, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    #asignacionControls .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 123, 255, 0.4);
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .alert-info {
+      border-left: 4px solid #17a2b8;
+      background-color: #d1ecf1;
+      border-color: #bee5eb;
+      color: #0c5460;
+    }
+
+    /* Estilos para badges de evaluadores asignados */
+    .badge-evaluador {
+      background: linear-gradient(135deg, #007bff, #0056b3);
+      color: white;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.75em;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin: 2px 4px;
+      box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2);
+      transition: all 0.3s ease;
+      max-width: 200px;
+    }
+
+    .badge-evaluador:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+    }
+
+    .evaluador-iniciales {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7em;
+      font-weight: bold;
+    }
+
+    .evaluador-nombre {
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .evaluador-especialidad {
+      display: block;
+      font-size: 0.65em;
+      opacity: 0.8;
+      font-style: italic;
+    }
+
+    .badge-secondary {
+      background: #6c757d;
+      color: white;
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 0.75em;
+    }
+
+    .evaluadores-section {
+      background: #f8f9fa;
+      border-radius: 6px;
+      padding: 12px;
+      margin: 10px 0;
+      border-left: 4px solid #007bff;
+    }
+
+    .evaluadores-title {
+      font-weight: 600;
+      color: #495057;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .evaluadores-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    @media (max-width: 768px) {
+      .badge-evaluador {
+        font-size: 0.7em;
+        padding: 4px 8px;
+        max-width: 150px;
+      }
+
+      .evaluador-nombre {
+        max-width: 80px;
+      }
+    }
+
+    /* Estilos para badges de evaluadores asignados */
+    .badge-evaluador {
+      background: linear-gradient(135deg, #007bff, #0056b3);
+      color: white;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.75em;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin: 2px 4px;
+      box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2);
+      transition: all 0.3s ease;
+      max-width: 200px;
+    }
+
+    .badge-evaluador:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+    }
+
+    .evaluador-iniciales {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7em;
+      font-weight: bold;
+    }
+
+    .evaluador-nombre {
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .evaluador-especialidad {
+      display: block;
+      font-size: 0.65em;
+      opacity: 0.8;
+      font-style: italic;
+    }
+
+    .badge-secondary {
+      background: #6c757d;
+      color: white;
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 0.75em;
+    }
+
+    .evaluadores-section {
+      background: #f8f9fa;
+      border-radius: 6px;
+      padding: 12px;
+      margin: 10px 0;
+      border-left: 4px solid #007bff;
+    }
+
+    .evaluadores-title {
+      font-weight: 600;
+      color: #495057;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .evaluadores-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    @media (max-width: 768px) {
+      .badge-evaluador {
+        font-size: 0.7em;
+        padding: 4px 8px;
+        max-width: 150px;
+      }
+
+      .evaluador-nombre {
+        max-width: 80px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Encabezado -->
+  <header>
+    <div class="header">
+      <div onclick="window.location.href='/'">
+        <!-- <span class="logo-icon">⚡</span> -->
+        <img src="/img/logo1.png" alt="SINAPTICO" class="logo" style="height:8vh;">
+      </div>
+      <div style="display: flex; align-items: center; gap: 20px;">
+        <!-- <div style="font-size:1.5em;cursor:pointer;">
+          <span id="icono-notif">🔔 <span
+              style='background:red;color:white;border-radius:50%;padding:2px 7px;font-size:0.9em;'>0</span></span>
+        </div>
+        <div class="notificaciones" id="notificaciones"></div> -->
+
+
+        <div class="dropdown">
+          <button id="userMenuBtn" style="display: flex; align-items: center;">
+            <div id="userPhoto ">
+              <img class="imagenPerfil" id="imagenPerfilSecundaria" src="img/sinfoto.jpg" alt="Foto de perfil"
+                onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
+
+            </div>
+            <h3 id="nombreUsuarioHeader" style="color:white; margin-left:10px;">CRCI <i class="bi bi-chevron-down"></i>
+            </h3>
+          </button>
+
+          <div class="dropdown-menu" id="userMenu">
+            <!-- <a href="/perfil">Perfil</a>
+            <a href="/perfilEntidad">Empresa</a> -->
+            <a href="#" id="cerrarSesion">Cerrar sesión</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <nav class="nav">
+      <button class="nav-button " onclick="window.location.href='/dashboardCRCI'" id="inicio">Inicio</button>
+      <button class="nav-button" onclick="window.location.href='/dashboardCRCIAplicados'">Banco de Proyectos</button>
+      <button class="nav-button " onclick="window.location.href='/miembrosComite'">Asociados</button>
+      <button class="nav-button" onclick="window.location.href='/generarConvocatoria'">Gestion de Convocatorias</button>
+      <button class="nav-button pulse" onclick="window.location.href='/gestionEvaluacion'">Gestión de
+        Evaluación</button>
+      <button class="nav-button" onclick="window.location.href='/portalEvaluador'">Evaluación</button>
+    </nav>
+  </header>
+
+
+
+  <!-- Contenido Principal -->
+  <div class="evaluation-container">
+    <!-- Título y controles -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+      <h2 class="title">Gestión de Evaluación de Proyectos</h2>
+      <div style="display: flex; gap: 10px;">
+        <button class="btn btn-secondary" onclick="location.reload()">
+          <i class="bi bi-arrow-clockwise"></i> Actualizar
+        </button>
+        <!-- <button class="btn btn-success" onclick="window.location.href='/pages/CRCI/evaluacionMultiple.html'">
+          <i class="bi bi-people-fill"></i> Evaluación Múltiple
+        </button> -->
+        <button class="btn btn-warning" onclick="window.location.href='/portalEvaluador'">
+          <i class="bi bi-person-check"></i> Portal Evaluador
+        </button>
+        <button class="btn btn-primary" onclick="exportarReporte()">
+          <i class="bi bi-download"></i> Exportar Reporte
+        </button>
+      </div>
+    </div>
+
+    <!-- Filtros -->
+    <div class="filters-section">
+      <div class="filters-row">
+        <div class="filter-group">
+          <label class="filter-label">Buscar proyecto</label>
+          <input type="text" id="buscarProyecto" class="filter-input" placeholder="Nombre, ID, entidad..."
+            onkeyup="aplicarFiltros()">
+        </div>
+        <div class="filter-group">
+          <label class="filter-label">Estado de Evaluación</label>
+          <select id="filtroEstado" class="filter-select" onchange="aplicarFiltros()">
+            <option value="">Todos los estados</option>
+            <option value="Postulado">Postulado</option>
+            <option value="En Evaluacion">En Evaluación</option>
+            <option value="Preseleccionado">Preseleccionado</option>
+            <option value="Aprobado">Aprobado</option>
+            <option value="Rechazado">Rechazado</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label class="filter-label">Convocatoria</label>
+          <select id="filtroConvocatoria" class="filter-select" onchange="aplicarFiltros()">
+            <option value="">Todas las convocatorias</option>
+          </select>
+        </div>
+        <button class="btn btn-secondary" onclick="limpiarFiltros()">
+          <i class="bi bi-filter"></i> Limpiar
+        </button>
+      </div>
+    </div>
+
+    <!-- Lista de Proyectos para Evaluación -->
+    <div id="proyectosEvaluacion">
+      <!-- Los proyectos se cargarán dinámicamente aquí -->
+    </div>
+  </div>
+
+  <script>
+    // Variables globales
+    let proyectos = [];
+    let proyectosFiltrados = [];
+    let miembrosComite = [];
+    let asignacionesEvaluadores = [];
+
+    // Utilidades
+    function obtenerCookie(nombre) {
+      const nombreCookie = `${nombre}=`;
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        let cookie = cookies[i].trim();
+        if (cookie.indexOf(nombreCookie) === 0) {
+          return cookie.substring(nombreCookie.length, cookie.length);
+        }
+      }
+      return null;
+    }
+
+    const userId = obtenerCookie("userId");
+
+    // Cargar datos iniciales
+    async function cargarDatos() {
+      try {
+        await Promise.all([
+          cargarProyectos(),
+          cargarMiembrosComite(),
+          cargarConvocatorias(),
+          cargarAsignacionesEvaluadores()
+        ]);
+        aplicarFiltros();
+      } catch (error) {
+        console.error('Error cargando datos:', error);
+        Swal.fire('Error', 'No se pudieron cargar los datos iniciales', 'error');
+      }
+    }
+
+    // Cargar proyectos desde ConvocatoriaProyectos
+    async function cargarProyectos() {
+      try {
+        const response = await fetch('/api/convocatoria-proyectos');
+        if (response.ok) {
+          const data = await response.json();
+          proyectos = data.success ? data.data : [];
+          console.log('Proyectos cargados:', proyectos);
+        } else {
+          throw new Error('Error al cargar proyectos');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        proyectos = [];
+      }
+    }
+
+    // Cargar miembros del comité
+    async function cargarMiembrosComite() {
+      try {
+        console.log('Iniciando carga de miembros del comité...');
+
+        // Intentar varios endpoints posibles para miembros del comité
+        let response;
+        let data = null;
+
+        // Primer intento: endpoint específico de miembros comité
+        try {
+          response = await fetch('/api/miembros-comite');
+          if (response.ok) {
+            data = await response.json();
+            console.log('Datos obtenidos de /api/miembros-comite:', data);
+          }
+        } catch (e) {
+          console.log('Endpoint /api/miembros-comite no disponible, probando alternativas...');
+        }
+
+        // Segundo intento: endpoint de usuarios con rol de comité
+        if (!data) {
+          try {
+            response = await fetch('/api/users?role=comite');
+            if (response.ok) {
+              data = await response.json();
+              console.log('Datos obtenidos de /api/users?role=comite:', data);
+            }
+          } catch (e) {
+            console.log('Endpoint /api/users?role=comite no disponible...');
+          }
+        }
+
+        // Tercer intento: todos los usuarios y filtrar por tipo
+        if (!data) {
+          try {
+            response = await fetch('/api/users');
+            if (response.ok) {
+              const allUsers = await response.json();
+              data = Array.isArray(allUsers) ? allUsers.filter(u => u.role === 'comite' || u.tipo === 'comite') : [];
+              console.log('Datos filtrados de /api/users:', data);
+            }
+          } catch (e) {
+            console.log('Error al obtener usuarios:', e);
+          }
+        }
+
+        // Procesar y estructurar los datos obtenidos
+        if (data) {
+          miembrosComite = procesarMiembrosComite(data);
+          console.log('Miembros del comité procesados:', miembrosComite);
+
+          if (miembrosComite.length === 0) {
+            console.warn('No se encontraron miembros del comité válidos');
+            // Crear datos de prueba si no hay miembros
+            miembrosComite = crearMiembrosPrueba();
+          }
+        } else {
+          console.warn('No se pudieron obtener datos de miembros del comité');
+          miembrosComite = crearMiembrosPrueba();
+        }
+
+      } catch (error) {
+        console.error('Error cargando miembros del comité:', error);
+        miembrosComite = crearMiembrosPrueba();
+      }
+    }
+
+    // Función para procesar y normalizar datos de miembros del comité
+    function procesarMiembrosComite(rawData) {
+      if (!Array.isArray(rawData)) {
+        rawData = rawData.data || rawData.members || [rawData];
+      }
+
+      return rawData.map(item => {
+        // Normalizar estructura de datos
+        let miembro = {
+          id: item.id || item.miembroId || Date.now() + Math.random(),
+          Usuario: null,
+          especialidades: item.especialidades || item.specialties || 'Evaluador General',
+          cargo: item.cargo || item.position || item.role || 'Miembro del Comité',
+          fechaIngreso: item.fechaIngreso || item.joinDate || new Date().toISOString(),
+          estado: item.estado || item.status || 'activo'
+        };
+
+        // Procesar datos de usuario
+        if (item.Usuario) {
+          miembro.Usuario = item.Usuario;
+        } else if (item.user) {
+          miembro.Usuario = item.user;
+        } else {
+          // Crear objeto Usuario desde datos directos
+          miembro.Usuario = {
+            id: item.userId || item.id,
+            name: item.name || item.nombre || item.fullName,
+            email: item.email || item.correo,
+            telefono: item.telefono || item.phone || item.celular,
+            role: item.role || 'comite'
+          };
+        }
+
+        // Validar que tenga datos mínimos requeridos
+        if (!miembro.Usuario.email || !miembro.Usuario.name) {
+          console.warn('Miembro con datos incompletos:', miembro);
+          return null;
+        }
+
+        return miembro;
+      }).filter(Boolean); // Filtrar miembros nulos
+    }
+
+    // Función para crear miembros de prueba si no hay datos
+    function crearMiembrosPrueba() {
+      console.log('Creando miembros de prueba para desarrollo...');
+      return [
+        {
+          id: 1,
+          Usuario: {
+            id: 101,
+            name: 'Dr. Ana García',
+            email: 'ana.garcia@comite.crci.co',
+            telefono: '+57 300 123 4567',
+            role: 'comite'
+          },
+          especialidades: 'Innovación Tecnológica',
+          cargo: 'Director de Innovación',
+          estado: 'activo'
+        },
+        {
+          id: 2,
+          Usuario: {
+            id: 102,
+            name: 'Ing. Carlos Rodríguez',
+            email: 'carlos.rodriguez@comite.crci.co',
+            telefono: '+57 300 234 5678',
+            role: 'comite'
+          },
+          especialidades: 'Desarrollo Empresarial',
+          cargo: 'Evaluador Senior',
+          estado: 'activo'
+        },
+        {
+          id: 3,
+          Usuario: {
+            id: 103,
+            name: 'Dra. María López',
+            email: 'maria.lopez@comite.crci.co',
+            telefono: '+57 300 345 6789',
+            role: 'comite'
+          },
+          especialidades: 'Sostenibilidad y Medio Ambiente',
+          cargo: 'Coordinadora de Evaluaciones',
+          estado: 'activo'
+        },
+        {
+          id: 4,
+          Usuario: {
+            id: 104,
+            name: 'Ing. Pedro Martínez',
+            email: 'pedro.martinez@comite.crci.co',
+            telefono: '+57 300 456 7890',
+            role: 'comite'
+          },
+          especialidades: 'Finanzas y Viabilidad',
+          cargo: 'Analista Financiero',
+          estado: 'activo'
+        }
+      ];
+    }
+
+    // Cargar asignaciones de evaluadores
+    async function cargarAsignacionesEvaluadores() {
+      try {
+        console.log('Cargando asignaciones de evaluadores...');
+        const response = await fetch('/api/asignacion-evaluadores');
+
+        if (response.ok) {
+          const data = await response.json();
+          asignacionesEvaluadores = Array.isArray(data) ? data : (data.data || []);
+          console.log('Asignaciones de evaluadores cargadas:', asignacionesEvaluadores);
+        } else {
+          console.warn('No se pudieron cargar las asignaciones de evaluadores');
+          asignacionesEvaluadores = [];
+        }
+      } catch (error) {
+        console.error('Error cargando asignaciones de evaluadores:', error);
+        asignacionesEvaluadores = [];
+      }
+    }
+
+    // Obtener evaluadores asignados a un proyecto específico
+    function obtenerEvaluadoresAsignados(proyectoId, convocatoriaId) {
+      return asignacionesEvaluadores.filter(asignacion => {
+        console.log('Verificando asignación:', asignacion);
+        const matchProyecto = asignacion.proyectoId === proyectoId ||
+          asignacion.proyectoId === parseInt(proyectoId);
+        const matchConvocatoria = !convocatoriaId ||
+          asignacion.convocatoriaId === convocatoriaId ||
+          asignacion.convocatoriaId === parseInt(convocatoriaId);
+        return matchProyecto && matchConvocatoria;
+      });
+    }
+
+    // Renderizar evaluadores asignados como badges
+    function renderizarEvaluadoresAsignados(proyectoId, convocatoriaId) {
+      const evaluadoresAsignados = obtenerEvaluadoresAsignados(proyectoId, convocatoriaId);
+      console.log(`Evaluadores asignados para proyecto ${proyectoId}:`, evaluadoresAsignados);
+      if (evaluadoresAsignados.length === 0) {
+        return '<span class="badge badge-secondary"><i class="bi bi-person-x"></i> Sin evaluadores asignados</span>';
+      }
+
+      return evaluadoresAsignados.map(asignacion => {
+        console.log('Renderizando badge para asignación:', asignacion);
+        const nombreEvaluador = (asignacion.evaluador.nombre ||
+          asignacion.evaluadorId ||
+          'Evaluador').toString();
+
+        const especialidades = asignacion.evaluadorEspecialidades || '';
+        const iniciales = nombreEvaluador.split(' ').map(n => n[0]).join('').toUpperCase();
+
+        return `
+          <span class="badge badge-evaluador" title="${nombreEvaluador}${especialidades ? ' - ' + especialidades : ''}">
+            <span class="evaluador-iniciales">${iniciales}</span>
+            <span class="evaluador-nombre">${nombreEvaluador}</span>
+            ${especialidades ? `<small class="evaluador-especialidad">${especialidades}</small>` : ''}
+          </span>
+        `;
+      }).join('');
+    }
+    function obtenerAsignacionesProyecto(proyectoId) {
+      return asignacionesEvaluadores.filter(a => a.proyectoId === proyectoId);
+    }
+    // Cargar convocatorias para filtros
+    async function cargarConvocatorias() {
+      try {
+        const response = await fetch('/api/convocatorias');
+        if (response.ok) {
+          const convocatorias = await response.json();
+          const select = document.getElementById('filtroConvocatoria');
+
+          // Limpiar opciones existentes excepto la primera
+          while (select.children.length > 1) {
+            select.removeChild(select.lastChild);
+          }
+
+          if (Array.isArray(convocatorias)) {
+            convocatorias.forEach(conv => {
+              const option = document.createElement('option');
+              option.value = conv.id;
+              option.textContent = conv.titulo || conv.nombre;
+              select.appendChild(option);
+            });
+          }
+        }
+      } catch (error) {
+        console.error('Error cargando convocatorias:', error);
+      }
+    }
+
+    // Aplicar filtros
+    function aplicarFiltros() {
+      const busqueda = document.getElementById('buscarProyecto').value.toLowerCase();
+      const estado = document.getElementById('filtroEstado').value;
+      const convocatoria = document.getElementById('filtroConvocatoria').value;
+
+      proyectosFiltrados = proyectos.filter(proyecto => {
+        const coincideBusqueda = !busqueda ||
+          proyecto.proyecto?.nombrePPI?.toLowerCase().includes(busqueda) ||
+          proyecto.proyecto?.objetivo?.toLowerCase().includes(busqueda) ||
+          proyecto.proyecto?.entidad?.razonSocial?.toLowerCase().includes(busqueda) ||
+          proyecto.proyecto?.id?.toString().includes(busqueda);
+
+        const coincideEstado = !estado || proyecto.estado === estado;
+        const coincideConvocatoria = !convocatoria || proyecto.convocatoriaId.toString() === convocatoria;
+
+        return coincideBusqueda && coincideEstado && coincideConvocatoria;
+      });
+
+      renderizarProyectos();
+    }
+
+    // Limpiar filtros
+    function limpiarFiltros() {
+      document.getElementById('buscarProyecto').value = '';
+      document.getElementById('filtroEstado').value = '';
+      document.getElementById('filtroConvocatoria').value = '';
+      aplicarFiltros();
+    }
+
+    // Renderizar proyectos
+    function renderizarProyectos() {
+      const container = document.getElementById('proyectosEvaluacion');
+
+      if (proyectosFiltrados.length === 0) {
+        container.innerHTML = `
+          <div class="project-card" style="text-align: center; color: #666;">
+            <i class="bi bi-folder-x" style="font-size: 3em; margin-bottom: 15px;"></i>
+            <h3>No hay proyectos para evaluar</h3>
+            <p>No se encontraron proyectos que coincidan con los filtros seleccionados.</p>
+          </div>
+        `;
+        return;
+      }
+
+      const proyectosHTML = proyectosFiltrados.map(aplicacion => {
+        const proyecto = aplicacion.proyecto;
+        const estado = aplicacion.estado || 'Postulado';
+        const puntajeTotal = aplicacion.puntuacionTotal || 0;
+
+        return `
+          <div class="project-card">
+            <div class="project-header">
+              <div>
+                <h3 class="project-title">${proyecto?.nombrePPI || 'Proyecto sin nombre'}</h3>
+                <div style="display: flex; gap: 15px; align-items: center; margin-top: 8px;">
+                  <span class="badge badge-${estado.toLowerCase().replace(' ', '')}">${estado}</span>
+                  <span style="color: #666; font-size: 0.9em;">ID: ${proyecto?.id || 'N/A'}</span>
+                </div>
+              </div>
+              <div style="text-align: right;">
+                <div style="font-size: 0.9em; color: #666;">Puntaje Total</div>
+                <div style="font-size: 1.5em; font-weight: bold; color: ${(typeof puntajeTotal === 'string' ? parseFloat(puntajeTotal) : puntajeTotal) >= 80 ? '#28a745' : (typeof puntajeTotal === 'string' ? parseFloat(puntajeTotal) : puntajeTotal) >= 60 ? '#ffc107' : '#dc3545'};">
+                  ${(typeof puntajeTotal === 'string' ? parseFloat(puntajeTotal) : puntajeTotal).toFixed(1)}/100
+                </div>
+              </div>
+            </div>
+
+            <div class="project-meta">
+              <div class="meta-item">
+                <i class="bi bi-building"></i>
+                <span><strong>Entidad:</strong> ${proyecto?.entidad?.razonSocial || 'Independiente'}</span>
+              </div>
+              <div class="meta-item">
+                <i class="bi bi-person-badge"></i>
+                <span><strong>Líder:</strong> ${proyecto?.usuarioLider?.name || 'No asignado'}</span>
+              </div>
+              <div class="meta-item">
+                <i class="bi bi-clock"></i>
+                <span><strong>Duración:</strong> ${proyecto?.duracionPPI || 'No especificada'}</span>
+              </div>
+              <div class="meta-item">
+                <i class="bi bi-cash"></i>
+                <span><strong>Presupuesto:</strong> ${proyecto?.presupuestoPPI || 'No especificado'}</span>
+              </div>
+              <div class="meta-item">
+                <i class="bi bi-megaphone"></i>
+                <span><strong>Convocatoria:</strong> ${aplicacion.convocatoria?.titulo || 'No especificada'}</span>
+              </div>
+              <div class="meta-item">
+                <i class="bi bi-calendar-event"></i>
+                <span><strong>Fecha aplicación:</strong> ${aplicacion.fechaAplicacion ? new Date(aplicacion.fechaAplicacion).toLocaleDateString('es-ES') : 'N/A'}</span>
+              </div>
+            </div>
+
+            <!-- Sección de Evaluadores Asignados -->
+            <div class="evaluadores-section">
+              <div class="evaluadores-title">
+                <i class="bi bi-people-fill"></i>
+                Evaluadores Asignados
+              </div>
+              <div class="evaluadores-list">
+                ${renderizarEvaluadoresAsignados(proyecto?.id, aplicacion.convocatoriaId)}
+              </div>
+            </div>
+
+            ${proyecto?.objetivo ? `
+              <div style="margin: 15px 0; padding: 15px; background: #f8f9fa; border-radius: 6px;">
+                <strong style="color: #2c3e50;">Objetivo:</strong>
+                <p style="margin: 8px 0 0 0; color: #555; line-height: 1.4;">${proyecto.objetivo}</p>
+              </div>
+            ` : ''}
+
+            <div class="action-buttons">
+              <button class="btn btn-primary" onclick="gestionarEvaluacion(${aplicacion.id})">
+                <i class="bi bi-gear-fill"></i> Gestionar Evaluación
+              </button>
+              <button class="btn btn-secondary" onclick="verDetalleProyecto(${proyecto?.id})">
+                <i class="bi bi-eye-fill"></i> Ver Detalles
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      container.innerHTML = proyectosHTML;
+    }
+
+    // Gestionar evaluación de proyecto específico
+    async function gestionarEvaluacion(aplicacionId) {
+      const aplicacion = proyectos.find(a => a.id === aplicacionId);
+      aplicacionActual = aplicacion; // Establecer aplicación actual globalmente
+      if (!aplicacion) return;
+
+      const proyecto = aplicacion.proyecto;
+
+      // Crear modal dinámico para gestión de evaluación
+      const modalHTML = `
+        <div style="text-align: left; max-width: 800px;">
+          <div style="margin-bottom: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+            <h4 style="margin: 0 0 10px 0; color: #007bff;">${proyecto?.nombrePPI || 'Proyecto'}</h4>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; font-size: 0.9em;">
+              <p><strong>ID:</strong> ${proyecto?.id}</p>
+              <p><strong>Estado:</strong> <span class="badge badge-${aplicacion.estado?.toLowerCase().replace(' ', '')}">${aplicacion.estado}</span></p>
+              <p><strong>Entidad:</strong> ${proyecto?.entidad?.razonSocial || 'Independiente'}</p>
+              <p><strong>Líder:</strong> ${proyecto?.usuarioLider?.name || 'No asignado'}</p>
+            </div>
+          </div>
+
+          <!-- Sección de Miembros del Comité -->
+         <!-- Sección de Estado de Evaluadores -->
+<div class="evaluation-section" style="margin-top:20px;">
+  <div class="section-header">
+    <h4 class="section-title">
+      <i class="bi bi-bar-chart-steps"></i>
+      Estado de Evaluadores Asignados
+    </h4>
+  </div>
+  <div class="section-content">
+    <div id="estadoEvaluadoresProyecto">
+      ${renderizarEstadoEvaluadores(proyecto.id)}
+    </div>
+  </div>
+</div>
+
+          <!-- Sección de Criterios de Evaluación -->
+          <div class="evaluation-section">
+            <div class="section-header">
+              <h4 class="section-title">
+                <i class="bi bi-clipboard-check"></i>
+                Criterios de Evaluación
+              </h4>
+            </div>
+            <div class="section-content">
+              <div class="alert alert-success">
+                <h5><i class="bi bi-check-circle"></i> Asignación de Evaluadores</h5>
+                <p>Seleccione uno o múltiples evaluadores del comité para asignar a este proyecto. 
+                La asignación se realizará automáticamente en el nuevo sistema de evaluaciones.</p>
+              </div>
+              </div>
+${renderizarMiembrosComite(aplicacion.evaluadorAsignado)}
+              <div class="total-score">
+                <h3>Puntaje Total</h3>
+<div class="score-display" id="puntajeTotal">
+  ${calcularPromedioEvaluadores(proyecto.id)}
+</div>                <div style="margin-top: 10px;">
+                  <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: ${aplicacion.puntuacionTotal || 0}%">
+                      ${aplicacion.puntuacionTotal || 0}%
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Observaciones de evaluación -->
+              <div style="margin-top: 20px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #2c3e50;">
+                  Observaciones de Evaluación
+                </label>
+                <textarea id="observacionesEvaluacion" rows="4" 
+                          style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; resize: vertical;"
+                          placeholder="Ingrese observaciones detalladas sobre la evaluación...">${aplicacion.observacionesEvaluacion || ''}</textarea>
+              </div>
+
+              <!-- Estado de evaluación -->
+              <div style="margin-top: 20px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #2c3e50;">
+                  Estado de Evaluación
+                </label>
+                <select id="estadoEvaluacion" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
+                  <option value="Postulado" ${aplicacion.estado === 'Postulado' ? 'selected' : ''}>Postulado</option>
+                  <option value="En Evaluacion" ${aplicacion.estado === 'En Evaluacion' ? 'selected' : ''}>En Evaluación</option>
+                  <option value="Preseleccionado" ${aplicacion.estado === 'Preseleccionado' ? 'selected' : ''}>Preseleccionado</option>
+                  <option value="Aprobado" ${aplicacion.estado === 'Aprobado' ? 'selected' : ''}>Aprobado</option>
+                  <option value="Rechazado" ${aplicacion.estado === 'Rechazado' ? 'selected' : ''}>Rechazado</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+
+      const result = await Swal.fire({
+        title: 'Asignar Evaluadores',
+        html: modalHTML,
+        showCancelButton: true,
+        showDenyButton: true,
+        confirmButtonText: 'Asignar Evaluadores',
+        denyButtonText: 'Finalizar Proyecto',
+        didOpen: () => {
+          // Habilitar/Deshabilitar el botón "Finalizar Proyecto" según puntajes
+          const denyBtn = Swal.getDenyButton();
+          const proyectoId = aplicacion.proyecto.id;
+          const asignaciones = obtenerAsignacionesProyecto(proyectoId);
+          const todosEvaluados = asignaciones.length > 0 && asignaciones.every(a => a.puntuacionPromedio && !isNaN(parseFloat(a.puntuacionPromedio)));
+          if (denyBtn) {
+            denyBtn.disabled = !todosEvaluados;
+            denyBtn.title = todosEvaluados ? '' : 'Debe completar la evaluación de todos los evaluadores';
+          }
+        },
+        cancelButtonText: 'Cancelar',
+        width: '90%',
+        customClass: { popup: 'swal-wide' },
+
+        preConfirm: () => {
+          return asignarEvaluadores(aplicacionId);
+        },
+
+        // 🔥 CAPTURAMOS LOS DATOS ANTES DE QUE EL ALERT SE CIERRE
+        preDeny: () => {
+          const estado = document.getElementById("estadoEvaluacion")?.value || "";
+            const observaciones = document.getElementById("observacionesEvaluacion")?.value || "";
+            const puntajeTotalStr = document.getElementById("puntajeTotal")?.textContent.trim() || "0";
+            const puntajeTotal = Number(puntajeTotalStr.replace(/[^\d.]/g, "")) || 0;
+          return { estado, observaciones ,puntajeTotal};
+        }
+      });
+      if (result.isConfirmed) {
+        await cargarProyectos();
+        await cargarAsignacionesEvaluadores();
+        aplicarFiltros();
+      }
+      if (result.isDenied) {
+        await finalizarProyecto(aplicacionId, result.value);
+      }
+
+      async function finalizarProyecto(aplicacionId, datos) {
+        try {
+console.log("Finalizando proyecto con datos:", datos);
+          const res = await Swal.fire({
+            icon: "warning",
+            title: "¿Finalizar proyecto?",
+            text: "Después de finalizar, no se podrán modificar evaluadores ni puntajes.",
+            showCancelButton: true,
+            confirmButtonText: "Sí, finalizar",
+            cancelButtonText: "Cancelar"
+          });
+
+          if (!res.isConfirmed) return;
+
+          const response = await fetch(`/api/convocatoria-proyectos/${aplicacionId}/finalizar`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              estado: datos.estado,
+              observacionesEvaluacion: datos.observaciones,
+              fechaEvaluacion: new Date().toISOString(), 
+              puntuacionTotal: datos.puntajeTotal
+            })
+          });
+
+          if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.message);
+          }
+
+          Swal.fire({
+            icon: "success",
+            title: "Proyecto Finalizado",
+            text: "El proyecto ha sido marcado como finalizado correctamente.",
+            timer: 2000
+          });
+
+          await cargarProyectos();
+          aplicarFiltros();
+
+        } catch (error) {
+          console.error("Error finalizando proyecto:", error);
+          Swal.fire("Error", error.message, "error");
+        }
+      }
+
+    }
+
+
+    // Renderizar miembros del comité para selección
+    function renderizarMiembrosComite(evaluadorActual) {
+      if (!miembrosComite.length) {
+        return '<p style="text-align: center; color: #666;">No hay miembros del comité disponibles</p>';
+      }
+
+      const helpText = `
+        <div class="alert alert-info mb-3">
+          <small><i class="bi bi-info-circle"></i> Seleccione uno o múltiples evaluadores para asignar al proyecto. Los evaluadores seleccionados quedarán asignados en el sistema.</small>
+        </div>
+      `;
+
+      const memberCards = miembrosComite.map(miembro => {
+        const isSelected = evaluadorActual === miembro.Usuario?.email || evaluadorActual === miembro.Usuario?.name;
+        const iniciales = miembro.Usuario?.name ? miembro.Usuario.name.split(' ').map(n => n[0]).join('').toUpperCase() : '?';
+        console.log('Renderizando miembro:', miembro, 'Seleccionado:', isSelected);
+        return `
+          <div class="member-card ${isSelected ? 'selected' : ''}" onclick="seleccionarMiembro('${miembro.Usuario?.email}', '${miembro.Usuario?.name}')">
+            <div class="member-info">
+              <div class="member-avatar">${iniciales}</div>
+              <div class="member-details">
+                <h4>${miembro.Usuario?.name || 'Sin nombre'}</h4>
+                <p>${miembro.Usuario?.email || 'Sin email'}</p>
+                <p style="color: #007bff; font-weight: 600;">${miembro.especialidades || 'Evaluador General'}</p>
+              </div>
+            </div>
+            ${isSelected ? '<div class="member-status"></div>' : ''}
+          </div>
+        `;
+      }).join('');
+
+      return helpText + memberCards;
+    }
+
+    function renderizarEstadoEvaluadores(proyectoId) {
+      const asignaciones = obtenerAsignacionesProyecto(proyectoId);
+
+      if (!asignaciones.length) {
+        return `
+      <p style="text-align:center; color:#777;">
+        <i class="bi bi-person-exclamation" style="font-size:1.5em;"></i><br>
+        Este proyecto no tiene evaluadores asignados.
+      </p>`;
+      }
+
+      return asignaciones.map(asignacion => {
+        const nombre = asignacion.evaluador.nombre || "Evaluador";
+        const estado = asignacion.estado || "Asignado";
+        const puntaje = asignacion.puntuacionPromedio || 0;
+
+        let badgeColor = "#6c757d"; // gris
+        if (estado === "Completada") badgeColor = "#28a745";
+        if (estado === "En_Progreso") badgeColor = "#ffc107";
+
+        // ➤ Mostrar botón eliminar SOLO si NO tiene puntaje
+        const btnEliminar = (!puntaje || puntaje == 0) ?
+          `<button class="btn btn-sm btn-danger" style="position:absolute; top:10px; right:10px;"
+        onclick="eliminarAsignacion(${asignacion.id})">
+        <i class="bi bi-trash"></i>
+      </button>` : `
+      <small style="position:absolute; top:10px; right:10px; color:#666">✔ Evaluado</small>
+    `;
+
+        return `
+      <div class="member-card assigned" style="border-left: 4px solid ${badgeColor}; position:relative;">
+        ${btnEliminar}
+        <div class="member-info">
+          <div class="member-avatar">${nombre.split(" ").map(n => n[0]).join("")}</div>
+          <div class="member-details">
+            <h4>${nombre}</h4>
+            <p><strong>Estado:</strong> ${estado}</p>
+            <p><strong>Puntaje:</strong> ${puntaje && !isNaN(parseFloat(puntaje)) ? parseFloat(puntaje).toFixed(1) : "Sin evaluar"}</p>
+          </div>
+        </div>
+      </div>`;
+      }).join("");
+    }
+
+    // Variables para el modal de evaluación
+    let evaluadoresSeleccionados = [];
+    let evaluadorSeleccionado = null; // Para mantener compatibilidad
+    let aplicacionActual = null; // Variable global para aplicación actual
+
+    // Seleccionar miembro del comité (ahora soporta selección múltiple)
+    function seleccionarMiembro(email, nombre) {
+      const card = event.currentTarget;
+      const isSelected = card.classList.contains('selected');
+
+      // Buscar el miembro completo en el array de miembrosComite
+      const miembroCompleto = miembrosComite.find(m => {
+        const emailMatch = m.Usuario?.email === email;
+        const nameMatch = m.Usuario?.name === nombre;
+        return emailMatch || nameMatch;
+      });
+
+      if (!miembroCompleto) {
+        console.warn('No se encontró el miembro completo para:', { email, nombre });
+        console.log('Miembros disponibles:', miembrosComite);
+      }
+
+      if (isSelected) {
+        // Deseleccionar
+        card.classList.remove('selected');
+        const status = card.querySelector('.member-status');
+        if (status) status.remove();
+
+        evaluadoresSeleccionados = evaluadoresSeleccionados.filter(e => e.email !== email);
+      } else {
+        // Seleccionar
+        card.classList.add('selected');
+        card.innerHTML += '<div class="member-status"></div>';
+
+        // Capturar datos completos del miembro
+        const miembroDatos = {
+          email: email || miembroCompleto?.Usuario?.email,
+          nombre: nombre || miembroCompleto?.Usuario?.name,
+          id: miembroCompleto?.id,
+          usuarioId: miembroCompleto?.Usuario?.id,
+          especialidades: miembroCompleto?.especialidades || 'Evaluador General',
+          cargo: miembroCompleto?.cargo || 'Miembro del Comité',
+          telefono: miembroCompleto?.Usuario?.telefono,
+          estado: miembroCompleto?.estado || 'activo',
+          datosCompletos: miembroCompleto // Incluir objeto completo para referencia
+        };
+
+        console.log('Datos capturados del miembro seleccionado:', miembroDatos);
+        evaluadoresSeleccionados.push(miembroDatos);
+      }
+
+      // Mantener compatibilidad con evaluador único para la evaluación actual
+      if (evaluadoresSeleccionados.length > 0) {
+        evaluadorSeleccionado = evaluadoresSeleccionados[0].email;
+      } else {
+        evaluadorSeleccionado = null;
+      }
+
+      console.log('Evaluadores seleccionados actualizados:', evaluadoresSeleccionados);
+      console.log('Estado actual - Total seleccionados:', evaluadoresSeleccionados.length);
+
+      // Mostrar estado actual y opciones de asignación
+      mostrarEstadoAsignacion();
+      mostrarOpcionesAsignacion();
+    }
+
+    function calcularPromedioEvaluadores(proyectoId) {
+      const asignaciones = obtenerAsignacionesProyecto(proyectoId);
+
+      if (!asignaciones.length) return 0;
+
+      // Tomar solo evaluaciones con puntaje válido
+      const puntajes = asignaciones
+        .map(a => parseFloat(a.puntuacionPromedio))
+        .filter(v => !isNaN(v));
+
+      if (!puntajes.length) return 0;
+
+      const suma = puntajes.reduce((a, b) => a + b, 0);
+      return (suma / puntajes.length).toFixed(1);
+    }
+
+    async function eliminarAsignacion(idAsignacion) {
+      const confirmar = await Swal.fire({
+        title: "Eliminar asignación",
+        text: "¿Desea eliminar este evaluador del proyecto? Solo puede eliminar evaluadores sin puntaje.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Eliminar",
+        cancelButtonText: "Cancelar"
+      });
+
+      if (!confirmar.isConfirmed) return;
+
+      try {
+        const res = await fetch(`/api/asignacion-evaluadores/${idAsignacion}`, {
+          method: "DELETE"
+        });
+
+        if (!res.ok) {
+          const error = await res.json();
+          throw new Error(error.message || "No se pudo eliminar");
+        }
+
+        Swal.fire({
+          title: "¡Eliminado!",
+          text: "El evaluador fue retirado del proyecto.",
+          icon: "success",
+          timer: 2000
+        });
+
+        // Recargar datos
+        await cargarAsignacionesEvaluadores();
+        aplicarFiltros();
+
+        // También actualizar modal si está abierto
+        if (aplicacionActual) {
+          const contenedor = document.getElementById("estadoEvaluadoresProyecto");
+          if (contenedor) {
+            contenedor.innerHTML = renderizarEstadoEvaluadores(aplicacionActual.proyecto.id);
+          }
+        }
+
+
+      } catch (error) {
+        console.error("Error al eliminar asignación:", error);
+        Swal.fire("Error", error.message, "error");
+      }
+    }
+
+    // Mostrar opciones de asignación múltiple
+    function mostrarOpcionesAsignacion() {
+      const existingControls = document.getElementById('asignacionControls');
+      if (existingControls) {
+        existingControls.remove();
+      }
+
+      if (evaluadoresSeleccionados.length > 1) {
+        const controlsHTML = `
+          <div id="asignacionControls" class="mt-3 p-3 border rounded bg-light">
+            <div class="d-flex justify-content-between align-items-center">
+              <span><strong>${evaluadoresSeleccionados.length}</strong> evaluadores seleccionados</span>
+              <button type="button" class="btn btn-primary btn-sm" onclick="asignarEvaluadoresMultiples()">
+                <i class="bi bi-people-fill"></i> Asignar Todos
+              </button>
+            </div>
+          </div>
+        `;
+
+        const miembrosContainer = document.getElementById('miembrosComiteModal');
+        miembrosContainer.insertAdjacentHTML('afterend', controlsHTML);
+      }
+    }
+
+    // Asignar múltiples evaluadores
+    async function asignarEvaluadoresMultiples() {
+      try {
+        if (evaluadoresSeleccionados.length === 0) {
+          Swal.fire('Error', 'Debe seleccionar al menos un evaluador', 'error');
+          return false;
+        }
+
+        if (!aplicacionActual) {
+          Swal.fire('Error', 'No se ha seleccionado una aplicación válida', 'error');
+          return false;
+        }
+
+        const asignaciones = evaluadoresSeleccionados.map(evaluador => ({
+          convocatoriaId: aplicacionActual.ConvocatoriaId || aplicacionActual.convocatoriaId,
+          proyectoId: aplicacionActual.ProyectoId || aplicacionActual.proyectoId || aplicacionActual.id,
+          evaluadorId: evaluador.usuarioId,
+          // Datos adicionales del evaluador
+          evaluadorNombre: evaluador.nombre,
+          evaluadorEspecialidades: evaluador.especialidades,
+          evaluadorCargo: evaluador.cargo,
+          evaluadorTelefono: evaluador.telefono,
+          miembroComiteId: evaluador.id,
+          usuarioId: evaluador.usuarioId,
+          estado: 'asignado',
+          fechaAsignacion: new Date().toISOString(),
+          observaciones: `Asignación múltiple desde gestión de evaluaciones - ${new Date().toLocaleDateString()}. Especialidades: ${evaluador.especialidades}`,
+          // Metadatos adicionales
+          metadatos: {
+            origenAsignacion: 'gestion_evaluacion_multiple',
+            tipoEvaluador: evaluador.especialidades,
+            fechaAsignacionDetallada: new Date().toISOString(),
+            sistemaVersion: '2.0',
+            asignacionMasiva: true,
+            totalEvaluadores: evaluadoresSeleccionados.length
+          }
+        }));
+
+        console.log('Evaluadores seleccionados con datos completos (múltiple):', evaluadoresSeleccionados);
+        console.log('Enviando asignaciones múltiples con metadatos:', asignaciones);
+
+        const response = await fetch('/api/asignacion-evaluadores/multiples', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ asignaciones })
+        });
+
+        if (!response.ok) {
+          const error = await response.json();
+          throw new Error(error.message || 'Error al asignar evaluadores');
+        }
+
+        const resultado = await response.json();
+        console.log('Asignaciones realizadas exitosamente:', resultado);
+
+        Swal.fire({
+          title: '¡Evaluadores asignados!',
+          text: `Se han asignado ${evaluadoresSeleccionados.length} evaluadores al proyecto correctamente.`,
+          icon: 'success',
+          timer: 3000,
+          timerProgressBar: true
+        });
+
+        // Recargar asignaciones para mostrar cambios
+        await cargarAsignacionesEvaluadores();
+
+        return true;
+      } catch (error) {
+        console.error('Error al asignar evaluadores múltiples:', error);
+        Swal.fire('Error', error.message || 'No se pudieron asignar los evaluadores', 'error');
+        return false;
+      }
+    }
+
+    // Función simplificada para mostrar estado de asignación
+    function mostrarEstadoAsignacion() {
+      const numSeleccionados = evaluadoresSeleccionados.length;
+      const mensaje = numSeleccionados > 0
+        ? `${numSeleccionados} evaluador(es) seleccionado(s)`
+        : 'Ningún evaluador seleccionado';
+
+      console.log('Estado de asignación:', mensaje);
+    }
+
+    // Asignar evaluadores al proyecto
+    async function asignarEvaluadores(aplicacionId) {
+      try {
+        if (evaluadoresSeleccionados.length === 0) {
+          Swal.fire('Error', 'Debe seleccionar al menos un evaluador para asignar', 'error');
+          return false;
+        }
+
+        // Buscar la aplicación usando el ID
+        const aplicacion = proyectos.find(a => a.id === aplicacionId);
+        if (!aplicacion) {
+          throw new Error('No se encontró la aplicación especificada');
+        }
+
+        const asignaciones = evaluadoresSeleccionados.map(evaluador => ({
+          convocatoriaId: aplicacion.ConvocatoriaId || aplicacion.convocatoriaId,
+          proyectoId: aplicacion.ProyectoId || aplicacion.proyectoId || aplicacionId,
+          evaluadorId: evaluador.id,
+          // Datos adicionales del evaluador
+          evaluadorNombre: evaluador.nombre,
+          evaluadorEspecialidades: evaluador.especialidades,
+          evaluadorCargo: evaluador.cargo,
+          evaluadorTelefono: evaluador.telefono,
+          miembroComiteId: evaluador.id,
+          usuarioId: evaluador.usuarioId,
+          estado: 'asignado',
+          fechaAsignacion: new Date().toISOString(),
+          observaciones: `Asignado desde gestión de evaluaciones - ${new Date().toLocaleDateString()}. Especialidades: ${evaluador.especialidades}`,
+          // Metadatos adicionales
+          metadatos: {
+            origenAsignacion: 'gestion_evaluacion',
+            tipoEvaluador: evaluador.especialidades,
+            fechaAsignacionDetallada: new Date().toISOString(),
+            sistemaVersion: '2.0'
+          }
+        }));
+
+        console.log('Evaluadores seleccionados con datos completos:', evaluadoresSeleccionados);
+        console.log('Enviando asignaciones de evaluadores con metadatos:', asignaciones);
+
+        const response = await fetch('/api/asignacion-evaluadores/multiples', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ asignaciones })
+        });
+
+        if (!response.ok) {
+          const error = await response.json();
+          throw new Error(error.message || 'Error al asignar evaluadores');
+        }
+
+        const resultado = await response.json();
+        console.log('Evaluadores asignados exitosamente:', resultado);
+
+        Swal.fire({
+          title: '¡Evaluadores asignados!',
+          text: `Se han asignado ${evaluadoresSeleccionados.length} evaluador(es) al proyecto correctamente.`,
+          icon: 'success',
+          timer: 3000,
+          timerProgressBar: true
+        });
+
+        // Limpiar selecciones
+        evaluadoresSeleccionados = [];
+        evaluadorSeleccionado = null;
+        aplicacionActual = null;
+
+        // Recargar asignaciones para mostrar cambios
+        await cargarAsignacionesEvaluadores();
+
+        return true;
+      } catch (error) {
+        console.error('Error al asignar evaluadores:', error);
+        Swal.fire('Error', error.message || 'No se pudieron asignar los evaluadores', 'error');
+        return false;
+      }
+    }
+
+    // Ver detalle del proyecto
+    function verDetalleProyecto(proyectoId) {
+      // Esta función puede expandirse para mostrar más detalles del proyecto
+      Swal.fire({
+        title: 'Funcionalidad en desarrollo',
+        text: 'La vista detallada del proyecto estará disponible próximamente.',
+        icon: 'info'
+      });
+    }
+
+    // Exportar reporte
+    function exportarReporte() {
+      // Esta función puede implementarse para generar reportes
+      Swal.fire({
+        title: 'Funcionalidad en desarrollo',
+        text: 'La exportación de reportes estará disponible próximamente.',
+        icon: 'info'
+      });
+    }
+
+    // Cerrar sesión
+    document.getElementById("cerrarSesion").addEventListener("click", () => {
+      Swal.fire({
+        title: '¿Estás seguro?',
+        text: '¿Quieres cerrar sesión?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, cerrar sesión',
+        cancelButtonText: 'Cancelar',
+        reverseButtons: true
+      }).then((result) => {
+        if (result.isConfirmed) {
+          document.cookie = 'jwt=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+          document.cookie = 'user=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+          document.cookie = 'userId=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+          window.location.href = "/";
+        }
+      });
+    });
+
+    // Menú desplegable
+    const userMenuBtn = document.getElementById("userMenuBtn");
+    const dropdown = userMenuBtn.closest(".dropdown");
+
+    userMenuBtn.addEventListener("click", (event) => {
+      event.stopPropagation();
+      dropdown.classList.toggle("show");
+    });
+
+    document.addEventListener("click", () => {
+      dropdown.classList.remove("show");
+    });
+
+    // Inicialización
+    document.addEventListener('DOMContentLoaded', function () {
+      cargarDatos();
+    });
+
+    // Cargar usuario para header
+    (async () => {
+      try {
+        const resUser = await fetch(`/api/user/${userId}`);
+        const dataUser = await resUser.json();
+
+        document.getElementById("imagenPerfilSecundaria").src = dataUser.fotoPerfil ?
+          "photo/" + dataUser.fotoPerfil : "photo/sinfoto.jpg";
+      } catch (error) {
+        console.error("Error al inicializar usuario:", error);
+      }
+    })();
+
+    // Estilos adicionales para el modal ancho
+    const style = document.createElement('style');
+    style.textContent = `
+      .swal-wide {
+        max-width: 95% !important;
+        width: 1200px !important;
+      }
+      
+      .swal-wide .swal2-html-container {
+        max-height: 70vh;
+        overflow-y: auto;
+      }
+    `;
+    document.head.appendChild(style);
+  </script>
+</body>
+
+</html>

@@ -645,26 +645,6 @@ body {
     margin-top: 1rem;
 }
 
-.modal-button {
-    display: block;
-    width: 100%;
-    padding: 0.8rem;
-    margin-top: 1.5rem;
-    background: var(--gradient-1);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: var(--transition);
-}
-
-.modal-button:hover {
-    background: var(--gradient-2);
-    transform: translateY(-2px);
-}
-
 /* Selector de tipo de entidad */
 .entity-type-selector {
     display: flex;
@@ -1197,20 +1177,7 @@ td {
     border-top: 1px solid #e0e0e0;
 }
 
-.modal-button-secondary {
-    background-color: #6c757d;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.3s ease;
-}
 
-.modal-button-secondary:hover {
-    background-color: #5a6268;
-}
 
 #modalEditar .modal-content {
     max-width: 800px;
@@ -1381,7 +1348,7 @@ td {
     display: flex;
     justify-content: center;
     align-items: stretch;
-    width: 90%;
+    
     margin: 2rem auto;
     gap: 30px;
 }

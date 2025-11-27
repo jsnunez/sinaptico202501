@@ -90,6 +90,7 @@ const User = sequelize.define('User', {
     allowNull: true
   }
 }, {
+  tableName: 'users',
   timestamps: true, // Esto habilita los campos `createdAt` y `updatedAt`
   
 });

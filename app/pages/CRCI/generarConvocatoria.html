@@ -1,0 +1,1567 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Generar Convocatoria - SINAPTICO</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="stylesheet" href="styles/stylehelice2.css" />
+  <link rel="stylesheet" href="styles/colores.css" />
+  <link rel="stylesheet" href="styles/postulaciones.css" />
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+  <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    .form-container {
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      margin-bottom: 30px;
+    }
+
+    .form-section {
+      margin-bottom: 30px;
+      padding: 20px;
+      border: 1px solid #e9ecef;
+      border-radius: 10px;
+      background: #f8f9fa;
+    }
+
+    .form-section h3 {
+      color: var(--secondary-color);
+      margin-bottom: 20px;
+      border-bottom: 2px solid var(--naranja-color);
+      padding-bottom: 10px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 8px;
+    }
+
+    .form-group.required label::after {
+      content: " *";
+      color: #e74c3c;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 1em;
+      transition: border-color 0.3s ease;
+      box-sizing: border-box;
+    }
+
+    .form-control:focus {
+      border-color: #007bff;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .form-row-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 20px;
+    }
+
+    .btn-primary {
+      background: var(--secondary-color);
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1em;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      background: #0056b3;
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: var(--naranja-color);
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1em;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      margin-right: 10px;
+    }
+
+    .btn-secondary:hover {
+      background: #545b62;
+    }
+
+    .btn-demo {
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9em;
+      margin-left: 10px;
+    }
+
+    .btn-demo:hover {
+      background: var(--blue);
+    }
+
+    .checkbox-group {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px;
+      background: white;
+      border-radius: 6px;
+      border: 1px solid #ddd;
+    }
+
+    .checkbox-item input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+    }
+
+    .help-text {
+      font-size: 0.9em;
+      color: #666;
+      margin-top: 5px;
+      font-style: italic;
+    }
+
+    .preview-section {
+      background: #e8f4fd;
+      border: 1px solid #007bff;
+      border-radius: 10px;
+      padding: 20px;
+      margin-top: 30px;
+    }
+
+    .preview-section h4 {
+      color: #007bff;
+      margin-bottom: 15px;
+    }
+
+    .timeline-container {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 15px;
+    }
+
+    .timeline-item {
+      display: flex;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .timeline-item:last-child {
+      border-bottom: none;
+    }
+
+    .timeline-date {
+      font-weight: bold;
+      color: #007bff;
+      width: 180px;
+    }
+
+    .timeline-event {
+      flex: 1;
+      margin-left: 20px;
+    }
+
+    .convocatoria-card {
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      padding: 25px;
+      margin-bottom: 20px;
+      border-left: 4px solid #007bff;
+    }
+
+    .convocatoria-header {
+      display: flex;
+      justify-content: between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .convocatoria-title {
+      font-size: 1.5em;
+      color: #2c3e50;
+      margin-bottom: 5px;
+    }
+
+    .convocatoria-status {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.85em;
+      font-weight: 600;
+    }
+
+    .status-abierta { background: #d4edda; color: #155724; }
+    .status-cerrada { background: #f8d7da; color: #721c24; }
+    .status-borrador { background: #fff3cd; color: #856404; }
+
+    .actions-container {
+      display: flex;
+      gap: 10px;
+      margin-top: 30px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .archivo-adjunto {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    .archivo-adjunto i { color: #007bff; font-size: 1.2em; }
+
+    .tag-input-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      min-height: 50px;
+      background: white;
+    }
+
+    .tag {
+      background: #007bff;
+      color: white;
+      padding: 4px 8px;
+      border-radius: 15px;
+      font-size: 0.85em;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .tag .remove-tag { cursor: pointer; font-weight: bold; }
+    .tag-input { border: none; outline: none; flex: 1; min-width: 100px; }
+
+    @media (max-width: 768px) {
+      .form-row, .form-row-3 { grid-template-columns: 1fr; }
+      .actions-container { flex-direction: column; }
+      .checkbox-group { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Encabezado -->
+  <header>
+    <div class="header">
+      <div onclick="window.location.href='/'">
+        <!-- <span class="logo-icon">⚡</span> -->
+        <img src="/img/logo1.png" alt="SINAPTICO" class="logo" style="height:8vh;">
+      </div>
+      <div style="display: flex; align-items: center; gap: 20px;">
+        <!-- <div style="font-size:1.5em;cursor:pointer;">
+          <span id="icono-notif">🔔 <span
+              style='background:red;color:white;border-radius:50%;padding:2px 7px;font-size:0.9em;'>0</span></span>
+        </div>
+        <div class="notificaciones" id="notificaciones"></div> -->
+
+
+        <div class="dropdown">
+          <button id="userMenuBtn" style="display: flex; align-items: center;">
+            <div id="userPhoto ">
+              <img class="imagenPerfil" id="imagenPerfilSecundaria" src="img/sinfoto.jpg" alt="Foto de perfil"
+                onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
+
+            </div>
+            <h3 id="nombreUsuarioHeader" style="color:white; margin-left:10px;">CRCI <i class="bi bi-chevron-down"></i>
+            </h3>
+          </button>
+
+          <div class="dropdown-menu" id="userMenu">
+            <!-- <a href="/perfil">Perfil</a>
+            <a href="/perfilEntidad">Empresa</a> -->
+            <a href="#" id="cerrarSesion">Cerrar sesión</a>
+          </div>
+        </div>
+      </div>
+    </div>
+      <nav class="nav">
+      <button class="nav-button " onclick="window.location.href='/dashboardCRCI'" id="inicio">Inicio</button>
+      <button class="nav-button" onclick="window.location.href='/dashboardCRCIAplicados'">Banco de Proyectos</button>
+      <button class="nav-button " onclick="window.location.href='/miembrosComite'">Asociados</button>
+      <button class="nav-button pulse" onclick="window.location.href='/generarConvocatoria'">Gestion de Convocatorias</button>
+         <button class="nav-button" onclick="window.location.href='/gestionEvaluacion'">Gestión de Evaluación</button>
+            <button class="nav-button" onclick="window.location.href='/portalEvaluador'">Evaluación</button>
+    </nav>
+  </header>
+
+
+  <!-- Spinner de carga de página -->
+  <div id="page-spinner-overlay" aria-hidden="true" role="status" aria-label="Cargando">
+    <div class="spinner" aria-hidden="true"></div>
+    <div class="spinner-text">Cargando...</div>
+  </div>
+
+  <!-- Contenido Principal -->
+  <div class="main-content">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+      <h2 class="title">Generar Nueva Convocatoria</h2>
+      <div>
+        <button class="btn-secondary" onclick="verConvocatoriasAnteriores()">
+          <i class="bi bi-list-ul"></i> Ver Anteriores
+        </button>
+        <button class="btn-demo" onclick="llenarDatosDemo()">
+          <i class="bi bi-lightning"></i> Datos Demo
+        </button>
+      </div>
+    </div>
+
+    <form id="formConvocatoria" class="form-container">
+      <!-- Información Básica -->
+      <div class="form-section">
+        <h3><i class="bi bi-info-circle"></i> Información Básica</h3>
+        <div class="form-row">
+          <div class="form-group required">
+            <label for="titulo">Título de la Convocatoria</label>
+            <input type="text" id="titulo" name="titulo" class="form-control" required placeholder="Ej: Convocatoria 2025-01 para Proyectos de Innovación Tecnológica" />
+            <div class="help-text">Nombre descriptivo que identifique claramente la convocatoria</div>
+          </div>
+          <div class="form-group required">
+            <label for="numero">Número de Convocatoria</label>
+            <input type="text" id="numero" name="numero" class="form-control" required placeholder="2025-01" value="" />
+            <div class="help-text">Formato: YYYY-NN (Año-Número secuencial)</div>
+          </div>
+        </div>
+
+        <div class="form-group required">
+          <label for="descripcion">Descripción General</label>
+          <textarea id="descripcion" name="descripcion" class="form-control" rows="4" required placeholder="Describa el propósito, alcance y objetivos de esta convocatoria..."></textarea>
+          <div class="help-text">Información detallada sobre el propósito y alcance de la convocatoria</div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group required">
+            <label for="presupuestoTotal">Presupuesto Total (COP)</label>
+            <input type="number" id="presupuestoTotal" name="presupuestoTotal" class="form-control" required min="1" placeholder="500000000" />
+            <div class="help-text">Monto total disponible para todos los proyectos</div>
+          </div>
+          <div class="form-group required">
+            <label for="maxProyectos">Número Máximo de Proyectos</label>
+            <input type="number" id="maxProyectos" name="maxProyectos" class="form-control" required min="1" placeholder="10" />
+            <div class="help-text">Cantidad máxima de proyectos que se pueden aprobar</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fechas Importantes -->
+      <div class="form-section">
+        <h3><i class="bi bi-calendar"></i> Cronograma</h3>
+        <div class="form-row-3">
+          <div class="form-group required">
+            <label for="fechaApertura">Fecha de Apertura</label>
+            <input type="datetime-local" id="fechaApertura" name="fechaApertura" class="form-control" required />
+            <div class="help-text">Inicio del período de presentación</div>
+          </div>
+          <div class="form-group required">
+            <label for="fechaCierre">Fecha de Cierre</label>
+            <input type="datetime-local" id="fechaCierre" name="fechaCierre" class="form-control" required />
+            <div class="help-text">Fin del período de presentación</div>
+          </div>
+          <div class="form-group required">
+            <label for="fechaResultados">Fecha de Resultados</label>
+            <input type="datetime-local" id="fechaResultados" name="fechaResultados" class="form-control" required />
+            <div class="help-text">Publicación de resultados finales</div>
+          </div>
+        </div>
+
+        <div id="cronogramaPreview" class="timeline-container" style="display: none">
+          <h5>Vista Previa del Cronograma</h5>
+          <div id="timelineItems"></div>
+        </div>
+      </div>
+
+      <!-- Criterios de Evaluación -->
+      <div class="form-section">
+        <h3><i class="bi bi-list-check"></i> Criterios de Evaluación</h3>
+        <div class="form-group">
+          <label>Áreas Temáticas Prioritarias</label>
+          <div class="checkbox-group" id="areasTematicas"><!-- se llena dinámico --></div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="presupuestoMinimo">Presupuesto Mínimo por Proyecto (COP)</label>
+            <input type="number" id="presupuestoMinimo" name="presupuestoMinimo" class="form-control" min="0" placeholder="10000000" />
+          </div>
+          <div class="form-group">
+            <label for="presupuestoMaximo">Presupuesto Máximo por Proyecto (COP)</label>
+            <input type="number" id="presupuestoMaximo" name="presupuestoMaximo" class="form-control" min="0" placeholder="100000000" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="duracionMinima">Duración Mínima (meses)</label>
+            <input type="number" id="duracionMinima" name="duracionMinima" class="form-control" min="1" placeholder="6" />
+          </div>
+          <div class="form-group">
+            <label for="duracionMaxima">Duración Máxima (meses)</label>
+            <input type="number" id="duracionMaxima" name="duracionMaxima" class="form-control" min="1" placeholder="24" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Requisitos -->
+      <div class="form-section">
+        <h3><i class="bi bi-file-text"></i> Requisitos y Documentación</h3>
+        <div class="form-group">
+          <label for="requisitos">Requisitos de Participación</label>
+          <textarea id="requisitos" name="requisitos" class="form-control" rows="5" placeholder="Enumere los requisitos que deben cumplir los participantes..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>Documentos Requeridos</label>
+          <div class="checkbox-group" id="documentosRequeridos"><!-- se llena dinámico --></div>
+        </div>
+        <div class="form-group">
+          <label for="palabrasClave">Palabras Clave</label>
+          <div class="tag-input-container" id="palabrasClaveContainer">
+            <input type="text" class="tag-input" id="palabrasClaveInput" placeholder="Escriba una palabra clave y presione Enter" />
+          </div>
+          <div class="help-text">Presione Enter para agregar cada palabra clave</div>
+        </div>
+      </div>
+
+      <!-- Información Adicional -->
+      <div class="form-section">
+        <h3><i class="bi bi-plus-circle"></i> Información Adicional</h3>
+        <div class="form-group">
+          <label for="contacto">Información de Contacto</label>
+          <textarea id="contacto" name="contacto" class="form-control" rows="3" placeholder="Información de contacto para consultas sobre la convocatoria..."></textarea>
+        </div>
+        <div class="form-group">
+          <label for="observaciones">Observaciones Especiales</label>
+          <textarea id="observaciones" name="observaciones" class="form-control" rows="3" placeholder="Información adicional, consideraciones especiales, etc."></textarea>
+        </div>
+      </div>
+
+      <!-- Botones de Acción -->
+      <div class="actions-container">
+        <button type="button" class="btn-primary" onclick="guardarComoBorrador()">
+          <i class="bi bi-save"></i> Guardar como Borrador
+        </button>
+        <button type="button" class="btn-secondary" onclick="previsualizarConvocatoria()">
+          <i class="bi bi-eye"></i> Previsualizar
+        </button>
+        <button type="submit" class="btn-primary">
+          <i class="bi bi-send"></i> Publicar Convocatoria
+        </button>
+      </div>
+    </form>
+  </div>
+      <footer class="footer">
+
+        <div class="footer-content">
+
+            <!-- Izquierda -->
+            <div class="footer-left">
+                <img src="/img/logo1.png" alt="SINAPTICO" class="footer-logo">
+                <p class="footer-desc">Conectando conocimiento, innovación y tecnología.</p>
+
+
+            </div>
+
+            <!-- Enlaces en dos columnas -->
+            <div class="footer-links">
+                <h4>Explorar</h4>
+
+                <div class="links-grid">
+                    <a href="/">Inicio</a>
+                    <a href="/dashboardCRCI">Inicio</a>
+                    <a href="/dashboardCRCIAplicados">Banco de Proyectos</a>
+                    <a href="/miembrosComite">Asociados</a>
+                    <a href="/generarConvocatoria">Gestion de Convocatorias</a>
+                    <a href="/gestionEvaluacion">Gestión de Evaluación</a>
+                    <a href="/portalEvaluador">Evaluación</a>
+     
+
+                </div>
+            </div>
+
+            <!-- Redes sociales -->
+            <div class="footer-social">
+                <h4>Síguenos</h4>
+                <div class="social-icons">
+                    <a href="#"><i class="bi bi-facebook"></i></a>
+                    <a href="#"><i class="bi bi-twitter"></i></a>
+                    <a href="#"><i class="bi bi-linkedin"></i></a>
+                    <a href="#"><i class="bi bi-instagram"></i></a>
+                </div>
+            </div>
+
+            <!-- Contacto -->
+            <div class="footer-contact">
+                <h4>Contáctanos</h4>
+
+                <p>Cra.19 #35-02 - UIS Bucarica</p>
+                <p>Bucaramanga, Colombia</p>
+
+                <div class="contact-item">
+                    <i class="bi bi-envelope"></i>
+                    <span>info@cpcoriente.org</span>
+                </div>
+
+                <div class="contact-item">
+                    <i class="bi bi-telephone"></i>
+                    <span>+57 315 494 0296</span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+            <img src="/logos/logoCPCblanco.png" alt="SINAPTICO" class="footer-logoCPC">
+            <p>© 2025 CPC Oriente. Todos los derechos reservados.</p>
+
+        </div>
+
+    </footer>
+  <script>
+  // ===== Datos demo =====
+  const datosDemo = {
+    titulo: "Convocatoria 2025-01 para Proyectos de Innovación Tecnológica en Santander",
+    numero: "2025-01",
+    descripcion:
+      "La CRCI Santander invita a empresas, universidades, centros de investigación y emprendedores del departamento a presentar proyectos innovadores que contribuyan al desarrollo tecnológico y la competitividad regional. Esta convocatoria busca financiar iniciativas que generen impacto en sectores estratégicos como petroquímica, agroindustria, turismo, manufactura avanzada y tecnologías de la información, fortaleciendo el ecosistema de innovación santandereano.",
+    presupuestoTotal: 2000000000,
+    maxProyectos: 15,
+    presupuestoMinimo: 50000000,
+    presupuestoMaximo: 200000000,
+    duracionMinima: 6,
+    duracionMaxima: 18,
+    requisitos:
+      "1. Ser empresa legalmente constituida en Colombia o persona natural mayor de edad\n2. Tener domicilio fiscal en el departamento de Santander\n3. No tener inhabilidades para contratar con el Estado\n4. Contar con equipo de trabajo calificado\n5. Presentar carta de compromiso de cofinanciación mínima del 20%\n6. No haber incurrido en incumplimiento en convocatorias anteriores",
+    contacto:
+      "CRCI Santander - Centro Regional de Competitividad e Innovación\nDirección: Carrera 19 # 33-85, Oficina 402, Bucaramanga, Santander\nTeléfono: +57 (7) 634-8500\nEmail: convocatorias@crci.santander.gov.co\nHorario de atención: Lunes a viernes de 8:00 AM a 5:00 PM",
+    observaciones:
+      "Los proyectos deben estar alineados con los Objetivos de Desarrollo Sostenible (ODS) y contribuir al Plan Regional de Competitividad de Santander 2024-2032. Se dará prioridad a proyectos que involucren alianzas público-privadas, que aprovechen las fortalezas del sector energético y petroquímico regional, y que generen empleo de calidad en Santander. Especial consideración para iniciativas que fortalezcan los clústeres de energía, agroindustria, manufactura avanzada y turismo de la región.",
+  };
+
+  // ===== Catálogos =====
+  const AREAS_TEMATICAS = [
+    "Inteligencia Artificial y Machine Learning",
+    "Desarrollo de Software y Aplicaciones",
+    "Internet of Things (IoT)",
+    "Blockchain y Criptomonedas",
+    "Ciberseguridad",
+    "Biotecnología y Salud Digital",
+    "Agroindustria 4.0",
+    "Energías Renovables y Alternativas",
+    "Petroquímica y Refino",
+    "Manufactura Avanzada",
+    "Turismo Digital y Ecoturismo",
+    "Educación Virtual (EdTech)",
+    "Fintech y Servicios Financieros",
+    "Logística y Supply Chain 4.0",
+    "Realidad Virtual y Aumentada",
+    "Automatización Industrial",
+    "Sostenibilidad Ambiental",
+    "Tecnologías del Gas y Petróleo",
+    "Materiales Avanzados",
+  ];
+
+  const DOCUMENTOS_REQUERIDOS = [
+    "Propuesta técnica detallada",
+    "Presupuesto desglosado",
+    "Cronograma de actividades",
+    "Hoja de vida del equipo",
+    "Certificados de existencia y representación legal",
+    "Estados financieros (últimos 2 años)",
+    "Carta de compromiso de cofinanciación",
+    "Certificado de antecedentes disciplinarios",
+    "Plan de gestión de riesgos",
+    "Estudio de mercado o análisis de viabilidad",
+  ];
+
+  // ===== Estado UI =====
+  let palabrasClave = [];
+
+  // ===== Utilidades =====
+  function obtenerCookie(nombre) {
+    const nombreCookie = `${nombre}=`;
+    return (
+      document.cookie
+        .split(";")
+        .map((c) => c.trim())
+        .find((c) => c.indexOf(nombreCookie) === 0)
+        ?.slice(nombreCookie.length) || null
+    );
+  }
+
+  const userId = obtenerCookie("userId");
+
+  function toDateTimeLocalValue(date) {
+    if (!date) return "";
+    const d = new Date(date);
+    const pad = (n) => String(n).padStart(2, "0");
+    return (
+      d.getFullYear() +
+      "-" +
+      pad(d.getMonth() + 1) +
+      "-" +
+      pad(d.getDate()) +
+      "T" +
+      pad(d.getHours()) +
+      ":" +
+      pad(d.getMinutes())
+    );
+  }
+
+  function fromInputsToArray(selector) {
+    return Array.from(document.querySelectorAll(selector + ":checked")).map(
+      (cb) => cb.value
+    );
+  }
+
+  // ===== Inicialización =====
+  function inicializarPagina() {
+    cargarAreasTematicas();
+    cargarDocumentosRequeridos();
+    configurarEventos();
+    generarNumeroConvocatoria();
+    configurarFechasMinimas();
+  }
+
+  function generarNumeroConvocatoria() {
+    const año = new Date().getFullYear();
+    const numero = String(Math.floor(Math.random() * 12) + 1).padStart(2, "0");
+    document.getElementById("numero").value = `${año}-${numero}`;
+  }
+
+  function configurarFechasMinimas() {
+    const ahora = new Date();
+    const mañana = new Date(ahora.getTime() + 24 * 60 * 60 * 1000);
+    const fechaMinima = toDateTimeLocalValue(mañana);
+
+    ["fechaApertura", "fechaCierre", "fechaResultados"].forEach((id) => {
+      document.getElementById(id).min = fechaMinima;
+    });
+  }
+
+  function cargarAreasTematicas() {
+    const container = document.getElementById("areasTematicas");
+    container.innerHTML = AREAS_TEMATICAS.map(
+      (area, index) => `
+        <div class="checkbox-item">
+          <input type="checkbox" id="area_${index}" name="areasTematicas[]" value="${area}">
+          <label for="area_${index}">${area}</label>
+        </div>
+      `
+    ).join("");
+  }
+
+  function cargarDocumentosRequeridos() {
+    const container = document.getElementById("documentosRequeridos");
+    container.innerHTML = DOCUMENTOS_REQUERIDOS.map(
+      (doc, index) => `
+        <div class="checkbox-item">
+          <input type="checkbox" id="doc_${index}" name="documentosRequeridos[]" value="${doc}">
+          <label for="doc_${index}">${doc}</label>
+        </div>
+      `
+    ).join("");
+  }
+
+  function configurarEventos() {
+    // Actualizar cronograma
+    ["fechaApertura", "fechaCierre", "fechaResultados"].forEach((id) => {
+      document.getElementById(id).addEventListener("change", actualizarCronograma);
+    });
+
+    // Validación fechas
+    document
+      .getElementById("fechaCierre")
+      .addEventListener("change", function () {
+        const apertura = new Date(
+          document.getElementById("fechaApertura").value
+        );
+        const cierre = new Date(this.value);
+
+        if (apertura && cierre && cierre <= apertura) {
+          Swal.fire(
+            "Error",
+            "La fecha de cierre debe ser posterior a la fecha de apertura",
+            "error"
+          );
+          this.value = "";
+        }
+      });
+
+    document
+      .getElementById("fechaResultados")
+      .addEventListener("change", function () {
+        const cierre = new Date(
+          document.getElementById("fechaCierre").value
+        );
+        const resultados = new Date(this.value);
+
+        if (cierre && resultados && resultados <= cierre) {
+          Swal.fire(
+            "Error",
+            "La fecha de resultados debe ser posterior a la fecha de cierre",
+            "error"
+          );
+          this.value = "";
+        }
+      });
+
+    // Palabras clave
+    document
+      .getElementById("palabrasClaveInput")
+      .addEventListener("keypress", function (e) {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          const palabra = this.value.trim();
+          if (palabra && !palabrasClave.includes(palabra)) {
+            palabrasClave.push(palabra);
+            this.value = "";
+            actualizarPalabrasClave();
+          }
+        }
+      });
+
+    // Validación de presupuestos
+    document
+      .getElementById("presupuestoMaximo")
+      .addEventListener("change", function () {
+        const minimo =
+          parseFloat(document.getElementById("presupuestoMinimo").value) || 0;
+        const maximo = parseFloat(this.value) || 0;
+
+        if (maximo > 0 && minimo > 0 && maximo < minimo) {
+          Swal.fire(
+            "Error",
+            "El presupuesto máximo debe ser mayor al mínimo",
+            "error"
+          );
+          this.value = "";
+        }
+      });
+
+    // Validación de duraciones
+    document
+      .getElementById("duracionMaxima")
+      .addEventListener("change", function () {
+        const minima =
+          parseInt(document.getElementById("duracionMinima").value) || 0;
+        const maxima = parseInt(this.value) || 0;
+
+        if (maxima > 0 && minima > 0 && maxima < minima) {
+          Swal.fire(
+            "Error",
+            "La duración máxima debe ser mayor a la mínima",
+            "error"
+          );
+          this.value = "";
+        }
+      });
+
+    // Envío del formulario (publicar)
+    document
+      .getElementById("formConvocatoria")
+      .addEventListener("submit", function (e) {
+        e.preventDefault();
+        publicarConvocatoria();
+      });
+  }
+
+  function actualizarCronograma() {
+    const apertura = document.getElementById("fechaApertura").value;
+    const cierre = document.getElementById("fechaCierre").value;
+    const resultados = document.getElementById("fechaResultados").value;
+
+    if (apertura && cierre && resultados) {
+      const container = document.getElementById("cronogramaPreview");
+      const itemsContainer = document.getElementById("timelineItems");
+
+      const eventos = [
+        { fecha: apertura, evento: "Apertura de convocatoria" },
+        { fecha: cierre, evento: "Cierre de presentación de propuestas" },
+        { fecha: resultados, evento: "Publicación de resultados" },
+      ];
+
+      itemsContainer.innerHTML = eventos
+        .map(
+          (item) => `
+          <div class="timeline-item">
+            <div class="timeline-date">${new Date(
+              item.fecha
+            ).toLocaleString("es-CO")}</div>
+            <div class="timeline-event">${item.evento}</div>
+          </div>
+        `
+        )
+        .join("");
+
+      container.style.display = "block";
+    }
+  }
+
+  function actualizarPalabrasClave() {
+    const container = document.getElementById("palabrasClaveContainer");
+    const input = document.getElementById("palabrasClaveInput");
+
+    container.innerHTML =
+      palabrasClave
+        .map(
+          (palabra) => `
+        <div class="tag">
+          ${palabra}
+          <span class="remove-tag" onclick="eliminarPalabraClave('${palabra.replace(
+            /'/g,
+            "\\'"
+          )}')">&times;</span>
+        </div>
+      `
+        )
+        .join("") + input.outerHTML;
+
+    const newInput = container.querySelector(".tag-input");
+    newInput.addEventListener("keypress", function (e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        const palabra = this.value.trim();
+        if (palabra && !palabrasClave.includes(palabra)) {
+          palabrasClave.push(palabra);
+          this.value = "";
+          actualizarPalabrasClave();
+        }
+      }
+    });
+  }
+
+  function eliminarPalabraClave(palabra) {
+    palabrasClave = palabrasClave.filter((p) => p !== palabra);
+    actualizarPalabrasClave();
+  }
+
+  function llenarDatosDemo() {
+    Swal.fire({
+      title: "¿Cargar datos de demostración?",
+      text: "Esto llenará el formulario con datos de ejemplo",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Sí, cargar",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (!result.isConfirmed) return;
+
+      Object.keys(datosDemo).forEach((key) => {
+        const element = document.getElementById(key);
+        if (element) {
+          element.value = datosDemo[key];
+        }
+      });
+
+      // Fechas demo
+      const ahora = new Date();
+      const apertura = new Date(ahora.getTime() + 7 * 24 * 60 * 60 * 1000);
+      const cierre = new Date(apertura.getTime() + 30 * 24 * 60 * 60 * 1000);
+      const resultados = new Date(cierre.getTime() + 15 * 24 * 60 * 60 * 1000);
+
+      document.getElementById("fechaApertura").value =
+        toDateTimeLocalValue(apertura);
+      document.getElementById("fechaCierre").value =
+        toDateTimeLocalValue(cierre);
+      document.getElementById("fechaResultados").value =
+        toDateTimeLocalValue(resultados);
+
+      // Seleccionar algunas áreas temáticas
+      [0, 1, 5, 8, 9].forEach((index) => {
+        document.getElementById(`area_${index}`).checked = true;
+      });
+
+      // Seleccionar algunos documentos
+      [0, 1, 2, 3, 4, 6].forEach((index) => {
+        document.getElementById(`doc_${index}`).checked = true;
+      });
+
+      // Palabras clave demo
+      palabrasClave = [
+        "innovación",
+        "tecnología",
+        "digitalización",
+        "santander",
+        "competitividad",
+        "energía",
+        "petroquímica",
+      ];
+      actualizarPalabrasClave();
+      actualizarCronograma();
+
+      Swal.fire(
+        "¡Datos cargados!",
+        "Los campos han sido llenados con datos de demostración",
+        "success"
+      );
+    });
+  }
+
+  function previsualizarConvocatoria() {
+    const titulo = document.getElementById("titulo").value.trim();
+    const numero = document.getElementById("numero").value.trim();
+    const descripcion = document.getElementById("descripcion").value.trim();
+
+    if (!titulo || !numero || !descripcion) {
+      Swal.fire(
+        "Error",
+        "Complete al menos los campos básicos para previsualizar",
+        "error"
+      );
+      return;
+    }
+
+    const areasSeleccionadas = fromInputsToArray(
+      'input[name="areasTematicas[]"]'
+    );
+    const presupuesto = document.getElementById("presupuestoTotal").value;
+    const maxProyectos = document.getElementById("maxProyectos").value;
+
+    Swal.fire({
+      title: `${titulo}`,
+      html: `
+        <div style="text-align: left; max-height: 500px; overflow-y: auto;">
+          <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+            <h4 style="color: #007bff; margin: 0;">Convocatoria ${numero}</h4>
+            <span style="background: #fff3cd; color: #856404; padding: 4px 8px; border-radius: 15px; font-size: 0.85em;">
+              📝 Borrador
+            </span>
+          </div>
+          
+          <div style="margin-bottom: 20px;">
+            <h5 style="color: #2c3e50;">📋 Descripción:</h5>
+            <p style="line-height: 1.6; color: #666;">${descripcion}</p>
+          </div>
+
+          ${
+            areasSeleccionadas.length > 0
+              ? `
+          <div style="margin-bottom: 20px;">
+            <h5 style="color: #2c3e50;">🎯 Áreas Temáticas:</h5>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+              ${areasSeleccionadas
+                .map(
+                  (area) =>
+                    `<span style="background: #e3f2fd; color: #1976d2; padding: 4px 8px; border-radius: 15px; font-size: 0.85em;">${area}</span>`
+                )
+                .join("")}
+            </div>
+          </div>`
+              : ""
+          }
+
+          ${
+            presupuesto
+              ? `
+          <div style="margin-bottom: 20px;">
+            <h5 style="color: #2c3e50;">💰 Información Financiera:</h5>
+            <ul style="margin: 0; padding-left: 20px; color: #666;">
+              <li>Presupuesto total: $${parseInt(presupuesto).toLocaleString(
+                "es-CO"
+              )}</li>
+              <li>Número máximo de proyectos: ${
+                maxProyectos || "No especificado"
+              }</li>
+            </ul>
+          </div>`
+              : ""
+          }
+
+          ${
+            palabrasClave.length > 0
+              ? `
+          <div style="margin-bottom: 20px;">
+            <h5 style="color: #2c3e50;">🏷️ Palabras Clave:</h5>
+            <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+              ${palabrasClave
+                .map(
+                  (palabra) =>
+                    `<span style="background: #007bff; color: white; padding: 3px 8px; border-radius: 12px; font-size: 0.8em;">${palabra}</span>`
+                )
+                .join("")}
+            </div>
+          </div>`
+              : ""
+          }
+        </div>
+      `,
+      width: 700,
+      showCloseButton: true,
+      confirmButtonText: "Cerrar Vista Previa",
+      confirmButtonColor: "#007bff",
+    });
+  }
+
+  function validarFormularioBasico() {
+    const titulo = document.getElementById("titulo").value.trim();
+    const numero = document.getElementById("numero").value.trim();
+
+    if (!titulo) {
+      Swal.fire({
+        icon: "warning",
+        title: "Campo requerido",
+        text: "El título es obligatorio",
+      });
+      return false;
+    }
+
+    if (!numero) {
+      Swal.fire({
+        icon: "warning",
+        title: "Campo requerido",
+        text: "El número de convocatoria es obligatorio",
+      });
+      return false;
+    }
+
+    return true;
+  }
+
+  function validarFormulario() {
+    if (!validarFormularioBasico()) return false;
+
+    const descripcion = document.getElementById("descripcion").value.trim();
+    const presupuesto = parseInt(
+      document.getElementById("presupuestoTotal").value
+    );
+    const fechaApertura = document.getElementById("fechaApertura").value;
+    const fechaCierre = document.getElementById("fechaCierre").value;
+    const areasSeleccionadas = fromInputsToArray(
+      'input[name="areasTematicas[]"]'
+    );
+
+    if (!descripcion) {
+      Swal.fire({
+        icon: "warning",
+        title: "Campo requerido",
+        text: "La descripción es obligatoria para publicar",
+      });
+      return false;
+    }
+
+    if (!presupuesto || presupuesto <= 0) {
+      Swal.fire({
+        icon: "warning",
+        title: "Campo requerido",
+        text: "El presupuesto debe ser mayor a 0",
+      });
+      return false;
+    }
+
+    if (!fechaApertura || !fechaCierre) {
+      Swal.fire({
+        icon: "warning",
+        title: "Campos requeridos",
+        text: "Las fechas de apertura y cierre son obligatorias",
+      });
+      return false;
+    }
+
+    if (new Date(fechaCierre) <= new Date(fechaApertura)) {
+      Swal.fire({
+        icon: "warning",
+        title: "Fechas inválidas",
+        text: "La fecha de cierre debe ser posterior a la de apertura",
+      });
+      return false;
+    }
+
+    if (!areasSeleccionadas.length) {
+      Swal.fire({
+        icon: "warning",
+        title: "Faltan áreas temáticas",
+        text: "Debe seleccionar al menos un área temática",
+      });
+      return false;
+    }
+
+    return true;
+  }
+
+  async function publicarConvocatoria() {
+    if (!validarFormulario()) return;
+
+    const result = await Swal.fire({
+      title: "¿Publicar convocatoria?",
+      text: "Una vez publicada, la convocatoria estará disponible para todos los usuarios",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Sí, publicar",
+      cancelButtonText: "Cancelar",
+    });
+
+    if (result.isConfirmed) {
+      await guardarConvocatoria("publicada");
+    }
+  }
+
+  async function guardarBorrador() {
+    if (!validarFormularioBasico()) return;
+    await guardarConvocatoria("borrador");
+  }
+
+  async function guardarConvocatoria(estado = "borrador") {
+    const datosConvocatoria = recopilarDatosFormulario();
+    datosConvocatoria.estado = estado;
+
+    Swal.fire({
+      title:
+        estado === "borrador"
+          ? "Guardando borrador..."
+          : "Publicando convocatoria...",
+      text: "Por favor espere mientras se procesa la información",
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
+
+    try {
+      const response = await fetch("/api/convocatorias", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(datosConvocatoria),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || `Error ${response.status}`);
+      }
+
+      await response.json();
+
+      Swal.fire({
+        icon: "success",
+        title:
+          estado === "borrador"
+            ? "¡Borrador Guardado!"
+            : "¡Convocatoria Publicada!",
+        html:
+          estado === "borrador"
+            ? `<p>El borrador <strong>${datosConvocatoria.numero}</strong> ha sido guardado exitosamente.</p>`
+            : `
+              <p>La convocatoria <strong>${datosConvocatoria.numero}</strong> ha sido publicada exitosamente.</p>
+              <p>Los usuarios podrán ver y aplicar a partir de la fecha de apertura configurada.</p>
+            `,
+        confirmButtonText: "Entendido",
+      }).then(() => {
+        if (estado === "publicada") {
+          document.getElementById("formConvocatoria").reset();
+          palabrasClave = [];
+          actualizarPalabrasClave();
+          generarNumeroConvocatoria();
+        }
+      });
+    } catch (error) {
+      console.error("Error al guardar convocatoria:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error al guardar",
+        text: error.message || "Ocurrió un error inesperado. Inténtelo nuevamente.",
+        confirmButtonText: "Entendido",
+      });
+    }
+  }
+
+  function recopilarDatosFormulario() {
+    const areas = fromInputsToArray('input[name="areasTematicas[]"]');
+    const docs = fromInputsToArray('input[name="documentosRequeridos[]"]');
+
+    return {
+      titulo: document.getElementById("titulo").value.trim(),
+      numero: document.getElementById("numero").value.trim(),
+      descripcion: document.getElementById("descripcion").value.trim(),
+      presupuestoTotal:
+        parseInt(document.getElementById("presupuestoTotal").value) || 0,
+      maxProyectos:
+        parseInt(document.getElementById("maxProyectos").value) || 0,
+      presupuestoMinimo:
+        parseInt(document.getElementById("presupuestoMinimo").value) || null,
+      presupuestoMaximo:
+        parseInt(document.getElementById("presupuestoMaximo").value) || null,
+      duracionMinima:
+        parseInt(document.getElementById("duracionMinima").value) || null,
+      duracionMaxima:
+        parseInt(document.getElementById("duracionMaxima").value) || null,
+      fechaApertura: document.getElementById("fechaApertura").value,
+      fechaCierre: document.getElementById("fechaCierre").value,
+      fechaResultados: document.getElementById("fechaResultados").value,
+      areasTematicas: areas,
+      documentosRequeridos: docs,
+      palabrasClave: palabrasClave,
+      requisitos: document.getElementById("requisitos").value.trim(),
+      contacto: document.getElementById("contacto").value.trim(),
+      observaciones: document.getElementById("observaciones").value.trim(),
+      tipoConvocatoriaId: 1,
+      creadoPorUserId: userId ? parseInt(userId) : null,
+    };
+  }
+
+  function verConvocatoriasAnteriores() {
+    fetch("/api/convocatorias")
+      .then((response) => response.json())
+      .then((convocatorias) => {
+        let htmlContent = '<div class="convocatorias-list">';
+
+        if (!Array.isArray(convocatorias) || convocatorias.length === 0) {
+          htmlContent += '<p class="text-center">No hay convocatorias registradas</p>';
+        } else {
+          convocatorias.slice(0, 10).forEach((conv) => {
+            const estado = conv.estado || "borrador";
+            const estadoTxt =
+              estado === "publicada"
+                ? "🟢 Publicada"
+                : estado === "cerrada"
+                ? "⏹️ Cerrada"
+                : "📝 Borrador";
+
+            htmlContent += `
+              <div class="convocatoria-item" style="border: 1px solid #ddd; border-radius: 8px; padding: 15px; margin-bottom: 12px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px;">
+                  <div>
+                    <h4 style="margin: 0; color: #2c3e50;">${conv.numero} - ${conv.titulo}</h4>
+                    <p style="margin: 4px 0;">Estado: ${estadoTxt}</p>
+                    ${
+                      conv.fechaApertura
+                        ? `<p style="margin: 4px 0;">Apertura: ${new Date(
+                            conv.fechaApertura
+                          ).toLocaleString("es-CO")}</p>`
+                        : ""
+                    }
+                    ${
+                      conv.presupuestoTotal
+                        ? `<p style="margin: 4px 0;">Presupuesto: $${Number(
+                            conv.presupuestoTotal
+                          ).toLocaleString("es-CO")}</p>`
+                        : ""
+                    }
+                  </div>
+                  <div>
+                    <button class="btn btn-sm btn-outline-primary" onclick="cargarConvocatoria(${
+                      conv.id
+                    })">
+                      <i class="bi bi-pencil"></i> Editar
+                    </button>
+                  </div>
+                </div>
+              </div>
+            `;
+          });
+        }
+
+        htmlContent += "</div>";
+
+        Swal.fire({
+          title: "Convocatorias Anteriores",
+          html: htmlContent,
+          width: "800px",
+          confirmButtonText: "Cerrar",
+        });
+      })
+      .catch((error) => {
+        console.error("Error al cargar convocatorias:", error);
+
+        // Fallback estático
+        const convocatoriasEjemplo = [
+          {
+            numero: "2024-12",
+            titulo: "Convocatoria de Cierre 2024 - Proyectos de Sostenibilidad",
+            estado: "cerrada",
+            fechaApertura: "2024-10-01T00:00",
+            fechaCierre: "2024-11-30T23:59",
+            proyectosPresentados: 23,
+            proyectosAprobados: 8,
+          },
+          {
+            numero: "2024-11",
+            titulo: "Convocatoria Especial - Agricultura 4.0",
+            estado: "cerrada",
+            fechaApertura: "2024-08-15T00:00",
+            fechaCierre: "2024-09-30T23:59",
+            proyectosPresentados: 31,
+            proyectosAprobados: 12,
+          },
+          {
+            numero: "2024-10",
+            titulo: "Convocatoria Regular - Innovación Tecnológica",
+            estado: "cerrada",
+            fechaApertura: "2024-06-01T00:00",
+            fechaCierre: "2024-07-31T23:59",
+            proyectosPresentados: 45,
+            proyectosAprobados: 15,
+          },
+        ];
+
+        const convocatoriasHTML = convocatoriasEjemplo
+          .map(
+            (conv) => `
+            <div style="border: 1px solid #ddd; border-radius: 8px; padding: 15px; margin-bottom: 15px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <h4 style="margin: 0; color: #2c3e50;">${conv.titulo}</h4>
+                <span style="background: #f8d7da; color: #721c24; padding: 4px 8px; border-radius: 15px; font-size: 0.85em;">
+                  ${conv.estado === "cerrada" ? "⏹️ Cerrada" : "🟢 Activa"}
+                </span>
+              </div>
+              <p style="margin: 5px 0; color: #666;"><strong>Número:</strong> ${
+                conv.numero
+              }</p>
+              <p style="margin: 5px 0; color: #666;"><strong>Período:</strong> ${new Date(
+                conv.fechaApertura
+              ).toLocaleDateString("es-CO")} - ${new Date(
+              conv.fechaCierre
+            ).toLocaleDateString("es-CO")}</p>
+              <p style="margin: 5px 0; color: #666;"><strong>Proyectos:</strong> ${
+                conv.proyectosPresentados
+              } presentados, ${conv.proyectosAprobados} aprobados</p>
+            </div>
+          `
+          )
+          .join("");
+
+        Swal.fire({
+          title: "Convocatorias Anteriores",
+          html: `
+            <div style="text-align: left; max-height: 400px; overflow-y: auto;">
+              ${convocatoriasHTML}
+            </div>
+          `,
+          width: 600,
+          showCloseButton: true,
+          confirmButtonText: "Cerrar",
+        });
+      });
+  }
+
+  async function cargarConvocatoria(id) {
+    try {
+      const response = await fetch(`/api/convocatorias/detalle/${id}`);
+      if (!response.ok) {
+        throw new Error(`Error ${response.status}`);
+      }
+
+      const convocatoria = await response.json();
+
+      // Llenar formulario
+      document.getElementById("titulo").value = convocatoria.titulo || "";
+      document.getElementById("numero").value = convocatoria.numero || "";
+      document.getElementById("descripcion").value =
+        convocatoria.descripcion || "";
+      document.getElementById("presupuestoTotal").value =
+        convocatoria.presupuestoTotal || "";
+      document.getElementById("maxProyectos").value =
+        convocatoria.maxProyectos || "";
+      document.getElementById("presupuestoMinimo").value =
+        convocatoria.presupuestoMinimo || "";
+      document.getElementById("presupuestoMaximo").value =
+        convocatoria.presupuestoMaximo || "";
+      document.getElementById("duracionMinima").value =
+        convocatoria.duracionMinima || "";
+      document.getElementById("duracionMaxima").value =
+        convocatoria.duracionMaxima || "";
+
+      if (convocatoria.fechaApertura)
+        document.getElementById("fechaApertura").value =
+          toDateTimeLocalValue(convocatoria.fechaApertura);
+      if (convocatoria.fechaCierre)
+        document.getElementById("fechaCierre").value =
+          toDateTimeLocalValue(convocatoria.fechaCierre);
+      if (convocatoria.fechaResultados)
+        document.getElementById("fechaResultados").value =
+          toDateTimeLocalValue(convocatoria.fechaResultados);
+
+      // Áreas temáticas
+      const setAreas = new Set(
+        Array.isArray(convocatoria.areasTematicas)
+          ? convocatoria.areasTematicas
+          : String(convocatoria.areasTematicas || "")
+              .split(",")
+              .map((a) => a.trim())
+              .filter(Boolean)
+      );
+      document
+        .querySelectorAll('input[name="areasTematicas[]"]')
+        .forEach((cb) => {
+          cb.checked = setAreas.has(cb.value);
+        });
+
+      // Documentos requeridos
+      const setDocs = new Set(
+        Array.isArray(convocatoria.documentosRequeridos)
+          ? convocatoria.documentosRequeridos
+          : String(convocatoria.documentosRequeridos || "")
+              .split(",")
+              .map((d) => d.trim())
+              .filter(Boolean)
+      );
+      document
+        .querySelectorAll('input[name="documentosRequeridos[]"]')
+        .forEach((cb) => {
+          cb.checked = setDocs.has(cb.value);
+        });
+
+      // Palabras clave
+      palabrasClave = Array.isArray(convocatoria.palabrasClave)
+        ? convocatoria.palabrasClave
+        : String(convocatoria.palabrasClave || "")
+            .split(",")
+            .map((p) => p.trim())
+            .filter(Boolean);
+      actualizarPalabrasClave();
+
+      document.getElementById("requisitos").value =
+        convocatoria.requisitos || "";
+      document.getElementById("contacto").value =
+        convocatoria.contacto || "";
+      document.getElementById("observaciones").value =
+        convocatoria.observaciones || "";
+
+      actualizarCronograma();
+
+      Swal.close();
+      document
+        .querySelector(".form-container")
+        .scrollIntoView({ behavior: "smooth" });
+
+      Swal.fire({
+        icon: "success",
+        title: "Convocatoria Cargada",
+        text: "Los datos han sido cargados en el formulario",
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+      });
+    } catch (error) {
+      console.error("Error al cargar convocatoria:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error al cargar",
+        text: "No se pudo cargar la convocatoria seleccionada",
+        confirmButtonText: "Entendido",
+      });
+    }
+  }
+
+  // Cerrar sesión
+  document.getElementById("cerrarSesion").addEventListener("click", () => {
+    Swal.fire({
+      title: "¿Estás seguro?",
+      text: "¿Quieres cerrar sesión?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, cerrar sesión",
+      cancelButtonText: "Cancelar",
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        document.cookie =
+          "jwt=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+        document.cookie =
+          "user=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+        document.cookie =
+          "userId=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+        document.location.href = "/";
+      }
+    });
+  });
+
+  // Menú desplegable usuario
+  (function () {
+    const userMenuBtn = document.getElementById("userMenuBtn");
+    const dropdown = userMenuBtn.closest(".dropdown");
+
+    userMenuBtn.addEventListener("click", (event) => {
+      event.stopPropagation();
+      dropdown.classList.toggle("show");
+    });
+
+    document.addEventListener("click", () => {
+      dropdown.classList.remove("show");
+    });
+  })();
+
+  // Spinner de carga mínimo 2s
+  (function () {
+    const MIN_MS = 2000;
+    const overlay = document.getElementById("page-spinner-overlay");
+    if (!overlay) return;
+
+    const start = performance.timing
+      ? performance.timing.navigationStart
+      : Date.now();
+    const now = Date.now();
+    const elapsed = Math.max(0, now - start);
+    const remaining = Math.max(0, MIN_MS - elapsed);
+
+    document.documentElement.style.overflow = "hidden";
+    document.body.style.overflow = "hidden";
+
+    setTimeout(() => {
+      overlay.style.opacity = "0";
+      setTimeout(() => {
+        if (overlay && overlay.parentNode)
+          overlay.parentNode.removeChild(overlay);
+        document.documentElement.style.overflow = "";
+        document.body.style.overflow = "";
+      }, 420);
+    }, remaining);
+  })();
+
+  // Inicializar página
+  document.addEventListener("DOMContentLoaded", inicializarPagina);
+</script>

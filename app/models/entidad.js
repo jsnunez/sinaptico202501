@@ -99,7 +99,7 @@ const Entidad = sequelize.define('Entidad', {
     type: DataTypes.INTEGER,
     allowNull: true,
     references: {
-      model: 'Users',
+      model: User,
       key: 'id',
     },
   },
