@@ -90,7 +90,7 @@ export const obtenerEntidad = async (req, res) => {
           model: UbicacionEntidad,
           as: 'ubicaciones',
           required: false, // LEFT JOIN para que no excluya entidades sin ubicación
-          attributes: ['id', 'latitud', 'longitud', 'direccionCompleta', 'activa', 'verificada', 'esUbicacionPrincipal']
+          attributes: ['id', 'latitud', 'longitud', 'direccionCompleta', 'activa', 'verificada']
         }
       ]
     });

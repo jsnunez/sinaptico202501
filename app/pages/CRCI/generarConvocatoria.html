@@ -683,8 +683,8 @@
 
   function configurarFechasMinimas() {
     const ahora = new Date();
-    const mañana = new Date(ahora.getTime() + 24 * 60 * 60 * 1000);
-    const fechaMinima = toDateTimeLocalValue(mañana);
+    const hoy = new Date(ahora.getTime());
+    const fechaMinima = toDateTimeLocalValue(hoy);
 
     ["fechaApertura", "fechaCierre", "fechaResultados"].forEach((id) => {
       document.getElementById(id).min = fechaMinima;
