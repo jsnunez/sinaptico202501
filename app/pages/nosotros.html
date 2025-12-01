@@ -39,383 +39,337 @@
         </nav>
     </header>
 
-    <div class="container">
-        <!-- Left side - Introduction with neuron theme -->
-        <div class="intro-panel">
-
-            <div class="intro-content">
-                <h1 style="text-align: center; font-size: 60px; display: flex; justify-content: center;">¿Qué es <img
-                        src="/logos/logo2.png" alt="SINAPTICO" class="intro-title"
-                        style="max-width: 300px; justify-content: center; margin-left: 10px;">? </h1>
-
-                <p class="intro-description" style="text-align: center;">
-                    Es una plataforma que, al igual que las neuronas se conectan a través de sinapsis, busca conectar
-                    diferentes sectores de la sociedad. Esta interconexión permite generar un flujo constante de ideas,
-                    creatividad y soluciones para los retos actuales y futuros. Al igual que los neurotransmisores
-                    transmiten impulsos, Sinaptico facilita el intercambio de conocimientos y recursos, como retos,
-                    eventos y oportunidades de aprendizaje, para fomentar la innovación y el desarrollo colectivo.
-                </p>
-
-
-
-            </div>
-            <div class="logos-slider">
-                <div class="logos-track">
-                    <div class="logo-slide">
-                        <img src="img/empresa1.png" alt="Empresa 1">
-                    </div>
-                    <div class="logo-slide">
-                        <img src="img/empresa2.png" alt="Empresa 2">
-                    </div>
-                    <div class="logo-slide">
-                        <img src="img/empresa3.png" alt="Empresa 3">
-                    </div>
-                    <div class="logo-slide">
-                        <img src="img/empresa4.png" alt="Empresa 4">
-                    </div>
-                    <div class="logo-slide">
-                        <img src="img/empresa5.png" alt="Empresa 5">
-                    </div>
-                    <div class="logo-slide">
-                        <img src="img/empresa6.png" alt="Empresa 6">
-                    </div>
-                    <!-- Duplicar para efecto infinito -->
-                    <div class="logo-slide">
-                        <img src="img/empresa1.png" alt="Empresa 1">
-                    </div>
-                    <div class="logo-slide">
-                        <img src="img/empresa2.png" alt="Empresa 2">
-                    </div>
-                    <div class="logo-slide">
-                        <img src="img/empresa3.png" alt="Empresa 3">
-                    </div>
-                    <div class="logo-slide">
-                        <img src="img/empresa4.png" alt="Empresa 4">
-                    </div>
-                    <div class="logo-slide">
-                        <img src="img/empresa5.png" alt="Empresa 5">
-                    </div>
-                    <div class="logo-slide">
-                        <img src="img/empresa6.png" alt="Empresa 6">
-                    </div>
-                </div>
-            </div>
-
-            <style>
-                .logos-slider {
-                    width: 100%;
-                    overflow: hidden;
-                    padding: 2rem 0;
-                    background: transparent;
-                }
-
-                .logos-track {
-                    display: flex;
-                    animation: scroll 30s linear infinite;
-                    gap: 3rem;
-                    width: max-content;
-                }
-
-                .logo-slide {
-                    flex-shrink: 0;
-                    width: 150px;
-                    height: 80px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    background: white;
-                    border-radius: 8px;
-                    padding: 1rem;
-                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-                }
-
-                .logo-slide img {
-                    max-width: 100%;
-                    max-height: 100%;
-                    object-fit: contain;
-                    filter: grayscale(10%);
-                    transition: filter 0.3s ease;
-                }
-
-                .logo-slide:hover img {
-                    filter: grayscale(0%);
-                }
-
-                @keyframes scroll {
-                    0% {
-                        transform: translateX(0);
-                    }
-
-                    100% {
-                        transform: translateX(-50%);
-                    }
-                }
-
-                .logos-slider:hover .logos-track {
-                    animation-play-state: paused;
-                }
-            </style>
-
-        </div>
-
-
-        <div class="imgDepartamento" id="mapa">
-
-        </div>
-    </div>
-    <div class="main-content"
-        style="display: flex; flex-direction: column; align-items: center; text-align: center; width: 100%; gap: 20px;">
-
-        <!-- Bloque título principal -->
-        <div style="display: flex; flex-direction: column; align-items: center;">
-
-            <h1 style="font-size: 40px; display: flex; align-items: center; justify-content: center; 
-                   border-radius: 20px; background-color: var(--primary-color); 
-                   color: white; padding: 10px 40px;">
-                Creación de
-                <img src="/img/logo1.png" alt="SINAPTICO" style="max-width: 250px; height: auto;">
-            </h1>
-
-        </div>
-
-        <!-- Subtítulo -->
-        <h1 style="font-size: 30px; margin-top: 20px; color: var(--primary-color);">
-            Dirigida por
-        </h1>
-
-        <!-- Imagen CPC -->
-        <img src="/logos/logoCPC.png" alt="CPC" style="max-width: 300px; max-height: 200px; ">
-
-
-        <!-- Sección del texto + botón -->
-        <div style="max-width: 900px; background-color: rgba(193, 198, 255, 0.28); 
-                padding: 30px; border-radius: 12px; display: flex; flex-direction: column; 
-                align-items: center; ">
-
-            <p style="font-size: 18px; line-height: 1.6; margin-bottom: 20px;">
-                Articula, potencializa capacidades empresariales y desarrolla actividades con énfasis en
-                la formulación, ejecución, seguimiento y evaluación de políticas, planes, programas y proyectos
-                que contribuyen a la reactivación económica y sostenibilidad de las pymes, grandes empresas,
-                emprendimientos y unidades productivas del país, en torno a la implementación de metodologías
-                ágiles de innovación y productividad.
-            </p>
-
-            <button onclick="window.open('https://www.cpcoriente.org/nosotros', '_blank')" style="background: var(--orange); color: var(--light-text); border: none; 
-               border-radius: 8px; padding: 12px 20px; font-size: 20px; cursor: pointer; 
-               transition: 0.3s; width: 250px;">
-                Explora
-            </button>
-
-
-        </div>
-
-    </div>
     <div class="main-content">
-        <div>
-            <h1>Nosotros</h1>
-            <p>Somos una plataforma que articula los actores del Ecosistema de innovación de Santander
-                para acelerar la transformación digital y el desarrollo tecnológico del territorio</p>
+        <div style="margin-top: 3rem; margin-bottom: 1rem;">
+            <h1 class="title">Nosotros</h1>
+            <p style="text-align: justify;">Somos una plataforma que articula los actores del Ecosistema de innovación
+                de Santander
+                para acelerar la transformación digital y el desarrollo tecnológico del territorio. es una plataforma
+                que, al igual que las neuronas se conectan a través de sinapsis, busca conectar diferentes sectores de
+                la sociedad. Esta interconexión permite generar un flujo constante de ideas, creatividad y soluciones
+                para los retos actuales y futuros. Al igual que los neurotransmisores transmiten impulsos, Sinaptico
+                facilita el intercambio de conocimientos y recursos, como retos, eventos y oportunidades de aprendizaje,
+                para fomentar la innovación y el desarrollo colectivo.</p>
 
         </div>
-        <div style="display: flex;">
-            <div>
-                <h1>Nuestra Misión</h1>
-                <p style="text-align: justify; ">Promover y gestionar la articulación del Ecosistema de innovación de
+        <div style="display: flex; gap: 20px; margin-top: 4%;">
+            <div
+                style="flex: 1; display: flex; flex-direction: column; align-items: flex-start; justify-content: center;">
+                <h2 class="title">Nuestra Misión</h2>
+                <p
+                    style="text-align: justify; margin-top: 1rem; background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0px 3px 12px rgba(0, 0, 0, 0.1); ">
+                    Promover y gestionar la articulación del Ecosistema de innovación de
                     Santander mediante
                     plataforma digitales, servicios colaborativos, gobernanza participativa y herramientas
                     que faciliten la co-creación de soluciones tecnológicas para el desarrollo productivo,
                     sostenible y competitivo del territorio</p>
             </div>
-            <div>
-                <h1>Nuestra Visión</h1>
-                <p style="text-align: justify; ">
+            <div
+                style="flex: 1; display: flex; flex-direction: column; align-items: flex-start; justify-content: center;">
+                <h2 class="title">Nuestra Visión</h2>
+                <p
+                    style="text-align: justify; margin-top: 1rem; background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0px 3px 12px rgba(0, 0, 0, 0.1); ">
                     Para 2030, ser el principal articulador regional del oriente Colombiano, referente nacional en
                     innovación abierta
                     y transformación digital, impulsando una región conectada, inteligente y sostenible, con presencia
                     activa en mercados
                     globales de tecnología.
                 </p>
-
             </div>
         </div>
     </div>
+    <section class="valores-section">
+        <h2 class="title">Nuestros Valores</h2>
 
-    <div class="main-content" id="entidades">
+        <p class="pilares-texto">
+            SINÁPTICO surge inicialmente como el <strong>Sistema Regional de Innovación de Santander</strong>,
+            una iniciativa visionaria gestada desde 2017 con un fuerte liderazgo del
+            <strong>Centro de Productividad y Competitividad del Oriente (CPC Oriente)</strong>
+            y el acompañamiento activo de la
+            <strong>Cámara de Comercio de Bucaramanga</strong>, la
+            <strong>Universidad Industrial de Santander (UIS)</strong>, la
+            <strong>Universidad Santo Tomás</strong>, la
+            <strong>Gobernación de Santander</strong> y la
+            <strong>Alcaldía de Bucaramanga</strong>, junto a otras entidades y aliados estratégicos que han aportado al
+            fortalecimiento de capacidades, la formulación de proyectos y la articulación de agendas para el desarrollo
+            tecnológico, productivo y sostenible del territorio.
+        </p>
+        </div>
+        </section>
+
+        <section class="pilares-section">
+            <h2 class="title">Pilares del Ecosistema</h2>
+
+
+            <div class="pilares-container">
+
+                <div class="pilar-card">
+                    <h3>Innovación abierta</h3>
+                    <p>Conexión entre actores para co-crear soluciones tecnológicas que respondan a los desafíos del
+                        territorio.</p>
+                </div>
+
+                <div class="pilar-card">
+                    <h3>Transformación digital</h3>
+                    <p>Adopción de tecnologías emergentes para mejorar la productividad y competitividad regional.</p>
+                </div>
+
+                <div class="pilar-card">
+                    <h3>Colaboración territorial</h3>
+                    <p>Participación activa de las provincias y ciudades del Departamento como nodos de articulación e
+                        impacto.</p>
+                </div>
+
+                <div class="pilar-card">
+                    <h3>Sostenibilidad e impacto</h3>
+                    <p>Innovaciones que impulsan el crecimiento económico responsable y la transición hacia una economía
+                        verde.</p>
+                </div>
+
+            </div>
 
 
 
-        <div id="authModal" class="modal">
-            <div class="modal-content">
-                <!-- TU PANEL ACTUAL PEGADO AQUÍ -->
-                <div class="auth-panel">
-                    <div class="auth-container">
-                        <div class="auth-header">
-                            <img src="/logos/logo2.png" alt="SINAPTICO" class="intro-title"
-                                style="max-width: 300px; height: 10vh;">
-                        </div>
+        </section>
+        <section class="timeline-section">
+            <h2 class="title">Nuestra trayectoria</h2>
+            <div class="timeline-line"></div>
 
-                        <div class="tabs">
-                            <div class="tab-header">
-                                <div class="tab-trigger active" data-tab="login">Iniciar Sesión</div>
-                                <div class="tab-trigger" data-tab="register">Registrate</div>
+            <div id="timeline" class="timeline"></div>
+        </section>
+        <section class="ecosistema-section">
+            <h2>Conéctate al ecosistema</h2>
+            <p class="descripcion">
+                Crea tu cuenta o inicia sesión para publicar retos, postular soluciones, participar en convocatorias y
+                conectarte con otros actores.
+            </p>
+
+            <div class="ecosistema-container">
+
+                <!-- Tarjeta Iniciar sesión -->
+                <div class="card-ecosis">
+                    <h3>Iniciar sesión</h3>
+                    <button class="btn-ecosis" onclick="inicioSesion()">Conectar</button>
+                </div>
+
+                <!-- Tarjeta Crear cuenta -->
+                <div class="card-ecosis">
+                    <h3>Crear cuenta</h3>
+                    <button class="btn-registrarme" onclick="registrarme()">Crear cuenta</button>
+                </div>
+
+            </div>
+        </section>
+
+        <div class="main-content" id="entidades">
+
+
+
+            <div id="authModal" class="modal">
+                <div class="modal-content">
+                    <!-- TU PANEL ACTUAL PEGADO AQUÍ -->
+                    <div class="auth-panel">
+                        <div class="auth-container">
+                            <div class="auth-header">
+                                <img src="/logos/logo2.png" alt="SINAPTICO" class="intro-title"
+                                    style="max-width: 300px; height: 10vh;">
                             </div>
 
-                            <div class="tab-content">
-                                <!-- Login Form -->
-                                <div class="tab-pane active" id="login">
-                                    <form id="loginForm">
-                                        <div class="form-group">
-                                            <label for="email">Email</label>
-                                            <input type="email" id="email" placeholder="name@example.com" required>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <div class="password-header">
-                                                <label for="password">Contraseña</label>
-                                                <a id="recuperarPass" class="forgot-password">¿olvidaste tu
-                                                    contraseña?</a>
-                                            </div>
-                                            <input type="password" id="password" required>
-                                        </div>
-
-                                        <button type="submit" class="btn btn-primary">Conectar</button>
-
-                                        <p class="error escondido">Error al iniciar sesión</p>
-
-
-                                    </form>
+                            <div class="tabs">
+                                <div class="tab-header">
+                                    <div class="tab-trigger active" data-tab="login">Iniciar Sesión</div>
+                                    <div class="tab-trigger" data-tab="register">Registrate</div>
                                 </div>
 
-                                <!-- Register Form -->
-                                <div class="tab-pane" id="register">
-                                    <form id="registerForm">
-                                        <div class="form-group">
-                                            <label for="user">Nombre completo</label>
-                                            <input type="text" id="user" placeholder="John Doe" required>
-                                        </div>
+                                <div class="tab-content">
+                                    <!-- Login Form -->
+                                    <div class="tab-pane active" id="login">
+                                        <form id="loginForm">
+                                            <div class="form-group">
+                                                <label for="email">Email</label>
+                                                <input type="email" id="email" placeholder="name@example.com" required>
+                                            </div>
 
-                                        <div class="form-group">
-                                            <label for="register-email">Email</label>
-                                            <input type="email" id="register-email" placeholder="name@example.com"
-                                                required>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="telefono">Telefono </label>
-                                            <input type="tel" id="telefono" required>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="register-password">Contraseña</label>
-                                            <input type="password" id="register-password" required>
-                                        </div>
+                                            <div class="form-group">
+                                                <div class="password-header">
+                                                    <label for="password">Contraseña</label>
+                                                    <a id="recuperarPass" class="forgot-password">¿olvidaste tu
+                                                        contraseña?</a>
+                                                </div>
+                                                <input type="password" id="password" required>
+                                            </div>
 
-                                        <div class="form-group">
-                                            <label for="confirm-password">Confirma Contraseña </label>
-                                            <input type="password" id="confirm-password" required>
-                                        </div>
+                                            <button type="submit" class="btn btn-primary">Conectar</button>
 
-                                        <div class="form-group">
-                                            <div style="display: flex; align-items: center;">
-                                                <input type="checkbox" id="politicaDatos" required
-                                                    style="width: 16px; height: 16px; margin-top: 2px;">
-                                                <div style="margin-left: 8px;">
-                                                    Autorizo el tratamiento de mis datos personales según la
-                                                    <a href="documents/politicas_cpc.pdf" target="_blank">política de
-                                                        tratamiento de
-                                                        datos</a>.
+                                            <p class="error escondido">Error al iniciar sesión</p>
+
+
+                                        </form>
+                                    </div>
+
+                                    <!-- Register Form -->
+                                    <div class="tab-pane" id="register">
+                                        <form id="registerForm">
+                                            <div class="form-group">
+                                                <label for="user">Nombre completo</label>
+                                                <input type="text" id="user" placeholder="John Doe" required>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="register-email">Email</label>
+                                                <input type="email" id="register-email" placeholder="name@example.com"
+                                                    required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="telefono">Telefono </label>
+                                                <input type="tel" id="telefono" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="register-password">Contraseña</label>
+                                                <input type="password" id="register-password" required>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="confirm-password">Confirma Contraseña </label>
+                                                <input type="password" id="confirm-password" required>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div style="display: flex; align-items: center;">
+                                                    <input type="checkbox" id="politicaDatos" required
+                                                        style="width: 16px; height: 16px; margin-top: 2px;">
+                                                    <div style="margin-left: 8px;">
+                                                        Autorizo el tratamiento de mis datos personales según la
+                                                        <a href="documents/politicas_cpc.pdf" target="_blank">política
+                                                            de
+                                                            tratamiento de
+                                                            datos</a>.
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <button type="submit" class="btn btn-primary">Crear cuenta</button>
-                                    </form>
+                                            <button type="submit" class="btn btn-primary">Crear cuenta</button>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-
-        </div>
-    </div>
-    <footer class="footer">
-
-        <div class="footer-content">
-
-            <!-- Izquierda -->
-            <div class="footer-left">
-                <img src="/img/logo1.png" alt="SINAPTICO" class="footer-logo">
-                <p class="footer-desc">Conectando conocimiento, innovación y tecnología.</p>
-
 
             </div>
-
-            <!-- Enlaces en dos columnas -->
-            <div class="footer-links">
-                <h4>Explorar</h4>
-
-                <div class="links-grid">
-                    <a href="/">Inicio</a>
-                    <a href="/nosotros">Nosotros</a>
-                    <a href="#" onclick="mensajeRegistrar()">Directorio</a>
-                    <a href="#" onclick="mensajeRegistrar()">Proyectos</a>
-                    <a href="#" onclick="mensajeRegistrar()">Convocatorias</a>
-                </div>
-            </div>
-
-            <!-- Redes sociales -->
-            <div class="footer-social">
-                <h4>Síguenos</h4>
-                <div class="social-icons">
-                    <a href="#"><i class="bi bi-facebook"></i></a>
-                    <a href="#"><i class="bi bi-twitter"></i></a>
-                    <a href="#"><i class="bi bi-linkedin"></i></a>
-                    <a href="#"><i class="bi bi-instagram"></i></a>
-                </div>
-            </div>
-
-            <!-- Contacto -->
-            <div class="footer-contact">
-                <h4>Contáctanos</h4>
-
-                <p>Cra.19 #35-02 - UIS Bucarica</p>
-                <p>Bucaramanga, Colombia</p>
-
-                <div class="contact-item">
-                    <i class="bi bi-envelope"></i>
-                    <span>info@cpcoriente.org</span>
-                </div>
-
-                <div class="contact-item">
-                    <i class="bi bi-telephone"></i>
-                    <span>+57 315 494 0296</span>
-                </div>
-            </div>
-
         </div>
 
-        <div class="footer-bottom">
-            <img src="/logos/logoCPCblanco.png" alt="SINAPTICO" class="footer-logoCPC">
-            <p>© 2025 CPC Oriente. Todos los derechos reservados.</p>
+        <footer class="footer">
 
-        </div>
+            <div class="footer-content">
 
-    </footer>
+                <!-- Izquierda -->
+                <div class="footer-left">
+                    <img src="/img/logo1.png" alt="SINAPTICO" class="footer-logo">
+                    <p class="footer-desc">Conectando conocimiento, innovación y tecnología.</p>
 
 
-    <script src="/js/home.js"></script>
-    <script src="/js/login.js"></script>
-    <script src="/js/config.js"></script>
-    <script src="/js/estadisticas.js"></script>
-    <script src="/js/llamarEntidadesHome.js"></script>
-    <script>
-        fetchChallengeCount();
-        fetchEntidadesCount();
-        fetchUserCount();
-        fetchConvocatoriasCount();
-        fetchEventosCount();
+                </div>
 
-    </script>
+                <!-- Enlaces en dos columnas -->
+                <div class="footer-links">
+                    <h4>Explorar</h4>
 
+                    <div class="links-grid">
+                        <a href="/">Inicio</a>
+                        <a href="/nosotros">Nosotros</a>
+                        <a href="#" onclick="mensajeRegistrar()">Directorio</a>
+                        <a href="#" onclick="mensajeRegistrar()">Proyectos</a>
+                        <a href="#" onclick="mensajeRegistrar()">Convocatorias</a>
+                    </div>
+                </div>
+
+                <!-- Redes sociales -->
+                <div class="footer-social">
+                    <h4>Síguenos</h4>
+                    <div class="social-icons">
+                        <a href="#"><i class="bi bi-facebook"></i></a>
+                        <a href="#"><i class="bi bi-twitter"></i></a>
+                        <a href="#"><i class="bi bi-linkedin"></i></a>
+                        <a href="#"><i class="bi bi-instagram"></i></a>
+                    </div>
+                </div>
+
+                <!-- Contacto -->
+                <div class="footer-contact">
+                    <h4>Contáctanos</h4>
+
+                    <p>Cra.19 #35-02 - UIS Bucarica</p>
+                    <p>Bucaramanga, Colombia</p>
+
+                    <div class="contact-item">
+                        <i class="bi bi-envelope"></i>
+                        <span>info@cpcoriente.org</span>
+                    </div>
+
+                    <div class="contact-item">
+                        <i class="bi bi-telephone"></i>
+                        <span>+57 315 494 0296</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="footer-bottom">
+                <img src="/logos/logoCPCblanco.png" alt="SINAPTICO" class="footer-logoCPC">
+                <p>© 2025 CPC Oriente. Todos los derechos reservados.</p>
+
+            </div>
+
+        </footer>
+
+
+        <script src="/js/home.js"></script>
+        <script src="/js/login.js"></script>
+        <script src="/js/config.js"></script>
+        <script src="/js/estadisticas.js"></script>
+        <script src="/js/llamarEntidadesHome.js"></script>
+        <script>
+            fetchChallengeCount();
+            fetchEntidadesCount();
+            fetchUserCount();
+            fetchConvocatoriasCount();
+            fetchEventosCount();
+
+        </script>
+        <script>
+
+            const timelineData = [{
+                year: 2017, color: "#0d1b2a",
+                text: "Gestación de la iniciativa y primeras conversaciones para impulsar la innovación regional."
+            }, {
+                year:
+                    2021, color: "#00a8e8", text: "Socialización con actores del territorio y mapeo de capacidades del ecosistema."
+            }, {
+                year: 2023, color: "#6a5acd",
+                text: "Conceptualización del ecosistema digital y definición de gobernanza y servicios."
+            }, {
+                year: 2024,
+                color: "#ff8c00", text: "Inicio del desarrollo tecnológico y primeras pruebas del prototipo del ecosistema."
+            },
+            {
+                year: 2025, color: "#20b28e",
+                text: "Consolidación de articuladores estratégicos y despliegue de tableros de control."
+            }]; const
+                timelineContainer = document.getElementById("timeline"); timelineData.forEach(item => {
+                    const div = document.createElement("div");
+                    div.className = "timeline-item";
+
+                    div.innerHTML = `
+    <div class="timeline-dot" style="background:${item.color}"></div>
+    <div class="timeline-year">${item.year}</div>
+    <div class="timeline-text">${item.text}</div>
+  `;
+
+                    timelineContainer.appendChild(div);
+                });
+        </script>
 </body>
 
 
