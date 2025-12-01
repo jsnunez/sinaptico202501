@@ -387,7 +387,6 @@ margin-top: 10px;
 }
 
 .action-button {
-    margin-bottom: 1vh;
     color: var(--text-description);
     border: none;
     border-radius: 10px;
@@ -2188,4 +2187,8 @@ form {
   100% {
     transform: rotate(360deg);
   }
+}
+
+.partners-container{
+    display: flex;
 }

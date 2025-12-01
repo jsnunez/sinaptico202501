@@ -13,10 +13,10 @@ export const verificarEntidad = async (req, res) => {
     const userId = req.params.userId;  // Obtener el userId desde los parámetros de la URL
 
     // Consultar en la base de datos si el usuario tiene una entidad asociada
-    const entidad = await Entidad.findOne({
+    const entidad = await Entidad.findAll({
       where: { UserAdminId: userId },  // Buscar la entichdad asociada al usuario
     });
-    const usuario = await UsuarioEmpresaCargo.findOne({
+    const usuario = await UsuarioEmpresaCargo.findAll({
       where: { UserId: userId, estado: 1 },  // Buscar el usuario asociado con estado 1
       include: [
         {
@@ -27,7 +27,6 @@ export const verificarEntidad = async (req, res) => {
       ],
 
     });
-
 
     if (entidad) {
       // Si la entidad existe, enviamos los detalles de la entidad

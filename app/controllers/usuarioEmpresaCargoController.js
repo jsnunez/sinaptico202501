@@ -59,7 +59,7 @@ export const getUserEntityCargoByUserId = async (req, res) => {
         {
           model: Entidad,
           as: 'empresa', // <-- este debe coincidir con el alias definido arriba
-          attributes: ['id', 'razonSocial']
+          attributes: ['id', 'razonSocial', 'logo'],
         },
 
         {

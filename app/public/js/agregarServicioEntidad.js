@@ -1,8 +1,8 @@
-function abrirModalAgregarServicio() {
+function abrirModalAgregarServicio(idEntidadModificar) {
   document.getElementById("myModalAsignarServicio").style.display = "flex";
-  llamarMisServicios(idEntidad);
-  console.log("Llamando a líderes para la entidad:", idEntidad);
-  llamarLideres(idEntidad);
+  llamarMisServicios(idEntidadModificar);
+  console.log("Llamando a líderes para la entidad:", idEntidadModificar);
+  llamarLideres(idEntidadModificar);
 }
 
 async function llamarLideres(empresaId) {

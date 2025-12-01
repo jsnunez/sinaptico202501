@@ -11,6 +11,7 @@
 
     <link rel="stylesheet" href="styles/colores.css">
     <link rel="stylesheet" href="styles/stylehelice2.css">
+    <link rel="stylesheet" href="styles/desplegables.css">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
@@ -473,7 +474,38 @@
             <h1 style="display: none;" id="ciudadPerfilValor"></h1>
             <!-- <p class="subtitle">Conectando entidades para potenciar la innovación</p> -->
         </div>
+
+        <!-- Partners/Sponsors Section -->
+        <div class="partners-section" style="display: flex;flex-direction: column;align-items: center;">
+            <div class="partners-title">
+                <h3>Mis Entidades</h3>
+               
+
+            </div>
+            
+            <div class="partners-container" id="partnersContainer">
+                <!-- Los logos se cargarán dinámicamente desde JS -->
+            </div>
+        </div>
         <div class="action-buttons" style="width: 40vw;">
+            <div class="quick-actions">
+                <button class="quick-action-btn" id="quickActionBtn">
+                    <i class="bi bi-plus"></i>
+                </button>
+                <div class="quick-menu" id="quickMenu">
+                    <button class="quick-option" id="crearEntidadQuick">
+                        <i class="bi bi-building-add"></i>
+                        <span>Crear Entidad</span>
+                    </button>
+                    <button class="quick-option" id="vincularEntidadQuick">
+                        <i class="bi bi-link-45deg"></i>
+                        <span>Vincular Entidad</span>
+                    </button>
+                </div>
+            </div>
+
+
+     
             <button class="action-button" id="crearEntidad" style="display: none;">
 
                 <span class="button-icon"><i class="bi bi-plus-square"></i></span>Crear entidad
@@ -1567,7 +1599,8 @@
     <script src="admin.js"></script>
     <script src="js/formularios.js"></script>
     <script src="js/llamarEntidades.js"></script>
-    <script src="js/editarEntidad.js"></script>
+    <!-- <script src="js/editarEntidad.js"></script> -->
+    <script src="js/editarEntidadMultiple.js"></script>
     <script src="js/cargarDatos.js"></script>
     <script src="js/unirConEntidad.js"></script>
     <script src="js/agregarServicioEntidad.js"></script>
@@ -2124,7 +2157,44 @@
         });
         applyFilters();
     </script>
+       <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const quickActionBtn = document.getElementById('quickActionBtn');
+                const quickMenu = document.getElementById('quickMenu');
+                const crearEntidadQuick = document.getElementById('crearEntidadQuick');
+                const vincularEntidadQuick = document.getElementById('vincularEntidadQuick');
 
+                // Toggle del menú
+                quickActionBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    quickMenu.classList.toggle('show');
+                    quickActionBtn.classList.toggle('active');
+                });
+
+                // Cerrar menú al hacer clic fuera
+                document.addEventListener('click', function(e) {
+                    if (!quickActionBtn.contains(e.target) && !quickMenu.contains(e.target)) {
+                        quickMenu.classList.remove('show');
+                        quickActionBtn.classList.remove('active');
+                    }
+                });
+
+                // Acciones de los botones
+                crearEntidadQuick.addEventListener('click', function() {
+                    // Aquí va la lógica para crear entidad
+                    document.getElementById('crearEntidad').click();
+                    quickMenu.classList.remove('show');
+                    quickActionBtn.classList.remove('active');
+                });
+
+                vincularEntidadQuick.addEventListener('click', function() {
+                    // Aquí va la lógica para vincular entidad
+                    document.getElementById('vincularEntidad').click();
+                    quickMenu.classList.remove('show');
+                    quickActionBtn.classList.remove('active');
+                });
+            });
+            </script>
 </body>
 
 </html>
