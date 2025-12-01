@@ -423,37 +423,37 @@ function agregarInteractividad() {
               attribution: '© OpenStreetMap contributors'
             }).addTo(modalMap);
 
-         
-              console.log('🔄 Cargando entidades desde la API...');
-              // Cargar entidades desde la API
-              fetch(`${API_BASE_URL}/api/ubicacion-entidad/mapa/entidades`)
-                .then(response => {
-                  console.log('📡 Respuesta de la API:', response.status);
-                  if (!response.ok) {
-                    throw new Error('Error al cargar entidades');
-                  }
-                  return response.json();
-                })
-                .then(data => {
-                  console.log('✅ Entidades cargadas:', data);
-                  usersData = data;
-                  filteredUsers = [...usersData];
-                  //   updateStatistics();
-                  //   populateCityFilter();
-                  //   populateDptoFilter();
-                  //   populateClaseFilter();
-                  displayMarkersOnMap();
-                  // displayUsersList();
-                })
-                .catch(error => {
-                  console.error('❌ Error:', error);
-                  console.log('Usando datos de ejemplo debido a un error en la carga de entidades.');
-                  // Usar datos de ejemplo en caso de error
+
+            console.log('🔄 Cargando entidades desde la API...');
+            // Cargar entidades desde la API
+            fetch(`${API_BASE_URL}/api/ubicacion-entidad/mapa/entidades`)
+              .then(response => {
+                console.log('📡 Respuesta de la API:', response.status);
+                if (!response.ok) {
+                  throw new Error('Error al cargar entidades');
+                }
+                return response.json();
+              })
+              .then(data => {
+                console.log('✅ Entidades cargadas:', data);
+                usersData = data;
+                filteredUsers = [...usersData];
+                //   updateStatistics();
+                //   populateCityFilter();
+                //   populateDptoFilter();
+                //   populateClaseFilter();
+                displayMarkersOnMap();
+                // displayUsersList();
+              })
+              .catch(error => {
+                console.error('❌ Error:', error);
+                console.log('Usando datos de ejemplo debido a un error en la carga de entidades.');
+                // Usar datos de ejemplo en caso de error
 
 
 
-                });
-         
+              });
+
             // Cargar datos del departamento específico si están disponibles
             // Aquí puedes agregar lógica para centrar el mapa en el departamento seleccionado
 
@@ -511,6 +511,12 @@ function agregarInteractividad() {
 }
 function inicioSesion() {
   document.getElementById("authModal").style.display = "block";
+    document.querySelector('.tab-trigger[data-tab="login"]').click();
+}
+function registrarme() {
+  document.getElementById("authModal").style.display = "block";
+  // Cambia a la pestaña de registro
+  document.querySelector('.tab-trigger[data-tab="register"]').click();
 }
 
 function closeModal() {
