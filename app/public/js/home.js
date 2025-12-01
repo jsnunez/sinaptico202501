@@ -56,7 +56,9 @@ document.addEventListener("DOMContentLoaded", () => {
           title: "¡Bienvenido!",
           text: "Inicio de sesión exitoso.",
           icon: "success",
-          confirmButtonText: "Continuar"
+           timer: 2000,
+          timerProgressBar: true,
+          showConfirmButton: false
         });
         window.location.href = redirectTo;
 
