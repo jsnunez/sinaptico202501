@@ -490,7 +490,7 @@
         <div class="action-buttons" style="width: 40vw;">
             <div class="quick-actions">
                 <button class="quick-action-btn" id="quickActionBtn">
-                    <i class="bi bi-plus"></i>
+                   +
                 </button>
                 <div class="quick-menu" id="quickMenu">
                     <button class="quick-option" id="crearEntidadQuick">
@@ -2167,8 +2167,17 @@
                 // Toggle del menú
                 quickActionBtn.addEventListener('click', function(e) {
                     e.stopPropagation();
-                    quickMenu.classList.toggle('show');
-                    quickActionBtn.classList.toggle('active');
+                     if (quickMenu.classList.contains('show')) {
+            quickMenu.classList.remove('show');
+            quickActionBtn.classList.remove('active');
+          } else {
+              cerrarTodosLosMenus();
+            quickMenu.classList.add('show');
+            quickActionBtn.classList.add('active');
+          }
+                    // quickMenu.classList.toggle('show');
+                    // quickActionBtn.classList.toggle('active');
+                      
                 });
 
                 // Cerrar menú al hacer clic fuera

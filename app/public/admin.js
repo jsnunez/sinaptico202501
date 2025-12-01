@@ -210,6 +210,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 logoDiv.classList.remove('active');
                 icon.style.display = 'none';
               } else {
+                  cerrarTodosLosMenus();
                 menu.classList.add('show');
                 logoDiv.classList.add('active');
                 icon.style.display = 'flex';
@@ -282,8 +283,8 @@ document.addEventListener("DOMContentLoaded", async function () {
     dataVinculados.forEach((entidad, index) => {
       console.log('Entidad:', entidad.empresa.razonSocial);
       // Insertar logo en partnersContainer
-      if (!entidades.includes(entidad.id)) {
-        entidades[index] = entidad.id;
+      if (!entidades.includes(entidad.empresa.id)) {
+        entidades.push(entidad.empresa.id);
       const partnersContainer = document.getElementById('partnersContainer');
       if (partnersContainer && entidad.empresa.logo) {
         // Crear contenedor principal con clase quick-actions
@@ -336,6 +337,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         // Event listeners
         logoDiv.addEventListener('click', (e) => {
           e.stopPropagation();
+          
           const menu = document.getElementById(`menu-${entidad.id}`);
           const icon = logoDiv.querySelector('i');
 
@@ -344,6 +346,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             logoDiv.classList.remove('active');
             icon.style.display = 'none';
           } else {
+              cerrarTodosLosMenus();
             menu.classList.add('show');
             logoDiv.classList.add('active');
             icon.style.display = 'flex';
@@ -394,7 +397,17 @@ document.addEventListener("DOMContentLoaded", async function () {
       "Ocurrió un error al verificar tu entidad. Por favor intenta más tarde.";
   }
 });
+function cerrarTodosLosMenus() {
+  document.querySelectorAll('.quick-menu').forEach(menu => {
+    menu.classList.remove('show');
+  });
 
+  document.querySelectorAll('.quick-action-btn').forEach(btn => {
+    btn.classList.remove('active');
+    const icon = btn.querySelector('i');
+    if (icon) icon.style.display = 'none';
+  });
+}
 
 const overlay = document.querySelector('.overlay');
 document.getElementById("crearEntidad").addEventListener("click", () => {
