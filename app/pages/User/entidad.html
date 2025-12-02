@@ -11,6 +11,8 @@
 
     <link rel="stylesheet" href="styles/colores.css">
     <link rel="stylesheet" href="styles/stylehelice2.css">
+        <link rel="stylesheet" href="styles/desplegables.css">
+
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
@@ -58,7 +60,7 @@
 
                     <div class="dropdown-menu" id="userMenu">
                         <a class="perfilUser" id="perfilUser">Perfil</a>
-                        <a href="/miEntidad" id="habilitarMiEmpresa" style="display: none;">Empresa</a>
+                        <a  id="habilitarMiEmpresa" style="display: none;">Empresa</a>
                         <a href="#" id="cerrarSesion">Cerrar sesión</a>
                     </div>
                 </div>
@@ -102,10 +104,22 @@
                     <div style="display: flex;flex-direction: column; justify-content: center; margin-left: 20px; "
                         class="informacionGeneral">
                         <h1 class="tituloEntidad" id="modalRazonSocial"></h1>
-
+   <button class="action-button" id="editarEntidad" style="display: block; min-width: 120px; margin-top: 10px;">
+                                        <i class="bi bi-pencil-fill"></i> Editar
+                                    </button>
                         <p style="font-size: 25px; color: rgb(82, 82, 82);"><a id="tipoEntidad"></a> ◦ <span
                                 id="descripcionEmpresa"></span></p>
-
+                                <div style="display: flex; gap: 15px; margin-top: 20px;">
+                                    <button class="action-button" onclick="window.history.back()">
+                                        <i class="bi bi-arrow-left"></i> Volver
+                                    </button>
+                                    <button class="action-button" id="seguirEntidad">
+                                        <i class="bi bi-heart"></i> Seguir
+                                    </button>
+                                    <button class="action-button" id="compartirEntidad">
+                                        <i class="bi bi-share"></i> Compartir
+                                    </button>
+                                </div>
                     </div>
 
                 </div>
@@ -325,12 +339,34 @@
             </div>
 
         </footer>
+    <div id="modalEditar" class="modal">
+        <div class="modal-content" style="max-width:900px;">
+            <div class="modal-header">
+                <h3>Editar Entidad</h3>
+                <span class="close" id="cerrarModalEditarX">&times;</span>
+            </div>
+            <form id="entidad-form-editar">
+                <div class="titulo-datos" id="titulo-datos-entidad">
+                    <!-- Los campos se agregarán dinámicamente -->
+                </div>
+                <div class="datos-entidad" id="datos-entidad">
+                    <!-- Los campos se agregarán dinámicamente -->
+                </div>
 
+                <div class="modal-actions">
+                    <button type="submit" class="modal-button">Guardar Cambios</button>
+                    <button type="button" class="modal-button-secondary" id="cerrarModalEditar">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
 
     <script src="/js/config.js"></script>
     <script src="admin.js"></script>
     <script src="js/formularios.js"></script>
+        <script src="js/editarEntidad.js"></script>
+
     <script src="js/cargarDatos.js"></script>
     <script src="js/estadisticas.js"></script>
     <script src="js/notificaciones.js"></script>
@@ -412,6 +448,13 @@
                     document.getElementById('departamento').textContent = entidad.ciudad?.departamento?.nombre || '';
                     document.getElementById("logo-perfilEntidad").src = entidad.logo ? "logos/" + entidad.logo : "img/sinlogo.jpg";
                     // Si tienes ubicaciones
+                     const currentUserId = obtenerCookie("userId");
+            console.log("Current User ID:", currentUserId);
+            if (entidad.UserAdminId && parseInt(entidad.UserAdminId) === parseInt(currentUserId)) {
+                // Mostrar botón de editar entidad si es el admin
+                const editarBtn = document.getElementById('editarEntidad').style.display = 'block';
+               
+            }
                     if (entidad.ubicaciones?.length > 0) {
                         document.getElementById('UbicacionEntidad').textContent = entidad.ubicaciones[0].direccionCompleta || '';
 
@@ -436,6 +479,10 @@
                 console.error('Error al obtener entidad:', err);
                 alert('Error al cargar la información de la entidad');
             }
+            // Verificar si el usuario actual es el administrador de esta entidad
+           
+
+            
         });
         async function llamarservicios(idEntidad) {
             try {

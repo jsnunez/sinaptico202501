@@ -31,6 +31,254 @@ body {
     height: 100%;
 }
 
+/* Encabezado */
+.header {
+    background: var(--primary-color);
+    color: var(--text-color);
+    padding: 0.5rem 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 10;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.logo-icon {
+    margin-right: 0.5rem;
+    animation: pulse 2s infinite;
+}
+
+.logo-text {
+    background: var(--text-color);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+    background-color: var(--secondary-color);
+    padding: 0.5rem 5%;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    gap: 1rem;
+}
+
+.nav-button {
+    background-color: var(--secondary-color);
+    color: var(--light-text);
+    border: none;
+    padding: 0rem 1.5rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+    height: 40px;
+
+
+}
+
+.nav-button:hover {
+    background-color: var(--orange);
+    border-radius: 12px;
+}
+
+.nav-button.pulse::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    background-color: var(--naranja-color);
+    opacity: 0;
+    border-radius: 100%;
+    transform: scale(1, 1) translate(-50%);
+    transform-origin: 50% 50%;
+}
+
+.nav-button.pulse:hover::after {
+    animation: ripple 1s ease-out;
+
+}
+
+.nav-button.pulse {
+    border-radius: 12px;
+    background-color: var(--naranja-color);
+}
+
+.nav-button.active {
+
+    background-color: var(--naranja-color);
+}
+
+
+
+.imagenPerfil {
+    border-radius: 50%;
+    object-fit: cover;
+    width: 5vh;
+    height: 5vh;
+    box-shadow: none;
+    outline: none;
+    background-color: var(--light-text);
+}
+
+.imagenPerfil:hover {
+    box-shadow: 0 0 0 3px var(--primary-color);
+    transform: scale(1.1);
+    transition: var(--transition);
+}
+
+#imagenPerfil:hover {
+    box-shadow: 0 0 0 3px var(--naranja-color);
+    transform: scale(1.1);
+    transition: var(--transition);
+}
+
+#imagenPerfilSecundaria:hover {
+    box-shadow: 0 0 0 3px var(--naranja-color);
+    transform: scale(1.1);
+    transition: var(--transition);
+}
+
+#userMenuBtn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    padding: 5px;
+    border-radius: 50%;
+    transition: background 0.3s;
+}
+
+
+/* Estilo del contenedor */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Menú oculto por defecto */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 110%;
+    /* debajo del botón */
+    right: 0;
+    background-color: var(--background-color, #222);
+    color: var(--text-color, #fff);
+    border-radius: 10px;
+    min-width: 180px;
+  overflow: visible !important;
+      z-index: 20;
+}
+
+/* Enlaces del menú */
+.dropdown-menu a {
+    display: block;
+    padding: 0.75rem 1rem;
+    color: inherit;
+    text-decoration: none;
+    transition: background 0.3s;
+}
+
+/* Hover de los enlaces */
+.dropdown-menu a:hover {
+    background: var(--blue, #444);
+}
+
+/* Clase que lo muestra */
+.dropdown.show .dropdown-menu {
+    display: block;
+    animation: fadeIn 0.2s ease-in-out;
+}
+
+/* Animación de aparición */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ================================
+   ESTILOS PARA DROPDOWN
+   MENÚ PRINCIPAL (menuG)
+================================ */
+
+.menuG {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-menuG {
+    display: none;
+    position: absolute;
+    top: 110%;
+    left: 0;
+    background-color: var(--background-color, #222);
+    color: var(--text-color, #fff);
+    border-radius: 10px;
+    width: 120px;
+    max-width: 180px;
+    overflow: hidden;
+    z-index: 999;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+
+}
+
+.dropdown-menuG a {
+    display: block;
+    padding: 0.75rem 1rem;
+    color: inherit;
+    text-decoration: none;
+    transition: background .25s ease;
+}
+
+.dropdown-menuG a:hover {
+    background: var(--orange);
+    color: var(--light-text);
+}
+
+/* Mostrar menú desplegable del menú general */
+.menuG.show .dropdown-menuG {
+    display: block;
+    animation: fadeIn .2s ease-in-out;
+}
+
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
 
 
 /* Contenedor de bienvenida */
@@ -139,6 +387,57 @@ h2 {
     box-shadow: 0 6px 15px rgba(48, 45, 226, 0.4);
 }
 
+.info-user {}
+
+.action-button {
+    color: var(--text-description);
+    border: none;
+    border-radius: 10px;
+    padding: 0.5rem 1.5rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--primary-color);
+    max-width: 200px;
+    max-height: 40px;
+    /* 
+    margin-bottom: 1vh;
+    display: flex;
+    align-items: center;
+    background: var(--gradient-2);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+        transition: var(--transition); */
+
+    /* box-shadow: 0 4px 10px rgba(142, 45, 226, 0.3); */
+}
+
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.action-button:hover {
+    transform: translateY(-3px);
+    background: var(--gray-color);
+    /* box-shadow: 0 6px 15px rgba(48, 45, 226, 0.4); */
+}
+
+.button-icon {
+    margin-right: 0.5rem;
+    font-size: 1.1rem;
+}
 
 /* Filtros */
 .filter-container {
@@ -274,31 +573,6 @@ h2 {
     background-color: var(--card-bg);
     border: 1px solid rgba(110, 72, 170, 0.1);
 }
-.card-redireccion {
-    background-color: var(--naranja-color);
-    color: var(--light-text);
-    border: none;
-    padding: 0rem 1.5rem;
-    font-size: 0.9rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: var(--transition);
-    position: relative;
-    overflow: hidden;
-    max-height: 50%;
-    border-radius: 6px;
-    margin: 5px;
-     text-decoration: none;
-}
-
-
-.card-redireccion:hover {
-    background-color: var(--light-text);
-    color: var(--primary-color);
-    border-radius: 12px;
-}
-
-
 
 .card-back {
     background: var(--secondary-color);

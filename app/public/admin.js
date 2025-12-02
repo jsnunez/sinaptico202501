@@ -164,43 +164,46 @@ document.addEventListener("DOMContentLoaded", async function () {
             logoDiv.style.backgroundPosition = 'center';
             logoDiv.style.position = 'relative';
             logoDiv.id = `entidad-${entidad.id}`;
-            logoDiv.innerHTML = '<i class="bi bi-plus" style="display: none;"></i><i class="bi bi-gear-fill" style="position: absolute; bottom: -5px; right: -5px; font-size: 20px; color: #000; background: white; border-radius: 50%; border: 2px solid #ccc;"></i>';
+            logoDiv.innerHTML = entidad.habilitado 
+              ? '<i class="bi bi-plus" style="display: none;"></i><i class="bi bi-gear-fill" style="position: absolute; bottom: -5px; right: -5px; font-size: 20px; color: #000; background: white; border-radius: 50%; border: 2px solid #ccc;"></i>'
+              : '<i class="bi bi-plus" style="display: none;"></i><i class="bi bi-hourglass-split" style="position: absolute; bottom: -5px; right: -5px; font-size: 20px; color: #000; background: white; border-radius: 50%; border: 2px solid #ccc;"></i>';
 
-            // Crear menú desplegable con clase quick-menu
-            const menuDiv = document.createElement('div');
-            menuDiv.className = 'quick-menu';
-            menuDiv.id = `menu-${entidad.id}`;
+            if (entidad.habilitado) {
+              // Crear menú desplegable con clase quick-menu
+              const menuDiv = document.createElement('div');
+              menuDiv.className = 'quick-menu';
+              menuDiv.id = `menu-${entidad.id}`;
 
-            // Crear botones del menú con clase quick-option
-            const editarBtn = document.createElement('div');
-            editarBtn.className = 'quick-option';
-            editarBtn.id = `editar-${entidad.id}`;
-            editarBtn.innerHTML = '<i class="bi bi-pencil"></i> Editar Entidad';
-            editarBtn.addEventListener('click', () => {
+              // Crear botones del menú con clase quick-option
+              const editarBtn = document.createElement('div');
+              editarBtn.className = 'quick-option';
+              editarBtn.id = `editar-${entidad.id}`;
+              editarBtn.innerHTML = '<i class="bi bi-pencil"></i> Editar Entidad';
+              editarBtn.addEventListener('click', () => {
               abrirModalEditarEntidad(entidad.id);
-            });
-            const serviciosBtn = document.createElement('div');
-            serviciosBtn.className = 'quick-option';
-            serviciosBtn.id = `servicios-${entidad.id}`;
-            serviciosBtn.innerHTML = '<i class="bi bi-gear"></i> Servicios';
-            serviciosBtn.addEventListener('click', () => {
+              });
+              const serviciosBtn = document.createElement('div');
+              serviciosBtn.className = 'quick-option';
+              serviciosBtn.id = `servicios-${entidad.id}`;
+              serviciosBtn.innerHTML = '<i class="bi bi-gear"></i> Servicios';
+              serviciosBtn.addEventListener('click', () => {
               abrirModalAgregarServicio(entidad.id);
-            });
+              });
 
-            const integrantesBtn = document.createElement('div');
-            integrantesBtn.className = 'quick-option';
-            integrantesBtn.id = `integrantes-${entidad.id}`;
-            integrantesBtn.innerHTML = '<i class="bi bi-people"></i> Integrantes';
+              const integrantesBtn = document.createElement('div');
+              integrantesBtn.className = 'quick-option';
+              integrantesBtn.id = `integrantes-${entidad.id}`;
+              integrantesBtn.innerHTML = '<i class="bi bi-people"></i> Integrantes';
 
-            menuDiv.appendChild(editarBtn);
-            menuDiv.appendChild(serviciosBtn);
-            menuDiv.appendChild(integrantesBtn);
+              menuDiv.appendChild(editarBtn);
+              menuDiv.appendChild(serviciosBtn);
+              menuDiv.appendChild(integrantesBtn);
 
-            quickActionsDiv.appendChild(logoDiv);
-            quickActionsDiv.appendChild(menuDiv);
+              quickActionsDiv.appendChild(logoDiv);
+              quickActionsDiv.appendChild(menuDiv);
 
-            // Event listeners
-            logoDiv.addEventListener('click', (e) => {
+              // Event listeners
+              logoDiv.addEventListener('click', (e) => {
               e.stopPropagation();
               const menu = document.getElementById(`menu-${entidad.id}`);
               const icon = logoDiv.querySelector('i');
@@ -210,28 +213,31 @@ document.addEventListener("DOMContentLoaded", async function () {
                 logoDiv.classList.remove('active');
                 icon.style.display = 'none';
               } else {
-                  cerrarTodosLosMenus();
+                cerrarTodosLosMenus();
                 menu.classList.add('show');
                 logoDiv.classList.add('active');
                 icon.style.display = 'flex';
               }
-            });
+              });
 
-            editarBtn.addEventListener('click', () => {
+              editarBtn.addEventListener('click', () => {
               console.log(`Editar entidad ${entidad.id}`);
               // Aquí iría la lógica para editar entidad
-            });
+              });
 
-            serviciosBtn.addEventListener('click', () => {
+              serviciosBtn.addEventListener('click', () => {
               console.log(`Servicios entidad ${entidad.id}`);
               // Aquí iría la lógica para servicios
-            });
+              });
 
-            integrantesBtn.addEventListener('click', () => {
+              integrantesBtn.addEventListener('click', () => {
               console.log(`Integrantes entidad ${entidad.id}`);
               document.getElementById('modalVerIntegrantesEntidad').style.display = 'block';
               fetchSolicitudes(entidad.id);
-            });
+              });
+            } else {
+              quickActionsDiv.appendChild(logoDiv);
+            }
 
             partnersContainer.appendChild(quickActionsDiv);
           }
@@ -253,11 +259,61 @@ document.addEventListener("DOMContentLoaded", async function () {
         });
       }
       idEntidad = data.entidad.id;
-      document.getElementById("habilitarMiEmpresa").style.display = "block";
+      // Crear dropleft para habilitarMiEmpresa
+ const habilitarBtn = document.getElementById("habilitarMiEmpresa");
+habilitarBtn.style.display = "block";
+habilitarBtn.style.position = "relative";
+
+// Crear menú dropleft
+const dropleftMenu = document.createElement("div");
+dropleftMenu.id = "dropleftHabilitar";
+dropleftMenu.className = "dropleft-menu";
+dropleftMenu.style.display = "none";
+   console.log(data);
+// Opciones
+const opciones = data.entidad
+  .filter(entidad => entidad.habilitado === true)
+  .map(entidad => ({
+    texto: entidad.razonSocial,
+    icono: 'bi-building',
+    accion: () => {
+      window.location.href = `/perfilEntidad?id=${entidad.id}`;
+    }
+  }));
+
+// Crear botones dentro del menú
+opciones.forEach(opcion => {
+  const btn = document.createElement("div");
+  btn.className = "dropleft-option";
+  btn.innerHTML = `<i class="bi ${opcion.icono}"></i> ${opcion.texto}`;
+
+  btn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    opcion.accion();
+    dropleftMenu.style.display = "none";
+  });
+
+  dropleftMenu.appendChild(btn);
+});
+
+// Insertar menú
+habilitarBtn.appendChild(dropleftMenu);
+
+// Abrir/cerrar menú
+habilitarBtn.addEventListener("click", (e) => {
+  e.stopPropagation();
+  const visible = dropleftMenu.style.display === "block";
+  dropleftMenu.style.display = visible ? "none" : "block";
+});
+
+// Cerrar menú cuando se clickea fuera
+document.addEventListener("click", () => {
+  dropleftMenu.style.display = "none";
+});
 
       const estado = data.entidad.habilitado == 1 ? "Estado: Activo" : "Estamos Confirmando Tu Información.";
       document.getElementById("crearEntidad").style.display = "none";
-      document.getElementById("editarEntidad").style.display = data.entidad.habilitado == 1 ? "block" : "none";
+      // document.getElementById("editarEntidad").style.display = data.entidad.habilitado == 1 ? "block" : "none";
       document.getElementById("asignarServicio").style.display = data.entidad.habilitado == 1 ? "block" : "none";
       document.getElementById("vincularEntidad").style.display = "none";
       document.getElementById("verIntegrantesEntidad").style.display = data.entidad.habilitado == 1 ? "block" : "none";
@@ -281,7 +337,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
     dataVinculados.forEach((entidad, index) => {
-      console.log('Entidad:', entidad.empresa.razonSocial);
+      console.log('Entidad:', entidad.estado);
       // Insertar logo en partnersContainer
       if (!entidades.includes(entidad.empresa.id)) {
         entidades.push(entidad.empresa.id);
@@ -299,9 +355,12 @@ document.addEventListener("DOMContentLoaded", async function () {
         logoDiv.style.backgroundSize = 'cover';
         logoDiv.style.backgroundPosition = 'center';
         logoDiv.id = `entidad-${entidad.id}`;
-        logoDiv.innerHTML = '<i class="bi bi-plus" style="display: none;"></i>';
-
+    logoDiv.innerHTML = entidad.estado 
+              ? '<i class="bi bi-plus" style="display: none;"></i><i class="bi bi-person-fill" style="position: absolute; bottom: -5px; right: -5px; font-size: 20px; color: #000; background: white; border-radius: 50%; border: 2px solid #ccc;"></i>'
+              : '<i class="bi bi-plus" style="display: none;"></i><i class="bi bi-hourglass-split" style="position: absolute; bottom: -5px; right: -5px; font-size: 20px; color: #000; background: white; border-radius: 50%; border: 2px solid #ccc;"></i>';
         // Crear menú desplegable con clase quick-menu
+
+        if (entidad.estado) {
         const menuDiv = document.createElement('div');
         menuDiv.className = 'quick-menu';
         menuDiv.id = `menu-${entidad.id}`;
@@ -364,16 +423,24 @@ document.addEventListener("DOMContentLoaded", async function () {
         // });
 
         integrantesBtn.addEventListener('click', () => {
-          console.log(`Integrantes entidad ${entidad.id}`);
+          console.log(`Integrantes entidad ${entidad.empresa.id}`);
     document.getElementById('modalAsociadosUser').style.display = 'block';
              
-              fetchMisAsociados(entidad.id)
-        });
+              fetchMisAsociados(entidad.empresa.id)
+        })} else {
+                   
+
+          quickActionsDiv.appendChild(logoDiv);
+          
+        }
 
         partnersContainer.appendChild(quickActionsDiv);
       }}
     });
-
+    // Cerrar menús al hacer click fuera
+    document.addEventListener('click', () => {
+      cerrarTodosLosMenus();
+    });
     // Cerrar menús al hacer click fuera
     document.addEventListener('click', () => {
       data.entidad.forEach(entidad => {
