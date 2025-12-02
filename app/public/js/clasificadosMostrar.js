@@ -1,10 +1,6 @@
 tipoSolicitud = "";
 clasificadoIdSelect = "";
 
-document.getElementById("muro").addEventListener("click", () => {
-  document.querySelector(".main-content").style.display = "none";
-  document.getElementById("clasificados").style.display = "block";
-});
 // API para gestionar los servicios
 const API = {
   // Clave para almacenar los datos en localStorage

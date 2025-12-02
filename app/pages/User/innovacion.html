@@ -9,6 +9,7 @@
 
     <link rel="stylesheet" href="styles/innovacion.css">
     <link rel="stylesheet" href="styles/clasificados.css">
+     <link rel="stylesheet" href="styles/menu.css">
     <link rel="stylesheet" href="styles/conocimiento.css">
   <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
 
@@ -21,138 +22,79 @@
 
 <body>
 
-  <!-- Encabezado -->
-  <header class="header">
-    <div onclick="window.location.href='/helice'" class="logo">
-      <!-- <span class="logo-icon">⚡</span> -->
-      <span class="logo-text">SINAPTICO</span>
-    </div>
-    <nav class="nav">
-      <button class="nav-button pulse" onclick="window.location.href='/helice'">Hélice</button>
-      <button class="nav-button pulse" onclick="window.location.href='/proyectos'">Proyectos</button>
-      <button class="nav-button pulse" onclick="window.location.href='/innovacion'">Innovación</button>
-
-      <button class="nav-button pulse" onclick="window.location.href='/Conocimiento'">Conocimiento</button>
-      <button class="nav-button pulse" onclick="window.location.href='/convocatorias'">Convocatorias</button>
-
-      <button class="nav-button pulse" onclick="window.location.href='/eventos'">Eventos</button>
-
-      <button class="nav-button pulse" onclick="window.location.href='/mapa-usuarios'">Mapa</button>
-      <div style="position:fixed;top:10px;right:20px;z-index:1000;font-size:1.5em;cursor:pointer;">
-        <span id="icono-notif">🔔 <span
-            style='background:red;color:white;border-radius:50%;padding:2px 7px;font-size:0.9em;'>0</span></span>
-      </div>
-      <div class="notificaciones" id="notificaciones"></div>
-
-      <!-- <button class="nav-button pulse" id="cerrarSesion">Cerrar sesión</button> -->
-      <!-- Botón con menú desplegable -->
-      <div class="dropdown">
-        <button class=" " id="userMenuBtn">
-          <div id="userPhoto ">
-            <img class="imagenPerfil" id="imagenPerfilSecundaria" src="img/sinfoto.jpg" alt="Foto de perfil"
-              onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
-          </div>
-
-        </button>
-
-        <div class="dropdown-menu" id="userMenu">
-          <a href="/perfil">Perfil</a>
-          <a href="/configuracion">Configuración</a>
-          <a href="#" id="cerrarSesion">Cerrar sesión</a>
-        </div>
-      </div>
-    </nav>
-  </header>
-
-  <!-- Contenido principal - Entidades -->
-  <div class="main-content" id="entidades" style="margin: 2rem auto 1rem;">
-    <!-- Tarjetas de la triple hélice -->
-    <div class="helix-title">
-      <h3>Modelo de cuadruple Hélice</h3>
-      <p>Interacción entre Estado, Academia y Sociedad para impulsar la innovación</p>
-    </div>
-
-    <div class="cards-container">
-      <!-- Estado Card -->
-      <div id="innovacionAbierta" class="card">
-        <div class="card-inner">
-          <div class="card-front">
-            <div class="card-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                stroke-width="1.5">
-                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                <circle cx="9" cy="7" r="4"></circle>
-                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-              </svg>
+   <!-- Encabezado -->
+    <header>
+        <div class="header">
+            <div onclick="window.location.href='/helice'">
+                <!-- <span class="logo-icon">⚡</span> -->
+                <img src="/img/logo1.png" alt="SINAPTICO" class="logo" style="height:8vh;">
             </div>
-            <h3 class="card-title">Innovacion Abierta</h3>
-            <p class="card-text">Retos de innovacion abierta</p>
-            </p>
-          </div>
-          <div class="card-back">
-            <div class="synapse-icon"></div>
-            <h3 class="card-title">Ver Contenido</h3>
-            <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo itaque quasi
-              aspernatur distinctio consequuntur eum quo voluptatem quisquam, corrupti corporis est quaerat voluptate
-              doloremque accusantium officiis harum hic fuga repudiandae!
-            </p>
-          </div>
-        </div>
-      </div>
+            <div style="display: flex; align-items: center; gap: 20px;">
+                <div style="font-size:1.5em;cursor:pointer;">
+                    <span id="icono-notif">🔔 <span
+                            style='background:red;color:white;border-radius:50%;padding:2px 7px;font-size:0.9em;'>0</span></span>
+                </div>
+                <div class="notificaciones" id="notificaciones"></div>
 
-      <!-- Academia Card -->
-      <div id="muro" class="card">
-        <div class="card-inner">
-          <div class="card-front">
-            <div class="card-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                stroke-width="1.5">
-                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                <circle cx="9" cy="7" r="4"></circle>
-                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-              </svg>
+
+                <div class="dropdown">
+                    <button id="userMenuBtn" style="display: flex; align-items: center;">
+                        <div id="userPhoto ">
+                            <img class="imagenPerfil" id="imagenPerfilSecundaria" src="img/sinfoto.jpg"
+                                alt="Foto de perfil" onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
+
+                        </div>
+                        <h3 id="nombreUsuarioHeader" style="color:white; margin-left:10px;">Usuario <i
+                                class="bi bi-chevron-down"></i> </h3>
+                    </button>
+
+                    <div class="dropdown-menu" id="userMenu">
+                        <a class="perfilUser" id="perfilUser">Perfil</a>
+                        <a href="/miEntidad" id="habilitarMiEmpresa" style="display: none;">Empresa</a>
+                        <a href="#" id="cerrarSesion">Cerrar sesión</a>
+                    </div>
+                </div>
             </div>
-            <h3 class="card-title">Muro de Inovacion</h3>
-            <p class="card-text">Retos de innovacion abierta</p>
-            </p>
-          </div>
-          <div class="card-back">
-            <div class="synapse-icon"></div>
-            <h3 class="card-title">Ver Contenido</h3>
-            <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo itaque quasi
-              aspernatur distinctio consequuntur eum quo voluptatem quisquam, corrupti corporis est quaerat voluptate
-              doloremque accusantium officiis harum hic fuga repudiandae!
-            </p>
-          </div>
         </div>
-      </div>
-    </div>
-  </div>
+        <nav class="nav">
 
-  <!-- Challenges Section -->
-  <section id="retos" class="main-content" style="display: none; margin: 2rem auto 1rem;">
-    <div class="main-content">
-      <div style="display: flex;   justify-content: space-between;     margin-bottom: 3rem;">
-        <div class="section-header">
-          <i class="fas fa-rocket"></i>
-          <h2 style="color:white;">2025 - Retos activos</h2>
-        </div>
-        <button class="action-button" id="crearReto">
+            <button class="nav-button" data-link="/helice" id="inicio"
+                onclick="window.location.href='/helice'">Inicio</button>
 
-          <span class="button-icon">+</span>Crear Reto
-        </button>
+            <div class="dropdown menuG">
+                <button class="nav-button dropdown-btnG" data-link="/directorio">Directorio</button>
+                <div class="dropdown-menu dropdown-menuG">
+                    <a href="/directorio">Entidades</a>
+                    <a href="/directorioPersonas">Personas</a>
+                </div>
+            </div>
+            <div class="dropdown menuG">
+                <button class="nav-button dropdown-btnG" data-link="/innovacion">Innovación Abierta</button>
+                <div class="dropdown-menu dropdown-menuG">
+                    <a href="/retosEmpresariales">Retos Empresariales</a>
+                    <a href="/innovacion">Muro de servicios</a>
+                </div>
+            </div>
 
-      </div>
-      <div class="challenges-grid">
-        <!-- Despliega los retos activos -->
-      </div>
-    </div>
-  </section>
+            <div class="dropdown menuG">
+                <button class="nav-button dropdown-btnG" data-link="/conocimiento">Conocimiento Abierto</button>
+                <div class="dropdown-menu dropdown-menuG">
+                    <a href="/cursos">Cursos</a>
+                    <a href="/biblioteca">Biblioteca</a>
+                </div>
+            </div>
+            <button class="nav-button" onclick="window.location.href='/convocatorias'">Convocatorias</button>
+
+            <button class="nav-button" onclick="window.location.href='/eventos'">Eventos</button>
+        </nav>
+
+    </header>
+
+
+
 
   <!-- clasificados Section -->
-  <section id="clasificados" class="main-content" style="display: none;">
+  <section id="clasificados" class="main-content" style="display: block;">
     <div class="container">
 
 
@@ -198,9 +140,6 @@
         <!-- Los clasificados se cargarán aquí dinámicamente -->
       </div>
 
-      <div class="challenges-grid">
-
-      </div>
     </div>
   </section>
 
@@ -354,9 +293,10 @@
   <script src="js/retos.js"></script>
   <script src="js/clasificadosMostrar.js"></script>
   <script src="js/ContactarServicio.js"></script>
-  <script src="js/crearReto.js"></script>
   <script src="js/notificaciones.js"></script>
   <script src="/js/websocket.js"></script>
+   <script src="/js/menu.js"></script>
+  
   <!-- Formulario de clasificados -->
   <script>
 

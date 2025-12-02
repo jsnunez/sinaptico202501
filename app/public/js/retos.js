@@ -1,7 +1,3 @@
-document.getElementById("innovacionAbierta").addEventListener("click", () => {
-  document.querySelector(".main-content").style.display = "none";
-  document.getElementById("retos").style.display = "block";
-});
 
 
 let cleanedStr = "";
@@ -21,32 +17,7 @@ function obtenerCookie(nombre) {
 
   return null; // Retorna null si no se encuentra la cookie
 }
-document.addEventListener("DOMContentLoaded", function () {
-  // Ejemplo de cómo leer la cookie "usuario"
-  const usuario = obtenerCookie("user");
-  cleanedStr = usuario.replace(/%20/g, " "); // Reemplaza '%20' por un espacio
-  cleanedStr = decodeURIComponent(cleanedStr);
-  document.getElementById('bienvenido').innerText = "Bienvenido  " + cleanedStr;
-});
-document.getElementById("cerrarSesion").addEventListener("click", () => {
-  Swal.fire({
-    title: '¿Estás seguro?',
-    text: '¿Quieres cerrar sesión?',
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonText: 'Sí, cerrar sesión',
-    cancelButtonText: 'Cancelar',
-    reverseButtons: true
-  }).then((result) => {
-    if (result.isConfirmed) {
-      // Borrar cookies y redirigir
-      document.cookie = 'jwt=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-      document.cookie = 'user=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-      document.cookie = 'userId=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-      document.location.href = "/";
-    }
-  });
-});
+
 
 const userid = document.cookie.split("; ").find(row => row.startsWith("userId="))?.split("=")[1];
 

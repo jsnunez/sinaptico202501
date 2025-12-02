@@ -27,14 +27,7 @@
 })();
 
 
-// En construccion
 
-function irEnConstruccion() {
-    window.location.href = "/construccion"; // o la ruta que tengas
-}
-fetchChallengeCount();
-fetchEntidadesCount();
-fetchUserCount();
 
 
 //  --------------------     Menú desplegable 
@@ -116,6 +109,14 @@ document.addEventListener("click", () => {
     if (activeButton) activeButton.classList.add("pulse");
 });
 
+// En construccion
+
+function irEnConstruccion() {
+    window.location.href = "/construccion"; // o la ruta que tengas
+}
+fetchChallengeCount();
+fetchEntidadesCount();
+fetchUserCount();
 
 
 
