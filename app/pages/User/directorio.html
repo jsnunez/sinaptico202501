@@ -11,7 +11,7 @@
 
     <link rel="stylesheet" href="styles/colores.css">
     <link rel="stylesheet" href="styles/stylehelice2.css">
-
+    <link rel="stylesheet" href="styles/menu.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -469,9 +469,9 @@
             <button class="nav-button" onclick="window.location.href='/proyectos'">Proyectos</button>
 
             <button class="nav-button" onclick="window.location.href='/convocatorias'">Convocatorias</button>
-<button class="nav-button" id="btnEvaluador" style="display: none;" data-link="/portalEvaluadorUser"
+            <button class="nav-button" id="btnEvaluador" style="display: none;" data-link="/portalEvaluadorUser"
                 onclick="window.location.href='/portalEvaluadorUser'">Evaluación</button>
-   
+
         </nav>
     </header>
 
@@ -1346,69 +1346,69 @@
     </div>
 
 
-        <footer class="footer">
+    <footer class="footer">
 
-            <div class="footer-content">
+        <div class="footer-content">
 
-                <!-- Izquierda -->
-                <div class="footer-left">
-                    <img src="/img/logo1.png" alt="SINAPTICO" class="footer-logo">
-                    <p class="footer-desc">Conectando conocimiento, innovación y tecnología.</p>
+            <!-- Izquierda -->
+            <div class="footer-left">
+                <img src="/img/logo1.png" alt="SINAPTICO" class="footer-logo">
+                <p class="footer-desc">Conectando conocimiento, innovación y tecnología.</p>
 
-                    
-                </div>
 
-                <!-- Enlaces en dos columnas -->
-                <div class="footer-links">
-                    <h4>Explorar</h4>
+            </div>
 
-                    <div class="links-grid">
+            <!-- Enlaces en dos columnas -->
+            <div class="footer-links">
+                <h4>Explorar</h4>
+
+                <div class="links-grid">
                     <a href="/helice">Inicio</a>
                     <a href="/directorio">Directorio</a>
                     <a href="/proyectos">Proyectos</a>
                     <a href="/convocatorias">Convocatorias</a>
-         
-                    </div>
+
                 </div>
-
-                <!-- Redes sociales -->
-                <div class="footer-social">
-                    <h4>Síguenos</h4>
-                    <div class="social-icons">
-                        <a href="#"><i class="bi bi-facebook"></i></a>
-                        <a href="#"><i class="bi bi-twitter"></i></a>
-                        <a href="#"><i class="bi bi-linkedin"></i></a>
-                        <a href="#"><i class="bi bi-instagram"></i></a>
-                    </div>
-                </div>
-
-                <!-- Contacto -->
-                <div class="footer-contact">
-                    <h4>Contáctanos</h4>
-
-                    <p>Cra.19 #35-02 - UIS Bucarica</p>
-                    <p>Bucaramanga, Colombia</p>
-
-                    <div class="contact-item">
-                        <i class="bi bi-envelope"></i>
-                        <span>info@cpcoriente.org</span>
-                    </div>
-
-                    <div class="contact-item">
-                        <i class="bi bi-telephone"></i>
-                        <span>+57 315 494 0296</span>
-                    </div>
-                </div>
-
             </div>
 
-            <div class="footer-bottom">
-                <img src="/logos/logoCPCblanco.png" alt="SINAPTICO" class="footer-logoCPC">
-                <p>© 2025 CPC Oriente. Todos los derechos reservados.</p>
-                
+            <!-- Redes sociales -->
+            <div class="footer-social">
+                <h4>Síguenos</h4>
+                <div class="social-icons">
+                    <a href="#"><i class="bi bi-facebook"></i></a>
+                    <a href="#"><i class="bi bi-twitter"></i></a>
+                    <a href="#"><i class="bi bi-linkedin"></i></a>
+                    <a href="#"><i class="bi bi-instagram"></i></a>
+                </div>
             </div>
 
-        </footer>
+            <!-- Contacto -->
+            <div class="footer-contact">
+                <h4>Contáctanos</h4>
+
+                <p>Cra.19 #35-02 - UIS Bucarica</p>
+                <p>Bucaramanga, Colombia</p>
+
+                <div class="contact-item">
+                    <i class="bi bi-envelope"></i>
+                    <span>info@cpcoriente.org</span>
+                </div>
+
+                <div class="contact-item">
+                    <i class="bi bi-telephone"></i>
+                    <span>+57 315 494 0296</span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+            <img src="/logos/logoCPCblanco.png" alt="SINAPTICO" class="footer-logoCPC">
+            <p>© 2025 CPC Oriente. Todos los derechos reservados.</p>
+
+        </div>
+
+    </footer>
 
 
     <!-- Scripts -->
@@ -1756,7 +1756,7 @@
             if (directorioButton) {
                 directorioButton.click();
             }
-                    if (directorioButton) {
+            if (directorioButton) {
                 directorioButton.click();
             }
         });
