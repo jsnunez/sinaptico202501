@@ -273,78 +273,6 @@ function updateStatistics() {
   document.getElementById('total-cities').textContent = [...new Set(usersData.map(u => u.city))].length;
 }
 
-function populateCityFilter() {
-  const citySelect = document.getElementById('filter-city');
-  const dptoFilter = document.getElementById('filter-dpto').value;
-
-  // Limpiar opciones anteriores
-  citySelect.innerHTML = '<option value="">Todas las ciudades</option>';
-
-  // Obtener lista de ciudades según el departamento
-  let cities;
-
-  if (dptoFilter === '') {
-    // Si no hay departamento seleccionado → mostrar todas las ciudades
-    cities = [...new Set(usersData.map(u => u.city || u.Ciudad?.nombre))];
-  } else {
-    // Si hay departamento seleccionado → mostrar solo las ciudades que pertenecen a ese departamento
-    cities = [
-      ...new Set(
-        usersData
-          .filter(u => u.departamento === dptoFilter)
-          .map(u => u.city || u.Ciudad?.nombre)
-      )
-    ];
-  }
-
-  // Agregar las opciones filtradas
-  cities
-    .filter(city => city && city.trim() !== '')
-    .sort()
-    .forEach(city => {
-      const option = document.createElement('option');
-      option.value = city;
-      option.textContent = city;
-      citySelect.appendChild(option);
-    });
-}
-
-function populateDptoFilter() {
-  const dptos = [...new Set(usersData.map(u => u.departamento))].sort();
-  const dptoSelect = document.getElementById('filter-dpto');
-
-  // ✅ Limpiar opciones anteriores
-  dptoSelect.innerHTML = '<option value="">Todos los Departamentos</option>';
-
-  // ✅ Evitar añadir valores vacíos o repetidos
-  dptos.forEach(dpto => {
-    if (dpto && dpto.trim() !== '') {
-      const option = document.createElement('option');
-      option.value = dpto;
-      option.textContent = dpto;
-      dptoSelect.appendChild(option);
-    }
-  });
-}
-
-
-function populateClaseFilter() {
-  const clases = [...new Set(usersData.map(u => u.claseEntidad))].sort();
-  const claseSelect = document.getElementById('filter-claseEntidad');
-
-  // ✅ Limpiar opciones anteriores
-  claseSelect.innerHTML = '<option value="">Todas las Clases</option>';
-
-  // ✅ Evitar añadir valores vacíos o repetidos
-  clases.forEach(clases => {
-    if (clases && clases.trim() !== '') {
-      const option = document.createElement('option');
-      option.value = clases;
-      option.textContent = clases;
-      claseSelect.appendChild(option);
-    }
-  });
-}
 
 
 function displayMarkersOnMap() {
@@ -475,195 +403,8 @@ function createPopupContent(user) {
         `;
 }
 
-function displayUsersList() {
-  const listContent = document.getElementById('users-list-content');
-  listContent.innerHTML = ''; // Limpiar contenido previo
-  console.log('Mostrando lista de usuarios, total:', filteredUsers);
-
-  if (filteredUsers.length === 0) {
-    listContent.innerHTML = `
-                    <div style="text-align: center; padding: 40px; color: #7f8c8d;">
-                        <i class="fas fa-search" style="font-size: 2em; margin-bottom: 10px;"></i>
-                        <p>No se encontraron entidades con los filtros seleccionados</p>
-                    </div>
-                `;
-    return;
-  }
-
-  const usersHtml = filteredUsers.map(user => {
-    const typeIcons = {
-      'Empresa': '🏢',
-      'Academia': '🎓',
-      'Estado': '🏛️',
-      'Sociedad': '💡'
-    };
-    console.log('Generando HTML para usuario:', user);
-    fetch(`${API_BASE_URL}/api/departamentos/${user.departamentoId}`)
-
-    return `
-    <div class="user-item" style="display: flex; justify-content: space-between; align-items: center; padding: 20px; cursor: pointer; flex-direction: column; border: 1px solid rgb(236, 240, 241); border-radius: 12px; background-color: white; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 8px; transition: transform 0.3s, box-shadow 0.3s; transform: translateY(0px);">
-        <div class="info-user" onclick="focusOnUser(${user.id})" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #eee; cursor: pointer;">
-          
- <img src="/photo/${user.fotoPerfil}" alt="foto perfil" class="card-icon" onerror="this.onerror=null;this.src='/photo/sinfoto.jpg';" style="margin-right: 20px; margin-bottom:0; width: 80px; height: 80px; border-radius: 50px; object-fit: cover;">
-          <div class="user-info">
-            <div class="user-name">${user.name.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ')}</div>
-            <div class="user-details"> ${user.ciudad?.departamento?.nombre || 'Desconocido'} • ${user.ciudad?.nombre || 'Desconocida'}</div>
-            <div class="empresa-details"> ${user.UsuarioEmpresaCargos && user.UsuarioEmpresaCargos[0] ? user.UsuarioEmpresaCargos[0].Cargo.nombre : 'Sin cargo'} - ${user.UsuarioEmpresaCargos && user.UsuarioEmpresaCargos[0] ? user.UsuarioEmpresaCargos[0].empresa.razonSocial : 'Sin entidad'}</div>
-            <div class="user-details"> Actividad: ${user.UsuarioEmpresaCargos && user.UsuarioEmpresaCargos[0] && user.UsuarioEmpresaCargos[0].empresa.actividadEconomica ? user.UsuarioEmpresaCargos[0].empresa.actividadEconomica : getRandomActivity()}
-          </div>
-        </div>
-            </div>
-            <button class="botonPersona" data-id="${user.id}">
-                Más información
-                </button>
-          </div>
-
-        </div>
-           
-        
-    </div>    
-    
 
 
-        `;
-
-
-    // return `
-    //     <div class="user-item" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #eee; cursor: pointer;">
-    //           <div  onclick="focusOnUser(${user.id})" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #eee; cursor: pointer;">
-    //                  <img src="/logos/${user.logo}" alt="Logo Empresa" class="card-icon" onerror="this.onerror=null;this.src='/img/sinfoto.jpg';" style="margin-right: 10px;  border-radius: 5px;">
-
-    //                 <div class="user-info">
-    //                     <div class="user-name">${typeIcons[user.claseEntidad] || '🏢'} ${user.name}</div>
-    //                     <div class="user-details">${user.actividadEconomica} • ${user.claseEntidad}</div>
-    //                     <div class="user-details">${user.departamento} • ${user.city}</div>
-    //                 </div>
-
-    //           </div>
-    //                     <div class="">
-    //                           <div class="user-status ${user.verificada ? 'status-online' : 'status-offline'}" style="margin-bottom: 10px;">
-    //                               ${user.verificada ? 'Verificada' : 'Sin verificar'}
-    //                           </div>
-    //                           <button class="botonEntidad " data-id="${user.id}">
-    //                             Más información
-    //                           </button>
-    //                     </div>
-
-    //     </div>    
-
-
-
-    //           `;
-  }).join('');
-
-  listContent.innerHTML = usersHtml;
-
-  // Add hover effects to user items
-  document.querySelectorAll('.user-item').forEach(item => {
-    item.onmouseenter = function () {
-      this.style.transform = 'translateY(-5px)';
-      this.style.boxShadow = '0 4px 15px rgba(0,0,0,0.15)';
-    };
-
-    item.onmouseleave = function () {
-      this.style.transform = 'translateY(0)';
-      this.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)';
-    };
-  });
-  
-}
-
-function setupEventListeners() {
-
-  // Botón para reiniciar filtros
-  document.getElementById('filter-btn').addEventListener('click', () => {
-    console.log('🔄 Reiniciando todos los filtros...');
-    document.getElementById('search-user').value = '';
-    document.getElementById('filter-dpto').value = '';
-    document.getElementById('filter-city').innerHTML = '<option value="">Todas las ciudades</option>';
-    document.getElementById('filter-claseEntidad').value = '';
-
-    filteredUsers = [...usersData];
-
-    populateDptoFilter();
-    populateCityFilter();
-    populateClaseFilter();
-    displayMarkersOnMap();
-    displayUsersList();
-    map.setView([4.5709, -74.2973], 5);
-  });
-
-  // Búsqueda por texto
-  document.getElementById('search-user').addEventListener('input', applyFilters);
-
-  // Cuando se cambie el departamento → actualizar ciudades y aplicar filtros
-  document.getElementById('filter-dpto').addEventListener('change', () => {
-    populateCityFilter();  // 🔄 actualizar lista de ciudades
-    applyFilters();        // 🔍 aplicar los filtros
-  });
-
-  // Cuando se cambie la ciudad → aplicar filtros directamente
-  document.getElementById('filter-city').addEventListener('change', applyFilters);
-
-
-  // Filtro por clase de entidad
-  document.getElementById('filter-claseEntidad').addEventListener('change', applyFilters);
-
-  // Cerrar sesión
-  document.getElementById('cerrarSesion').addEventListener('click', function () {
-    Swal.fire({
-      title: '¿Cerrar sesión?',
-      text: "¿Estás seguro que quieres cerrar tu sesión?",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Sí, cerrar',
-      cancelButtonText: 'Cancelar'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        clearCookies();
-        window.location.href = '/';
-      }
-    });
-  });
-}
-
-
-
-function applyFilters() {
-
-  const searchTerm = document.getElementById('search-user').value.toLowerCase();
-  const cityFilter = document.getElementById('filter-city').value;
-  const dptoFilter = document.getElementById('filter-dpto').value;
-  const claseEntidadFilter = document.getElementById('filter-claseEntidad').value;
-  console.log('Aplicando filtros:', { currentFilter, searchTerm, cityFilter });
-
-
-  filteredUsers = usersData.filter(user => {
-    // Filtro de tipo
-    const typeMatch = currentFilter === 'all';
-
-    // Filtro de búsqueda
-    const searchMatch = !searchTerm ||
-      user.name.toLowerCase().includes(searchTerm) ||
-      user.email.toLowerCase().includes(searchTerm) ||
-      user.company.toLowerCase().includes(searchTerm);
-
-    // Filtro de ciudad
-    const cityMatch = !cityFilter || user.city === cityFilter;
-
-    //filtro de departamento
-    const dptoMatch = !dptoFilter || user.departamento === dptoFilter;
-
-    //filtro de departamento
-    const claseEntidadMatch = !claseEntidadFilter || user.claseEntidad === claseEntidadFilter;
-
-    return typeMatch && searchMatch && cityMatch && dptoMatch && claseEntidadMatch;
-  });
-
-  displayUsersList();
-}
 
 function focusOnUser(userId) {
   console.log('Centrando en usuario ID:', userId);
@@ -1079,3 +820,265 @@ document.getElementById('filterE-contact').addEventListener('click', () => {
   document.getElementById('filterE-cargo').value = '';
   aplicarFiltrosEspera();
 });
+
+
+
+
+function applyFilters() {
+
+  const searchTerm = document.getElementById('search-user').value.toLowerCase();
+  const cityFilter = document.getElementById('filter-city').value;
+  const dptoFilter = document.getElementById('filter-dpto').value;
+  const claseEntidadFilter = document.getElementById('filter-claseEntidad').value;
+  console.log('Aplicando filtros:', { currentFilter, searchTerm, cityFilter });
+
+
+  filteredUsers = usersData.filter(user => {
+    // Filtro de tipo
+    const typeMatch = currentFilter === 'all';
+
+    // Filtro de búsqueda
+    const searchMatch = !searchTerm ||
+      user.name.toLowerCase().includes(searchTerm) ;
+
+    // Filtro de ciudad
+    const cityMatch = !cityFilter || user.ciudad.nombre === cityFilter;
+
+    //filtro de departamento
+    const dptoMatch = !dptoFilter || user.ciudad.departamento === dptoFilter;
+
+    //filtro de departamento
+    const claseEntidadMatch = !claseEntidadFilter || user.UsuarioEmpresaCargos.empresa.claseEntidad === claseEntidadFilter;
+
+    return typeMatch && searchMatch && cityMatch && dptoMatch && claseEntidadMatch;
+  });
+
+  displayUsersList();
+}
+
+function setupEventListeners() {
+
+  // Botón para reiniciar filtros
+  document.getElementById('filter-btn').addEventListener('click', () => {
+    console.log('🔄 Reiniciando todos los filtros...');
+    document.getElementById('search-user').value = '';
+    document.getElementById('filter-dpto').value = '';
+    document.getElementById('filter-city').innerHTML = '<option value="">Todas las ciudades</option>';
+    document.getElementById('filter-claseEntidad').value = '';
+
+    filteredUsers = [...usersData];
+
+    populateDptoFilter();
+    populateCityFilter();
+    populateClaseFilter();
+    displayMarkersOnMap();
+    displayUsersList();
+    map.setView([4.5709, -74.2973], 5);
+  });
+
+  // Búsqueda por texto
+  document.getElementById('search-user').addEventListener('input', applyFilters);
+
+  // Cuando se cambie el departamento → actualizar ciudades y aplicar filtros
+  document.getElementById('filter-dpto').addEventListener('change', () => {
+    populateCityFilter();  // 🔄 actualizar lista de ciudades
+    applyFilters();        // 🔍 aplicar los filtros
+  });
+
+  // Cuando se cambie la ciudad → aplicar filtros directamente
+  document.getElementById('filter-city').addEventListener('change', applyFilters);
+
+
+  // Filtro por clase de entidad
+  document.getElementById('filter-claseEntidad').addEventListener('change', applyFilters);
+
+  // Cerrar sesión
+  document.getElementById('cerrarSesion').addEventListener('click', function () {
+    Swal.fire({
+      title: '¿Cerrar sesión?',
+      text: "¿Estás seguro que quieres cerrar tu sesión?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, cerrar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        clearCookies();
+        window.location.href = '/';
+      }
+    });
+  });
+}
+function populateCityFilter() {
+  const citySelect = document.getElementById('filter-city');
+  const dptoFilter = document.getElementById('filter-dpto').value;
+
+  // Limpiar opciones anteriores
+  citySelect.innerHTML = '<option value="">Todas las ciudades</option>';
+
+  // Obtener lista de ciudades según el departamento
+  let cities;
+
+  if (dptoFilter === '') {
+    // Si no hay departamento seleccionado → mostrar todas las ciudades
+    cities = [...new Set(usersData.map(u => u.city || u.ciudad?.nombre))];
+  } else {
+    // Si hay departamento seleccionado → mostrar solo las ciudades que pertenecen a ese departamento
+    cities = [
+      ...new Set(
+        usersData
+          .filter(u => u.departamento === dptoFilter)
+          .map(u => u.city || u.ciudad?.departamento?.nombre)
+      )
+    ];
+  }
+
+  // Agregar las opciones filtradas
+  cities
+    .filter(city => city && city.trim() !== '')
+    .sort()
+    .forEach(city => {
+      const option = document.createElement('option');
+      option.value = city;
+      option.textContent = city;
+      citySelect.appendChild(option);
+    });
+}
+
+function populateDptoFilter() {
+  const dptos = [...new Set(usersData.map(u => u.departamento))].sort();
+  const dptoSelect = document.getElementById('filter-dpto');
+
+  // ✅ Limpiar opciones anteriores
+  dptoSelect.innerHTML = '<option value="">Todos los Departamentos</option>';
+
+  // ✅ Evitar añadir valores vacíos o repetidos
+  dptos.forEach(dpto => {
+    if (dpto && dpto.trim() !== '') {
+      const option = document.createElement('option');
+      option.value = dpto;
+      option.textContent = dpto;
+      dptoSelect.appendChild(option);
+    }
+  });
+}
+
+
+function populateClaseFilter() {
+  const clases = [...new Set(usersData.map(u => u.claseEntidad))].sort();
+  const claseSelect = document.getElementById('filter-claseEntidad');
+
+  // ✅ Limpiar opciones anteriores
+  claseSelect.innerHTML = '<option value="">Todas las Clases</option>';
+
+  // ✅ Evitar añadir valores vacíos o repetidos
+  clases.forEach(clases => {
+    if (clases && clases.trim() !== '') {
+      const option = document.createElement('option');
+      option.value = clases;
+      option.textContent = clases;
+      claseSelect.appendChild(option);
+    }
+  });
+}
+
+
+function displayUsersList() {
+  const listContent = document.getElementById('users-list-content');
+  listContent.innerHTML = ''; // Limpiar contenido previo
+  console.log('Mostrando lista de usuarios, total:', filteredUsers);
+
+  if (filteredUsers.length === 0) {
+    listContent.innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: #7f8c8d;">
+                        <i class="fas fa-search" style="font-size: 2em; margin-bottom: 10px;"></i>
+                        <p>No se encontraron entidades con los filtros seleccionados</p>
+                    </div>
+                `;
+    return;
+  }
+
+  const usersHtml = filteredUsers.map(user => {
+    const typeIcons = {
+      'Empresa': '🏢',
+      'Academia': '🎓',
+      'Estado': '🏛️',
+      'Sociedad': '💡'
+    };
+    console.log('Generando HTML para usuario:', user);
+    fetch(`${API_BASE_URL}/api/departamentos/${user.departamentoId}`)
+
+    return `
+    <div class="user-item" style="display: flex; justify-content: space-between; align-items: center; padding: 20px; cursor: pointer; flex-direction: column; border: 1px solid rgb(236, 240, 241); border-radius: 12px; background-color: white; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 8px; transition: transform 0.3s, box-shadow 0.3s; transform: translateY(0px);">
+        <div class="info-user" onclick="focusOnUser(${user.id})" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #eee; cursor: pointer;">
+          
+ <img src="/photo/${user.fotoPerfil}" alt="foto perfil" class="card-icon" onerror="this.onerror=null;this.src='/photo/sinfoto.jpg';" style="margin-right: 20px; margin-bottom:0; width: 80px; height: 80px; border-radius: 50px; object-fit: cover;">
+          <div class="user-info">
+            <div class="user-name">${user.name.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ')}</div>
+            <div class="user-details"> ${user.ciudad?.departamento?.nombre || 'Desconocido'} • ${user.ciudad?.nombre || 'Desconocida'}</div>
+            <div class="empresa-details"> ${user.UsuarioEmpresaCargos && user.UsuarioEmpresaCargos[0] ? user.UsuarioEmpresaCargos[0].Cargo.nombre : 'Sin cargo'} - ${user.UsuarioEmpresaCargos && user.UsuarioEmpresaCargos[0] ? user.UsuarioEmpresaCargos[0].empresa.razonSocial : 'Sin entidad'}</div>
+            <div class="user-details"> Actividad: ${user.UsuarioEmpresaCargos && user.UsuarioEmpresaCargos[0] && user.UsuarioEmpresaCargos[0].empresa.actividadEconomica ? user.UsuarioEmpresaCargos[0].empresa.actividadEconomica : getRandomActivity()}
+          </div>
+        </div>
+            </div>
+            <button class="botonPersona" data-id="${user.id}">
+                Más información
+                </button>
+          </div>
+
+        </div>
+           
+        
+    </div>    
+    
+
+
+        `;
+
+
+    // return `
+    //     <div class="user-item" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #eee; cursor: pointer;">
+    //           <div  onclick="focusOnUser(${user.id})" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #eee; cursor: pointer;">
+    //                  <img src="/logos/${user.logo}" alt="Logo Empresa" class="card-icon" onerror="this.onerror=null;this.src='/img/sinfoto.jpg';" style="margin-right: 10px;  border-radius: 5px;">
+
+    //                 <div class="user-info">
+    //                     <div class="user-name">${typeIcons[user.claseEntidad] || '🏢'} ${user.name}</div>
+    //                     <div class="user-details">${user.actividadEconomica} • ${user.claseEntidad}</div>
+    //                     <div class="user-details">${user.departamento} • ${user.city}</div>
+    //                 </div>
+
+    //           </div>
+    //                     <div class="">
+    //                           <div class="user-status ${user.verificada ? 'status-online' : 'status-offline'}" style="margin-bottom: 10px;">
+    //                               ${user.verificada ? 'Verificada' : 'Sin verificar'}
+    //                           </div>
+    //                           <button class="botonEntidad " data-id="${user.id}">
+    //                             Más información
+    //                           </button>
+    //                     </div>
+
+    //     </div>    
+
+
+
+    //           `;
+  }).join('');
+
+  listContent.innerHTML = usersHtml;
+
+  // Add hover effects to user items
+  document.querySelectorAll('.user-item').forEach(item => {
+    item.onmouseenter = function () {
+      this.style.transform = 'translateY(-5px)';
+      this.style.boxShadow = '0 4px 15px rgba(0,0,0,0.15)';
+    };
+
+    item.onmouseleave = function () {
+      this.style.transform = 'translateY(0)';
+      this.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)';
+    };
+  });
+  
+}
