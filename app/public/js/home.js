@@ -126,7 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (!loginRes.ok) throw new Error(loginData.message || "Correo o contraseña incorrectos");
 
-        await Swal.fire({ title: "¡Bienvenido!", text: "Inicio de sesión exitosoq.", icon: "success" });
+        await Swal.fire({ title: "¡Bienvenido!", text: "Inicio de sesión exitoso.", icon: "success" });
         window.location.href = loginData.redirect || "/";
 
       } catch (error) {

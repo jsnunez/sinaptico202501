@@ -90,7 +90,7 @@
             <button class="nav-button" data-link="/convocatorias"
                 onclick="window.location.href='/convocatorias'">Convocatorias</button>
 
-<button class="nav-button" id="btnEvaluador" style="display: none;" data-link="/portalEvaluadorUser"
+            <button class="nav-button" id="btnEvaluador" style="display: none;" data-link="/portalEvaluadorUser"
                 onclick="window.location.href='/portalEvaluadorUser'">Evaluación</button>
 
         </nav>
@@ -173,7 +173,7 @@
         }
 
         /* Caja con datos básicos */
-        .perfil-datos-custom>div {
+        .datos-user {
             background: rgba(193, 198, 255, 0.28);
             padding: 20px;
             border-radius: 12px;
@@ -256,7 +256,7 @@
                     <div style="position:relative; display:inline-block;">
                         <img id="imagenPerfilIntegrante" src="img/sinfoto.jpg" alt="Foto de perfil"
                             class="perfil-foto-custom" onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
-                        <button id="perfil" title="Editar foto"
+                        <button id="perfil" title="Editar perfil"
                             style="position:absolute; bottom:40px; right:40px; border:none; background:#fff; padding:6px; border-radius:50%; display:none; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 2px 6px rgba(0,0,0,0.15);">
                             <i class="bi bi-pencil-fill" style="font-size:35px; color:var(--primary-color);"></i>
                         </button>
@@ -273,7 +273,7 @@
 
                     <span id="MiPerfilProfesional"></span>
 
-                    <div>
+                    <div class="datos-user">
                         <p class="perfil-dato-linea-custom"><strong>Teléfono:</strong> <span id="MiTelefono"></span></p>
                         <p class="perfil-dato-linea-custom"><strong>Ubicación:</strong> <span id="MiUbicacion"></span>
                         </p>
@@ -285,10 +285,19 @@
                             </a>
                         </p>
                     </div>
+                    <div style="display: flex; gap: 10px; margin-top: 20px;">
+                        <button id="perfilBtn" style="background: var(--orange); color: var(--light-text); border: none; 
+               border-radius: 20px; padding: 12px 30px;  cursor: pointer; font-size: 15px; 
+               transition: 0.3s; display: none;">
+                            Editar Perfil
+                        </button>
+                        <button id="btnHojaVida" onclick="abrirModal()" style="background: var(--gradient-1); color: var(--light-text); border: none; 
+               border-radius: 20px; padding: 12px 30px;  cursor: pointer; font-size: 15px; 
+               transition: 0.5s; display: none;">
+                            Ver CV
+                        </button>
 
-                    <button id="btnHojaVida" class="action-button" onclick="abrirModal()" style="display:none;">
-                        Ver Hoja de Vida
-                    </button>
+                    </div>
                 </div>
             </div>
 
@@ -506,12 +515,15 @@
             const params = new URLSearchParams(window.location.search);
             const profileId = params.get('id');
             const perfilIcon = document.getElementById('perfil');
-            if (!perfilIcon) return;
+            const perfilBtn = document.getElementById('perfilBtn');
+            if (!perfilIcon || !perfilBtn) return;
             // Mostrar solo si es el perfil del usuario logueado.
             if ((profileId && currentUserId && profileId === currentUserId) || (!profileId && currentUserId)) {
                 perfilIcon.style.display = 'inline-block';
+                perfilBtn.style.display = 'inline-block';
             } else {
                 perfilIcon.style.display = 'none';
+                perfilBtn.style.display = 'none';
             }
         })();
     </script>
@@ -750,14 +762,7 @@
     <!--Modal Actualizar Perfil-->
     <script>
 
-        // Abrir formulario actualizar de perfil al hacer clic en el botón
-        document.getElementById('perfil').onclick = function () {
-            document.getElementById('modalPerfil').style.display = 'block';
 
-        };
-        document.getElementById('cerrarModalPerfil').onclick = function () {
-            document.getElementById('modalPerfil').style.display = 'none';
-        };
         // Vista previa de la imagen seleccionada
         document.getElementById('inputFotoPerfil').onchange = function (e) {
             const file = e.target.files[0];
@@ -914,7 +919,16 @@
             agregarDepartamentosPerfil();
 
         };
+        document.getElementById('cerrarModalPerfil').onclick = function () {
+            document.getElementById('modalPerfil').style.display = 'none';
+        };
 
+        // Abrir formulario actualizar de perfil al hacer clic en el botón
+        document.getElementById('perfilBtn').onclick = function () {
+            document.getElementById('modalPerfil').style.display = 'block';
+            agregarDepartamentosPerfil();
+
+        };
         // Cambiar ciudades al seleccionar departamento
         document.getElementById('departamentoPerfil').onchange = function () {
             cargarCiudadesPerfil(this.value);

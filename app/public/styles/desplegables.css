@@ -7,7 +7,7 @@
                 width: 60px;
                 height: 60px;
                 border-radius: 50%;
-                background: #1b3360;
+                background: #ffffff;
                 border: none;
                 color: white;
                 font-size: 24px;
@@ -22,6 +22,7 @@
             .quick-action-btn:hover {
                 transform: scale(1.1);
                 box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+                border: 2px solid var(--primary-color);
             }
 
             .quick-action-btn.active {
