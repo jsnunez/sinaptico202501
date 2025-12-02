@@ -1292,7 +1292,7 @@ input:focus {
 .ecosistema-section h2 {
   font-size: 2rem;
   font-weight: 800;
-  color: #1a1a1a;
+  color: var(--primary-color);
 }
 
 .descripcion {

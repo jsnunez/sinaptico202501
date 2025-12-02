@@ -539,7 +539,7 @@
                             <button class="filter-btn" id="filter-btn"><i class="bi bi-arrow-clockwise"></i></button>
                         </div>
                     </div>
-                    <div>
+                    <div hidden>
                         <div class="view-toggle" style="display: flex; margin-left: 2vw;">
 
                             <label class="control-label" style="display: flex; align-items: center;"> <i
@@ -1669,15 +1669,14 @@
         const toggleViewBtn = document.getElementById('toggleViewBtn');
         const busquedaEntidad = document.getElementById('busquedaEntidad');
         const modalMapa = document.getElementById('modalMapa');
-        if (directorioDiv || directorioButton) {
+        if (directorioDiv) {
             const openDirectorio = () => {
                 document.getElementById('modalDirectorio').style.display = 'block';
                 document.getElementById('entidades').style.display = 'none';
                 document.getElementById('welcome-container').style.display = 'none';
-                directorioButton.classList.add('pulse');
+          
                 document.getElementById('inicio').classList.remove('pulse');
-                modalMapa.style.display = 'block';
-                toggleViewBtn.textContent = '🟦 Muro';
+         
                 // initializeMap();
                 // addColombiaMask();
                 loadUsers();

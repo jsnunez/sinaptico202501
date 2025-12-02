@@ -489,7 +489,7 @@
         </div>
         <div class="action-buttons" style="width: 40vw;">
             <div class="quick-actions">
-                <button class="quick-action-btn" id="quickActionBtn">
+                <button class="action-add" id="quickActionBtn">
                    +
                 </button>
                 <div class="quick-menu" id="quickMenu">
@@ -1624,7 +1624,7 @@
 
                 const cargoCache = new Map();
                 const getCargoNombre = async (id) => {
-                    if (!id) return 'N/A';
+                    if (!id) return 'Sin asignar';
                     if (cargoCache.has(id)) return cargoCache.get(id);
                     try {
                         const r = await fetch(`/api/cargos/${id}`);

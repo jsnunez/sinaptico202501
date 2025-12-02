@@ -119,8 +119,9 @@ body {
     border-radius: 12px;
     background-color: var(--naranja-color);
 }
+
 .nav-button.active {
-   
+
     background-color: var(--naranja-color);
 }
 
@@ -218,6 +219,7 @@ body {
         transform: translateY(0);
     }
 }
+
 /* ================================
    ESTILOS PARA DROPDOWN
    MENÚ PRINCIPAL (menuG)
@@ -241,7 +243,7 @@ body {
     overflow: hidden;
     z-index: 999;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
- 
+
 }
 
 .dropdown-menuG a {
@@ -269,6 +271,7 @@ body {
         opacity: 0;
         transform: translateY(-5px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -348,9 +351,11 @@ h2 {
 
 
 }
-.info-user{
- height: 20vh;   
+
+.info-user {
+    height: 20vh;
 }
+
 .botonEntidad:hover {
     transform: translateY(-3px);
     background: var(--gray-color);
@@ -373,7 +378,7 @@ h2 {
     box-shadow: none;
     display: block;
     margin: 0 auto;
-margin-top: 10px;
+    margin-top: 10px;
 }
 
 .botonPersona:hover {
@@ -382,9 +387,7 @@ margin-top: 10px;
     box-shadow: 0 6px 15px rgba(48, 45, 226, 0.4);
 }
 
-.info-user{
-    
-}
+.info-user {}
 
 .action-button {
     color: var(--text-description);
@@ -399,6 +402,7 @@ margin-top: 10px;
     overflow: hidden;
     border: 1px solid var(--primary-color);
     max-width: 200px;
+    max-height: 40px;
     /* 
     margin-bottom: 1vh;
     display: flex;
@@ -421,6 +425,7 @@ margin-top: 10px;
     gap: 1rem;
     flex-wrap: wrap;
     justify-content: flex-end;
+    align-items: center;
 }
 
 .action-button:hover {
@@ -1125,6 +1130,29 @@ form {
 
 }
 
+.action-add {
+    color: var(--primary-color);
+    border: none;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--primary-color);
+    text-align: center;
+    align-items: center;
+
+}
+.action-add:hover {
+    background-color: var(--primary-color);
+    color: white;
+
+}
+
 .action-icons {
     display: flex;
     justify-content: center;
@@ -1199,21 +1227,16 @@ form {
     }
 }
 
-
-
 /*tabla de datos perfil*/
 .table-perfil {
-
     border-collapse: collapse;
     margin-top: 1rem;
-
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
     border: 1px solid black;
 
 }
-
 
 .table-perfil td {
     padding: 0.75rem 1.5rem;
@@ -1227,7 +1250,6 @@ form {
     color: var(--primary-color);
 
 }
-
 
 /* Estilos para el formulario completo del dashboard */
 .form-section {
@@ -1827,136 +1849,138 @@ form {
 
 
 .footer {
-  padding: 5rem 12% 1.5rem;
-  position: relative;
-  margin-top: 20px;
-  background-color: var(--secondary-color);
-  color: var(--light-text);
-  justify-content: center;
+    padding: 5rem 12% 1.5rem;
+    position: relative;
+    margin-top: 20px;
+    background-color: var(--secondary-color);
+    color: var(--light-text);
+    justify-content: center;
 }
 
 .footer-content {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 2.5rem;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 2.5rem;
 }
 
 /* Logo */
 .footer-logo {
-  height: 60px;
-  margin-bottom: 1rem;
+    height: 60px;
+    margin-bottom: 1rem;
 }
-.footer-logoCPC  {
-  height: 80px;
-  margin-bottom: 1rem;
 
-  padding: 5px;
-  border-radius: 20PX;
+.footer-logoCPC {
+    height: 80px;
+    margin-bottom: 1rem;
+
+    padding: 5px;
+    border-radius: 20PX;
 }
+
 .footer-desc {
-  max-width: 250px;
-  font-size: 0.9rem;
-  opacity: 0.8;
+    max-width: 250px;
+    font-size: 0.9rem;
+    opacity: 0.8;
 }
 
 /* Títulos */
 .footer-links h4,
 .footer-social h4,
 .footer-contact h4 {
-  font-size: 1.1rem;
-  margin-bottom: 0.9rem;
-  font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 0.9rem;
+    font-weight: 600;
 }
 
 /* Grid de enlaces */
 .links-grid {
-  display: grid;
-  grid-template-columns: repeat(2, auto);
-  gap: 0.4rem 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    gap: 0.4rem 1.5rem;
 }
 
 .footer-links a {
-  color: var(--light-text);
-  opacity: 0.8;
-  font-size: 0.9rem;
-  transition: var(--transition);
-  cursor: pointer;
+    color: var(--light-text);
+    opacity: 0.8;
+    font-size: 0.9rem;
+    transition: var(--transition);
+    cursor: pointer;
 }
 
 .footer-links a:hover {
-  opacity: 1;
-  transform: translateX(4px);
+    opacity: 1;
+    transform: translateX(4px);
 }
 
 /* Redes sociales */
 .social-icons {
-  display: flex;
-  gap: 0.9rem;
- 
+    display: flex;
+    gap: 0.9rem;
+
 }
 
 .social-icons a {
-  font-size: 1.4rem;
-  padding: 8px;
-  border-radius: 10%;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  transition: var(--transition);
-  opacity: 0.85;
-   color: var(--light-text);
+    font-size: 1.4rem;
+    padding: 8px;
+    border-radius: 10%;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: var(--transition);
+    opacity: 0.85;
+    color: var(--light-text);
 }
 
 .social-icons a:hover {
-  transform: scale(1.15);
-  opacity: 1;
-  background: rgba(255,255,255,0.1);
-   color: var(--light-text);
+    transform: scale(1.15);
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--light-text);
 
 }
 
 /* Contacto */
 .footer-contact p {
-  margin: 0.2rem 0;
-  opacity: 0.85;
-  font-size: 0.9rem;
+    margin: 0.2rem 0;
+    opacity: 0.85;
+    font-size: 0.9rem;
 }
 
 .contact-item {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-top: 0.4rem;
-  opacity: 0.9;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.4rem;
+    opacity: 0.9;
 }
 
 .contact-item i {
-  font-size: 1.2rem;
+    font-size: 1.2rem;
 }
 
 .footer-bottom {
-  text-align: center;
-  margin-top: 2rem;
-  padding-top: 1rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
-  font-size: 0.85rem;
-  opacity: 0.8;
+    text-align: center;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    font-size: 0.85rem;
+    opacity: 0.8;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
-  .footer-content {
-    flex-direction: column;
-    text-align: center;
-    align-items: center;
-  }
+    .footer-content {
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+    }
 
-  .links-grid {
-    grid-template-columns: 1fr 1fr;
-  }
+    .links-grid {
+        grid-template-columns: 1fr 1fr;
+    }
 
-  .contact-item {
-    justify-content: center;
-  }
+    .contact-item {
+        justify-content: center;
+    }
 }
 
 /* CONTENEDOR PRINCIPAL (Tarjetas + Gráfica) */
@@ -1989,7 +2013,7 @@ form {
     /* ← Ajusta el alto interno */
     transition: 0.3s;
     height: 100%;
-  
+
     /* ← Ajusta la altura */
 }
 
@@ -2148,47 +2172,53 @@ form {
 .c5 {
     background: var(--primary-color);
 }
+
 /* Para que el spinner se centre dentro de la torta */
 .progress-circle {
-  position: relative; /* IMPORTANTE */
+    position: relative;
+    /* IMPORTANTE */
 }
 
 /* Spinner centrado dentro de la torta */
 .chart-spinner {
-  position: absolute;      /* Se posiciona dentro del contenedor */
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);  /* Centrado perfecto */
-  
-  width: 70px;
-  height: 70px;
-  border: 6px solid #dcdcdc;
-  border-top: 6px solid var(--primary-color);
-  border-radius: 50%;
-  animation: chartSpin 0.8s linear infinite;
+    position: absolute;
+    /* Se posiciona dentro del contenedor */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* Centrado perfecto */
+
+    width: 70px;
+    height: 70px;
+    border: 6px solid #dcdcdc;
+    border-top: 6px solid var(--primary-color);
+    border-radius: 50%;
+    animation: chartSpin 0.8s linear infinite;
 }
 
 @keyframes chartSpin {
-  100% { transform: translate(-50%, -50%) rotate(360deg); }
+    100% {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
 }
 
 /* Spinner exclusivo para las tarjetas */
 .stat-spinner {
-  width: 24px;
-  height: 24px;
-  border: 4px solid #d9d9d9;
-  border-top: 4px solid var(--primary-color);
-  border-radius: 50%;
-  animation: statSpin 0.8s linear infinite;
-  margin: 0 auto;
+    width: 24px;
+    height: 24px;
+    border: 4px solid #d9d9d9;
+    border-top: 4px solid var(--primary-color);
+    border-radius: 50%;
+    animation: statSpin 0.8s linear infinite;
+    margin: 0 auto;
 }
 
 @keyframes statSpin {
-  100% {
-    transform: rotate(360deg);
-  }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
-.partners-container{
+.partners-container {
     display: flex;
 }
