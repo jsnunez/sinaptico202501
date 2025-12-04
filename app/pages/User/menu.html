@@ -1,0 +1,37 @@
+<nav class="nav">
+
+    <button class="nav-button" data-link="/helice" id="inicio" onclick="window.location.href='/helice'">Inicio</button>
+
+    <div class="dropdown menuG">
+        <button class="nav-button dropdown-btnG" id="directorioButton" data-link="/directorio">Directorio</button>
+        <div class="dropdown-menu dropdown-menuG">
+            <a href="/directorio">Entidades</a>
+            <a href="/directorioPersonas">Personas</a>
+        </div>
+    </div>
+<button class="nav-button" onclick="window.location.href='/proyectos'"  data-link="/proyectos">Proyectos</button>
+    <button class="nav-button" onclick="window.location.href='/ofertaRegional'" data-link="/ofertaRegional">Oferta
+        Regional</button>
+    <div class="dropdown menuG">
+        <button class="nav-button dropdown-btnG" data-link="/retos">Innovación Abierta</button>
+        <div class="dropdown-menu dropdown-menuG">
+            <a href="/retosEmpresariales">Retos Empresariales</a>
+            <a href="/retosAula">Retos de Aula</a>
+        </div>
+    </div>
+
+    <div class="dropdown menuG">
+        <button class="nav-button dropdown-btnG" data-link="/conocimiento">Conocimiento Abierto</button>
+        <div class="dropdown-menu dropdown-menuG">
+            <a href="/conocimientoCursosVirtuales" data-link="/cursosVirtuales">Cursos</a>
+            <a href="/conocimientoBiblioteca" data-link="/conocimientoBiblioteca">Biblioteca</a>
+        </div>
+    </div>
+    <button class="nav-button" onclick="window.location.href='/convocatorias'">Convocatorias</button>
+
+    <button class="nav-button" onclick="window.location.href='/eventos'">Eventos</button>
+
+    <button class="nav-button" id="btnEvaluador" style="display: none;" data-link="/portalEvaluadorUser"
+        onclick="window.location.href='/portalEvaluadorUser'">Evaluación</button>
+
+</nav>

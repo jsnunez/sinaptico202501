@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="styles/colores.css">
     <link rel="stylesheet" href="styles/stylehelice2.css">
     <link rel="stylesheet" href="styles/menu.css">
-            <link rel="stylesheet" href="styles/desplegables.css">
+    <link rel="stylesheet" href="styles/desplegables.css">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
@@ -457,7 +457,9 @@
             </div>
         </div>
         <nav class="nav">
-            <button class="nav-button " onclick="window.location.href='/helice'" id="inicio">Inicio</button>
+
+            <button class="nav-button" data-link="/helice" id="inicio"
+                onclick="window.location.href='/helice'">Inicio</button>
 
             <div class="dropdown menuG">
                 <button class="nav-button dropdown-btnG" id="directorioButton"
@@ -467,28 +469,35 @@
                     <a href="/directorioPersonas">Personas</a>
                 </div>
             </div>
-
+            <button class="nav-button" onclick="window.location.href='/proyectos'"
+                data-link="/proyectos">Proyectos</button>
+            <button class="nav-button" onclick="window.location.href='/ofertaRegional'"
+                data-link="/ofertaRegional">Oferta
+                Regional</button>
             <div class="dropdown menuG">
-                <button class="nav-button dropdown-btnG" data-link="/innovacion">Innovación Abierta</button>
+                <button class="nav-button dropdown-btnG" data-link="/retos">Innovación Abierta</button>
                 <div class="dropdown-menu dropdown-menuG">
                     <a href="/retosEmpresariales">Retos Empresariales</a>
-                    <a href="/innovacion">Muro de servicios</a>
+                    <a href="/retosAula">Retos de Aula</a>
                 </div>
             </div>
-
 
             <div class="dropdown menuG">
                 <button class="nav-button dropdown-btnG" data-link="/conocimiento">Conocimiento Abierto</button>
                 <div class="dropdown-menu dropdown-menuG">
-                    <a href="/cursosVirtuales">Cursos</a>
-                    <a href="/biblioteca">Biblioteca</a>
+                    <a href="/conocimientoCursosVirtuales" data-link="/cursosVirtuales">Cursos</a>
+                    <a href="/conocimientoBiblioteca" data-link="/conocimientoBiblioteca">Biblioteca</a>
                 </div>
+            </div>
             <button class="nav-button" onclick="window.location.href='/convocatorias'">Convocatorias</button>
 
             <button class="nav-button" onclick="window.location.href='/eventos'">Eventos</button>
 
+            <button class="nav-button" id="btnEvaluador" style="display: none;" data-link="/portalEvaluadorUser"
+                onclick="window.location.href='/portalEvaluadorUser'">Evaluación</button>
         </nav>
     </header>
+
 
 
     <!-- Bienvenida y botones de acción -->
