@@ -21,76 +21,74 @@
 </head>
 
 <body>
-
-  <!-- Encabezado -->
-  <header>
-    <div class="header">
-      <div onclick="window.location.href='/helice'">
-        <!-- <span class="logo-icon">⚡</span> -->
-        <img src="/img/logo1.png" alt="SINAPTICO" class="logo" style="height:8vh;">
-      </div>
-      <div style="display: flex; align-items: center; gap: 20px;">
-        <div style="font-size:1.5em;cursor:pointer;">
-          <span id="icono-notif">🔔 <span
-              style='background:red;color:white;border-radius:50%;padding:2px 7px;font-size:0.9em;'>0</span></span>
-        </div>
-        <div class="notificaciones" id="notificaciones"></div>
-
-
-        <div class="dropdown">
-          <button id="userMenuBtn" style="display: flex; align-items: center;">
-            <div id="userPhoto ">
-              <img class="imagenPerfil" id="imagenPerfilSecundaria" src="img/sinfoto.jpg" alt="Foto de perfil"
-                onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
-
+    <!-- Encabezado -->
+    <header>
+        <div class="header">
+            <div onclick="window.location.href='/helice'">
+                <!-- <span class="logo-icon">⚡</span> -->
+                <img src="/img/logo1.png" alt="SINAPTICO" class="logo" style="height:8vh;">
             </div>
-            <h3 id="nombreUsuarioHeader" style="color:white; margin-left:10px;">Usuario <i
-                class="bi bi-chevron-down"></i> </h3>
-          </button>
+            <div style="display: flex; align-items: center; gap: 20px;">
+                <div style="font-size:1.5em;cursor:pointer;">
+                    <span id="icono-notif">🔔 <span
+                            style='background:red;color:white;border-radius:50%;padding:2px 7px;font-size:0.9em;'>0</span></span>
+                </div>
+                <div class="notificaciones" id="notificaciones"></div>
 
-          <div class="dropdown-menu" id="userMenu">
-            <a class="perfilUser" id="perfilUser">Perfil</a>
-            <a href="/miEntidad" id="habilitarMiEmpresa" style="display: none;">Empresa</a>
-            <a href="#" id="cerrarSesion">Cerrar sesión</a>
-          </div>
+
+                <div class="dropdown">
+                    <button id="userMenuBtn" style="display: flex; align-items: center;">
+                        <div id="userPhoto ">
+                            <img class="imagenPerfil" id="imagenPerfilSecundaria" src="img/sinfoto.jpg"
+                                alt="Foto de perfil" onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
+
+                        </div>
+                        <h3 id="nombreUsuarioHeader" style="color:white; margin-left:10px;">Usuario <i
+                                class="bi bi-chevron-down"></i> </h3>
+                    </button>
+
+                    <div class="dropdown-menu" id="userMenu">
+                        <a class="perfilUser" id="perfilUser">Perfil</a>
+                        <a  id="habilitarMiEmpresa" style="display: none;">Empresa</a>
+                        <a href="#" id="cerrarSesion">Cerrar sesión</a>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-    <nav class="nav">
+        <nav class="nav">
 
-      <button class="nav-button" data-link="/helice" id="inicio"
-        onclick="window.location.href='/helice'">Inicio</button>
+            <button class="nav-button" data-link="/helice" id="inicio"
+                onclick="window.location.href='/helice'">Inicio</button>
 
-      <div class="dropdown menuG">
-        <button class="nav-button dropdown-btnG" data-link="/directorio">Directorio</button>
-        <div class="dropdown-menu dropdown-menuG">
-          <a href="/directorio">Entidades</a>
-          <a href="/directorioPersonas">Personas</a>
-        </div>
-      </div>
-      <div class="dropdown menuG">
-        <button class="nav-button dropdown-btnG" data-link="/innovacion">Innovación Abierta</button>
-        <div class="dropdown-menu dropdown-menuG">
-          <a href="/retosEmpresariales">Retos Empresariales</a>
-          <a href="/innovacion">Muro de servicios</a>
-        </div>
-      </div>
+            <div class="dropdown menuG">
+                <button class="nav-button dropdown-btnG" data-link="/directorio">Directorio</button>
+                <div class="dropdown-menu dropdown-menuG">
+                    <a href="/directorio">Entidades</a>
+                    <a href="/directorioPersonas">Personas</a>
+                </div>
+            </div>
+            <button class="nav-button" onclick="window.location.href='/proyectos'">Proyectos</button>
+            <button class="nav-button" onclick="window.location.href='/ofertaRegional'" data-link="/ofertaRegional">Oferta Regional</button>
+            <div class="dropdown menuG">
+                <button class="nav-button dropdown-btnG" data-link="/retos">Innovación Abierta</button>
+                <div class="dropdown-menu dropdown-menuG">
+                    <a href="/retosEmpresariales">Retos Empresariales</a>
+                    <a href="/retosAula">Retos de Aula</a>
+                </div>
+            </div>
+            <div class="dropdown menuG" >
+                <button class="nav-button dropdown-btnG" data-link="/conocimiento">Conocimiento Abierto</button>
+                <div class="dropdown-menu dropdown-menuG">
+                    <a href="/conocimientoCursosVirtuales" data-link="/cursosVirtuales">Cursos</a>
+                    <a href="/conocimientoBiblioteca"  data-link="/conocimientoBiblioteca">Biblioteca</a>
+                </div>
+            </div>
+            <button class="nav-button" onclick="window.location.href='/convocatorias'">Convocatorias</button>
 
-      <div class="dropdown menuG">
-        <button class="nav-button dropdown-btnG" data-link="/conocimiento">Conocimiento Abierto</button>
-        <div class="dropdown-menu dropdown-menuG">
-          <a onclick="irEnConstruccion()">Cursos</a>
-          <a onclick="irEnConstruccion()">Biblioteca</a>
-        </div>
-      </div>
-      <button class="nav-button" onclick="window.location.href='/convocatorias'">Convocatorias</button>
-
-      <button class="nav-button" onclick="window.location.href='/eventos'">Eventos</button>
-    </nav>
-
-  </header>
-
-
+            <button class="nav-button" onclick="window.location.href='/eventos'">Eventos</button>
+            
+        </nav>
+    </header>
 
   <!-- Challenges Section -->
   <section id="retos" class="main-content" style="display: block; margin: 2rem auto 1rem;">
@@ -150,7 +148,7 @@
   <script src="js/notificaciones.js"></script>
   <script src="/js/websocket.js"></script>
   <script src="/js/menu.js"></script>
-  <script src="js/solicitudesVincuncular.js"></script>
+  
   <script src="js/enviarInvitacion.js"></script>
 
 
@@ -184,67 +182,7 @@
   </script>
 
   <!-- Utilidades-->
-  <script>
-    // =========================
-    // Utilidades
-    // =========================
-    function obtenerCookie(nombre) {
-      const nombreCookie = `${nombre}=`;
-      const cookies = document.cookie.split(';');
-      for (let i = 0; i < cookies.length; i++) {
-        let cookie = cookies[i].trim();
-        if (cookie.indexOf(nombreCookie) === 0) {
-          return cookie.substring(nombreCookie.length, cookie.length);
-        }
-      }
-      return null;
-    }
-
-    const userId = obtenerCookie("userId");
-
-    // =========================
-    // Inicialización de usuario (nombre, foto) y carga de proyectos
-    // =========================
-    (async () => {
-      try {
-        // Cargar usuario (para cabecera y foto)
-        const resUser = await fetch(`/api/user/${userId}`);
-        const dataUser = await resUser.json();
-        if (dataUser?.name) {
-
-          document.getElementById('nombreUsuarioHeader').innerText = ` ${dataUser.name.split(" ")[0]}`;
-        }
-
-        document.getElementById("imagenPerfilSecundaria").src = dataUser.fotoPerfil ? "photo/" + dataUser.fotoPerfil : "photo/sinfoto.jpg";
-
-        if (dataUser?.fotoPerfil) {
-          const img = document.getElementById('imagenPerfil');
-          if (img) img.src = dataUser.fotoPerfil;
-        }
-
-        // Determinar entidad y setear input nombreEntidad
-        let entidadId = null;
-        const resUE = await fetch(`/api/usuarioempresa/user/${userId}`);
-        const dataUE = await resUE.json();
-
-        if (Array.isArray(dataUE) && dataUE.length > 0 && dataUE[0].empresa) {
-          entidadId = dataUE[0].empresa.id;
-        } else {
-          entidadId = 'null';
-        }
-
-        const inputEntidad = document.getElementById('nombreEntidad');
-        if (inputEntidad) inputEntidad.value = entidadId;
-
-        console.log('Entidad ID seleccionada:', entidadId);
-
-
-      } catch (err) {
-        console.error('Error inicializando la vista:', err);
-      }
-    })();
-
-  </script>
+ 
 
 </body>
 

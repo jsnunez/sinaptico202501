@@ -103,11 +103,13 @@ app.get('/compartir-datos',  (req, res) => res.sendFile(path.join(__dirname, 'pa
 // Rutas HTML para usuarios
 app.get('/helice', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/helice.html')));
 app.get('/directorio', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/directorio.html')));
-app.get('/innovacion', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/innovacion.html')));
+app.get('/ofertaRegional', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/oferta.html')));
 app.get('/eventos', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/eventos.html')));
 app.get('/convocatorias', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/convocatorias.html')));
 app.get('/construccion', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/construccion.html')));
 app.get('/conocimiento', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/conocimiento.html')));
+app.get('/ConocimientoCursosVirtuales', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/cursos.html')));
+app.get('/conocimientoBiblioteca', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/biblioteca.html')));
 app.get('/mapa-usuarios', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/mapa-usuarios.html')));
 app.get('/proyectos1', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/proyectos.html')));
 app.get('/proyectos', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/postulaciones.html')));

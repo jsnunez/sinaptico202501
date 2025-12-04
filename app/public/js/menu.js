@@ -68,6 +68,8 @@ let activeButton = null;
 
 // Marcar activo según URL
 menuButtons.forEach(btn => {
+            console.log("Botón activo:", btn.dataset.link);
+
     if (btn.dataset.link && currentPath.startsWith(btn.dataset.link)) {
         btn.classList.add("pulse");
         activeButton = btn;

@@ -50,7 +50,7 @@
 
                     <div class="dropdown-menu" id="userMenu">
                         <a class="perfilUser" id="perfilUser">Perfil</a>
-                        <a href="/miEntidad" id="habilitarMiEmpresa" style="display: none;">Empresa</a>
+                        <a  id="habilitarMiEmpresa" style="display: none;">Empresa</a>
                         <a href="#" id="cerrarSesion">Cerrar sesión</a>
                     </div>
                 </div>
@@ -68,130 +68,34 @@
                     <a href="/directorioPersonas">Personas</a>
                 </div>
             </div>
+            <button class="nav-button" onclick="window.location.href='/proyectos'">Proyectos</button>
+            <button class="nav-button" onclick="window.location.href='/ofertaRegional'"
+                data-link="/ofertaRegional">Oferta Regional</button>
             <div class="dropdown menuG">
-                <button class="nav-button dropdown-btnG" data-link="/innovacion">Innovación Abierta</button>
+                <button class="nav-button dropdown-btnG" data-link="/retos">Innovación Abierta</button>
                 <div class="dropdown-menu dropdown-menuG">
                     <a href="/retosEmpresariales">Retos Empresariales</a>
-                    <a href="/innovacion">Muro de servicios</a>
+                    <a href="/retosAula">Retos de Aula</a>
                 </div>
             </div>
 
-            <div class="dropdown menuG">
+            <div class="dropdown menuG" >
                 <button class="nav-button dropdown-btnG" data-link="/conocimiento">Conocimiento Abierto</button>
                 <div class="dropdown-menu dropdown-menuG">
-                    <a onclick="irEnConstruccion()">Cursos</a>
-                    <a onclick="irEnConstruccion()">Biblioteca</a>
+                    <a href="/conocimientoCursosVirtuales" data-link="/cursosVirtuales">Cursos</a>
+                    <a href="/conocimientoBiblioteca"  data-link="/conocimientoBiblioteca">Biblioteca</a>
                 </div>
             </div>
             <button class="nav-button" onclick="window.location.href='/convocatorias'">Convocatorias</button>
 
             <button class="nav-button" onclick="window.location.href='/eventos'">Eventos</button>
+
         </nav>
-
     </header>
-    <div class="main-content" id="conocimientoMainContent" style="margin: 2rem auto 1rem;">
-        <!-- Tarjetas de la triple hélice -->
-        <div class="helix-title">
-            <h3>Gestion del Conocimiento</h3>
-            <p>Explora recursos, invetigaciones y documentos seleccionados para tu conocimiento</p>
-        </div>
 
-        <div class="cards-container">
-            <!-- Estado Card -->
-            <div id="Recursos" class="card">
-                <div class="card-inner">
-                    <div class="card-front">
-                        <div class="card-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="1.5">
-                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                                <circle cx="9" cy="7" r="4"></circle>
-                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                            </svg>
-                        </div>
-                        <h3 class="card-title">Cursos</h3>
-                        <p class="card-text">Amplia tus conocimientos con nuestros Recursos</p>
-                        </p>
-                    </div>
-                    <div class="card-back">
-                        <div class="synapse-icon"></div>
-                        <h3 class="card-title">Ver Contenido</h3>
-                        <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo itaque
-                            quasi
-                            aspernatur distinctio consequuntur eum quo voluptatem quisquam, corrupti corporis est
-                            quaerat voluptate
-                            doloremque accusantium officiis harum hic fuga repudiandae!
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Academia Card -->
-            <div id="biblioteca" class="card">
-                <div class="card-inner">
-                    <div class="card-front">
-                        <div class="card-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="1.5">
-                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                                <circle cx="9" cy="7" r="4"></circle>
-                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                            </svg>
-                        </div>
-                        <h3 class="card-title">Biblioteca</h3>
-                        <p class="card-text">nuestra biblioteca de recursos</p>
-                        </p>
-                    </div>
-                    <div class="card-back">
-                        <div class="synapse-icon"></div>
-                        <h3 class="card-title">Ver Contenido</h3>
-                        <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo itaque
-                            quasi
-                            aspernatur distinctio consequuntur eum quo voluptatem quisquam, corrupti corporis est
-                            quaerat voluptate
-                            doloremque accusantium officiis harum hic fuga repudiandae!
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Challenges Section -->
-    <section id="cursosSection" class="main-content" style="display: none; margin: 2rem auto 1rem;">
-  
-           
-            <div class="section-header" style="display: flex;   justify-content: space-between;     margin-bottom: 3rem; ">
-                <i class="fas fa-rocket"></i>
-                <h2 style="color:white">2025 - Cursos activos</h2>
-            </div>
- 
-        <div class="challenges-grid">
-
-        </div>
-
-    </section>
-
-
-
-    <section id="courseContainer" class="main-content" style="display: none;">
-        <div class="main-content">
-
-            <div class="section-header">
-                <i class="fas fa-rocket"></i>
-                <h2>2025 - Cursos activos</h2>
-            </div>
-
-            <div class="challenges-grid">
-
-            </div>
-
-    </section>
 
     <!-- clasificados Section -->
-    <section id="bibliotecaSection" class="main-content" style="display: none;">
+    <section id="bibliotecaSection" class="main-content" style="display: block;">
         <div class="container" id="bibliotecaConocimiento">
             <section class="page-title">
                 <h1>Biblioteca de Conocimiento</h1>
@@ -510,22 +414,6 @@
 
     </script>
 
-    <script>
-
-
-        document.getElementById("biblioteca").addEventListener("click", () => {
-            document.getElementById("conocimientoMainContent").style.display = "none";
-            document.getElementById("bibliotecaSection").style.display = "flex";
-            document.getElementById("cursosSection").style.display = "none";
-        });
-        document.getElementById("Recursos").addEventListener("click", () => {
-            document.getElementById("conocimientoMainContent").style.display = "none";
-            document.getElementById("bibliotecaSection").style.display = "none";
-            document.getElementById("cursosSection").style.display = "block";
-        });
-
-
-    </script>
     <script src="js/notificaciones.js"></script>
     <script src="/js/websocket.js"></script>
     <script src="/js/menu.js"></script>
