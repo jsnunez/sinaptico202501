@@ -16,6 +16,551 @@
         rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
+<style>
+    .hero {
+        background: var(--primary-color);
+        color: #ffffff;
+        border-radius: 16px;
+        padding: 32px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        margin-bottom: 24px;
+        margin-top: 3rem;
+    }
+
+    .hero-info h1 {
+        margin: 0 0 8px;
+        font-size: 26px;
+    }
+
+    .hero-info p {
+        margin: 0 0 16px;
+        opacity: 0.9;
+    }
+
+    .logo {
+        height: 52px;
+        display: block;
+    }
+
+    .btn-primary {
+        background: var(--orange);
+        color: var(--light-text);
+        border: none;
+        border-radius: 20px;
+        padding: 12px 30px;
+        cursor: pointer;
+        font-size: 15px;
+        transition: 0.5s;
+        margin-top: 2%;
+    }
+
+    .btn-primary:hover {
+        opacity: 0.9;
+    }
+
+    .btn-secondary {
+        background: var(--orange);
+        border: none;
+        padding: 10px 16px;
+        border-radius: 999px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #ffffff;
+        cursor: pointer;
+    }
+
+    .btn-secondary:hover {
+        opacity: 0.95;
+    }
+
+
+    .main-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 2.2fr) minmax(280px, 0.9fr);
+        gap: 24px;
+        align-items: flex-start;
+    }
+
+    .mapa-ecosistema {
+        background-color: var(--card-bg);
+        border-radius: 15x;
+        box-shadow: var(--shadow);
+        border-radius: 16px;
+        padding: 20px 20px 16px;
+        border: 1px solid var(--gris-borde);
+        margin-bottom: 20px;
+    }
+
+    .mapa-ecosistema h3 {
+        margin-top: 0;
+        margin-bottom: 12px;
+        font-size: 18px;
+    }
+
+    .map-placeholder {
+        width: 100%;
+        height: 320px;
+        background: linear-gradient(135deg, #D9E2EF, #F4F6FA);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 15px;
+        color: #4B6F9A;
+        border: 1px dashed #B7C4DD;
+        margin-bottom: 8px;
+    }
+
+    .mapa-ecosistema .info {
+        font-size: 13px;
+        color: #4B6F9A;
+        margin: 0;
+    }
+
+    .data-cards {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 16px;
+        margin-bottom: 20px;
+    }
+
+    .card {
+        background-color: var(--card-bg);
+        border-radius: 15x;
+        box-shadow: var(--shadow);
+        padding: 18px 20px;
+        border: none;
+        box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 120px;
+    }
+
+    .card-title {
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: var(--azul);
+    }
+
+    .card-value {
+        font-size: 32px;
+        font-weight: 700;
+        color: #001435;
+        margin-bottom: 4px;
+    }
+
+    .card-subtitle {
+        font-size: 13px;
+        color: #6B7280;
+    }
+
+    .ecosystem-cards {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+    }
+
+    .eco-card {
+        background-color: var(--card-bg);
+        border-radius: 15px;
+        box-shadow: var(--shadow);
+        padding: 16px;
+        border: 1px solid var(--gris-borde);
+        transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+    }
+
+    .eco-card.clickable {
+        cursor: pointer;
+    }
+
+    .eco-card.clickable:hover {
+        transform: translateY(-2px);
+        border-color: var(--orange);
+        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.12);
+        border-radius: 15px;
+    }
+
+    .eco-card h4 {
+        margin: 0 0 6px;
+        font-size: 15px;
+    }
+
+    .eco-card p {
+        margin: 0;
+        font-size: 13px;
+        color: #4B6F9A;
+    }
+
+    .login-admin {
+        background-color: var(--card-bg);
+        border-radius: 15x;
+        box-shadow: var(--shadow);
+        padding: 20px 20px 18px;
+        border: 1px solid var(--gris-borde);
+        position: sticky;
+        top: 24px;
+    }
+
+    .login-admin h3 {
+        margin-top: 0;
+        margin-bottom: 6px;
+        font-size: 18px;
+    }
+
+    .login-admin p {
+        margin: 0 0 12px;
+        font-size: 13px;
+        color: #4B6F9A;
+    }
+
+    .login-admin label {
+        display: block;
+        font-size: 13px;
+        margin-bottom: 4px;
+    }
+
+    .login-admin input {
+        width: 100%;
+        padding: 8px 10px;
+        border-radius: 8px;
+        border: 1px solid var(--gris-borde);
+        font-size: 13px;
+        margin-bottom: 10px;
+    }
+
+    .note {
+        margin-top: 8px;
+        font-size: 12px;
+        color: #64748B;
+    }
+
+    .competitividad {
+        background-color: var(--card-bg);
+        border-radius: 15x;
+        box-shadow: var(--shadow);
+        padding: 18px 18px 16px;
+        border: 1px solid var(--gris-borde);
+        align-self: stretch;
+    }
+
+    .competitividad h3 {
+        margin-top: 0;
+        margin-bottom: 10px;
+        font-size: 16px;
+    }
+
+    .compet-placeholder {
+        border-radius: 12px;
+        overflow: hidden;
+        margin-bottom: 6px;
+    }
+
+    .compet-placeholder img {
+        width: 100%;
+        display: block;
+    }
+
+    .compet-info {
+        font-size: 13px;
+        color: #4B6F9A;
+        margin: 0;
+    }
+
+    /* Subvistas comunes */
+    .actores-view,
+    .proyectos-view,
+    .indicadores-view,
+    .documentos-view {
+        display: none;
+    }
+
+    .actores-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .actores-title {
+        font-size: 22px;
+        font-weight: 600;
+        color: var(--azul);
+    }
+
+    .actores-subtitle {
+        font-size: 13px;
+        color: #4B6F9A;
+        margin-top: 4px;
+    }
+
+    .actores-layout {
+        display: grid;
+        grid-template-columns: minmax(260px, 0.9fr) minmax(0, 2.1fr);
+        gap: 20px;
+        align-items: flex-start;
+    }
+
+    .actores-filtros {
+        background-color: var(--card-bg);
+        border-radius: 15px;
+        box-shadow: var(--shadow);
+        padding: 16px 18px;
+        border: 1px solid var(--gris-borde);
+
+    }
+
+    .actores-filtros h3 {
+        margin: 0 0 10px;
+        font-size: 16px;
+    }
+
+    .filtro-group {
+        margin-bottom: 10px;
+    }
+
+    .filtro-group label {
+        display: block;
+        font-size: 13px;
+        margin-bottom: 4px;
+    }
+
+    .filtro-group select,
+    .filtro-group input {
+        width: 100%;
+        padding: 7px 10px;
+        border-radius: 8px;
+        border: 1px solid var(--gris-borde);
+        font-size: 13px;
+    }
+
+    .actores-lista {
+
+        border-radius: 16px;
+        padding: 16px 18px;
+        border: 1px solid var(--gris-borde);
+        box-shadow: var(--shadow);
+        height: 100%;
+    }
+
+    .actores-lista-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .actores-lista-title {
+        font-size: 15px;
+        font-weight: 600;
+    }
+
+    .tabla-actores {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+        height: 80%;
+    }
+
+    .tabla-actores thead {
+        background: #F3F4F6;
+    }
+
+    .tabla-actores th,
+    .tabla-actores td {
+        padding: 8px 10px;
+        text-align: left;
+        border-bottom: 1px solid #E5E7EB;
+    }
+
+    .badge-tipo {
+        padding: 3px 8px;
+        border-radius: 999px;
+        font-size: 11px;
+        font-weight: 500;
+        background: rgba(255, 122, 0, 0.08);
+        color: #C05600;
+    }
+
+    .badge-municipio {
+        padding: 3px 8px;
+        border-radius: 999px;
+        font-size: 11px;
+        background: #EEF2FF;
+        color: #3730A3;
+    }
+
+    .mini-map {
+        margin-top: 14px;
+        height: 180px;
+        border-radius: 12px;
+        border: 1px dashed #B7C4DD;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        color: #4B6F9A;
+        background: #F8FAFF;
+    }
+
+    /* Indicadores IDC */
+    .pilar-row {
+        cursor: pointer;
+    }
+
+    .pilar-row:hover {
+        background: #EEF2FF;
+    }
+
+    .mini-chart-bar {
+        width: 100px;
+        height: 8px;
+        border-radius: 999px;
+        background: #E5E7EB;
+        overflow: hidden;
+    }
+
+    .mini-chart-fill {
+        height: 100%;
+        border-radius: 999px;
+        background: linear-gradient(90deg, #22C55E, #FACC15, #EF4444);
+    }
+
+    .indicador-row:hover {
+        background: #F9FAFB;
+    }
+
+    .btn-ficha {
+        padding: 4px 10px;
+        border-radius: 999px;
+        border: none;
+        font-size: 11px;
+        font-weight: 500;
+        cursor: pointer;
+        background: rgba(12, 35, 64, 0.06);
+        color: var(--azul);
+    }
+
+    .btn-ficha:hover {
+        background: rgba(12, 35, 64, 0.12);
+    }
+
+    .indicador-ficha {
+        margin-top: 20px;
+    }
+
+    .indicador-ficha p {
+        font-size: 13px;
+        color: #4B6F9A;
+        margin-top: 4px;
+    }
+
+    .actores-view,
+    .proyectos-view,
+    .indicadores-view,
+    .documentos-view {
+        background-color: var(--card-bg);
+        border-radius: 15x;
+        box-shadow: var(--shadow);
+        padding: 2rem;
+
+        justify-content: space-between;
+        gap: 24px;
+        margin-bottom: 24px;
+        margin-top: 3rem;
+    }
+      /* Spinner overlay */
+        #page-spinner-overlay {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.95);
+            z-index: 99999;
+            transition: opacity .4s ease;
+            -webkit-backdrop-filter: blur(2px);
+            backdrop-filter: blur(2px);
+        }
+
+        /* Circular spinner */
+        #page-spinner-overlay .spinner {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            border: 6px solid rgba(0, 0, 0, 0.08);
+            border-top-color: #007bff;
+            animation: spin 1s linear infinite;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Texto opcional */
+        #page-spinner-overlay .spinner-text {
+            color: #333;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 500;
+        }
+    @media (max-width: 960px) {
+        .hero {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .data-cards {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .ecosystem-cards {
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+        .main-layout {
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+        .login-admin {
+            position: static;
+        }
+    }
+
+    .paginacion {
+        justify-content: center;
+        align-items: center;
+    }
+
+    .paginacion button {
+        padding: 6px 10px;
+        border: 1px solid #d1d5db;
+        background: white;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+
+    .paginacion button.activa {
+        background: var(--secondary-color);
+        color: white;
+        font-weight: bold;
+    }
+
+    .paginacion button:disabled {
+        opacity: .4;
+        cursor: default;
+    }
+</style>
+
 
 <body>
     <header>
@@ -37,55 +582,478 @@
 
         </nav>
     </header>
-
-
-    <div class="modal-content">
-        <!-- TU PANEL ACTUAL PEGADO AQUÍ -->
-        <div class="auth-panel">
-            <div class="auth-container">
-                <div class="auth-header" style="margin-bottom: 0;">
-                    <img src="/logos/cpc.png" alt="SINAPTICO" class="intro-title"
-                        style="max-width: 500px; height: 15vh;">
-                    <img src="/img/logoCRCI.png" alt="CRCI" class="intro-title"
-                        style="max-width: 200px; height: 15vh; margin-top:10px;">
-                </div>
-
-                <div class="tabs">
-                    <div style="display: flex;
-align-items: center; flex-direction: column;">
-                        <h1>Bienvenido</h1>
-                        <p>Ingresa tus datos para acceder</p>
-                    </div>
-
-
-
-
-
-                    <form id="loginForm">
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" id="email" placeholder="name@example.com" required>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="password-header">
-                                <label for="password">Contraseña</label>
-                                <a id="recuperarPass" class="forgot-password">¿olvidaste tu
-                                    contraseña?</a>
-                            </div>
-                            <input type="password" id="password" required>
-                        </div>
-
-                        <button type="submit" class="btn btn-primary">Conectar</button>
-
-                        <p class="error escondido">Error al iniciar sesión</p>
-
-
-                    </form>
-
-                </div>
-            </div>
+    <div class="main-content">
+        <div id="page-spinner-overlay">
+            <div class="spinner"></div>
+            <p class="spinner-text">Cargando...</p>
         </div>
+        <section class="hero">
+            <div class="hero-info">
+                <h1>Ecosistema CRCI Santander</h1>
+                <p>Vista general del ecosistema de competitividad e innovación del departamento, gestionado desde
+                    Synaptico.</p>
+                <button class="btn-primary" id="btn-ingresar">Ingresar al ecosistema</button>
+            </div>
+            <img src="/img/logo1.png" alt="Synaptico" class="logo" />
+        </section>
+
+        <section class="main-layout">
+            <div class="main-left">
+                <section class="mapa-ecosistema">
+                    <h3>Mapa de empresas vinculadas</h3>
+                    <div class="map-placeholder">[Mapa de empresas de la región con georreferenciación]</div>
+                    <p class="info">Haz clic en las empresas para ver detalle de su rol dentro del ecosistema CRCI.</p>
+                </section>
+
+                <section class="data-cards">
+                    <div class="card">
+                        <div class="card-title">Empresas vinculadas</div>
+                        <div class="card-value">125</div>
+                        <div class="card-subtitle">Empresas</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Proyectos CTeI activos</div>
+                        <div class="card-value">32</div>
+                        <div class="card-subtitle">Proyectos</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Inversión gestionada</div>
+                        <div class="card-value">$ 18.500</div>
+                        <div class="card-subtitle">Millones</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Clústeres integrados</div>
+                        <div class="card-value">7</div>
+                        <div class="card-subtitle">Clústeres</div>
+                    </div>
+                </section>
+
+                <section class="ecosystem-cards">
+                    <div class="eco-card clickable" data-target="actores-view">
+                        <h4>Actores del ecosistema</h4>
+                        <p>Empresas, universidades, centros de investigación y entidades públicas articuladas en la
+                            agenda de competitividad.</p>
+                    </div>
+                    <div class="eco-card clickable" data-target="proyectos-view">
+                        <h4>Proyectos CTeI</h4>
+                        <p>Iniciativas de ciencia, tecnología e innovación que fortalecen sectores estratégicos y
+                            cadenas productivas de Santander.</p>
+                    </div>
+                    <div class="eco-card clickable" data-target="indicadores-view">
+                        <h4>Indicadores de Competitividad e Innovación</h4>
+                        <p>Seguimiento a competitividad, productividad, empleo, internacionalización e innovación
+                            regional.</p>
+                    </div>
+                    <div class="eco-card clickable" data-target="documentos-view">
+                        <h4>Documentos y ruta estratégica</h4>
+                        <p>Plan Regional de Competitividad, hojas de ruta clúster y documentos de visión a largo plazo
+                            del territorio.</p>
+                    </div>
+                </section>
+            </div>
+
+            <section class="competitividad">
+                <h3>Resultados Generales de Competitividad</h3>
+                <div class="compet-placeholder">
+                    <img src="competitividad-santander.png" alt="Resultados de Competitividad Santander"
+                        style="width:100%; border-radius:12px;" />
+                </div>
+                <p class="compet-info">Posición nacional: <b>4</b> entre 33 departamentos</p>
+            </section>
+
+            <form class="login-admin" id="loginForm" style="border-radius: 15px;">
+                <h3>Acceso administradores CRCI</h3>
+                <p>Panel exclusivo para la gestión del ecosistema. Esta vista se despliega al hacer clic en
+                    <b>Administrador</b>.
+                </p>
+
+                <label for="email">Correo institucional</label>
+                <input id="email" type="email" placeholder="correo@crci.org" required />
+
+                <label for="password">Contraseña</label> <a id="recuperarPass" class="forgot-password">¿olvidaste tu
+                    contraseña?</a>
+                <input id="password" type="password" placeholder="••••••••" />
+
+                <button class="btn-secondary" type="submit">Iniciar sesión</button>
+                <p class="note">Solo usuarios autorizados de la Comisión Regional de Competitividad e Innovación de
+                    Santander.</p>
+                <p class="error escondido">Error al iniciar sesión</p>
+            </form>
+        </section>
+
+    </div>
+
+    <!-- Vista 2: Actores del Ecosistema -->
+    <div class="main-content actores-view" style="margin-top:40px;">
+        <header class="actores-header">
+            <div>
+                <div class="actores-title">Actores del ecosistema CRCI Santander</div>
+                <div class="actores-subtitle">Empresas, academia, gobierno y sociedad civil articulados en proyectos de
+                    competitividad e innovación.</div>
+            </div>
+            <div>
+                <button class="btn-primary btn-back">Volver al ecosistema</button>
+            </div>
+        </header>
+
+        <section class="actores-layout">
+            <aside class="actores-filtros">
+                <h3>Filtros</h3>
+                <div class="filtro-group">
+                    <label for="tipo-actor">Tipo de actor</label>
+                    <select id="tipo-actor">
+                        <option>Todos</option>
+                        <option>Empresa</option>
+                        <option>Universidad / Centro de I+D</option>
+                        <option>Entidad pública</option>
+                        <option>Gremio / Cámara / Clúster</option>
+                    </select>
+                </div>
+                <div class="filtro-group">
+                    <label for="municipio">Municipio</label>
+                    <select id="municipio">
+                        <option>Todos</option>
+                        <option>Bucaramanga</option>
+                        <option>Floridablanca</option>
+                        <option>Girón</option>
+                        <option>Piedecuesta</option>
+                        <option>Otros municipios</option>
+                    </select>
+                </div>
+                <div class="filtro-group">
+                    <label for="cluster">Clúster / Red</label>
+                    <select id="cluster">
+                        <option>Todos</option>
+                        <option>Clúster Salud</option>
+                        <option>Clúster TIC</option>
+                        <option>Clúster Turismo</option>
+                        <option>Clúster Agroindustrial</option>
+                    </select>
+                </div>
+                <div class="filtro-group">
+                    <label for="buscar-actor">Buscar actor</label>
+                    <input id="buscar-actor" type="text" placeholder="Nombre de la entidad" />
+                </div>
+                <div class="mini-map">[Mapa resumido: ubicación de actores filtrados]</div>
+                <button id="reset-filtros" style="background: var(--gradient-1); color: var(--light-text); border: none; 
+               border-radius: 20px; padding: 12px 30px;  cursor: pointer; font-size: 15px; 
+               transition: 0.5s; margin-top: 2%;width: 100%;">
+                    Restaurar filtros
+                </button>
+
+            </aside>
+
+            <section class="actores-lista">
+                <header class="actores-lista-header">
+                    <div class="actores-lista-title">Listado de actores (ejemplo)</div>
+                    <div style="font-size: 12px; color:#6B7280;">Mostrando 1–5 de 125 actores</div>
+                </header>
+                <table class="tabla-actores">
+                    <thead>
+                        <tr>
+                            <th>Actor / Entidad</th>
+                            <th>Tipo</th>
+                            <th>Municipio</th>
+                            <th>Rol en el ecosistema</th>
+                        </tr>
+                    </thead>
+                    <tbody id="actores-body"></tbody>
+                </table>
+
+                <div id="paginador" class="paginacion" style="display:flex; gap:6px; margin-top:20px;"></div>
+
+            </section>
+        </section>
+    </div>
+
+    <!-- Vista 3: Proyectos CTeI -->
+    <div class="main-content proyectos-view" style="margin-top:40px;">
+        <header class="actores-header">
+            <div>
+                <div class="actores-title">Proyectos de Ciencia, Tecnología e Innovación</div>
+                <div class="actores-subtitle">Listado de iniciativas que impulsan la competitividad y el desarrollo
+                    tecnológico en Santander.</div>
+            </div>
+            <div>
+                <button class="btn-primary btn-back">Volver al ecosistema</button>
+            </div>
+        </header>
+
+        <section class="actores-layout">
+            <aside class="actores-filtros">
+                <h3>Filtros</h3>
+                <div class="filtro-group">
+                    <label for="fase-proyecto">Fase del proyecto</label>
+                    <select id="fase-proyecto">
+                        <option>Todos</option>
+                        <option>Idea</option>
+                        <option>Prefactibilidad</option>
+                        <option>Factibilidad</option>
+                        <option>Contratación</option>
+                        <option>Ejecución</option>
+                    </select>
+                </div>
+                <div class="filtro-group">
+                    <label for="sector-proyecto">Sector / Clúster</label>
+                    <select id="sector-proyecto">
+                        <option>Todos</option>
+                        <option>Salud</option>
+                        <option>TIC</option>
+                        <option>Turismo</option>
+                        <option>Agroindustrial</option>
+                    </select>
+                </div>
+                <div class="filtro-group">
+                    <label for="duracion-proyecto">Duración</label>
+                    <select id="duracion-proyecto">
+                        <option>Todas</option>
+                        <option>&lt; 12 meses</option>
+                        <option>12 – 36 meses</option>
+                        <option>&gt; 36 meses</option>
+                    </select>
+                </div>
+                <div class="filtro-group">
+                    <label for="buscar-proyecto">Buscar proyecto</label>
+                    <input id="buscar-proyecto" type="text" placeholder="Nombre del proyecto..." />
+                </div>
+                <button id="reset-proyectos" style="background: var(--gradient-1); color: var(--light-text); border: none; 
+               border-radius: 20px; padding: 12px 30px;  cursor: pointer; font-size: 15px; 
+               transition: 0.5s; margin-top: 2%;width: 100%;">Restaurar filtros</button>
+            </aside>
+
+            <section class="actores-lista">
+                <header class="actores-lista-header">
+                    <div class="actores-lista-title">Proyectos registrados</div>
+                    <div style="font-size: 12px; color:#6B7280;">Ejemplo – 3 de 32 proyectos</div>
+                </header>
+
+                <table class="tabla-actores">
+                    <thead>
+                        <tr>
+                            <th>Nombre del proyecto</th>
+                            <th>Sector / Clúster</th>
+                            <th>Estado</th>
+                            <th>Inversión (Millones)</th>
+                            <th>Horizonte</th>
+                        </tr>
+                    </thead>
+                    <tbody id="proyectos-body"></tbody>
+                </table>
+                <div id="paginador-proyectos" class="paginacion" style="display:flex; gap:6px; margin-top:20px;"></div>
+            </section>
+        </section>
+    </div>
+
+    <!-- Vista 4: Indicadores de Competitividad e Innovación -->
+    <div class="main-content indicadores-view" style="margin-top:40px;">
+        <header class="actores-header">
+            <div>
+                <div class="actores-title">Indicadores de Competitividad e Innovación</div>
+                <div class="actores-subtitle">Resumen por pilares del Índice Departamental de Competitividad (IDC) para
+                    Santander.</div>
+            </div>
+            <div>
+                <button class="btn-primary btn-back">Volver al ecosistema</button>
+            </div>
+        </header>
+
+        <section class="actores-lista" style="margin-bottom:20px;">
+            <header class="actores-lista-header">
+                <div class="actores-lista-title">Resultados por pilar</div>
+                <div style="font-size: 12px; color:#6B7280;">Haz clic en un pilar para ver sus indicadores internos.
+                </div>
+            </header>
+            <table class="tabla-actores tabla-pilares">
+                <thead>
+                    <tr>
+                        <th>Factor</th>
+                        <th>Pilar</th>
+                        <th>Puntaje (0–10)</th>
+                        <th>Posición (33)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="pilar-row" data-pilar="instituciones">
+                        <td rowspan="4">Condiciones habilitantes</td>
+                        <td>Instituciones</td>
+                        <td>5,94</td>
+                        <td>13</td>
+                    </tr>
+                    <tr class="pilar-row" data-pilar="infraestructura">
+                        <td>Infraestructura</td>
+                        <td>6,25</td>
+                        <td>10</td>
+                    </tr>
+                    <tr class="pilar-row" data-pilar="adopcion-tic">
+                        <td>Adopción TIC</td>
+                        <td>7,37</td>
+                        <td>6</td>
+                    </tr>
+                    <tr class="pilar-row" data-pilar="sostenibilidad">
+                        <td>Sostenibilidad ambiental</td>
+                        <td>5,81</td>
+                        <td>18</td>
+                    </tr>
+                    <tr class="pilar-row" data-pilar="salud">
+                        <td rowspan="3">Capital humano</td>
+                        <td>Salud</td>
+                        <td>7,31</td>
+                        <td>4</td>
+                    </tr>
+                    <tr class="pilar-row" data-pilar="educacion-basica">
+                        <td>Educación básica y media</td>
+                        <td>7,95</td>
+                        <td>4</td>
+                    </tr>
+                    <tr class="pilar-row" data-pilar="educacion-superior">
+                        <td>Educación superior y formación para el trabajo</td>
+                        <td>6,63</td>
+                        <td>6</td>
+                    </tr>
+                    <tr class="pilar-row" data-pilar="entorno-negocios">
+                        <td rowspan="4">Eficiencia de los mercados</td>
+                        <td>Entorno para los negocios</td>
+                        <td>6,57</td>
+                        <td>8</td>
+                    </tr>
+                    <tr class="pilar-row" data-pilar="mercado-laboral">
+                        <td>Mercado laboral</td>
+                        <td>6,80</td>
+                        <td>5</td>
+                    </tr>
+                    <tr class="pilar-row" data-pilar="sistema-financiero">
+                        <td>Sistema financiero</td>
+                        <td>5,17</td>
+                        <td>15</td>
+                    </tr>
+                    <tr class="pilar-row" data-pilar="tamano-mercado">
+                        <td>Tamaño del mercado</td>
+                        <td>7,76</td>
+                        <td>5</td>
+                    </tr>
+                    <tr class="pilar-row" data-pilar="sofisticacion">
+                        <td rowspan="2">Sofisticación e innovación</td>
+                        <td>Sofisticación y diversificación</td>
+                        <td>6,44</td>
+                        <td>11</td>
+                    </tr>
+                    <tr class="pilar-row" data-pilar="innovacion">
+                        <td>Innovación</td>
+                        <td>4,73</td>
+                        <td>13</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="actores-lista" style="margin-bottom:20px;">
+            <header class="actores-lista-header">
+                <div class="actores-lista-title" id="pilar-detalle-titulo">Detalle del pilar</div>
+                <div style="font-size: 12px; color:#6B7280;" id="pilar-detalle-resumen">Selecciona un pilar de la tabla
+                    superior para ver sus indicadores internos.</div>
+            </header>
+            <table class="tabla-actores">
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Indicador</th>
+                        <th>Puntaje (0-10)</th>
+                        <th>Posición (33)</th>
+                        <th>Visual</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="pilar-detalle-body">
+                    <tr>
+                        <td colspan="6" style="font-size: 12px; color:#6B7280;">Aún no se ha seleccionado ningún pilar.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="actores-lista indicador-ficha" style="display:none;">
+            <header class="actores-lista-header">
+                <div class="actores-lista-title" id="ficha-titulo">Ficha técnica del indicador</div>
+                <button class="btn-secondary" id="ficha-cerrar" style="padding:6px 14px; font-size:12px;">Cerrar
+                    ficha</button>
+            </header>
+            <p id="ficha-pilar" style="font-weight:600; color:#111827;">Pilar asociado</p>
+            <p id="ficha-descripcion">Aquí se mostrará una descripción breve del indicador seleccionado, su relevancia
+                para la competitividad del departamento y posibles usos para la toma de decisiones.</p>
+            <p id="ficha-cierre" style="margin-top:8px;">Puntaje y posición se mostrarán aquí.</p>
+        </section>
+    </div>
+
+    <!-- Vista 5: Documentos y Ruta Estratégica -->
+    <div class="main-content documentos-view" style="margin-top:40px;">
+        <header class="actores-header">
+            <div>
+                <div class="actores-title">Documentos y Ruta Estratégica</div>
+                <div class="actores-subtitle">Planificación y orientación estratégica del desarrollo competitivo de
+                    Santander.</div>
+            </div>
+            <div>
+                <button class="btn-primary btn-back">Volver al ecosistema</button>
+            </div>
+        </header>
+
+        <section class="actores-layout">
+            <aside class="actores-filtros">
+                <h3>Filtros</h3>
+                <div class="filtro-group">
+                    <label for="tipo-doc">Tipo de documento</label>
+                    <select id="tipo-doc">
+                        <option>Todos</option>
+                        <option>Planes de Desarrollo</option>
+                        <option>Ruta Clúster</option>
+                        <option>Políticas</option>
+                        <option>Hojas de Ruta Estratégica</option>
+                    </select>
+                </div>
+
+                <div class="filtro-group">
+                    <label for="anio-doc">Año</label>
+                    <select id="anio-doc">
+                        <option>Todos</option>
+                        <option>2023</option>
+                        <option>2024</option>
+                        <option>2025</option>
+                    </select>
+                </div>
+
+                <div class="filtro-group">
+                    <label for="buscar-doc">Buscar documento</label>
+                    <input id="buscar-doc" type="text" placeholder="Buscar por título..." />
+                </div>
+                <button id="reset-documentos" style="background: var(--gradient-1); color: var(--light-text); border: none; 
+               border-radius: 20px; padding: 12px 30px;  cursor: pointer; font-size: 15px; 
+               transition: 0.5s; margin-top: 2%;width: 100%;">Restaurar filtros</button>
+            </aside>
+
+            <section class="actores-lista">
+                <header class="actores-lista-header">
+                    <div class="actores-lista-title">Listado de documentos</div>
+                    <div style="font-size: 12px; color:#6B7280;">Documentos estratégicos del territorio</div>
+                </header>
+
+                <table class="tabla-actores">
+                    <thead>
+                        <tr>
+                            <th>Título del documento</th>
+                            <th>Tipo</th>
+                            <th>Año</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="documentos-body"></tbody>
+
+
+
+                </table>
+                <div id="paginador-documentos" class="paginacion" style="display:flex; gap:6px; margin-top:20px;"></div>
+            </section>
+        </section>
     </div>
 
     <footer class="footer">
@@ -157,44 +1125,902 @@ align-items: center; flex-direction: column;">
     <script src="/js/config.js"></script>
 
     <script>
-        window.addEventListener('load', function () {
-            document.body.style.opacity = '0';
-            document.body.style.transform = 'translateY(20px)';
+        window.onload = function () {
+            window.scrollTo(0, 0);
+        };
 
-            setTimeout(function () {
-                document.body.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
-                document.body.style.opacity = '1';
-                document.body.style.transform = 'translateY(0)';
-            }, 100);
+        document.addEventListener('DOMContentLoaded', function () {
+            const heroBtn = document.getElementById('btn-ingresar');
+            const mainLayout = document.querySelector('.main-layout');
+            const ecoCards = document.querySelectorAll('.eco-card.clickable');
 
-            // Animar elementos del formulario secuencialmente
-            setTimeout(function () {
-                const formElements = document.querySelectorAll('.form-group, .btn-primary');
-                formElements.forEach((el, index) => {
-                    el.style.opacity = '0';
-                    el.style.transform = 'translateX(-20px)';
-                    setTimeout(() => {
-                        el.style.transition = 'opacity 0.5s ease-out, transform 0.5s ease-out';
-                        el.style.opacity = '1';
-                        el.style.transform = 'translateX(0)';
-                    }, index * 100);
+            const subviews = {
+                'actores-view': document.querySelector('.actores-view'),
+                'proyectos-view': document.querySelector('.proyectos-view'),
+                'indicadores-view': document.querySelector('.indicadores-view'),
+                'documentos-view': document.querySelector('.documentos-view')
+            };
+
+            const backButtons = document.querySelectorAll('.btn-back');
+
+            function showMain() {
+                if (mainLayout) {
+                    mainLayout.style.display = 'grid';
+                    mainLayout.scrollIntoView({ behavior: 'auto', block: 'start' });
+                }
+                Object.values(subviews).forEach(function (view) {
+                    if (view) view.style.display = 'none';
                 });
-            }, 300);
+            }
 
-            // Efecto hover en inputs
-            const inputs = document.querySelectorAll('input');
-            inputs.forEach(input => {
-                input.addEventListener('focus', function () {
-                    this.style.transform = 'scale(1.02)';
-                    this.style.transition = 'transform 0.2s ease';
+            function showView(key) {
+                if (mainLayout) {
+                    mainLayout.style.display = 'none';
+                }
+                Object.entries(subviews).forEach(function (entry) {
+                    const name = entry[0];
+                    const view = entry[1];
+                    if (!view) return;
+                    view.style.display = name === key ? 'block' : 'none';
                 });
-                input.addEventListener('blur', function () {
-                    this.style.transform = 'scale(1)';
+                const target = subviews[key];
+                if (target) {
+                    target.scrollIntoView({ behavior: 'auto', block: 'start' });
+                }
+            }
+            if (heroBtn) {
+                heroBtn.addEventListener('click', function () {
+                    showMain();
+                    const loginForm = document.getElementById('loginForm');
+                    if (loginForm) {
+                        loginForm.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            }
+
+
+            ecoCards.forEach(function (card) {
+                card.addEventListener('click', function () {
+                    const target = card.getAttribute('data-target');
+                    if (target && subviews[target]) {
+                        showView(target);
+                    }
                 });
             });
+
+            backButtons.forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    showMain();
+                });
+            });
+
+            // --- Detalle de pilares IDC ---
+            const pilarData = {
+                'instituciones': {
+                    nombre: 'Pilar 1: Instituciones',
+                    resumen: 'Evalúa el desempeño administrativo, la gestión de recursos y la transparencia institucional del departamento.',
+                    indicadores: [
+                        { codigo: 'INS-1', nombre: 'Desempeño administrativo', puntaje: '7,13', posicion: '2' },
+                        { codigo: 'INS-2', nombre: 'Gestión de recursos', puntaje: '6,59', posicion: '13' },
+                        { codigo: 'INS-3', nombre: 'Gestión de regalías', puntaje: '5,22', posicion: '19' },
+                        { codigo: 'INS-7', nombre: 'Transparencia y contratación pública', puntaje: '5,47', posicion: '16' }
+                    ]
+                },
+                'infraestructura': {
+                    nombre: 'Pilar 2: Infraestructura',
+                    resumen: 'Incluye infraestructura de servicios básicos, transporte y logística para el desarrollo productivo.',
+                    indicadores: [
+                        { codigo: 'INF-1', nombre: 'Infraestructura de servicios', puntaje: '8,40', posicion: '5' },
+                        { codigo: 'INF-2', nombre: 'Infraestructura vial primaria', puntaje: '3,96', posicion: '12' },
+                        { codigo: 'INF-3', nombre: 'Conectividad', puntaje: '6,39', posicion: '13' }
+                    ]
+                },
+                'adopcion-tic': {
+                    nombre: 'Pilar 3: Adopción TIC',
+                    resumen: 'Analiza el acceso y uso de tecnologías de información y comunicaciones en hogares y empresas.',
+                    indicadores: [
+                        { codigo: 'TIC-1', nombre: 'Penetración de internet banda ancha fijo', puntaje: '6,81', posicion: '7' },
+                        { codigo: 'TIC-2', nombre: 'Hogares con computador o tablet', puntaje: '6,17', posicion: '5' },
+                        { codigo: 'TIC-3', nombre: 'Uso de internet', puntaje: '9,14', posicion: '6' }
+                    ]
+                },
+                'sostenibilidad': {
+                    nombre: 'Pilar 4: Sostenibilidad ambiental',
+                    resumen: 'Mide la gestión de recursos naturales, deforestación y generación de empleos verdes.',
+                    indicadores: [
+                        { codigo: 'AMB-1', nombre: 'Activos naturales', puntaje: '6,35', posicion: '26' },
+                        { codigo: 'AMB-2', nombre: 'Deforestación', puntaje: '5,21', posicion: '22' },
+                        { codigo: 'AMB-4', nombre: 'Crecimiento verde', puntaje: '5,86', posicion: '18' }
+                    ]
+                },
+                'salud': {
+                    nombre: 'Pilar 5: Salud',
+                    resumen: 'Considera acceso, resultados en salud y calidad del sistema de atención.',
+                    indicadores: [
+                        { codigo: 'SAL-1', nombre: 'Acceso a salud', puntaje: '6,81', posicion: '5' },
+                        { codigo: 'SAL-3', nombre: 'Resultados en salud', puntaje: '7,87', posicion: '4' },
+                        { codigo: 'SAL-4', nombre: 'Mortalidad infantil', puntaje: '8,22', posicion: '4' }
+                    ]
+                },
+                'educacion-basica': {
+                    nombre: 'Pilar 6: Educación básica y media',
+                    resumen: 'Evalúa cobertura educativa, calidad y permanencia en básica y media.',
+                    indicadores: [
+                        { codigo: 'EDU1-1', nombre: 'Cobertura neta en preescolar', puntaje: '8,05', posicion: '6' },
+                        { codigo: 'EDU1-4', nombre: 'Deserción en educación secundaria', puntaje: '8,62', posicion: '6' },
+                        { codigo: 'EDU1-7', nombre: 'Puntaje pruebas Saber 11', puntaje: '9,07', posicion: '2' }
+                    ]
+                },
+                'educacion-superior': {
+                    nombre: 'Pilar 7: Educación superior y formación para el trabajo',
+                    resumen: 'Analiza cobertura, calidad y pertinencia de la educación superior y la formación técnica.',
+                    indicadores: [
+                        { codigo: 'EDS-1', nombre: 'Cobertura en educación superior', puntaje: '5,85', posicion: '10' },
+                        { codigo: 'EDS-2', nombre: 'Calidad en educación superior', puntaje: '7,84', posicion: '6' },
+                        { codigo: 'EDS-3', nombre: 'Proporción de estudiantes en IETDH certificados', puntaje: '6,21', posicion: '5' }
+                    ]
+                },
+                'entorno-negocios': {
+                    nombre: 'Pilar 8: Entorno para los negocios',
+                    resumen: 'Mide el clima de negocios, trámites, especialización y dinámica empresarial.',
+                    indicadores: [
+                        { codigo: 'NEG-1', nombre: 'Trámites y especialización empresarial', puntaje: '7,66', posicion: '1' },
+                        { codigo: 'NEG-2', nombre: 'Facilitación de trámites', puntaje: '7,24', posicion: '1' },
+                        { codigo: 'NEG-3', nombre: 'Dinámica empresarial', puntaje: '4,82', posicion: '19' }
+                    ]
+                },
+                'mercado-laboral': {
+                    nombre: 'Pilar 9: Mercado laboral',
+                    resumen: 'Evalúa participación laboral, desempleo, informalidad y subempleo.',
+                    indicadores: [
+                        { codigo: 'LAB-1', nombre: 'Tasa global de participación', puntaje: '6,91', posicion: '5' },
+                        { codigo: 'LAB-2', nombre: 'Tasa de desempleo', puntaje: '5,15', posicion: '19' },
+                        { codigo: 'LAB-3', nombre: 'Formalidad laboral', puntaje: '8,35', posicion: '7' }
+                    ]
+                },
+                'sistema-financiero': {
+                    nombre: 'Pilar 10: Sistema financiero',
+                    resumen: 'Considera acceso a servicios financieros, créditos y profundidad financiera.',
+                    indicadores: [
+                        { codigo: 'FIN-1', nombre: 'Cobertura de establecimientos financieros', puntaje: '6,05', posicion: '11' },
+                        { codigo: 'FIN-2', nombre: 'Cuentas de ahorro', puntaje: '7,12', posicion: '10' },
+                        { codigo: 'FIN-3', nombre: 'Índice de profundización financiera', puntaje: '2,35', posicion: '27' }
+                    ]
+                },
+                'tamano-mercado': {
+                    nombre: 'Pilar 11: Tamaño del mercado',
+                    resumen: 'Mide tamaño del mercado interno y externo y la apertura comercial.',
+                    indicadores: [
+                        { codigo: 'TAM-1', nombre: 'Tamaño del mercado interno', puntaje: '7,84', posicion: '5' },
+                        { codigo: 'TAM-2', nombre: 'Tamaño del mercado externo', puntaje: '6,29', posicion: '15' },
+                        { codigo: 'TAM-4', nombre: 'Grado de apertura comercial', puntaje: '9,15', posicion: '18' }
+                    ]
+                },
+                'sofisticacion': {
+                    nombre: 'Pilar 12: Sofisticación y diversificación',
+                    resumen: 'Analiza la diversificación de mercados y el valor agregado de la canasta exportadora.',
+                    indicadores: [
+                        { codigo: 'SOF-1', nombre: 'Diversificación de mercados de destino', puntaje: '8,98', posicion: '10' },
+                        { codigo: 'SOF-2', nombre: 'Diversificación de la canasta exportadora', puntaje: '8,18', posicion: '12' }
+                    ]
+                },
+                'innovacion': {
+                    nombre: 'Pilar 13: Innovación',
+                    resumen: 'Incluye capacidades de investigación, talento investigador y producción de conocimiento.',
+                    indicadores: [
+                        { codigo: 'INN-1', nombre: 'Investigación de alta calidad', puntaje: '5,95', posicion: '12' },
+                        { codigo: 'INN-2', nombre: 'Investigadores por millón de habitantes', puntaje: '5,88', posicion: '11' },
+                        { codigo: 'INN-3', nombre: 'Inversión en I+D', puntaje: '3,41', posicion: '22' }
+                    ]
+                }
+            };
+
+            const pilarRows = document.querySelectorAll('.indicadores-view .tabla-pilares tbody tr.pilar-row');
+            const detalleTitulo = document.getElementById('pilar-detalle-titulo');
+            const detalleResumen = document.getElementById('pilar-detalle-resumen');
+            const detalleBody = document.getElementById('pilar-detalle-body');
+
+            const fichaPanel = document.querySelector('.indicador-ficha');
+            const fichaTitulo = document.getElementById('ficha-titulo');
+            const fichaPilar = document.getElementById('ficha-pilar');
+            const fichaDescripcion = document.getElementById('ficha-descripcion');
+            const fichaCierre = document.getElementById('ficha-cierre');
+            const fichaCerrarBtn = document.getElementById('ficha-cerrar');
+
+            function attachFichaHandlers() {
+                const buttons = document.querySelectorAll('.btn-ficha');
+                buttons.forEach(function (btn) {
+                    btn.addEventListener('click', function () {
+                        const codigo = btn.getAttribute('data-codigo');
+                        const nombre = btn.getAttribute('data-nombre');
+                        const puntaje = btn.getAttribute('data-puntaje');
+                        const posicion = btn.getAttribute('data-posicion');
+                        const pilar = btn.getAttribute('data-pilar');
+
+                        if (fichaTitulo) fichaTitulo.textContent = codigo + ' – ' + nombre;
+                        if (fichaPilar) fichaPilar.textContent = pilar;
+                        if (fichaDescripcion) fichaDescripcion.textContent = 'Este indicador hace parte de ' + pilar + ' y contribuye al monitoreo de la competitividad del departamento en este componente. Puede ser utilizado para priorizar acciones y hacer seguimiento a las brechas frente a otros territorios.';
+                        if (fichaCierre) fichaCierre.textContent = 'Puntaje: ' + puntaje + ' | Posición nacional: ' + posicion + ' de 33 departamentos.';
+
+                        if (fichaPanel) {
+                            fichaPanel.style.display = 'block';
+                            fichaPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
+                    });
+                });
+            }
+
+            function renderDetallePilar(key) {
+                if (!pilarData[key] || !detalleBody) return;
+                const data = pilarData[key];
+                if (detalleTitulo) detalleTitulo.textContent = data.nombre;
+                if (detalleResumen) detalleResumen.textContent = data.resumen;
+                detalleBody.innerHTML = '';
+                data.indicadores.forEach(function (ind) {
+                    const tr = document.createElement('tr');
+                    tr.className = 'indicador-row';
+                    const puntajeNumero = parseFloat((ind.puntaje || '0').toString().replace(',', '.'));
+                    const width = Math.max(0, Math.min(100, (puntajeNumero / 10) * 100));
+                    tr.title = ind.nombre + ' — puntaje ' + (ind.puntaje || '-') + ' (posición ' + (ind.posicion || '-') + ' de 33)';
+                    tr.innerHTML =
+                        '<td>' + ind.codigo + '</td>' +
+                        '<td>' + ind.nombre + '</td>' +
+                        '<td>' + (ind.puntaje || '-') + '</td>' +
+                        '<td>' + (ind.posicion || '-') + '</td>' +
+                        '<td><div class="mini-chart-bar"><div class="mini-chart-fill" style="width:' + width + '%"></div></div></td>' +
+                        '<td><button class="btn-ficha" data-codigo="' + ind.codigo + '" data-nombre="' + ind.nombre.replace(/"/g, '&quot;') + '" data-puntaje="' + (ind.puntaje || '-') + '" data-posicion="' + (ind.posicion || '-') + '" data-pilar="' + data.nombre.replace(/"/g, '&quot;') + '">Ver ficha técnica</button></td>';
+                    detalleBody.appendChild(tr);
+                });
+                attachFichaHandlers();
+            }
+
+            if (fichaCerrarBtn && fichaPanel) {
+                fichaCerrarBtn.addEventListener('click', function () {
+                    fichaPanel.style.display = 'none';
+                });
+            }
+
+            pilarRows.forEach(function (row) {
+                row.addEventListener('click', function () {
+                    const key = row.getAttribute('data-pilar');
+                    renderDetallePilar(key);
+                });
+            });
+
+            // Estado inicial: vista principal visible, sub-vistas ocultas
+            showMain();
         });
     </script>
+    <!-- Vista 2: Directorio de Actores de Desarrollo e Innovación -->
+    <script>
+        // =====================================================
+        // 1. DATOS (80 REGISTROS ALEATORIOS)
+        // =====================================================
 
+        const actores = [];
+
+        const tipos = [
+            "Empresa", "Universidad", "Centro de I+D", "Entidad pública",
+            "Gremio / Cámara / Clúster", "Clúster"
+        ];
+
+        const municipios = [
+            "Bucaramanga", "Floridablanca", "Girón", "Piedecuesta",
+            "Barrancabermeja", "San Gil", "Socorro", "Barbosa",
+            "Málaga", "Vélez", "Zapatoca", "Lebrija", "Otros municipios"
+        ];
+
+        const clusters = [
+            "Clúster Salud", "Clúster TIC", "Clúster Turismo",
+            "Clúster Agroindustrial", "Clúster Moda", "Clúster Logístico"
+        ];
+
+        for (let i = 1; i <= 80; i++) {
+            actores.push({
+                nombre: `Entidad ${i} de Desarrollo e Innovación`,
+                tipo: tipos[Math.floor(Math.random() * tipos.length)],
+                municipio: municipios[Math.floor(Math.random() * municipios.length)],
+                cluster: clusters[Math.floor(Math.random() * clusters.length)],
+                rol: "Participación activa en proyectos del ecosistema CRCI."
+            });
+        }
+
+
+        // =====================================================
+        // 2. VARIABLES DE PAGINACIÓN
+        // =====================================================
+        let paginaActual = 1;
+        const porPagina = 5;
+        let filtrados = actores;
+
+
+        // =====================================================
+        // 3. RENDER TABLA
+        // =====================================================
+
+        function renderTabla() {
+            const tbody = document.getElementById("actores-body");
+            tbody.innerHTML = "";
+
+            const inicio = (paginaActual - 1) * porPagina;
+            const pagina = filtrados.slice(inicio, inicio + porPagina);
+
+            pagina.forEach(a => {
+                tbody.innerHTML += `
+        <tr>
+            <td>${a.nombre}</td>
+            <td><span class="badge-tipo">${a.tipo}</span></td>
+            <td><span class="badge-municipio">${a.municipio}</span></td>
+            <td>${a.rol}</td>
+        </tr>`;
+            });
+
+            renderPaginador();
+        }
+
+
+        // =====================================================
+        // 4. FILTROS
+        // =====================================================
+        function aplicarFiltros() {
+            const fTipo = document.getElementById("tipo-actor").value;
+            const fMun = document.getElementById("municipio").value;
+            const fClus = document.getElementById("cluster").value;
+            const fBuscar = document.getElementById("buscar-actor").value.toLowerCase();
+
+            filtrados = actores.filter(a => {
+                return (
+                    (fTipo === "Todos" || a.tipo.includes(fTipo)) &&
+                    (fMun === "Todos" || a.municipio.includes(fMun)) &&
+                    (fClus === "Todos" || a.cluster.includes(fClus)) &&
+                    (a.nombre.toLowerCase().includes(fBuscar))
+                );
+            });
+
+            paginaActual = 1;
+            renderTabla();
+        }
+
+        ["tipo-actor", "municipio", "cluster", "buscar-actor"].forEach(id => {
+            document.getElementById(id).addEventListener("input", aplicarFiltros);
+        });
+
+
+        // =====================================================
+        // 5. RESET DE FILTROS
+        // =====================================================
+        document.getElementById("reset-filtros").addEventListener("click", () => {
+            document.getElementById("tipo-actor").value = "Todos";
+            document.getElementById("municipio").value = "Todos";
+            document.getElementById("cluster").value = "Todos";
+            document.getElementById("buscar-actor").value = "";
+
+            filtrados = actores;
+            paginaActual = 1;
+            renderTabla();
+        });
+
+
+        // =====================================================
+        // 6. PAGINADOR INTELIGENTE COMPLETO
+        // =====================================================
+
+        function renderPaginador() {
+            const cont = document.getElementById("paginador");
+            cont.innerHTML = "";
+            const totalPaginas = Math.ceil(filtrados.length / porPagina);
+            if (totalPaginas <= 1) return;
+
+            // ---- Botón "<<": ir a la primera ----
+            if (paginaActual > 1) {
+                const firstBtn = document.createElement("button");
+                firstBtn.textContent = "<<";
+                firstBtn.onclick = () => { paginaActual = 1; renderTabla(); };
+                cont.appendChild(firstBtn);
+            }
+
+            // ---- Botón "<": anterior ----
+            if (paginaActual > 1) {
+                const prevBtn = document.createElement("button");
+                prevBtn.textContent = "<";
+                prevBtn.onclick = () => { paginaActual--; renderTabla(); };
+                cont.appendChild(prevBtn);
+            }
+
+            // ---- Cálculo de la ventana móvil ----
+            let start = paginaActual - 2;
+            let end = paginaActual + 2;
+
+            if (start < 1) {
+                end += (1 - start);
+                start = 1;
+            }
+
+            if (end > totalPaginas) {
+                start -= (end - totalPaginas);
+                end = totalPaginas;
+            }
+
+            start = Math.max(1, start);
+            end = Math.min(totalPaginas, end);
+
+            // ---- Mostrar las 5 páginas dinámicas ----
+            for (let i = start; i <= end; i++) {
+                const btn = document.createElement("button");
+                btn.textContent = i;
+                if (i === paginaActual) btn.classList.add("activa");
+                btn.onclick = () => { paginaActual = i; renderTabla(); };
+                cont.appendChild(btn);
+            }
+
+            // ---- Mostrar "..." si no estamos en el final ----
+            if (end < totalPaginas) {
+                const dots = document.createElement("span");
+                dots.textContent = "...";
+                dots.style.padding = "6px";
+                cont.appendChild(dots);
+
+                // última página
+                const lastPage = document.createElement("button");
+                lastPage.textContent = totalPaginas;
+                if (totalPaginas === paginaActual) lastPage.classList.add("activa");
+                lastPage.onclick = () => { paginaActual = totalPaginas; renderTabla(); };
+                cont.appendChild(lastPage);
+            }
+
+            // ---- Botón ">": siguiente ----
+            if (paginaActual < totalPaginas) {
+                const nextBtn = document.createElement("button");
+                nextBtn.textContent = ">";
+                nextBtn.onclick = () => { paginaActual++; renderTabla(); };
+                cont.appendChild(nextBtn);
+            }
+
+            // ---- Botón ">>": última ----
+            if (paginaActual < totalPaginas) {
+                const lastBtn = document.createElement("button");
+                lastBtn.textContent = ">>";
+                lastBtn.onclick = () => { paginaActual = totalPaginas; renderTabla(); };
+                cont.appendChild(lastBtn);
+            }
+        }
+
+
+        // =====================================================
+        // 7. INICIALIZAR
+        // =====================================================
+        renderTabla();
+    </script>
+
+    <!-- vista 3: Proyectos de Ciencia, Tecnología e Innovación -->
+    <script>
+        // =======================================================
+        // 1. GENERAR 80 PROYECTOS
+        // =======================================================
+        const proyectos = [];
+
+        const fases = ["Idea", "Prefactibilidad", "Factibilidad", "Contratación", "Ejecución"];
+        const sectores = ["Salud", "TIC", "Turismo", "Agroindustrial"];
+
+        for (let i = 1; i <= 80; i++) {
+            proyectos.push({
+                nombre: `Proyecto CTeI ${i}`,
+                sector: sectores[Math.floor(Math.random() * sectores.length)],
+                fase: fases[Math.floor(Math.random() * fases.length)],
+                inversion: (Math.floor(Math.random() * 5000) + 500).toLocaleString(),
+                horizonte: `${2023 + (i % 3)}–${2024 + (i % 3)}`
+            });
+        }
+
+        let proyectosFiltrados = proyectos;
+        let paginaProy = 1;
+        const porPaginaProy = 5;
+
+
+        // =======================================================
+        // 2. RENDER TABLA
+        // =======================================================
+        function renderTablaProyectos() {
+            const tbody = document.getElementById("proyectos-body");
+            tbody.innerHTML = "";
+
+            const inicio = (paginaProy - 1) * porPaginaProy;
+            const pagina = proyectosFiltrados.slice(inicio, inicio + porPaginaProy);
+
+            if (pagina.length === 0 && paginaProy > 1) {
+                paginaProy = 1;
+                return renderTablaProyectos();
+            }
+
+            pagina.forEach(p => {
+                tbody.innerHTML += `
+        <tr>
+            <td>${p.nombre}</td>
+            <td>${p.sector}</td>
+            <td>${p.fase}</td>
+            <td>${p.inversion}</td>
+            <td>${p.horizonte}</td>
+        </tr>`;
+            });
+
+            renderPaginadorProyectos();
+        }
+
+
+        // =======================================================
+        // 3. FILTROS
+        // =======================================================
+        function aplicarFiltrosProyectos() {
+            const fFase = document.getElementById("fase-proyecto").value;
+            const fSector = document.getElementById("sector-proyecto").value;
+            const fDur = document.getElementById("duracion-proyecto").value;
+            const fBuscar = document.getElementById("buscar-proyecto").value.toLowerCase();
+
+            proyectosFiltrados = proyectos.filter(p => {
+                let matchDur = true;
+
+                // Duración corregida: no filtra nada porque NO tenemos dato de meses
+                // Si necesitas duración real, puedo generarla.
+
+                return (
+                    (fFase === "Todos" || p.fase === fFase) &&
+                    (fSector === "Todos" || p.sector === fSector) &&
+                    matchDur &&
+                    p.nombre.toLowerCase().includes(fBuscar)
+                );
+            });
+
+            paginaProy = 1;
+            renderTablaProyectos();
+        }
+
+        ["fase-proyecto", "sector-proyecto", "duracion-proyecto", "buscar-proyecto"]
+            .forEach(id => document.getElementById(id).addEventListener("input", aplicarFiltrosProyectos));
+
+
+        // =======================================================
+        // 4. RESET
+        // =======================================================
+        document.getElementById("reset-proyectos")?.addEventListener("click", () => {
+            document.getElementById("fase-proyecto").value = "Todos";
+            document.getElementById("sector-proyecto").value = "Todos";
+            document.getElementById("duracion-proyecto").value = "Todas";
+            document.getElementById("buscar-proyecto").value = "";
+
+            proyectosFiltrados = proyectos;
+            paginaProy = 1;
+            renderTablaProyectos();
+        });
+
+
+        // =======================================================
+        // 5. PAGINADOR (CORREGIDO Y OPTIMIZADO)
+        // =======================================================
+        function renderPaginadorProyectos() {
+            const cont = document.getElementById("paginador-proyectos");
+            cont.innerHTML = "";
+
+            const total = Math.max(1, Math.ceil(proyectosFiltrados.length / porPaginaProy));
+            // Si solo hay 1 página, no mostramos controles complejos, pero sí podemos mostrar algo mínimo
+            if (total <= 1) {
+                // opcional: mostrar número de páginas o dejar vacío
+                return;
+            }
+
+            // Helper para añadir botones con estado (activo / deshabilitado)
+            const makeBtn = (text, opts = {}) => {
+                const b = document.createElement("button");
+                b.type = "button";
+                b.textContent = text;
+                b.className = opts.className || "";
+                if (opts.disabled) b.disabled = true;
+                if (opts.aria) b.setAttribute("aria-label", opts.aria);
+                if (opts.onClick) b.addEventListener("click", opts.onClick);
+                cont.appendChild(b);
+                return b;
+            };
+
+            // Primera y anterior
+            makeBtn("<<", {
+                aria: "Primera página",
+                disabled: paginaProy === 1,
+                onClick: () => { paginaProy = 1; renderTablaProyectos(); }
+            });
+            makeBtn("<", {
+                aria: "Página anterior",
+                disabled: paginaProy === 1,
+                onClick: () => { paginaProy = Math.max(1, paginaProy - 1); renderTablaProyectos(); }
+            });
+
+            // Ventana de páginas (mostramos hasta 5 botones alrededor de la página actual)
+            const ventana = 5; // tamaño de la ventana visible
+            let start = Math.max(1, paginaProy - Math.floor(ventana / 2));
+            let end = start + ventana - 1;
+            if (end > total) {
+                end = total;
+                start = Math.max(1, end - ventana + 1);
+            }
+
+            // Si no estamos mostrando la primera página, mostrar botón a la 1 y ellipsis
+            if (start > 1) {
+                makeBtn(1, { onClick: () => { paginaProy = 1; renderTablaProyectos(); } });
+                if (start > 2) {
+                    const span = document.createElement("span");
+                    span.textContent = "…";
+                    span.style.padding = "0 6px";
+                    cont.appendChild(span);
+                }
+            }
+
+            // Botones numerados
+            for (let i = start; i <= end; i++) {
+                const btn = makeBtn(i, {
+                    onClick: (() => { // cerrar scope para evitar problemas
+                        const page = i;
+                        return () => { paginaProy = page; renderTablaProyectos(); };
+                    })()
+                });
+                if (i === paginaProy) {
+                    btn.classList.add("activa"); // deja que tu CSS la estilice
+                    btn.setAttribute("aria-current", "page");
+
+                }
+            }
+
+            // Si falta la última página, mostrar ellipsis y última
+            if (end < total) {
+                if (end < total - 1) {
+                    const span = document.createElement("span");
+                    span.textContent = "…";
+                    span.style.padding = "0 6px";
+                    cont.appendChild(span);
+                }
+                makeBtn(total, { onClick: () => { paginaProy = total; renderTablaProyectos(); } });
+            }
+
+            // Siguiente y última
+            makeBtn(">", {
+                aria: "Página siguiente",
+                disabled: paginaProy === total,
+                onClick: () => { paginaProy = Math.min(total, paginaProy + 1); renderTablaProyectos(); }
+            });
+            makeBtn(">>", {
+                aria: "Última página",
+                disabled: paginaProy === total,
+                onClick: () => { paginaProy = total; renderTablaProyectos(); }
+            });
+        }
+
+        // Ya no es necesario usar la antigua addBtn; si la necesitas en otras partes, la dejamos como alias:
+        function addBtn(parent, text, action) {
+            const b = document.createElement("button");
+            b.type = "button";
+            b.textContent = text;
+            b.addEventListener("click", action);
+            parent.appendChild(b);
+            return b;
+        }
+        renderTablaProyectos();
+    </script>
+
+    <!-- Vista 5: Documentos Estratégicos -->
+    <script>
+        // =============================================
+        // 1. GENERAR 80 DOCUMENTOS
+        // =============================================
+        const documentos = [];
+
+        const tiposDoc = [
+            "Planes de Desarrollo",
+            "Ruta Clúster",
+            "Políticas",
+            "Hojas de Ruta Estratégica"
+        ];
+        const anios = [2023, 2024, 2025];
+
+        for (let i = 1; i <= 80; i++) {
+            documentos.push({
+                titulo: `Documento Estratégico ${i}`,
+                tipo: tiposDoc[Math.floor(Math.random() * tiposDoc.length)],
+                anio: anios[Math.floor(Math.random() * anios.length)]
+            });
+        }
+
+        let docsFiltrados = documentos;
+        let pagDoc = 1;
+        const porPaginaDoc = 5;
+
+
+        // =============================================
+        // 2. RENDER TABLA
+        // =============================================
+        function renderTablaDocumentos() {
+            const tbody = document.getElementById("documentos-body");
+            tbody.innerHTML = "";
+
+            const inicio = (pagDoc - 1) * porPaginaDoc;
+            const pagina = docsFiltrados.slice(inicio, inicio + porPaginaDoc);
+
+            pagina.forEach(d => {
+                tbody.innerHTML += `
+        <tr>
+            <td>${d.titulo}</td>
+            <td>${d.tipo}</td>
+            <td>${d.anio}</td>
+            <td><button class="btn-secondary" style="padding:6px 12px;">Ver</button></td>
+        </tr>`;
+            });
+
+            renderPaginadorDocs();
+        }
+
+
+        // =============================================
+        // 3. FILTROS
+        // =============================================
+        function aplicarFiltrosDocumentos() {
+            const fTipo = document.getElementById("tipo-doc").value;
+            const fAnio = document.getElementById("anio-doc").value;
+            const fBuscar = document.getElementById("buscar-doc").value.toLowerCase();
+
+            docsFiltrados = documentos.filter(d => {
+                return (
+                    (fTipo === "Todos" || d.tipo === fTipo) &&
+                    (fAnio === "Todos" || d.anio == fAnio) &&
+                    d.titulo.toLowerCase().includes(fBuscar)
+                );
+            });
+
+            pagDoc = 1;
+            renderTablaDocumentos();
+        }
+
+        ["tipo-doc", "anio-doc", "buscar-doc"]
+            .forEach(id => document.getElementById(id).addEventListener("input", aplicarFiltrosDocumentos));
+
+
+        // =============================================
+        // 4. RESET
+        // =============================================
+        document.getElementById("reset-documentos").addEventListener("click", () => {
+            document.getElementById("tipo-doc").value = "Todos";
+            document.getElementById("anio-doc").value = "Todos";
+            document.getElementById("buscar-doc").value = "";
+
+            docsFiltrados = documentos;
+            pagDoc = 1;
+            renderTablaDocumentos();
+        });
+
+        // =============================================
+        // 5. PAGINADOR (VERSIÓN OPTIMIZADA Y ESTABLE)
+        // =============================================
+        function renderPaginadorDocs() {
+            const cont = document.getElementById("paginador-documentos");
+            cont.innerHTML = "";
+
+            const total = Math.max(1, Math.ceil(docsFiltrados.length / porPaginaDoc));
+            if (total <= 1) return;
+
+            // Helper para crear botones
+            const makeBtn = (text, opts = {}) => {
+                const b = document.createElement("button");
+                b.type = "button";
+                b.textContent = text;
+                if (opts.className) b.className = opts.className;
+                if (opts.disabled) b.disabled = true;
+                if (opts.aria) b.setAttribute("aria-label", opts.aria);
+                if (opts.onClick) b.addEventListener("click", opts.onClick);
+                cont.appendChild(b);
+                return b;
+            };
+
+            // Primera página y anterior
+            makeBtn("<<", {
+                disabled: pagDoc === 1,
+                aria: "Primera página",
+                onClick: () => { pagDoc = 1; renderTablaDocumentos(); }
+            });
+
+            makeBtn("<", {
+                disabled: pagDoc === 1,
+                aria: "Página anterior",
+                onClick: () => { pagDoc = Math.max(1, pagDoc - 1); renderTablaDocumentos(); }
+            });
+
+            // Ventana móvil de 5 páginas
+            const ventana = 5;
+            let start = Math.max(1, pagDoc - Math.floor(ventana / 2));
+            let end = start + ventana - 1;
+
+            if (end > total) {
+                end = total;
+                start = Math.max(1, end - ventana + 1);
+            }
+
+            // Mostrar 1 + ellipsis si fuera de ventana
+            if (start > 1) {
+                makeBtn(1, { onClick: () => { pagDoc = 1; renderTablaDocumentos(); } });
+                if (start > 2) {
+                    const span = document.createElement("span");
+                    span.textContent = "…";
+                    span.style.padding = "0 6px";
+                    cont.appendChild(span);
+                }
+            }
+
+            // Botones numéricos
+            for (let i = start; i <= end; i++) {
+                const btn = makeBtn(i, {
+                    onClick: (() => {
+                        const page = i;
+                        return () => { pagDoc = page; renderTablaDocumentos(); };
+                    })()
+                });
+
+                if (i === pagDoc) {
+                    btn.classList.add("activa");
+                    btn.setAttribute("aria-current", "page");
+
+                }
+            }
+
+            // Última + ellipsis
+            if (end < total) {
+                if (end < total - 1) {
+                    const span = document.createElement("span");
+                    span.textContent = "…";
+                    span.style.padding = "0 6px";
+                    cont.appendChild(span);
+                }
+                makeBtn(total, { onClick: () => { pagDoc = total; renderTablaDocumentos(); } });
+            }
+
+            // Siguiente y última
+            makeBtn(">", {
+                disabled: pagDoc === total,
+                aria: "Página siguiente",
+                onClick: () => { pagDoc = Math.min(total, pagDoc + 1); renderTablaDocumentos(); }
+            });
+
+            makeBtn(">>", {
+                disabled: pagDoc === total,
+                aria: "Última página",
+                onClick: () => { pagDoc = total; renderTablaDocumentos(); }
+            });
+        }
+
+
+        renderTablaDocumentos();
+    </script>
+    <script>
+        (function () {
+            // Garantiza que el overlay permanezca al menos 5s desde que se ejecuta este script.
+            const MIN_MS = 1000;
+            const overlay = document.getElementById('page-spinner-overlay');
+            if (!overlay) return;
+
+            // Si ya pasó más de MIN_MS desde la navegación start, aun así mostramos el overlay breve
+            const start = performance.timing ? performance.timing.navigationStart : Date.now();
+            const now = Date.now();
+            const elapsed = Math.max(0, now - start);
+            const remaining = Math.max(0, MIN_MS - elapsed);
+
+            // Evita interacción mientras existe el overlay
+            document.documentElement.style.overflow = 'hidden';
+            document.body.style.overflow = 'hidden';
+
+            setTimeout(() => {
+                console.log('MIN_MS spinner:', MIN_MS);
+                // permitir scroll cuando hide completo
+                setTimeout(() => {
+                    if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
+                    document.documentElement.style.overflow = '';
+                    document.body.style.overflow = '';
+                }, 420);
+            }, remaining);
+        })();
+    </script>
 </body>
 
 

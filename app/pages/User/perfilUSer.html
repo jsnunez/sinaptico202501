@@ -83,16 +83,24 @@
                     <a href="/directorioPersonas">Personas</a>
                 </div>
             </div>
+            <div class="dropdown menuG">
+                <button class="nav-button dropdown-btnG" data-link="/innovacion">Innovación Abierta</button>
+                <div class="dropdown-menu dropdown-menuG">
+                    <a href="/retosEmpresariales">Retos Empresariales</a>
+                    <a href="/innovacion">Muro de servicios</a>
+                </div>
+            </div>
 
-            <button class="nav-button" data-link="/proyectos"
-                onclick="window.location.href='/proyectos'">Proyectos</button>
+            <div class="dropdown menuG">
+                <button class="nav-button dropdown-btnG" data-link="/conocimiento">Conocimiento Abierto</button>
+                <div class="dropdown-menu dropdown-menuG">
+                    <a onclick="irEnConstruccion()">Cursos</a>
+                    <a onclick="irEnConstruccion()">Biblioteca</a>
+                </div>
+            </div>
+            <button class="nav-button" onclick="window.location.href='/convocatorias'">Convocatorias</button>
 
-            <button class="nav-button" data-link="/convocatorias"
-                onclick="window.location.href='/convocatorias'">Convocatorias</button>
-
-            <button class="nav-button" id="btnEvaluador" style="display: none;" data-link="/portalEvaluadorUser"
-                onclick="window.location.href='/portalEvaluadorUser'">Evaluación</button>
-
+            <button class="nav-button" onclick="window.location.href='/eventos'">Eventos</button>
         </nav>
 
     </header>

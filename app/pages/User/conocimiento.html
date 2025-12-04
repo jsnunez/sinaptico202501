@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="styles/innovacion.css">
     <link rel="stylesheet" href="styles/clasificados.css">
     <link rel="stylesheet" href="styles/conocimiento.css">
+       <link rel="stylesheet" href="styles/menu.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
     <link rel="stylesheet"
@@ -21,50 +22,73 @@
 </head>
 
 <body>
-
     <!-- Encabezado -->
-    <header class="header">
-        <div onclick="window.location.href='/helice'" class="logo">
-            <!-- <span class="logo-icon">⚡</span> -->
-            <span class="logo-text">SINAPTICO</span>
-        </div>
-        <nav class="nav">
-            <button class="nav-button pulse" onclick="window.location.href='/helice'">Hélice</button>
-            <button class="nav-button pulse" onclick="window.location.href='/proyectos'">Proyectos</button>
-            <button class="nav-button pulse" onclick="window.location.href='/innovacion'">Innovación</button>
-
-            <button class="nav-button pulse" onclick="window.location.href='/Conocimiento'">Conocimiento</button>
-            <button class="nav-button pulse" onclick="window.location.href='/convocatorias'">Convocatorias</button>
-
-            <button class="nav-button pulse" onclick="window.location.href='/eventos'">Eventos</button>
-
-            <button class="nav-button pulse" onclick="window.location.href='/mapa-usuarios'">Mapa</button>
-            <div style="position:fixed;top:10px;right:20px;z-index:1000;font-size:1.5em;cursor:pointer;">
-                <span id="icono-notif">🔔 <span
-                        style='background:red;color:white;border-radius:50%;padding:2px 7px;font-size:0.9em;'>0</span></span>
+    <header>
+        <div class="header">
+            <div onclick="window.location.href='/helice'">
+                <!-- <span class="logo-icon">⚡</span> -->
+                <img src="/img/logo1.png" alt="SINAPTICO" class="logo" style="height:8vh;">
             </div>
-            <div class="notificaciones" id="notificaciones"></div>
+            <div style="display: flex; align-items: center; gap: 20px;">
+                <div style="font-size:1.5em;cursor:pointer;">
+                    <span id="icono-notif">🔔 <span
+                            style='background:red;color:white;border-radius:50%;padding:2px 7px;font-size:0.9em;'>0</span></span>
+                </div>
+                <div class="notificaciones" id="notificaciones"></div>
 
-            <!-- <button class="nav-button pulse" id="cerrarSesion">Cerrar sesión</button> -->
-            <!-- Botón con menú desplegable -->
-            <div class="dropdown">
-                <button class=" " id="userMenuBtn">
-                    <div id="userPhoto ">
-                        <img class="imagenPerfil" id="imagenPerfilSecundaria" src="img/sinfoto.jpg" alt="Foto de perfil"
-                            onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
+
+                <div class="dropdown">
+                    <button id="userMenuBtn" style="display: flex; align-items: center;">
+                        <div id="userPhoto ">
+                            <img class="imagenPerfil" id="imagenPerfilSecundaria" src="img/sinfoto.jpg"
+                                alt="Foto de perfil" onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
+
+                        </div>
+                        <h3 id="nombreUsuarioHeader" style="color:white; margin-left:10px;">Usuario <i
+                                class="bi bi-chevron-down"></i> </h3>
+                    </button>
+
+                    <div class="dropdown-menu" id="userMenu">
+                        <a class="perfilUser" id="perfilUser">Perfil</a>
+                        <a href="/miEntidad" id="habilitarMiEmpresa" style="display: none;">Empresa</a>
+                        <a href="#" id="cerrarSesion">Cerrar sesión</a>
                     </div>
-
-                </button>
-
-                <div class="dropdown-menu" id="userMenu">
-                    <a href="/perfil">Perfil</a>
-                    <a href="/configuracion">Configuración</a>
-                    <a href="#" id="cerrarSesion">Cerrar sesión</a>
                 </div>
             </div>
-        </nav>
-    </header>
+        </div>
+        <nav class="nav">
 
+            <button class="nav-button" data-link="/helice" id="inicio"
+                onclick="window.location.href='/helice'">Inicio</button>
+
+            <div class="dropdown menuG">
+                <button class="nav-button dropdown-btnG" data-link="/directorio">Directorio</button>
+                <div class="dropdown-menu dropdown-menuG">
+                    <a href="/directorio">Entidades</a>
+                    <a href="/directorioPersonas">Personas</a>
+                </div>
+            </div>
+            <div class="dropdown menuG">
+                <button class="nav-button dropdown-btnG" data-link="/innovacion">Innovación Abierta</button>
+                <div class="dropdown-menu dropdown-menuG">
+                    <a href="/retosEmpresariales">Retos Empresariales</a>
+                    <a href="/innovacion">Muro de servicios</a>
+                </div>
+            </div>
+
+            <div class="dropdown menuG">
+                <button class="nav-button dropdown-btnG" data-link="/conocimiento">Conocimiento Abierto</button>
+                <div class="dropdown-menu dropdown-menuG">
+                    <a onclick="irEnConstruccion()">Cursos</a>
+                    <a onclick="irEnConstruccion()">Biblioteca</a>
+                </div>
+            </div>
+            <button class="nav-button" onclick="window.location.href='/convocatorias'">Convocatorias</button>
+
+            <button class="nav-button" onclick="window.location.href='/eventos'">Eventos</button>
+        </nav>
+
+    </header>
     <div class="main-content" id="conocimientoMainContent" style="margin: 2rem auto 1rem;">
         <!-- Tarjetas de la triple hélice -->
         <div class="helix-title">
@@ -470,8 +494,6 @@
             return null;
         }
 
-        const userId = obtenerCookie("userId");
-
         (async () => {
             try {
                 // Cargar usuario (para cabecera y foto)
@@ -487,44 +509,9 @@
         })();
 
     </script>
-    <!-- Menu desplegable Perfil -->
-    <script>
-        const userMenuBtn = document.getElementById("userMenuBtn");
-        const dropdown = userMenuBtn.closest(".dropdown");
 
-        // Mostrar / ocultar el menú al hacer clic
-        userMenuBtn.addEventListener("click", (event) => {
-            event.stopPropagation(); // evita que el clic cierre inmediatamente el menú
-            dropdown.classList.toggle("show");
-        });
-
-        // Cerrar el menú si haces clic fuera
-        document.addEventListener("click", () => {
-            dropdown.classList.remove("show");
-        });
-    </script>
-    <!-- Cerrar Sesión -->
     <script>
-        document.getElementById("cerrarSesion").addEventListener("click", () => {
-            Swal.fire({
-                title: '¿Estás seguro?',
-                text: '¿Quieres cerrar sesión?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Sí, cerrar sesión',
-                cancelButtonText: 'Cancelar',
-                reverseButtons: true
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Borrar cookies y redirigir
-                    document.cookie = 'jwt=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-                    document.cookie = 'user=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-                    document.cookie = 'userId=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-                    document.location.href = "/";
-                }
-                // Si el usuario cancela, no pasa nada
-            });
-        });
+
 
         document.getElementById("biblioteca").addEventListener("click", () => {
             document.getElementById("conocimientoMainContent").style.display = "none";
@@ -539,8 +526,73 @@
 
 
     </script>
- <script src="js/notificaciones.js"></script>
-  <script src="/js/websocket.js"></script>
+    <script src="js/notificaciones.js"></script>
+    <script src="/js/websocket.js"></script>
+    <script src="/js/menu.js"></script>
+    
+        <!-- Utilidades-->
+    <script>
+        // =========================
+        // Utilidades
+        // =========================
+        function obtenerCookie(nombre) {
+            const nombreCookie = `${nombre}=`;
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                let cookie = cookies[i].trim();
+                if (cookie.indexOf(nombreCookie) === 0) {
+                    return cookie.substring(nombreCookie.length, cookie.length);
+                }
+            }
+            return null;
+        }
+
+        const userId = obtenerCookie("userId");
+
+        // =========================
+        // Inicialización de usuario (nombre, foto) y carga de proyectos
+        // =========================
+        (async () => {
+            try {
+                // Cargar usuario (para cabecera y foto)
+                const resUser = await fetch(`/api/user/${userId}`);
+                const dataUser = await resUser.json();
+                if (dataUser?.name) {
+
+                    document.getElementById('nombreUsuarioHeader').innerText = ` ${dataUser.name.split(" ")[0]}`;
+                }
+
+                document.getElementById("imagenPerfilSecundaria").src = dataUser.fotoPerfil ? "photo/" + dataUser.fotoPerfil : "photo/sinfoto.jpg";
+
+                if (dataUser?.fotoPerfil) {
+                    const img = document.getElementById('imagenPerfil');
+                    if (img) img.src = dataUser.fotoPerfil;
+                }
+
+                // Determinar entidad y setear input nombreEntidad
+                let entidadId = null;
+                const resUE = await fetch(`/api/usuarioempresa/user/${userId}`);
+                const dataUE = await resUE.json();
+
+                if (Array.isArray(dataUE) && dataUE.length > 0 && dataUE[0].empresa) {
+                    entidadId = dataUE[0].empresa.id;
+                } else {
+                    entidadId = 'null';
+                }
+
+                const inputEntidad = document.getElementById('nombreEntidad');
+                if (inputEntidad) inputEntidad.value = entidadId;
+
+                console.log('Entidad ID seleccionada:', entidadId);
+
+
+            } catch (err) {
+                console.error('Error inicializando la vista:', err);
+            }
+        })();
+
+    </script>
+
 </body>
 
 </html>

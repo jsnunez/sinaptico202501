@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         Tu navegador no soporta la reproducción de videos.
       </video>
       <p>${challenge.descripcion}</p>
-      <a href="fichas/${challenge.ubicacionFicha}" class="btn btn-yellow btn-full" target="_blank">Ver ficha</a>
+      <a href="fichas/${challenge.ubicacionFicha}" class="btn btn-primary btn-full" target="_blank">Ver ficha</a>
       <button class="btn btn-primary btn-full open-modal-btn">Aplicar al reto</button>
     `;
 
