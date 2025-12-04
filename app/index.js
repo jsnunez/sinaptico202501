@@ -95,7 +95,7 @@ app.get('/evaluacionmultiple', authorization.soloCRCI, (req, res) => res.sendFil
 app.get('/portalEvaluador', authorization.soloCRCI, (req, res) => res.sendFile(path.join(__dirname, 'pages/CRCI/portalEvaluador.html')));
 app.get('/loginCRCI', authorization.soloPublico, (req, res) => res.sendFile(path.join(__dirname, 'pages/loginCRCI.html')));
 app.get('/portalEvaluadorUser', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/portalEvaluador.html')));
-
+app.get('/base', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/basePagina.html')));
 
 app.get('/register', authorization.soloPublico, (req, res) => res.sendFile(path.join(__dirname, 'pages/register.html')));
 app.get('/reestablecerpass', authorization.soloPublico, (req, res) => res.sendFile(path.join(__dirname, 'pages/restablecer.html')));

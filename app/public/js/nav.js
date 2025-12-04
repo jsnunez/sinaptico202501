@@ -1,5 +1,6 @@
 let cleanedStr = "";
 let idEntidad = "";
+let dataUsuario = {};
 document.getElementById("cerrarSesion").addEventListener("click", () => {
   Swal.fire({
     title: '¿Estás seguro?',
@@ -22,52 +23,6 @@ document.getElementById("cerrarSesion").addEventListener("click", () => {
   });
 });
 
-
-
-
-// document.getElementById("Todos1").addEventListener("click", () => {
-//   var entidades = document.getElementById("entidades");
-//   entidades.style.display = "none";
-//   var listado = document.getElementById("listado");
-//   listado.style.display = "flex";
-
-//   cargarEmpresas(todasLasEmpresas);
-
-// })
-
-// document.getElementById("Empresas").addEventListener("click", () => {
-//   const empresasFiltradas = todasLasEmpresas.filter(emp => emp.claseEntidad === "Empresa");
-//   cargarEmpresas(empresasFiltradas);
-//   var entidades = document.getElementById("entidades");
-//   entidades.style.display = "none";
-//   var listado = document.getElementById("listado");
-//   listado.style.display = "flex";
-// })
-// document.getElementById("Sociedads").addEventListener("click", () => {
-//   const empresasFiltradas = todasLasEmpresas.filter(emp => emp.claseEntidad === "Sociedad");
-//   cargarEmpresas(empresasFiltradas);
-//   var entidades = document.getElementById("entidades");
-//   entidades.style.display = "none";
-//   var listado = document.getElementById("listado");
-//   listado.style.display = "flex";
-// })
-// document.getElementById("Estados").addEventListener("click", () => {
-//   const empresasFiltradas = todasLasEmpresas.filter(emp => emp.claseEntidad === "Estado");
-//   cargarEmpresas(empresasFiltradas);
-//   var entidades = document.getElementById("entidades");
-//   entidades.style.display = "none";
-//   var listado = document.getElementById("listado");
-//   listado.style.display = "flex";
-// })
-
-// document.getElementById("Academia").addEventListener("click", () => {
-//   const empresasFiltradas = todasLasEmpresas.filter(emp => emp.claseEntidad === "Academia");
-//   cargarEmpresas(empresasFiltradas);
-//   var entidades = document.getElementById("entidades");
-//   entidades.style.display = "none";
-//   var listado = document.getElementById("listado");
-//   listado.style.display = "flex";
-// })
 
 
 
@@ -102,21 +57,27 @@ function obtenerCookie(nombre) {
   return null;
 }
 
-// ✅ Función para mostrar el modal
-function showModal() {
-  document.getElementById("modalCrerEntidad").style.display = "block";
-}
 
-// ✅ Función para ocultar el modal
-function closeModal() {
-  document.getElementById("modalCrerEntidad").style.display = "none";
-}
+
+
 
 // ✅ Función para verificar si el usuario pertenece a una entidad
 async function verificarUsuarioEntidad(userId) {
   const response = await fetch(`${API_BASE_URL}/api/usuarioempresa/user/${userId}`);
   const data = await response.json();
   return data; // { exists: true, entidad: {...} }
+}
+
+// ✅ Función para obtener datos del usuario
+async function obtenerDatosUsuario(userId) {
+    try {
+        const response = await fetch(`${API_BASE_URL}/api/user/${userId}`);
+        data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error al obtener datos del usuario:', error);
+        return null;
+    }
 }
 
 document.addEventListener("DOMContentLoaded", async function () {
@@ -320,23 +281,11 @@ document.addEventListener("click", () => {
   dropleftMenu.style.display = "none";
 });
 
-      const estado = data.entidad.habilitado == 1 ? "Estado: Activo" : "Estamos Confirmando Tu Información.";
-      document.getElementById("crearEntidad").style.display = "none";
-      // document.getElementById("editarEntidad").style.display = data.entidad.habilitado == 1 ? "block" : "none";
-      document.getElementById("asignarServicio").style.display = data.entidad.habilitado == 1 ? "block" : "none";
-      document.getElementById("vincularEntidad").style.display = "none";
-      document.getElementById("verIntegrantesEntidad").style.display = data.entidad.habilitado == 1 ? "block" : "none";
-      // document.getElementById('bienvenido').innerText =
-      //   `${nombreUsuario} - Administrador de ${data.entidad.razonSocial}.\n`;
-      document.getElementById('bienvenido').innerText =
-        `${nombreUsuario.charAt(0).toUpperCase() + nombreUsuario.slice(1)}.\n`;
-      // document.getElementById('bienvenido').innerHTML +=
-      //   `<button style="background: white; border-radius: 20px; border: 1px solid var(--primary-color); padding: 5px 12px;">${estado}</button>`;
-      document.getElementById("solicitudes").style.display = "block";
-
-      document.getElementById('nombreUsuarioHeader').innerHTML = `${nombreUsuario} <i class="bi bi-chevron-down"></i>`;
-      document.getElementById("btn-empresa").style.display = "block";
-      await fetchSolicitudes(idEntidad);
+    
+ const dataUsuario = await obtenerDatosUsuario(userId);
+console.log(dataUsuario);
+    document.getElementById('nombreUsuarioHeader').innerHTML = `${dataUsuario.name.split(' ')[0]} <i class="bi bi-chevron-down"></i>`;
+      document.getElementById("imagenPerfilSecundaria").src="photo/"+dataUsuario.fotoPerfil;
 
     }
     //  idEntidad = data.entidad.id;
@@ -494,33 +443,4 @@ function cerrarTodosLosMenus() {
   });
 }
 
-const overlay = document.querySelector('.overlay');
-document.getElementById("crearEntidad").addEventListener("click", () => {
 
-  overlay.style.display = 'block'; // Mostrar overlay
-  cargarFormulario();
-  console.log("cargarFormulario")
-
-  document.getElementById('myModal').style.display = 'flex';
-  document.getElementById('myModal').style.flexWrap = 'wrap';
-
-
-})
-overlay.addEventListener("click", () => {
-  document.getElementById('myModal').style.display = 'none';
-  document.getElementById('modalEditar').style.display = 'none';
-  overlay.style.display = 'none'; // Ocultar overlay
-});
-
-// Función para cerrar el modal
-document.getElementById("cerrarModal").addEventListener("click", () => {
-  document.getElementById('myModal').style.display = 'none';
-  overlay.style.display = 'none'; // Ocultar overlay
-
-})
-document.getElementById("cerrarModalBtn").addEventListener("click", () => {
-  console.log("cerrarModalBtn")
-  document.getElementById('myModal').style.display = 'none';
-  overlay.style.display = 'none'; // Ocultar overlay
-
-})
