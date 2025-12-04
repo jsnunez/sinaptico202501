@@ -1,6 +1,8 @@
 
     const socket = io(); // ⚠️ Ajusta si usas otro puerto
+
     const userId = obtenerCookie("userId"); // Asume que tienes una función para obtener cookies
+    
   socket.on('connect', () => {
     console.log('Conectado con id:', socket.id);
     // Emitir login o autenticación cada vez que se conecta
