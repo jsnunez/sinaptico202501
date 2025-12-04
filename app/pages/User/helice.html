@@ -455,8 +455,8 @@
             <div class="dropdown menuG">
                 <button class="nav-button dropdown-btnG" data-link="/conocimiento">Conocimiento Abierto</button>
                 <div class="dropdown-menu dropdown-menuG">
-                    <a href="/cursos">Cursos</a>
-                    <a href="/biblioteca">Biblioteca</a>
+                    <a onclick="irEnConstruccion()">Cursos</a>
+                    <a onclick="irEnConstruccion()">Biblioteca</a>
                 </div>
             </div>
             <button class="nav-button" onclick="window.location.href='/convocatorias'">Convocatorias</button>
@@ -812,8 +812,9 @@
                         </p>
                     </div>
                     <div class="card-back">
-                        <h3 class="card-title">Ver Contenido</h3>
-                        <p class="card-text">Descubre retos abiertos y propón soluciones que generen impacto.</p>
+                        <h3 class="card-title">Ver Retos</h3>
+                          <a class="card-redireccion" href="/retosEmpresariales">Empresariales</a>
+                        <a class="card-redireccion" href="/innovacion">Muro de Servicios</a>
 
 
                     </div>

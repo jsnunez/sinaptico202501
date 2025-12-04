@@ -357,18 +357,32 @@
         <nav class="nav">
             <button class="nav-button " onclick="window.location.href='/helice'" id="inicio">Inicio</button>
 
+
             <div class="dropdown menuG">
-                <button class="nav-button dropdown-btnG" id="directorioButton"
-                    data-link="/directorio">Directorio</button>
+                <button class="nav-button dropdown-btnG" data-link="/conocimiento">Conocimiento Abierto</button>
                 <div class="dropdown-menu dropdown-menuG">
-                    <a href="/directorio">Entidades</a>
-                    <a href="/directorioPersonas">Personas</a>
+                    <a onclick="irEnConstruccion()">Cursos</a>
+                    <a onclick="irEnConstruccion()">Biblioteca</a>
                 </div>
             </div>
-            <button class="nav-button" onclick="window.location.href='/proyectos'">Proyectos</button>
+            <div class="dropdown menuG">
+                <button class="nav-button dropdown-btnG" data-link="/innovacion">Innovación Abierta</button>
+                <div class="dropdown-menu dropdown-menuG">
+                    <a href="/retosEmpresariales">Retos Empresariales</a>
+                    <a href="/innovacion">Muro de servicios</a>
+                </div>
+            </div>
+
+            <div class="dropdown menuG">
+                <button class="nav-button dropdown-btnG" data-link="/conocimiento">Conocimiento Abierto</button>
+                <div class="dropdown-menu dropdown-menuG">
+                    <a href="/cursos">Cursos</a>
+                    <a href="/biblioteca">Biblioteca</a>
+                </div>
+            </div>
             <button class="nav-button" onclick="window.location.href='/convocatorias'">Convocatorias</button>
-            <button class="nav-button" id="btnEvaluador" style="display: none;" data-link="/portalEvaluadorUser"
-                onclick="window.location.href='/portalEvaluadorUser'">Evaluación</button>
+
+            <button class="nav-button" onclick="window.location.href='/eventos'">Eventos</button>
         </nav>
     </header>
 

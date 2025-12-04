@@ -327,7 +327,7 @@ const App = {
           </button>
         `;
 
-      cardEl.style.backgroundColor = '#2c3e50'; // Fondo oscuro
+      cardEl.style.backgroundColor = 'rgba(124, 58, 237, 0.05)'; // Fondo servicio
       cardEl.style.color = '#ecf0f1'; // Texto claro
 
     }

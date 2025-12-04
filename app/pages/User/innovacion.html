@@ -79,8 +79,8 @@
             <div class="dropdown menuG">
                 <button class="nav-button dropdown-btnG" data-link="/conocimiento">Conocimiento Abierto</button>
                 <div class="dropdown-menu dropdown-menuG">
-                    <a href="/cursos">Cursos</a>
-                    <a href="/biblioteca">Biblioteca</a>
+                    <a onclick="irEnConstruccion()">Cursos</a>
+                    <a onclick="irEnConstruccion()">Biblioteca</a>
                 </div>
             </div>
             <button class="nav-button" onclick="window.location.href='/convocatorias'">Convocatorias</button>
@@ -94,8 +94,9 @@
 
 
   <!-- clasificados Section -->
-  <section id="clasificados" class="main-content" style="display: block;">
-    <div class="container">
+  <section id="clasificados" class="main-content" style="display: block; margin-top: 3rem;">
+       
+    <div class="main-content">
 
 
       <section class="page-title">
@@ -278,7 +279,7 @@
             <input type="file" id="ficha" name="ficha" accept=".pdf,.doc,.docx">
           </div>
         </div>
-        <button type="submit">Crear Reto</button>
+        <button type="submit" class="modal-button">Crear Reto</button>
 
       </form>
     </div>
@@ -503,6 +504,97 @@
       }, remaining);
     })();
   </script>
+    <script>
+        (function () {
+            // Garantiza que el overlay permanezca al menos 5s desde que se ejecuta este script.
+            const MIN_MS = 1000;
+            const overlay = document.getElementById('page-spinner-overlay');
+            if (!overlay) return;
+
+            // Si ya pasó más de MIN_MS desde la navegación start, aun así mostramos el overlay breve
+            const start = performance.timing ? performance.timing.navigationStart : Date.now();
+            const now = Date.now();
+            const elapsed = Math.max(0, now - start);
+            const remaining = Math.max(0, MIN_MS - elapsed);
+
+            // Evita interacción mientras existe el overlay
+            document.documentElement.style.overflow = 'hidden';
+            document.body.style.overflow = 'hidden';
+
+            setTimeout(() => {
+                console.log('MIN_MS spinner:', MIN_MS);
+                // permitir scroll cuando hide completo
+                setTimeout(() => {
+                    if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
+                    document.documentElement.style.overflow = '';
+                    document.body.style.overflow = '';
+                }, 420);
+            }, remaining);
+        })();
+    </script>
+
+        <!-- Utilidades-->
+    <script>
+        // =========================
+        // Utilidades
+        // =========================
+        function obtenerCookie(nombre) {
+            const nombreCookie = `${nombre}=`;
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                let cookie = cookies[i].trim();
+                if (cookie.indexOf(nombreCookie) === 0) {
+                    return cookie.substring(nombreCookie.length, cookie.length);
+                }
+            }
+            return null;
+        }
+
+        const userId = obtenerCookie("userId");
+
+        // =========================
+        // Inicialización de usuario (nombre, foto) y carga de proyectos
+        // =========================
+        (async () => {
+            try {
+                // Cargar usuario (para cabecera y foto)
+                const resUser = await fetch(`/api/user/${userId}`);
+                const dataUser = await resUser.json();
+                if (dataUser?.name) {
+
+                    document.getElementById('nombreUsuarioHeader').innerText = ` ${dataUser.name.split(" ")[0]}`;
+                }
+
+                document.getElementById("imagenPerfilSecundaria").src = dataUser.fotoPerfil ? "photo/" + dataUser.fotoPerfil : "photo/sinfoto.jpg";
+
+                if (dataUser?.fotoPerfil) {
+                    const img = document.getElementById('imagenPerfil');
+                    if (img) img.src = dataUser.fotoPerfil;
+                }
+
+                // Determinar entidad y setear input nombreEntidad
+                let entidadId = null;
+                const resUE = await fetch(`/api/usuarioempresa/user/${userId}`);
+                const dataUE = await resUE.json();
+
+                if (Array.isArray(dataUE) && dataUE.length > 0 && dataUE[0].empresa) {
+                    entidadId = dataUE[0].empresa.id;
+                } else {
+                    entidadId = 'null';
+                }
+
+                const inputEntidad = document.getElementById('nombreEntidad');
+                if (inputEntidad) inputEntidad.value = entidadId;
+
+                console.log('Entidad ID seleccionada:', entidadId);
+
+
+            } catch (err) {
+                console.error('Error inicializando la vista:', err);
+            }
+        })();
+
+    </script>
 
 </body>
 

@@ -522,26 +522,6 @@ body {
     margin-top: 1rem;
 }
 
-.modal-button {
-    display: block;
-    width: 100%;
-    padding: 0.8rem;
-    margin-top: 1.5rem;
-    background: var(--gradient-1);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: var(--transition);
-}
-
-.modal-button:hover {
-    background: var(--gradient-2);
-    transform: translateY(-2px);
-}
-
 /* Selector de tipo de entidad */
 .entity-type-selector {
     display: flex;

@@ -596,6 +596,29 @@ h2 {
 }
 
 
+.card-redireccion {
+    background-color: var(--naranja-color);
+    color: var(--light-text);
+    border: none;
+    padding: 0rem 1.5rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+    max-height: 50%;
+  border-radius: 12px;
+    margin: 5px;
+     text-decoration: none;
+}
+
+
+.card-redireccion:hover {
+    background-color: var(--light-text);
+    color: var(--primary-color);
+    border-radius: 12px;
+}
 
 
 #listado {
