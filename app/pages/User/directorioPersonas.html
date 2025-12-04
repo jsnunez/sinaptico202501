@@ -357,12 +357,12 @@
         <nav class="nav">
             <button class="nav-button " onclick="window.location.href='/helice'" id="inicio">Inicio</button>
 
-
             <div class="dropdown menuG">
-                <button class="nav-button dropdown-btnG" data-link="/conocimiento">Conocimiento Abierto</button>
+                <button class="nav-button dropdown-btnG" id="directorioButton"
+                    data-link="/directorio">Directorio</button>
                 <div class="dropdown-menu dropdown-menuG">
-                    <a onclick="irEnConstruccion()">Cursos</a>
-                    <a onclick="irEnConstruccion()">Biblioteca</a>
+                    <a href="/directorio">Entidades</a>
+                    <a href="/directorioPersonas">Personas</a>
                 </div>
             </div>
             <div class="dropdown menuG">
@@ -376,8 +376,8 @@
             <div class="dropdown menuG">
                 <button class="nav-button dropdown-btnG" data-link="/conocimiento">Conocimiento Abierto</button>
                 <div class="dropdown-menu dropdown-menuG">
-                    <a href="/cursos">Cursos</a>
-                    <a href="/biblioteca">Biblioteca</a>
+                    <a onclick="irEnConstruccion()">Cursos</a>
+                    <a onclick="irEnConstruccion()">Biblioteca</a>
                 </div>
             </div>
             <button class="nav-button" onclick="window.location.href='/convocatorias'">Convocatorias</button>
