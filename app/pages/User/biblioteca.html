@@ -5,13 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>sinaptico - Innovación Abierta</title>
-    <link rel="stylesheet" href="styles/colores.css">
+
     <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
 
     <link rel="stylesheet" href="styles/innovacion.css">
     <link rel="stylesheet" href="styles/clasificados.css">
     <link rel="stylesheet" href="styles/conocimiento.css">
-       <link rel="stylesheet" href="styles/menu.css">
+
+    <link rel="stylesheet" href="styles/colores.css">
+    <link rel="stylesheet" href="styles/stylehelice2.css">
+    <link rel="stylesheet" href="styles/desplegables.css">
+
+    <link rel="stylesheet" href="styles/menu.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
     <link rel="stylesheet"
@@ -22,6 +27,7 @@
 </head>
 
 <body>
+
     <!-- Encabezado -->
     <header>
         <div class="header">
@@ -50,7 +56,7 @@
 
                     <div class="dropdown-menu" id="userMenu">
                         <a class="perfilUser" id="perfilUser">Perfil</a>
-                        <a  id="habilitarMiEmpresa" style="display: none;">Empresa</a>
+                        <a id="habilitarMiEmpresa" style="display: none;">Empresa</a>
                         <a href="#" id="cerrarSesion">Cerrar sesión</a>
                     </div>
                 </div>
@@ -68,7 +74,8 @@
                     <a href="/directorioPersonas">Personas</a>
                 </div>
             </div>
-            <button class="nav-button" onclick="window.location.href='/proyectos'">Proyectos</button>
+            <button class="nav-button" onclick="window.location.href='/proyectos'"
+                data-link="/proyectos">Proyectos</button>
             <button class="nav-button" onclick="window.location.href='/ofertaRegional'"
                 data-link="/ofertaRegional">Oferta Regional</button>
             <div class="dropdown menuG">
@@ -79,19 +86,24 @@
                 </div>
             </div>
 
-            <div class="dropdown menuG" >
+            <div class="dropdown menuG">
                 <button class="nav-button dropdown-btnG" data-link="/conocimiento">Conocimiento Abierto</button>
                 <div class="dropdown-menu dropdown-menuG">
                     <a href="/conocimientoCursosVirtuales" data-link="/cursosVirtuales">Cursos</a>
-                    <a href="/conocimientoBiblioteca"  data-link="/conocimientoBiblioteca">Biblioteca</a>
+                    <a href="/conocimientoBiblioteca" data-link="/conocimientoBiblioteca">Biblioteca</a>
                 </div>
             </div>
             <button class="nav-button" onclick="window.location.href='/convocatorias'">Convocatorias</button>
 
             <button class="nav-button" onclick="window.location.href='/eventos'">Eventos</button>
 
+            <button class="nav-button" id="btnEvaluador" style="display: none;" data-link="/portalEvaluadorUser"
+                onclick="window.location.href='/portalEvaluadorUser'">Evaluación</button>
+
         </nav>
+
     </header>
+
 
 
     <!-- clasificados Section -->
@@ -293,40 +305,14 @@
         </div>
     </div>
 
-    <script src="/js/config.js"></script>
     <script src="/js/cursos.js"></script>
+    <script src="/js/config.js"></script>
+    <script src="/js/nav.js"></script>
+    <script src="js/notificaciones.js"></script>
+    <script src="/js/websocket.js"></script>
+    <script src="/js/menuGeneral.js"></script>
+    <script src="/js/habilitarEvaluador.js"></script>
 
-    <!-- Ir a en construcción -->
-    <script>
-        function irEnConstruccion() {
-            window.location.href = "/construccion"; // o la ruta que tengas
-        }
-        const toggleViewBtn = document.getElementById('toggleViewBtn');
-        const classifiedWall = document.querySelector('.classified-wall');
-
-
-
-        function obtenerCookie(nombre) {
-            const nombreCookie = `${nombre}=`;
-            const cookies = document.cookie.split(';');
-
-            for (let i = 0; i < cookies.length; i++) {
-                let cookie = cookies[i].trim();
-
-                if (cookie.indexOf(nombreCookie) === 0) {
-                    return cookie.substring(nombreCookie.length, cookie.length);
-                }
-            }
-            return null; // Retorna null si no se encuentra la cookie
-        }
-        document.addEventListener("DOMContentLoaded", function () {
-            // Ejemplo de cómo leer la cookie "usuario"
-            const usuario = obtenerCookie("user");
-            cleanedStr = usuario.replace(/%20/g, " "); // Reemplaza '%20' por un espacio
-            cleanedStr = decodeURIComponent(cleanedStr);
-            document.getElementById('bienvenido').innerText = "Bienvenido  " + cleanedStr;
-        });
-    </script>
     <!-- Cargar cursos -->
     <script>
         document.addEventListener("DOMContentLoaded", () => {
@@ -381,105 +367,7 @@
             cargarCursos();
         });
     </script>
-    <!-- Utilidades -->
-    <script>
-        // =========================
-        // Utilidades
-        // =========================
-        function obtenerCookie(nombre) {
-            const nombreCookie = `${nombre}=`;
-            const cookies = document.cookie.split(';');
-            for (let i = 0; i < cookies.length; i++) {
-                let cookie = cookies[i].trim();
-                if (cookie.indexOf(nombreCookie) === 0) {
-                    return cookie.substring(nombreCookie.length, cookie.length);
-                }
-            }
-            return null;
-        }
 
-        (async () => {
-            try {
-                // Cargar usuario (para cabecera y foto)
-                const resUser = await fetch(`/api/user/${userId}`);
-                const dataUser = await resUser.json();
-
-                document.getElementById("imagenPerfilSecundaria").src = dataUser.fotoPerfil ? "photo/" + dataUser.fotoPerfil : "photo/sinfoto.jpg";
-                document.getElementById("imagenPerfil").src = dataUser.fotoPerfil ? "photo/" + dataUser.fotoPerfil : "photo/sinfoto.jpg";
-
-            } catch (error) {
-                console.error("Error al inicializar usuario:", error);
-            }
-        })();
-
-    </script>
-
-    <script src="js/notificaciones.js"></script>
-    <script src="/js/websocket.js"></script>
-    <script src="/js/menu.js"></script>
-    
-        <!-- Utilidades-->
-    <script>
-        // =========================
-        // Utilidades
-        // =========================
-        function obtenerCookie(nombre) {
-            const nombreCookie = `${nombre}=`;
-            const cookies = document.cookie.split(';');
-            for (let i = 0; i < cookies.length; i++) {
-                let cookie = cookies[i].trim();
-                if (cookie.indexOf(nombreCookie) === 0) {
-                    return cookie.substring(nombreCookie.length, cookie.length);
-                }
-            }
-            return null;
-        }
-
-        const userId = obtenerCookie("userId");
-
-        // =========================
-        // Inicialización de usuario (nombre, foto) y carga de proyectos
-        // =========================
-        (async () => {
-            try {
-                // Cargar usuario (para cabecera y foto)
-                const resUser = await fetch(`/api/user/${userId}`);
-                const dataUser = await resUser.json();
-                if (dataUser?.name) {
-
-                    document.getElementById('nombreUsuarioHeader').innerText = ` ${dataUser.name.split(" ")[0]}`;
-                }
-
-                document.getElementById("imagenPerfilSecundaria").src = dataUser.fotoPerfil ? "photo/" + dataUser.fotoPerfil : "photo/sinfoto.jpg";
-
-                if (dataUser?.fotoPerfil) {
-                    const img = document.getElementById('imagenPerfil');
-                    if (img) img.src = dataUser.fotoPerfil;
-                }
-
-                // Determinar entidad y setear input nombreEntidad
-                let entidadId = null;
-                const resUE = await fetch(`/api/usuarioempresa/user/${userId}`);
-                const dataUE = await resUE.json();
-
-                if (Array.isArray(dataUE) && dataUE.length > 0 && dataUE[0].empresa) {
-                    entidadId = dataUE[0].empresa.id;
-                } else {
-                    entidadId = 'null';
-                }
-
-                const inputEntidad = document.getElementById('nombreEntidad');
-                if (inputEntidad) inputEntidad.value = entidadId;
-
-                console.log('Entidad ID seleccionada:', entidadId);
-
-
-            } catch (err) {
-                console.error('Error inicializando la vista:', err);
-            }
-        })();
-
-    </script>
 
 </body>
 

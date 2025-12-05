@@ -44,13 +44,13 @@
                                 alt="Foto de perfil" onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
 
                         </div>
-                        <h3 id="nombreUsuarioHeader" style="color:white; margin-left:10px;">Usuario <i
+                         <h3 id="nombreUsuarioHeader" style="color:white; margin-left:10px;">Usuario <i
                                 class="bi bi-chevron-down"></i> </h3>
                     </button>
 
                     <div class="dropdown-menu" id="userMenu">
                         <a class="perfilUser" id="perfilUser">Perfil</a>
-                        <a  id="habilitarMiEmpresa" style="display: none;">Empresa</a>
+                        <a id="habilitarMiEmpresa" style="display: none;">Empresa</a>
                         <a href="#" id="cerrarSesion">Cerrar sesión</a>
                     </div>
                 </div>
@@ -68,24 +68,32 @@
                     <a href="/directorioPersonas">Personas</a>
                 </div>
             </div>
+            <button class="nav-button" onclick="window.location.href='/proyectos'"
+                data-link="/proyectos">Proyectos</button>
+            <button class="nav-button" onclick="window.location.href='/ofertaRegional'"
+                data-link="/ofertaRegional">Oferta Regional</button>
             <div class="dropdown menuG">
-                <button class="nav-button dropdown-btnG" data-link="/innovacion">Innovación Abierta</button>
+                <button class="nav-button dropdown-btnG" data-link="/retos">Innovación Abierta</button>
                 <div class="dropdown-menu dropdown-menuG">
                     <a href="/retosEmpresariales">Retos Empresariales</a>
-                    <a href="/innovacion">Muro de servicios</a>
+                    <a href="/retosAula">Retos de Aula</a>
                 </div>
             </div>
 
             <div class="dropdown menuG">
                 <button class="nav-button dropdown-btnG" data-link="/conocimiento">Conocimiento Abierto</button>
                 <div class="dropdown-menu dropdown-menuG">
-                    <a href="/cursosVirtuales">Cursos</a>
-                    <a href="/biblioteca">Biblioteca</a>
+                    <a href="/conocimientoCursosVirtuales" data-link="/cursosVirtuales">Cursos</a>
+                    <a href="/conocimientoBiblioteca" data-link="/conocimientoBiblioteca">Biblioteca</a>
                 </div>
             </div>
             <button class="nav-button" onclick="window.location.href='/convocatorias'">Convocatorias</button>
 
             <button class="nav-button" onclick="window.location.href='/eventos'">Eventos</button>
+
+            <button class="nav-button" id="btnEvaluador" style="display: none;" data-link="/portalEvaluadorUser"
+                onclick="window.location.href='/portalEvaluadorUser'">Evaluación</button>
+
         </nav>
 
     </header>
@@ -1080,11 +1088,7 @@
 
   <!-- Scripts -->
 
-  <script src="js/helice2.js"></script>
   <script src="/js/config.js"></script>
-  <script src="admin.js"></script>
-  <script src="js/llamarEntidades.js"></script>
-  <script src="js/estadisticas.js"></script>
   <script src="js/notificaciones.js"></script>
   <script src="/js/websocket.js"></script>
   <script src="/js/menu.js"></script>
