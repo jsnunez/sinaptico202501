@@ -943,7 +943,7 @@
         // Obtener evaluación individual del evaluador actual
         const evaluacionesIndividuales = aplicacion.evaluacionesIndividuales || [];
         const miEvaluacion = evaluacionesIndividuales.find(e => e.evaluadorEmail === evaluadorInfo?.email);
-        const miPuntuacionFinal = aplicacion.puntuacionTotal / 3;
+        const miPuntuacionFinal = Math.round((aplicacion.puntuacionTotal || 0) / 3);
         console.log('Mi evaluación para el proyecto', proyecto?.id, ':', miPuntuacionFinal);
         return `
           <div class="project-card ${estadoClase}">
