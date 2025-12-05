@@ -577,7 +577,7 @@
                 const habilitado = checkbox.checked;
 
                 try {
-                    const response = await fetch(`/api/convocatorias/habilitar/${id}`, {
+                    const response = await fetch(`/api/eventos/habilitar/${id}`, {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json'

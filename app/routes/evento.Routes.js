@@ -9,12 +9,14 @@ import {
     obtenerEventos,
     obtenerEventoPorId,
     crearEventoCompleto,
-    obtenerEventosActivos
+    obtenerEventosActivos,
+    obtenerEventoshabilitados
 } from '../controllers/eventos.Controller.js';
 
 const router = express.Router();
 
 // Rutas originales (mantenidas para compatibilidad)
+router.get('/habilitados', obtenerEventoshabilitados);
 router.get('/', getEventos);
 router.post('/', createEvento);
 router.delete('/:id', deleteEvento);
