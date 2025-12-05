@@ -7,6 +7,14 @@ const Evento = sequelize.define('Evento', {
         primaryKey: true,
         autoIncrement: true,
     },
+    urlEvento: {
+        type: DataTypes.STRING(500),
+        allowNull: true,
+        validate: {
+            isUrl: true
+        },
+        comment: 'URL pública del evento'
+    },
     titulo: {
         type: DataTypes.STRING(300),
         allowNull: false,
