@@ -476,26 +476,32 @@
     </header>
 
     <!-- Bienvenida y botones de acción -->
-    <div class="welcome-container" id="welcome-container">
+       <!-- Bienvenida y botones de acción -->
+    <div class="welcome-container" id="welcome-container" style="height: 20vh;">
+        <div style="width: 30vw;
+    display: flex;
+    align-content: center;
+    justify-content: flex-start;
+    align-items: center;">
         <div id="userPhoto" style="position: relative; display: inline-block; cursor: pointer; width: 5vw;">
             <img id="imagenPerfil" src="img/sinfoto.jpg" alt="Foto de perfil"
                 onerror="this.onerror=null;this.src='img/sinfoto.jpg';" style="border-radius:50%;object-fit:cover;">
             <span
-                style="position: absolute; bottom: 8px; right: 8px; background: #fff; border-radius: 50%; padding: 4px; border-color: var(--naranja-color);">
+                style="position: absolute; bottom: 0; right: 0; background: #fff; border-radius: 50%; padding: 4px; border-color: var(--naranja-color);">
                 <i class="bi bi-pencil-fill" style="font-size: 1.2em; color: var(--primary-color);"></i>
             </span>
         </div>
 
-        <div class="welcome-text" id="welcome-text" style="width: 30vw; text-align: left;">
+        <div class="welcome-text" id="welcome-text" >
             <p>Bienvenido</p>
             <h3 class="tittle" id="bienvenido"> </h3>
             <h1 style="display: none;" id="departamentoPerfilValor"></h1>
             <h1 style="display: none;" id="ciudadPerfilValor"></h1>
             <!-- <p class="subtitle">Conectando entidades para potenciar la innovación</p> -->
         </div>
-
+</div>
         <!-- Partners/Sponsors Section -->
-        <div class="partners-section" style="display: flex;flex-direction: column;align-items: center;">
+        <div class="partners-section" style="display: flex;flex-direction: column;align-items: center; width: 40vw;">
             <div class="partners-title">
                 <h3>Mis Entidades</h3>
 
@@ -552,6 +558,8 @@
 
         </div>
     </div>
+
+
 
     <!-- solicitiudes para mi actor-->
     <div class="modal" id="modalVerIntegrantesEntidad">

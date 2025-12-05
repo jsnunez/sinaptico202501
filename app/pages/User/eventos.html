@@ -378,7 +378,7 @@
     // -----------------------------------------
     // Cargar Eventos
     // -----------------------------------------
-    async function cargarEventos(url = "/api/convocatorias") {
+async function cargarEventos(url = "/api/eventos") {
       try {
         const resp = await fetch(url);
         const data = await resp.json();

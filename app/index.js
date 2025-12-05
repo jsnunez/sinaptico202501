@@ -120,7 +120,7 @@ app.get('/directorioPersonas', authorization.soloUser, (req, res) => res.sendFil
 app.get('/convocatorias', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/convocatorias.html')));
 app.get('/retosEmpresariales', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/retosEmpresariales.html')));
 app.get('/eventos', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/eventos.html')));
-
+app.get('/retosAula', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/construccion.html')));
 
 app.get('/mapa-publico', (req, res) => res.sendFile(path.join(__dirname, 'pages/User/mapa-usuarios.html')));
 
@@ -134,6 +134,7 @@ app.get('/muro', authorization.soloAdmin, (req, res) => res.sendFile(path.join(_
 app.get('/conocimientoDashboard', authorization.soloAdmin, (req, res) => res.sendFile(path.join(__dirname, 'pages/admin/conocimientoDashboard.html')));
 app.get('/cursoDashboard', authorization.soloAdmin, (req, res) => res.sendFile(path.join(__dirname, 'pages/admin/cursoDashboard.html')));
 app.get('/eventosDashboard', authorization.soloAdmin, (req, res) => res.sendFile(path.join(__dirname, 'pages/admin/eventosDashboard.html')));
+app.get('/eventosAdmin', authorization.soloAdmin, (req, res) => res.sendFile(path.join(__dirname, 'pages/admin/eventos.html')));
 
 // Inicializar servidor con sequelize y luego escuchar con 'server'
 // Resolver conflictos de número en convocatorias

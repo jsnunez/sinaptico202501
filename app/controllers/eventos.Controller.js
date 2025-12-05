@@ -43,7 +43,47 @@ export const obtenerEventos = async (req, res) => {
         });
     }
 };
+export const obtenerEventoshabilitados = async (req, res) => {
+    try {
+        const { page = 1, limit = 10, nombre, estado, fecha } = req.query;
+        const offset = (page - 1) * limit;
 
+        const whereCondition = {habilitado: true};
+
+        if (nombre) {
+            whereCondition.nombre = { [Op.like]: `%${nombre}%` };
+        }
+
+        if (estado) {
+            whereCondition.estado = estado;
+        }
+
+        if (fecha) {
+            whereCondition.fecha = { [Op.gte]: new Date(fecha) };
+        }
+
+     
+
+        const { count, rows } = await Evento.findAndCountAll({
+            where: whereCondition,
+            limit: parseInt(limit),
+            offset: parseInt(offset),
+            order: [['fecha', 'DESC']]
+        });
+
+        res.json({
+            eventos: rows,
+            total: count,
+            totalPages: Math.ceil(count / limit),
+            currentPage: parseInt(page)
+        });
+    } catch (error) {
+        res.status(500).json({ 
+            message: 'Error al obtener eventos', 
+            error: error.message 
+        });
+    }
+};
 // Obtener evento por ID
 export const obtenerEventoPorId = async (req, res) => {
     try {
