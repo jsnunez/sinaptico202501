@@ -132,28 +132,92 @@
     }
 
     /* Imagen grande en la parte frontal */
-.evento-imagen-grande {
-    width: 100%;
-    height: 190px; /* puedes subir a 220px si quieres */
-    overflow: hidden;
-}
+    .evento-imagen-grande {
+      width: 100%;
+      height: 190px;
+      /* puedes subir a 220px si quieres */
+      overflow: hidden;
+    }
 
-.evento-imagen-grande img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;  /* recorta como portada profesional */
-    border-bottom: 4px solid #eee;
-}
+    .evento-imagen-grande img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      /* recorta como portada profesional */
+      border-bottom: 4px solid #eee;
+    }
 
-/* Texto después de la foto */
-.evento-info {
-    padding: 15px;
-}
+    /* Texto después de la foto */
+    .evento-info {
+      padding: 15px;
+    }
 
-.evento-info h3 {
-    margin: 0;
-    font-size: 1.2rem;
-}
+    .evento-info h3 {
+      margin: 0;
+      font-size: 1.2rem;
+    }
+
+    .filters-container {
+      background: var(--light-text);
+      border-radius: 10px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      align-items: flex-end;
+      padding: 10px;
+      justify-content: space-between
+    }
+
+    .filters-row {
+
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .control-label {
+      font-size: 0.9em;
+      font-weight: 600;
+      color: var(--text-description);
+    }
+
+    .control-input,
+    .control-select {
+      padding: 7px 2px;
+      border: 2px solid #ecf0f1;
+      border-radius: 6px;
+      font-size: 14px;
+      transition: border-color 0.3s;
+    }
+
+    .control-input:focus,
+    .control-select:focus {
+      outline: none;
+      border-color: #3498db;
+    }
+
+
+    .filter-input {
+      background: var(--background-color);
+      color: rgb(0, 0, 0);
+      border: none;
+      border-radius: 50px;
+      padding: 0.6rem 1.2rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+      flex: 1;
+      min-width: 250px;
+      max-width: 500px;
+    }
   </style>
 
   <!-- PRIMERO cargar config.js para que API_BASE_URL exista -->
@@ -246,28 +310,36 @@
   </div>
 
   <!-- Bienvenida -->
-  <div class="welcome-container">
-    <div class="welcome-text">
-      <h2 id="title">Eventos</h2>
-      <p class="subtitle"></p>
-    </div>
+  <div class="main-content">
 
-    <div class="action-buttons" style="display:flex;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; ">
+      <div class="section-header">
+
+        <h2 style="color:white;">Eventos - 2025</h2>
+      </div>
       <button class="action-button" id="btnNuevoEvento">
         <i class="fas fa-plus button-icon"></i> Nuevo evento
       </button>
-    </div>
-  </div>
 
-  <!-- Filtros -->
-  <div class="filter-container">
-    <input type="text" id="buscarEvento" placeholder="Nombre Evento" class="filter-input">
-    <select id="estadoFiltro" class="filter-select">
-      <option value="">Todos los Estados</option>
-      <option value="Abierto">Abierto</option>
-      <option value="Cerrado">Cerrado</option>
-    </select>
-  </div>
+    </div>
+
+    <!-- Filtros -->
+    <div class="filters-container">
+      <div class="filters-row">
+        <div class="control-group">
+          <label class="control-label">Buscar evento</label>
+          <input type="text" id="buscarEvento" placeholder="Nombre Evento" class="control-input">
+        </div>
+        <div class="control-group">
+          <label class="control-label">Selecciona el estado</label>
+          <select id="estadoFiltro" class="control-select">
+            <option value="">Todos los Estados</option>
+            <option value="Abierto">Abierto</option>
+            <option value="Cerrado">Cerrado</option>
+          </select>
+        </div>
+      </div>
+    </div>
 
   <!-- Lista de eventos -->
   <div class="main-content" id="eventos"></div>
@@ -375,7 +447,7 @@
       </form>
     </div>
   </div>
-
+  </div>
   <footer class="footer">
 
     <div class="footer-content">
@@ -445,30 +517,30 @@
     </div>
 
   </footer>
- <!-- Modal Detalles Evento -->
-            <div class="modal" id="modalDetallesEvento" style="display:none;">
-              <div class="modal-content" style="max-width:60vw;display: flex; flex-direction: column;">
-                <div class="modal-header" style="margin-bottom: 2vh;">
-                  <h3 id="detalleTituloEvento"></h3>
-                  <span class="close" onclick="document.getElementById('modalDetallesEvento').style.display='none'">&times;</span>
-                </div>
-                <div style="display: flex;">
-                <div id="detalleImagenEvento" style="text-align:center;margin-bottom:15px;width: 30%;margin-right: 3vw;"></div>
-                <div class="modal-body" style="font-size:1.1em;color: #1b3360; width: 70%;">
-                  <p><strong>Código:</strong> <span id="detalleCodigoEvento"></span></p>
-                  <p><strong>Descripción:</strong> <span id="detalleDescripcionEvento"></span></p>
-                  <p><strong>Modalidad:</strong> <span id="detalleModalidadEvento"></span></p>
-                  <p><strong>Ubicación:</strong> <span id="detalleUbicacionEvento"></span></p>
-                  <p><strong>Fecha:</strong> <span id="detalleFechaEvento"></span></p>
-                  <p><strong>Hora Inicio:</strong> <span id="detalleHoraInicioEvento"></span></p>
-                  <p><strong>Hora Fin:</strong> <span id="detalleHoraFinEvento"></span></p>
-                  <p><strong>Cupo Máximo:</strong> <span id="detalleCupoMaximoEvento"></span></p>
-                  <p><strong>Inscripción Requerida:</strong> <span id="detalleInscripcionRequeridaEvento"></span></p>
-                  <p><strong>URL Evento:</strong> <a id="detalleUrlEvento" href="#" target="_blank"></a></p>
-                </div>
-              </div>
-              </div>
-            </div>
+  <!-- Modal Detalles Evento -->
+  <div class="modal" id="modalDetallesEvento" style="display:none;">
+    <div class="modal-content" style="max-width:60vw;display: flex; flex-direction: column;">
+      <div class="modal-header" style="margin-bottom: 2vh;">
+        <h3 id="detalleTituloEvento"></h3>
+        <span class="close" onclick="document.getElementById('modalDetallesEvento').style.display='none'">&times;</span>
+      </div>
+      <div style="display: flex;">
+        <div id="detalleImagenEvento" style="text-align:center;margin-bottom:15px;width: 30%;margin-right: 3vw;"></div>
+        <div class="modal-body" style="font-size:1.1em;color: #1b3360; width: 70%;">
+          <p><strong>Código:</strong> <span id="detalleCodigoEvento"></span></p>
+          <p><strong>Descripción:</strong> <span id="detalleDescripcionEvento"></span></p>
+          <p><strong>Modalidad:</strong> <span id="detalleModalidadEvento"></span></p>
+          <p><strong>Ubicación:</strong> <span id="detalleUbicacionEvento"></span></p>
+          <p><strong>Fecha:</strong> <span id="detalleFechaEvento"></span></p>
+          <p><strong>Hora Inicio:</strong> <span id="detalleHoraInicioEvento"></span></p>
+          <p><strong>Hora Fin:</strong> <span id="detalleHoraFinEvento"></span></p>
+          <p><strong>Cupo Máximo:</strong> <span id="detalleCupoMaximoEvento"></span></p>
+          <p><strong>Inscripción Requerida:</strong> <span id="detalleInscripcionRequeridaEvento"></span></p>
+          <p><strong>URL Evento:</strong> <a id="detalleUrlEvento" href="#" target="_blank"></a></p>
+        </div>
+      </div>
+    </div>
+  </div>
   <script>
     document.getElementById("btnDemoEvento").onclick = function () {
       const titulos = ["Feria de Innovación", "Congreso de Tecnología", "Taller de Creatividad", "Seminario de Ciencia"];
@@ -687,39 +759,39 @@
       }
     });
 
-            function mostrarModalDetallesEvento(btn) {
-                // Traer datos del evento desde la API usando el id
-                fetch(`/api/eventos/${btn}`)
-                .then(resp => resp.json())
-                .then(ev => {
-                  document.getElementById('detalleTituloEvento').textContent = ev.titulo || '';
-                  document.getElementById('detalleImagenEvento').innerHTML = ev.urlImagen ? `<img src="${ev.urlImagen}" alt="Evento" style="max-width:100%;border-radius:10px;">` : '';
-                  document.getElementById('detalleCodigoEvento').textContent = ev.codigo || 'N/A';
-                  document.getElementById('detalleDescripcionEvento').textContent = ev.descripcion || '';
-                  document.getElementById('detalleModalidadEvento').textContent = ev.modalidad || 'N/A';
-                  document.getElementById('detalleUbicacionEvento').textContent = ev.ubicacion || 'N/A';
-                  document.getElementById('detalleFechaEvento').textContent = ev.fecha ? new Date(ev.fecha).toLocaleDateString() : '';
-                  document.getElementById('detalleHoraInicioEvento').textContent = ev.horaInicio || '';
-                  document.getElementById('detalleHoraFinEvento').textContent = ev.horaFin || '';
-                  document.getElementById('detalleCupoMaximoEvento').textContent = ev.cupoMaximo || 'Sin límite';
-                  document.getElementById('detalleInscripcionRequeridaEvento').textContent = ev.inscripcionRequerida ? 'Sí' : 'No';
-                  let urlA = document.getElementById('detalleUrlEvento');
-                  urlA.href = ev.urlEvento || '#';
-                  urlA.textContent = ev.urlEvento || '';
-                  document.getElementById('modalDetallesEvento').style.display = 'block';
-                })
-                .catch(() => {
-                  Swal.fire("Error", "No se pudo cargar el evento", "error");
-                });
-            }
-            // Cierra el modal al hacer click fuera del contenido
-            window.onclick = function(event) {
-              let modal = document.getElementById('modalDetallesEvento');
-              if (event.target == modal) {
-                modal.style.display = "none";
-              }
-            }
-            </script>
+    function mostrarModalDetallesEvento(btn) {
+      // Traer datos del evento desde la API usando el id
+      fetch(`/api/eventos/${btn}`)
+        .then(resp => resp.json())
+        .then(ev => {
+          document.getElementById('detalleTituloEvento').textContent = ev.titulo || '';
+          document.getElementById('detalleImagenEvento').innerHTML = ev.urlImagen ? `<img src="${ev.urlImagen}" alt="Evento" style="max-width:100%;border-radius:10px;">` : '';
+          document.getElementById('detalleCodigoEvento').textContent = ev.codigo || 'N/A';
+          document.getElementById('detalleDescripcionEvento').textContent = ev.descripcion || '';
+          document.getElementById('detalleModalidadEvento').textContent = ev.modalidad || 'N/A';
+          document.getElementById('detalleUbicacionEvento').textContent = ev.ubicacion || 'N/A';
+          document.getElementById('detalleFechaEvento').textContent = ev.fecha ? new Date(ev.fecha).toLocaleDateString() : '';
+          document.getElementById('detalleHoraInicioEvento').textContent = ev.horaInicio || '';
+          document.getElementById('detalleHoraFinEvento').textContent = ev.horaFin || '';
+          document.getElementById('detalleCupoMaximoEvento').textContent = ev.cupoMaximo || 'Sin límite';
+          document.getElementById('detalleInscripcionRequeridaEvento').textContent = ev.inscripcionRequerida ? 'Sí' : 'No';
+          let urlA = document.getElementById('detalleUrlEvento');
+          urlA.href = ev.urlEvento || '#';
+          urlA.textContent = ev.urlEvento || '';
+          document.getElementById('modalDetallesEvento').style.display = 'block';
+        })
+        .catch(() => {
+          Swal.fire("Error", "No se pudo cargar el evento", "error");
+        });
+    }
+    // Cierra el modal al hacer click fuera del contenido
+    window.onclick = function (event) {
+      let modal = document.getElementById('modalDetallesEvento');
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+  </script>
   </script>
 
 </body>
