@@ -11,11 +11,23 @@
   <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
   <link rel="stylesheet" href="/styles/colores.css">
   <link rel="stylesheet" href="/styles/stylehelice2.css">
+  <link rel="stylesheet" href="/styles/desplegables.css">
+  <link rel="stylesheet" href="/styles/menu.css">
+
   <link rel="stylesheet" href="/styles/eventos.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-  <link rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap">
+  <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Leaflet.js para mapas -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
 
   <!-- PRIMERO cargar config.js para que API_BASE_URL exista -->
   <script src="/js/config.js"></script>
@@ -24,85 +36,87 @@
 
 <body>
 
-  <!-- Fondo neuronas -->
-  <div class="neural-background">
-    <canvas id="neuralCanvas"></canvas>
-  </div>
-
   <!-- Encabezado -->
   <header>
     <div class="header">
-
       <div onclick="window.location.href='/helice'">
+        <!-- <span class="logo-icon">⚡</span> -->
         <img src="/img/logo1.png" alt="SINAPTICO" class="logo" style="height:8vh;">
       </div>
-
-      <div style="display:flex;align-items:center;gap:20px;">
-
+      <div style="display: flex; align-items: center; gap: 20px;">
         <div style="font-size:1.5em;cursor:pointer;">
           <span id="icono-notif">🔔 <span
-              style="background:red;color:white;border-radius:50%;padding:2px 7px;font-size:0.9em;">0</span></span>
+              style='background:red;color:white;border-radius:50%;padding:2px 7px;font-size:0.9em;'>0</span></span>
         </div>
-
         <div class="notificaciones" id="notificaciones"></div>
 
+
         <div class="dropdown">
-          <button id="userMenuBtn" style="display:flex;align-items:center;">
-            <img class="imagenPerfil" id="imagenPerfilSecundaria" src="/img/sinfoto.jpg"
-              onerror="this.src='/img/sinfoto.jpg'">
-            <h3 id="nombreUsuarioHeader" style="color:white;margin-left:10px;">
-              Usuario <i class="bi bi-chevron-down"></i>
-            </h3>
+          <button id="userMenuBtn" style="display: flex; align-items: center;">
+            <div id="userPhoto ">
+              <img class="imagenPerfil" id="imagenPerfilSecundaria" src="img/sinfoto.jpg" alt="Foto de perfil"
+                onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
+
+            </div>
+            <h3 id="nombreUsuarioHeader" style="color:white; margin-left:10px;">Usuario <i
+                class="bi bi-chevron-down"></i> </h3>
           </button>
 
           <div class="dropdown-menu" id="userMenu">
             <a class="perfilUser" id="perfilUser">Perfil</a>
-            <a id="habilitarMiEmpresa" style="display:none;">Empresa</a>
+            <a id="habilitarMiEmpresa" style="display: none;">Empresa</a>
             <a href="#" id="cerrarSesion">Cerrar sesión</a>
           </div>
         </div>
-
       </div>
-
     </div>
-
     <nav class="nav">
 
-      <button class="nav-button" onclick="window.location.href='/helice'">Inicio</button>
+      <button class="nav-button" data-link="/helice" id="inicio"
+        onclick="window.location.href='/helice'">Inicio</button>
 
       <div class="dropdown menuG">
-        <button class="nav-button dropdown-btnG">Directorio</button>
+        <button class="nav-button dropdown-btnG" data-link="/directorio">Directorio</button>
         <div class="dropdown-menu dropdown-menuG">
           <a href="/directorio">Entidades</a>
           <a href="/directorioPersonas">Personas</a>
         </div>
       </div>
-
       <button class="nav-button" onclick="window.location.href='/proyectos'">Proyectos</button>
-      <button class="nav-button" onclick="window.location.href='/ofertaRegional'">Oferta Regional</button>
-
+      <button class="nav-button" onclick="window.location.href='/ofertaRegional'" data-link="/ofertaRegional">Oferta
+        Regional</button>
       <div class="dropdown menuG">
-        <button class="nav-button dropdown-btnG">Innovación Abierta</button>
+        <button class="nav-button dropdown-btnG" data-link="/retos">Innovación Abierta</button>
         <div class="dropdown-menu dropdown-menuG">
-          <a href="/retosEmpresariales">Retos Empresariales</a>
-          <a href="/retosAula">Retos de Aula</a>
+          <a href="/retosEmpresariales" data-link="/retosEmpresariales">Retos Empresariales</a>
+          <a href="/retosAula" data-link="/retosAula">Retos de Aula</a>
         </div>
       </div>
 
       <div class="dropdown menuG">
-        <button class="nav-button dropdown-btnG">Conocimiento Abierto</button>
+        <button class="nav-button dropdown-btnG" data-link="/conocimiento">Conocimiento Abierto</button>
         <div class="dropdown-menu dropdown-menuG">
-          <a href="/conocimientoCursosVirtuales">Cursos</a>
-          <a href="/conocimientoBiblioteca">Biblioteca</a>
+          <a href="/conocimientoCursosVirtuales" data-link="/cursosVirtuales">Cursos</a>
+          <a href="/conocimientoBiblioteca" data-link="/conocimientoBiblioteca">Biblioteca</a>
         </div>
       </div>
+      <button class="nav-button" onclick="window.location.href='/convocatorias'"
+        data-link="/convocatorias">Convocatorias</button>
 
-      <button class="nav-button" onclick="window.location.href='/convocatorias'">Convocatorias</button>
-      <button class="nav-button" onclick="window.location.href='/eventos'">Eventos</button>
+      <button class="nav-button" onclick="window.location.href='/eventos'" data-link="/eventos">Eventos</button>
+
+      <button class="nav-button" id="btnEvaluador" style="display: none;" data-link="/portalEvaluadorUser"
+        onclick="window.location.href='/portalEvaluadorUser'">Evaluación</button>
 
     </nav>
 
   </header>
+
+  <!-- Spinner -->
+  <div id="page-spinner-overlay" aria-hidden="true" role="status" aria-label="Cargando">
+    <div class="spinner"></div>
+    <div class="spinner-text">Cargando...</div>
+  </div>
 
   <!-- Bienvenida -->
   <div class="welcome-container">
@@ -154,14 +168,14 @@
           let selectedFile = null;
 
           document.getElementById("fileImagenEvento").addEventListener("change", (e) => {
-        selectedFile = e.target.files[0];
-        if (!selectedFile) return;
+            selectedFile = e.target.files[0];
+            if (!selectedFile) return;
 
-        const reader = new FileReader();
-        reader.onload = ev => {
-          document.getElementById("previewImagenEvento").src = ev.target.result;
-        };
-        reader.readAsDataURL(selectedFile);
+            const reader = new FileReader();
+            reader.onload = ev => {
+              document.getElementById("previewImagenEvento").src = ev.target.result;
+            };
+            reader.readAsDataURL(selectedFile);
           });
         </script>
 
@@ -184,9 +198,9 @@
         <div class="form-group">
           <label>Modalidad:</label>
           <select id="modalidadEvento" required>
-        <option value="presencial">Presencial</option>
-        <option value="virtual">Virtual</option>
-        <option value="hibrido">Híbrido</option>
+            <option value="presencial">Presencial</option>
+            <option value="virtual">Virtual</option>
+            <option value="hibrido">Híbrido</option>
           </select>
         </div>
 
@@ -218,8 +232,8 @@
         <div class="form-group">
           <label>Inscripción Requerida:</label>
           <select id="inscripcionRequeridaEvento">
-        <option value="true">Sí</option>
-        <option value="false">No</option>
+            <option value="true">Sí</option>
+            <option value="false">No</option>
           </select>
         </div>
 
@@ -229,23 +243,94 @@
         </div>
 
         <button type="submit" id="btnGuardarCambios" class="modal-button">Guardar</button>
-        <button type="button" id="btnDemoEvento" class="modal-button" style="background:#888;margin-left:10px;">Demo</button>
+        <button type="button" id="btnDemoEvento" class="modal-button"
+          style="background:#888;margin-left:10px;">Demo</button>
       </form>
+    <footer class="footer">
+
+        <div class="footer-content">
+
+            <!-- Izquierda -->
+            <div class="footer-left">
+                <img src="/img/logo1.png" alt="SINAPTICO" class="footer-logo">
+                <p class="footer-desc">Conectando conocimiento, innovación y tecnología.</p>
+
+
+            </div>
+
+            <!-- Enlaces en dos columnas -->
+            <div class="footer-links">
+                <h4>Explorar</h4>
+                <div class="links-grid">
+                    <a href="/helice">Inicio</a>
+                    <a></a>
+                    <a href="/directorio">Directorio Empresas</a>
+                    <a href="/directorioPersonas">Directorio Personas</a>
+                    <a href="/proyectos">Proyectos</a>
+                    <a href="/ofertaRegional">Oferta Regional</a>
+                    <a href="/retosEmpresariales">Retos Empresariales</a>
+                    <a href="/retosAula">Retos de Aula</a>
+                    <a href="/conocimientoCursosVirtuales">Cursos</a>
+                    <a href="/conocimientoBiblioteca">Biblioteca</a>
+                    <a href="/convocatorias">Convocatorias</a>
+                    <a href="/eventos">Eventos</a>
+                </div>
+            </div>
+
+            <!-- Redes sociales -->
+            <div class="footer-social">
+                <h4>Síguenos</h4>
+                <div class="social-icons">
+                    <a href="#"><i class="bi bi-facebook"></i></a>
+                    <a href="#"><i class="bi bi-twitter"></i></a>
+                    <a href="#"><i class="bi bi-linkedin"></i></a>
+                    <a href="#"><i class="bi bi-instagram"></i></a>
+                </div>
+            </div>
+
+            <!-- Contacto -->
+            <div class="footer-contact">
+                <h4>Contáctanos</h4>
+
+                <p>Cra.19 #35-02 - UIS Bucarica</p>
+                <p>Bucaramanga, Colombia</p>
+
+                <div class="contact-item">
+                    <i class="bi bi-envelope"></i>
+                    <span>info@cpcoriente.org</span>
+                </div>
+
+                <div class="contact-item">
+                    <i class="bi bi-telephone"></i>
+                    <span>+57 315 494 0296</span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+            <img src="/logos/logoCPCblanco.png" alt="SINAPTICO" class="footer-logoCPC">
+            <p>© 2025 CPC Oriente. Todos los derechos reservados.</p>
+
+        </div>
+
+    </footer>
+
       <script>
-        document.getElementById("btnDemoEvento").onclick = function() {
+        document.getElementById("btnDemoEvento").onclick = function () {
           const titulos = ["Feria de Innovación", "Congreso de Tecnología", "Taller de Creatividad", "Seminario de Ciencia"];
           const descripciones = [
-        "Evento para compartir ideas innovadoras y conectar con expertos.",
-        "Un congreso donde se presentan los últimos avances tecnológicos.",
-        "Taller práctico para fomentar la creatividad en equipos multidisciplinarios.",
-        "Seminario sobre los retos actuales en ciencia y tecnología."
+            "Evento para compartir ideas innovadoras y conectar con expertos.",
+            "Un congreso donde se presentan los últimos avances tecnológicos.",
+            "Taller práctico para fomentar la creatividad en equipos multidisciplinarios.",
+            "Seminario sobre los retos actuales en ciencia y tecnología."
           ];
           const ubicaciones = ["Bucaramanga", "Virtual", "Universidad Industrial", "Centro de Convenciones"];
           const urls = [
-        "https://evento-demo.com",
-        "https://ctei-santander.org/evento",
-        "https://innovacion2024.com",
-        "https://ciencia-tec.org"
+            "https://evento-demo.com",
+            "https://ctei-santander.org/evento",
+            "https://innovacion2024.com",
+            "https://ciencia-tec.org"
           ];
           const modalidad = ["presencial", "virtual", "hibrido"];
           function random(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
@@ -272,10 +357,12 @@
   </div>
 
   <!-- Scripts finales -->
+  <script src="/js/config.js"></script>
   <script src="/js/nav.js"></script>
   <script src="/js/notificaciones.js"></script>
   <script src="/js/websocket.js"></script>
   <script src="/js/menuGeneral.js"></script>
+  <script src="/js/habilitarEvaluador.js"></script>
 
 
   <!-- ========================== -->
@@ -283,23 +370,7 @@
   <!-- ========================== -->
   <script>
 
-    // -----------------------------------------
-    // Cerrar Sesión
-    // -----------------------------------------
-    document.getElementById("cerrarSesion").onclick = () => {
-      Swal.fire({
-        title: "¿Cerrar sesión?",
-        icon: "warning",
-        showCancelButton: true
-      }).then(r => {
-        if (r.isConfirmed) {
-          document.cookie = "jwt=; Path=/; Expires=Thu, 01 Jan 1970";
-          document.cookie = "user=; Path=/; Expires=Thu, 01 Jan 1970";
-          document.cookie = "userId=; Path=/; Expires=Thu, 01 Jan 1970";
-          location.href = "/";
-        }
-      });
-    };
+
 
     // -----------------------------------------
     // Cargar Eventos

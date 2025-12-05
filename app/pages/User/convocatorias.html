@@ -721,281 +721,86 @@
     </div>
   </div>
 
-  <footer class="footer">
+    <footer class="footer">
 
-    <div class="footer-content">
+        <div class="footer-content">
 
-      <!-- Izquierda -->
-      <div class="footer-left">
-        <img src="/img/logo1.png" alt="SINAPTICO" class="footer-logo">
-        <p class="footer-desc">Conectando conocimiento, innovación y tecnología.</p>
+            <!-- Izquierda -->
+            <div class="footer-left">
+                <img src="/img/logo1.png" alt="SINAPTICO" class="footer-logo">
+                <p class="footer-desc">Conectando conocimiento, innovación y tecnología.</p>
 
 
-      </div>
+            </div>
 
-      <!-- Enlaces en dos columnas -->
-      <div class="footer-links">
-        <h4>Explorar</h4>
+            <!-- Enlaces en dos columnas -->
+            <div class="footer-links">
+                <h4>Explorar</h4>
+                <div class="links-grid">
+                    <a href="/helice">Inicio</a>
+                    <a></a>
+                    <a href="/directorio">Directorio Empresas</a>
+                    <a href="/directorioPersonas">Directorio Personas</a>
+                    <a href="/proyectos">Proyectos</a>
+                    <a href="/ofertaRegional">Oferta Regional</a>
+                    <a href="/retosEmpresariales">Retos Empresariales</a>
+                    <a href="/retosAula">Retos de Aula</a>
+                    <a href="/conocimientoCursosVirtuales">Cursos</a>
+                    <a href="/conocimientoBiblioteca">Biblioteca</a>
+                    <a href="/convocatorias">Convocatorias</a>
+                    <a href="/eventos">Eventos</a>
+                </div>
+            </div>
 
-        <div class="links-grid">
-          <a href="/helice">Inicio</a>
-          <a href="/directorio">Directorio</a>
-          <a href="/proyectos">Proyectos</a>
-          <a href="/convocatorias">Convocatorias</a>
+            <!-- Redes sociales -->
+            <div class="footer-social">
+                <h4>Síguenos</h4>
+                <div class="social-icons">
+                    <a href="#"><i class="bi bi-facebook"></i></a>
+                    <a href="#"><i class="bi bi-twitter"></i></a>
+                    <a href="#"><i class="bi bi-linkedin"></i></a>
+                    <a href="#"><i class="bi bi-instagram"></i></a>
+                </div>
+            </div>
+
+            <!-- Contacto -->
+            <div class="footer-contact">
+                <h4>Contáctanos</h4>
+
+                <p>Cra.19 #35-02 - UIS Bucarica</p>
+                <p>Bucaramanga, Colombia</p>
+
+                <div class="contact-item">
+                    <i class="bi bi-envelope"></i>
+                    <span>info@cpcoriente.org</span>
+                </div>
+
+                <div class="contact-item">
+                    <i class="bi bi-telephone"></i>
+                    <span>+57 315 494 0296</span>
+                </div>
+            </div>
 
         </div>
-      </div>
 
-      <!-- Redes sociales -->
-      <div class="footer-social">
-        <h4>Síguenos</h4>
-        <div class="social-icons">
-          <a href="#"><i class="bi bi-facebook"></i></a>
-          <a href="#"><i class="bi bi-twitter"></i></a>
-          <a href="#"><i class="bi bi-linkedin"></i></a>
-          <a href="#"><i class="bi bi-instagram"></i></a>
-        </div>
-      </div>
+        <div class="footer-bottom">
+            <img src="/logos/logoCPCblanco.png" alt="SINAPTICO" class="footer-logoCPC">
+            <p>© 2025 CPC Oriente. Todos los derechos reservados.</p>
 
-      <!-- Contacto -->
-      <div class="footer-contact">
-        <h4>Contáctanos</h4>
-
-        <p>Cra.19 #35-02 - UIS Bucarica</p>
-        <p>Bucaramanga, Colombia</p>
-
-        <div class="contact-item">
-          <i class="bi bi-envelope"></i>
-          <span>info@cpcoriente.org</span>
         </div>
 
-        <div class="contact-item">
-          <i class="bi bi-telephone"></i>
-          <span>+57 315 494 0296</span>
-        </div>
-      </div>
-
-    </div>
-
-    <div class="footer-bottom">
-      <img src="/logos/logoCPCblanco.png" alt="SINAPTICO" class="footer-logoCPC">
-      <p>© 2025 CPC Oriente. Todos los derechos reservados.</p>
-
-    </div>
-
-  </footer>
-  <!-- Utilidades-->
-  <script src="/js/habilitarEvaluador.js"></script>
-
-  <script>
-    // =========================
-    // Utilidades
-    // =========================
-    function obtenerCookie(nombre) {
-      const nombreCookie = `${nombre}=`;
-      const cookies = document.cookie.split(';');
-      for (let i = 0; i < cookies.length; i++) {
-        let cookie = cookies[i].trim();
-        if (cookie.indexOf(nombreCookie) === 0) {
-          return cookie.substring(nombreCookie.length, cookie.length);
-        }
-      }
-      return null;
-    }
-
-    const userId = obtenerCookie("userId");
-
-    // =========================
-    // Inicialización de usuario (nombre, foto) y carga de proyectos
-    // =========================
-    (async () => {
-      try {
-        // Cargar usuario (para cabecera y foto)
-        const resUser = await fetch(`/api/user/${userId}`);
-        const dataUser = await resUser.json();
-
-        if (dataUser?.name) {
-          document.getElementById('nombreUsuarioHeader').innerText = ` ${dataUser.name.split(" ")[0]}`;
-        }
-
-        document.getElementById("imagenPerfilSecundaria").src = dataUser.fotoPerfil ? "photo/" + dataUser.fotoPerfil : "photo/sinfoto.jpg";
-
-        if (dataUser?.fotoPerfil) {
-          const img = document.getElementById('imagenPerfil');
-          if (img) img.src = dataUser.fotoPerfil;
-        }
-
-        // Determinar entidad y setear input nombreEntidad
-        let entidadId = null;
-        const resUE = await fetch(`/api/usuarioempresa/user/${userId}`);
-        const dataUE = await resUE.json();
-
-        if (Array.isArray(dataUE) && dataUE.length > 0 && dataUE[0].empresa) {
-          entidadId = dataUE[0].empresa.id;
-        } else {
-          entidadId = 'null';
-        }
-
-        const inputEntidad = document.getElementById('nombreEntidad');
-        if (inputEntidad) inputEntidad.value = entidadId;
-
-        console.log('Entidad ID seleccionada:', entidadId);
+    </footer>
+  
 
 
-      } catch (err) {
-        console.error('Error inicializando la vista:', err);
-      }
-    })();
+    <!-- Scripts -->
+    <script src="/js/config.js"></script>
+    <script src="/js/nav.js"></script>
+    <script src="/js/notificaciones.js"></script>
+    <script src="/js/websocket.js"></script>
+    <script src="/js/menuGeneral.js"></script>
+    <script src="/js/habilitarEvaluador.js"></script>
 
-    // =========================
-    // Cerrar modal de postulaciones
-    // =========================
-    const btnCerrar = document.getElementById('cerrarModalPostulaciones');
-    if (btnCerrar) {
-      btnCerrar.onclick = function () {
-        const modal = document.getElementById('modalPostulaciones');
-        if (modal) modal.style.display = 'none';
-      };
-    }
-
-    // =========================
-    // Helpers para renderizar select de Líder
-    // =========================
-    async function renderLiderEmpresa(empresaId) {
-      const nombreLiderInput = document.getElementById('nombreLider');
-      const correoLiderInput = document.getElementById('correoLider');
-      const telefonoLiderInput = document.getElementById('telefonoLider');
-
-      const selectLider = document.createElement('select');
-      selectLider.id = 'nombreLider';
-      selectLider.name = 'nombreLider';
-      selectLider.required = true;
-
-      const res = await fetch(`/api/usuarioempresa/empresa/${empresaId}`);
-      const data = await res.json();
-
-      (data || []).forEach(item => {
-        const option = document.createElement('option');
-        option.value = item.User.id;
-        option.text = `${item.User.name} (${item.Cargo?.nombre || 'Sin cargo'})`;
-
-        option.dataset.email = item.User.email || '';
-        option.dataset.telefono = item.User.telefono || '';
-        selectLider.appendChild(option);
-      });
-
-      // Seleccionar el primero y actualizar campos
-      if (selectLider.options.length > 0) {
-        const selectedOption = selectLider.options[0];
-        if (correoLiderInput) correoLiderInput.value = selectedOption.dataset.email || '';
-        if (telefonoLiderInput) telefonoLiderInput.value = selectedOption.dataset.telefono || '';
-      } else {
-        if (correoLiderInput) correoLiderInput.value = '';
-        if (telefonoLiderInput) telefonoLiderInput.value = '';
-      }
-
-      // Cambiar correo y teléfono al cambiar líder
-      selectLider.onchange = function () {
-        const selectedOption = selectLider.options[selectLider.selectedIndex];
-        if (correoLiderInput) correoLiderInput.value = selectedOption.dataset.email || '';
-        if (telefonoLiderInput) telefonoLiderInput.value = selectedOption.dataset.telefono || '';
-      };
-
-      if (nombreLiderInput && nombreLiderInput.parentNode) {
-        nombreLiderInput.parentNode.replaceChild(selectLider, nombreLiderInput);
-      } else {
-        // Si no existe el input a reemplazar, intenta anexar en un contenedor conocido
-        const cont = document.getElementById('contenedorLider') || document.body;
-        cont.appendChild(selectLider);
-      }
-    }
-
-    async function renderLiderIndependiente() {
-      const nombreLiderInput = document.getElementById('nombreLider');
-      const correoLiderInput = document.getElementById('correoLider');
-      const telefonoLiderInput = document.getElementById('telefonoLider');
-
-      const selectLider = document.createElement('select');
-      selectLider.id = 'nombreLider';
-      selectLider.name = 'nombreLider';
-      selectLider.required = true;
-
-      const uid = obtenerCookie("userId");
-      const resUser = await fetch(`/api/user/${uid}`);
-      const user = await resUser.json();
-
-      const optionUsuario = document.createElement('option');
-      optionUsuario.value = uid;
-
-      // Tomar nombre desde #bienvenido si existe ("Hola Nombre")
-
-      optionUsuario.dataset.name = user.name || '';
-      optionUsuario.dataset.email = user.email || '';
-      optionUsuario.dataset.telefono = user.telefono || '';
-      selectLider.appendChild(optionUsuario);
-      optionUsuario.text = user.name || 'Usuario Actual';
-
-      // Rellenar inputs con datos del usuario
-      if (nombreLiderInput) nombreLiderInput.value = user.name || '';
-      if (correoLiderInput) correoLiderInput.value = user.email || '';
-      if (telefonoLiderInput) telefonoLiderInput.value = user.telefono || '';
-
-      // Listener (aunque solo haya uno)
-      selectLider.onchange = function () {
-
-        const selectedOption = selectLider.options[selectLider.selectedIndex];
-        if (correoLiderInput) correoLiderInput.value = selectedOption.dataset.email || '';
-        if (telefonoLiderInput) telefonoLiderInput.value = selectedOption.dataset.telefono || '';
-      };
-
-      if (nombreLiderInput && nombreLiderInput.parentNode) {
-        nombreLiderInput.parentNode.replaceChild(selectLider, nombreLiderInput);
-      } else {
-        const cont = document.getElementById('contenedorLider') || document.body;
-        cont.appendChild(selectLider);
-      }
-    }
-
-    // =========================
-    // Listeners de cambio
-    // =========================
-    // Cambiar líderes al cambiar el select de entidad (nombreEntidad)
-    document.addEventListener('change', async function (e) {
-      if (e.target && e.target.id === 'nombreEntidad') {
-        const empresaId = e.target.value;
-        if (empresaId && empresaId !== "null") {
-          await renderLiderEmpresa(empresaId);
-        } else {
-          await renderLiderIndependiente();
-        }
-      }
-    });
-
-    // Cambiar correo y teléfono al cambiar líder (nombreLider), incluso si no cambia la entidad
-    document.addEventListener('change', function (e) {
-      if (e.target && e.target.id === 'nombreLider') {
-        const selectedOption = e.target.options[e.target.selectedIndex];
-        const correoLiderInput = document.getElementById('correoLider');
-        const telefonoLiderInput = document.getElementById('telefonoLider');
-        if (correoLiderInput) correoLiderInput.value = selectedOption.dataset.email || '';
-        if (telefonoLiderInput) telefonoLiderInput.value = selectedOption.dataset.telefono || '';
-      }
-    });
-
-    // =========================
-    // (Opcional) Si deseas forzar que al inicio se renderice el líder acorde al valor cargado de nombreEntidad
-    // =========================
-    window.addEventListener('DOMContentLoaded', async () => {
-      const inputEntidad = document.getElementById('nombreEntidad');
-      if (inputEntidad) {
-        if (inputEntidad.value && inputEntidad.value !== 'null') {
-          await renderLiderEmpresa(inputEntidad.value);
-        } else {
-          await renderLiderIndependiente();
-        }
-      }
-    });
-  </script>
 
   <script>
     // Variables globales
@@ -1708,16 +1513,7 @@
     });
   </script>
 
-  <script src="/js/config.js"></script>
-  <script src="admin.js"></script>
-  <script src="js/formularios.js"></script>
-  <script src="js/cargarDatos.js"></script>
-  <script src="js/estadisticas.js"></script>
-  <script src="js/notificaciones.js"></script>
-  <script src="/js/websocket.js"></script>
-  <script src="/js/menu.js"></script>
-  <script src="/js/enviarInvitacion.js"></script>
-
+  
 
 </body>
 

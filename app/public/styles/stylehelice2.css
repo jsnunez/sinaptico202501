@@ -183,8 +183,8 @@ body {
     color: var(--text-color, #fff);
     border-radius: 10px;
     min-width: 180px;
-  overflow: visible !important;
-      z-index: 20;
+    overflow: visible !important;
+    z-index: 20;
 }
 
 /* Enlaces del menú */
@@ -608,9 +608,9 @@ h2 {
     position: relative;
     overflow: hidden;
     max-height: 50%;
-  border-radius: 12px;
+    border-radius: 12px;
     margin: 5px;
-     text-decoration: none;
+    text-decoration: none;
 }
 
 
@@ -1170,6 +1170,7 @@ form {
     align-items: center;
 
 }
+
 .action-add:hover {
     background-color: var(--primary-color);
     color: white;
@@ -2244,4 +2245,45 @@ form {
 
 .partners-container {
     display: flex;
+}
+
+/* Spinner overlay */
+#page-spinner-overlay {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    background: rgba(255, 255, 255, 0.95);
+    z-index: 99999;
+    transition: opacity .4s ease;
+    -webkit-backdrop-filter: blur(2px);
+    backdrop-filter: blur(2px);
+}
+
+/* Circular spinner */
+#page-spinner-overlay .spinner {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    border: 6px solid rgba(0, 0, 0, 0.08);
+    border-top-color: #007bff;
+    animation: spin 1s linear infinite;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Texto opcional */
+#page-spinner-overlay .spinner-text {
+    color: #333;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
 }
