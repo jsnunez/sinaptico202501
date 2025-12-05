@@ -25,17 +25,20 @@
   }
   
   /* Buttons */
-  .btn {
-    display: inline-block;
-    padding: 0.75rem 1.5rem;
-    border-radius: var(--border-radius);
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-size: 1rem;
-    text-align: center;
-    border: none;
-  }
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  font-weight: 500;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: var(--transition);
+  border: none;
+  margin-bottom: 2vh;
+}
+
   
   .btn-sm {
     padding: 0.5rem 1rem;
@@ -80,6 +83,7 @@
 }
   .btn-full {
     width: 100%;
+    border-radius: 12px;
   }
   
 
@@ -207,55 +211,6 @@
   .challenge-card p {
     color: var(--parrafo);
 
-  }
-  
-  /* Footer */
-  .footer {
-    background-color: var(--dark-color);
-    color: white;
-    padding: 3rem 0 1.5rem;
-  }
-  
-  .footer-content {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-    margin-bottom: 2rem;
-  }
-  
-  .footer-column h3 {
-    font-size: 1.25rem;
-    margin-bottom: 1.5rem;
-    font-weight: 600;
-  }
-  
-  .footer-column ul li {
-    margin-bottom: 0.75rem;
-  }
-  
-  .footer-column a {
-    color: #9CA3AF;
-    transition: color 0.3s ease;
-  }
-  
-  .footer-column a:hover {
-    color: white;
-  }
-  
-  .footer-logo {
-    height: 3rem;
-    margin-bottom: 1rem;
-  }
-  
-  .footer-column p, .contact-info li {
-    color: #9CA3AF;
-  }
-  
-  .footer-bottom {
-    text-align: center;
-    padding-top: 1.5rem;
-    border-top: 1px solid #374151;
-    color: #9CA3AF;
   }
   
   /* Form Styles */

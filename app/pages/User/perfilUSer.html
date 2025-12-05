@@ -37,6 +37,7 @@
         <canvas id="neuralCanvas"></canvas>
     </div>
 
+
     <!-- Encabezado -->
     <header>
         <div class="header">
@@ -65,7 +66,7 @@
 
                     <div class="dropdown-menu" id="userMenu">
                         <a class="perfilUser" id="perfilUser">Perfil</a>
-                        <a href="/miEntidad" id="habilitarMiEmpresa" style="display: none;">Empresa</a>
+                        <a  id="habilitarMiEmpresa" style="display: none;">Empresa</a>
                         <a href="#" id="cerrarSesion">Cerrar sesión</a>
                     </div>
                 </div>
@@ -83,27 +84,35 @@
                     <a href="/directorioPersonas">Personas</a>
                 </div>
             </div>
+            <button class="nav-button" onclick="window.location.href='/proyectos'">Proyectos</button>
+            <button class="nav-button" onclick="window.location.href='/ofertaRegional'"
+                data-link="/ofertaRegional">Oferta Regional</button>
             <div class="dropdown menuG">
-                <button class="nav-button dropdown-btnG" data-link="/innovacion">Innovación Abierta</button>
+                <button class="nav-button dropdown-btnG" data-link="/retos">Innovación Abierta</button>
                 <div class="dropdown-menu dropdown-menuG">
-                    <a href="/retosEmpresariales">Retos Empresariales</a>
-                    <a href="/innovacion">Muro de servicios</a>
+                    <a href="/retosEmpresariales" data-link="/retosEmpresariales">Retos Empresariales</a>
+                    <a href="/retosAula" data-link="/retosAula">Retos de Aula</a>
                 </div>
             </div>
 
-  
-            <div class="dropdown menuG">
+            <div class="dropdown menuG" >
                 <button class="nav-button dropdown-btnG" data-link="/conocimiento">Conocimiento Abierto</button>
                 <div class="dropdown-menu dropdown-menuG">
-                    <a href="/cursosVirtuales">Cursos</a>
-                    <a href="/biblioteca">Biblioteca</a>
+                    <a href="/conocimientoCursosVirtuales" data-link="/cursosVirtuales">Cursos</a>
+                    <a href="/conocimientoBiblioteca"  data-link="/conocimientoBiblioteca">Biblioteca</a>
                 </div>
-            <button class="nav-button" onclick="window.location.href='/convocatorias'">Convocatorias</button>
+            </div>
+            <button class="nav-button" onclick="window.location.href='/convocatorias'" data-link="/convocatorias">Convocatorias</button>
 
-            <button class="nav-button" onclick="window.location.href='/eventos'">Eventos</button>
+            <button class="nav-button" onclick="window.location.href='/eventos'" data-link="/eventos">Eventos</button>
+                        
+            <button class="nav-button" id="btnEvaluador" style="display: none;" data-link="/portalEvaluadorUser"
+                onclick="window.location.href='/portalEvaluadorUser'">Evaluación</button>
+
         </nav>
 
     </header>
+
     <style>
         /* === CONTENEDOR PRINCIPAL === */
         .perfil-content {
@@ -411,7 +420,6 @@
         </div>
 
     </div>
-
     <footer class="footer">
 
         <div class="footer-content">
@@ -427,13 +435,19 @@
             <!-- Enlaces en dos columnas -->
             <div class="footer-links">
                 <h4>Explorar</h4>
-
                 <div class="links-grid">
                     <a href="/helice">Inicio</a>
-                    <a href="/directorio">Directorio</a>
+                    <a></a>
+                    <a href="/directorio">Directorio Empresas</a>
+                    <a href="/directorioPersonas">Directorio Personas</a>
                     <a href="/proyectos">Proyectos</a>
+                    <a href="/ofertaRegional">Oferta Regional</a>
+                    <a href="/retosEmpresariales">Retos Empresariales</a>
+                    <a href="/retosAula">Retos de Aula</a>
+                    <a href="/conocimientoCursosVirtuales">Cursos</a>
+                    <a href="/conocimientoBiblioteca">Biblioteca</a>
                     <a href="/convocatorias">Convocatorias</a>
-
+                    <a href="/eventos">Eventos</a>
                 </div>
             </div>
 

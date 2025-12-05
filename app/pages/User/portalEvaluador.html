@@ -1,19 +1,31 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Portal de Evaluador - SINAPTICO CRCI</title>
-
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <link rel="stylesheet" href="styles/stylehelice2.css">
   <link rel="stylesheet" href="styles/colores.css">
+  <link rel="stylesheet" href="styles/stylehelice2.css">
+  <link rel="stylesheet" href="styles/desplegables.css">
+  <link rel="stylesheet" href="styles/menu.css">
   <link rel="stylesheet" href="styles/postulaciones.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
   <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+  <!-- Leaflet.js para mapas -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>
     .evaluation-container {
       max-width: 1200px;
@@ -420,37 +432,42 @@
     }
 
     @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
     }
 
     @media (max-width: 768px) {
       .filters-row {
         flex-direction: column;
       }
-      
+
       .filter-group {
         min-width: auto;
       }
-      
+
       .project-header {
         flex-direction: column;
         gap: 15px;
       }
-      
+
       .evaluation-status {
         text-align: left;
         min-width: auto;
       }
-      
+
       .criteria-grid {
         grid-template-columns: 1fr;
       }
-      
+
       .score-breakdown {
         grid-template-columns: 1fr;
       }
-      
+
       .action-buttons {
         flex-direction: column;
       }
@@ -503,19 +520,21 @@
       <button class="nav-button" onclick="window.location.href='/pages/admin/gestionAplicaciones.html'">Aplicaciones</button>
     </nav>
   </header> -->
+
+
   <!-- Encabezado -->
   <header>
     <div class="header">
-      <div onclick="window.location.href='/'">
+      <div onclick="window.location.href='/helice'">
         <!-- <span class="logo-icon">⚡</span> -->
         <img src="/img/logo1.png" alt="SINAPTICO" class="logo" style="height:8vh;">
       </div>
       <div style="display: flex; align-items: center; gap: 20px;">
-        <!-- <div style="font-size:1.5em;cursor:pointer;">
+        <div style="font-size:1.5em;cursor:pointer;">
           <span id="icono-notif">🔔 <span
               style='background:red;color:white;border-radius:50%;padding:2px 7px;font-size:0.9em;'>0</span></span>
         </div>
-        <div class="notificaciones" id="notificaciones"></div> -->
+        <div class="notificaciones" id="notificaciones"></div>
 
 
         <div class="dropdown">
@@ -525,19 +544,20 @@
                 onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
 
             </div>
-            <h3 id="nombreUsuarioHeader" style="color:white; margin-left:10px;">CRCI <i class="bi bi-chevron-down"></i>
-            </h3>
+            <h3 id="nombreUsuarioHeader" style="color:white; margin-left:10px;">Usuario <i
+                class="bi bi-chevron-down"></i> </h3>
           </button>
 
           <div class="dropdown-menu" id="userMenu">
-            <!-- <a href="/perfil">Perfil</a>
-            <a href="/perfilEntidad">Empresa</a> -->
+            <a class="perfilUser" id="perfilUser">Perfil</a>
+            <a id="habilitarMiEmpresa" style="display: none;">Empresa</a>
             <a href="#" id="cerrarSesion">Cerrar sesión</a>
           </div>
         </div>
       </div>
     </div>
-       <nav class="nav">
+    <nav class="nav">
+
 
             <button class="nav-button" data-link="/helice" id="inicio"
                 onclick="window.location.href='/helice'">Inicio</button>
@@ -549,17 +569,41 @@
                     <a href="/directorioPersonas">Personas</a>
                 </div>
             </div>
-            <button class="nav-button" data-link="/proyectos"
-                onclick="window.location.href='/proyectos'">Proyectos</button>
+            <button class="nav-button" onclick="window.location.href='/proyectos'">Proyectos</button>
+            <button class="nav-button" onclick="window.location.href='/ofertaRegional'"
+                data-link="/ofertaRegional">Oferta Regional</button>
+            <div class="dropdown menuG">
+                <button class="nav-button dropdown-btnG" data-link="/retos">Innovación Abierta</button>
+                <div class="dropdown-menu dropdown-menuG">
+                    <a href="/retosEmpresariales" data-link="/retosEmpresariales">Retos Empresariales</a>
+                    <a href="/retosAula" data-link="/retosAula">Retos de Aula</a>
+                </div>
+            </div>
 
-            <button class="nav-button" data-link="/convocatorias"
-                onclick="window.location.href='/convocatorias'">Convocatorias</button>
-   
-<button class="nav-button pulse" data-link="/portalEvaluadorUser"
-                onclick="window.location.href='/portalEvaluadorUser'">Evaluación</button>
-   
-        </nav>
+            <div class="dropdown menuG" >
+                <button class="nav-button dropdown-btnG" data-link="/conocimiento">Conocimiento Abierto</button>
+                <div class="dropdown-menu dropdown-menuG">
+                    <a href="/conocimientoCursosVirtuales" data-link="/cursosVirtuales">Cursos</a>
+                    <a href="/conocimientoBiblioteca"  data-link="/conocimientoBiblioteca">Biblioteca</a>
+                </div>
+            </div>
+            <button class="nav-button" onclick="window.location.href='/convocatorias'" data-link="/convocatorias">Convocatorias</button>
+
+            <button class="nav-button" onclick="window.location.href='/eventos'" data-link="/eventos">Eventos</button>
+
+      <button class="nav-button pulse" data-link="/portalEvaluadorUser"
+        onclick="window.location.href='/portalEvaluadorUser'">Evaluación</button>
+
+    </nav>
+
   </header>
+
+  <!-- Spinner -->
+  <div id="page-spinner-overlay" aria-hidden="true" role="status" aria-label="Cargando">
+    <div class="spinner"></div>
+    <div class="spinner-text">Cargando...</div>
+  </div>
+
   <!-- Contenido Principal -->
   <div class="evaluation-container">
     <!-- Header del evaluador -->
@@ -572,7 +616,7 @@
           <p id="evaluadorInstitucion">Institución</p>
         </div>
       </div>
-      
+
       <div class="stats-grid">
         <div class="stat-card">
           <span class="stat-number" id="totalAsignados">0</span>
@@ -598,8 +642,8 @@
       <div class="filters-row">
         <div class="filter-group">
           <label class="filter-label">Buscar proyecto</label>
-          <input type="text" id="filtroProyecto" class="filter-input" 
-                 placeholder="Nombre, ID, entidad..." onkeyup="aplicarFiltros()">
+          <input type="text" id="filtroProyecto" class="filter-input" placeholder="Nombre, ID, entidad..."
+            onkeyup="aplicarFiltros()">
         </div>
         <div class="filter-group">
           <label class="filter-label">Estado de Evaluación</label>
@@ -640,6 +684,75 @@
       <p>Actualmente no tienes proyectos para evaluar. Contacta al administrador para más información.</p>
     </div>
   </div>
+   <footer class="footer">
+
+        <div class="footer-content">
+
+            <!-- Izquierda -->
+            <div class="footer-left">
+                <img src="/img/logo1.png" alt="SINAPTICO" class="footer-logo">
+                <p class="footer-desc">Conectando conocimiento, innovación y tecnología.</p>
+
+
+            </div>
+
+            <!-- Enlaces en dos columnas -->
+            <div class="footer-links">
+                <h4>Explorar</h4>
+                <div class="links-grid">
+                    <a href="/helice">Inicio</a>
+                    <a></a>
+                    <a href="/directorio">Directorio Empresas</a>
+                    <a href="/directorioPersonas">Directorio Personas</a>
+                    <a href="/proyectos">Proyectos</a>
+                    <a href="/ofertaRegional">Oferta Regional</a>
+                    <a href="/retosEmpresariales">Retos Empresariales</a>
+                    <a href="/retosAula">Retos de Aula</a>
+                    <a href="/conocimientoCursosVirtuales">Cursos</a>
+                    <a href="/conocimientoBiblioteca">Biblioteca</a>
+                    <a href="/convocatorias">Convocatorias</a>
+                    <a href="/eventos">Eventos</a>
+                </div>
+            </div>
+
+            <!-- Redes sociales -->
+            <div class="footer-social">
+                <h4>Síguenos</h4>
+                <div class="social-icons">
+                    <a href="#"><i class="bi bi-facebook"></i></a>
+                    <a href="#"><i class="bi bi-twitter"></i></a>
+                    <a href="#"><i class="bi bi-linkedin"></i></a>
+                    <a href="#"><i class="bi bi-instagram"></i></a>
+                </div>
+            </div>
+
+            <!-- Contacto -->
+            <div class="footer-contact">
+                <h4>Contáctanos</h4>
+
+                <p>Cra.19 #35-02 - UIS Bucarica</p>
+                <p>Bucaramanga, Colombia</p>
+
+                <div class="contact-item">
+                    <i class="bi bi-envelope"></i>
+                    <span>info@cpcoriente.org</span>
+                </div>
+
+                <div class="contact-item">
+                    <i class="bi bi-telephone"></i>
+                    <span>+57 315 494 0296</span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+            <img src="/logos/logoCPCblanco.png" alt="SINAPTICO" class="footer-logoCPC">
+            <p>© 2025 CPC Oriente. Todos los derechos reservados.</p>
+
+        </div>
+
+    </footer>
 
   <script>
     // Variables globales
@@ -689,8 +802,8 @@
         // Buscar si es miembro del comité
         const miembroResponse = await fetch('/api/miembros-comite');
         const miembros = await miembroResponse.json();
-        
-        evaluadorInfo = Array.isArray(miembros) ? 
+
+        evaluadorInfo = Array.isArray(miembros) ?
           miembros.find(m => m.Usuario?.id == userId || m.email === userData.email) : null;
 
         if (evaluadorInfo) {
@@ -708,7 +821,7 @@
         }
 
         // Cargar foto de perfil
-        document.getElementById("imagenPerfilSecundaria").src = userData.fotoPerfil ? 
+        document.getElementById("imagenPerfilSecundaria").src = userData.fotoPerfil ?
           "photo/" + userData.fotoPerfil : "photo/sinfoto.jpg";
 
       } catch (error) {
@@ -719,26 +832,26 @@
     // Cargar proyectos asignados al evaluador usando la nueva API
     async function cargarProyectosAsignados() {
       try {
-      const response = await fetch(`/api/asignacion-evaluadores/evaluador/${userId}`);
-      if (response.ok) {
-        const data = await response.json();
-        // La API debe devolver un array de proyectos asignados
-        console.log('Proyectos asignados:', data);
-        proyectos = Array.isArray(data) ? data : [];
-        // Asegurar que cada proyecto tenga evaluacionesIndividuales como array
-        proyectos.forEach(p => {
-          console.log('Proyecto antes de verificar evaluacionesIndividuales:', p);
-          if (!Array.isArray(p.evaluacionesIndividuales)) {
-        p.evaluacionesIndividuales = [];
-          }
-        });
-        console.log('Proyectos asignados:', proyectos);
-      } else {
-        throw new Error('Error al cargar proyectos');
-      }
+        const response = await fetch(`/api/asignacion-evaluadores/evaluador/${userId}`);
+        if (response.ok) {
+          const data = await response.json();
+          // La API debe devolver un array de proyectos asignados
+          console.log('Proyectos asignados:', data);
+          proyectos = Array.isArray(data) ? data : [];
+          // Asegurar que cada proyecto tenga evaluacionesIndividuales como array
+          proyectos.forEach(p => {
+            console.log('Proyecto antes de verificar evaluacionesIndividuales:', p);
+            if (!Array.isArray(p.evaluacionesIndividuales)) {
+              p.evaluacionesIndividuales = [];
+            }
+          });
+          console.log('Proyectos asignados:', proyectos);
+        } else {
+          throw new Error('Error al cargar proyectos');
+        }
       } catch (error) {
-      console.error('Error:', error);
-      proyectos = [];
+        console.error('Error:', error);
+        proyectos = [];
       }
     }
 
@@ -749,7 +862,7 @@
         if (response.ok) {
           const convocatorias = await response.json();
           const select = document.getElementById('filtroConvocatoria');
-          
+
           // Limpiar opciones existentes excepto la primera
           while (select.children.length > 1) {
             select.removeChild(select.lastChild);
@@ -758,7 +871,7 @@
           if (Array.isArray(convocatorias)) {
             // Obtener convocatorias únicas de los proyectos asignados
             const convocatoriasUsadas = new Set(proyectos.map(p => p.convocatoriaId));
-            
+
             convocatorias
               .filter(conv => convocatoriasUsadas.has(conv.id))
               .forEach(conv => {
@@ -781,7 +894,7 @@
       const convocatoria = document.getElementById('filtroConvocatoria').value;
 
       proyectosFiltrados = proyectos.filter(proyecto => {
-        const coincideBusqueda = !busqueda || 
+        const coincideBusqueda = !busqueda ||
           proyecto.proyecto?.nombrePPI?.toLowerCase().includes(busqueda) ||
           proyecto.proyecto?.objetivo?.toLowerCase().includes(busqueda) ||
           proyecto.proyecto?.entidad?.razonSocial?.toLowerCase().includes(busqueda) ||
@@ -790,7 +903,7 @@
         // Determinar estado de evaluación
         const estadoEvaluacion = determinarEstadoEvaluacion(proyecto);
         const coincideEstado = !estado || estadoEvaluacion === estado;
-        
+
         const coincideConvocatoria = !convocatoria || proyecto.convocatoriaId.toString() === convocatoria;
 
         return coincideBusqueda && coincideEstado && coincideConvocatoria;
@@ -802,11 +915,11 @@
     // Determinar estado de evaluación desde la perspectiva del evaluador
     function determinarEstadoEvaluacion(proyecto) {
       if (!evaluadorInfo) return 'Asignado';
-      
+
       const evaluadorEmail = evaluadorInfo.email;
       const evaluacionesIndividuales = proyecto.evaluacionesIndividuales || [];
       const miEvaluacion = evaluacionesIndividuales.find(e => e.evaluadorEmail === evaluadorEmail);
-      
+
       if (miEvaluacion && miEvaluacion.completada) {
         return 'completada';
       } else if (miEvaluacion && !miEvaluacion.completada) {
@@ -828,13 +941,13 @@
     function renderizarProyectos() {
       const container = document.getElementById('proyectosAsignados');
       const noProjectsDiv = document.getElementById('noProjects');
-      
+
       if (proyectos.length === 0) {
         container.style.display = 'none';
         noProjectsDiv.style.display = 'block';
         return;
       }
-      
+
       noProjectsDiv.style.display = 'none';
       container.style.display = 'block';
 
@@ -853,11 +966,11 @@
         const proyecto = aplicacion.proyecto;
         const estado = aplicacion.estado;
         const estadoClase = estado === 'completada' ? 'evaluated' : estado === 'evaluando' ? 'in-evaluation' : '';
-        
+
         // Obtener evaluación individual del evaluador actual
         const evaluacionesIndividuales = aplicacion.evaluacionesIndividuales || [];
         const miEvaluacion = evaluacionesIndividuales.find(e => e.evaluadorEmail === evaluadorInfo?.email);
-        const miPuntuacionFinal =aplicacion.puntuacionTotal/3;
+        const miPuntuacionFinal = aplicacion.puntuacionTotal / 3;
         console.log('Mi evaluación para el proyecto', proyecto?.id, ':', miPuntuacionFinal);
         return `
           <div class="project-card ${estadoClase}">
@@ -869,12 +982,12 @@
               <div class="evaluation-status">
                 <span class="status-badge ${estado}">${obtenerTextoEstado(estado)}</span>
                 ${miPuntuacionFinal ?
-                  `<div style="font-size: 1.2em; font-weight: bold; color: #28a745;">
-                    ${miPuntuacionFinal }
+            `<div style="font-size: 1.2em; font-weight: bold; color: #28a745;">
+                    ${miPuntuacionFinal}
                 /100
-                  </div>` : 
-                  '<div style="font-size: 0.9em; color: #666;">Sin evaluar</div>'
-                }
+                  </div>` :
+            '<div style="font-size: 0.9em; color: #666;">Sin evaluar</div>'
+          }
               </div>
             </div>
 
@@ -925,8 +1038,8 @@
             </div>
 
             <!-- Resumen de evaluación completada -->
-            ${miEvaluacion && miEvaluacion.completada ? 
-              `<div class="evaluation-summary">
+            ${miEvaluacion && miEvaluacion.completada ?
+            `<div class="evaluation-summary">
                 <div class="total-score">
                   <h4>Evaluación Completada</h4>
                   <div class="score-display">${(miEvaluacion.puntuacionTotal || 0).toFixed(1)}</div>
@@ -946,34 +1059,34 @@
                     <div class="breakdown-label">Impacto</div>
                   </div>
                 </div>
-                ${miEvaluacion.observaciones ? 
-                  `<div style="margin-top: 15px; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                ${miEvaluacion.observaciones ?
+              `<div style="margin-top: 15px; padding: 10px; background: #f8f9fa; border-radius: 6px;">
                     <strong>Observaciones:</strong>
                     <p style="margin: 5px 0 0 0; color: #555;">${miEvaluacion.observaciones}</p>
                   </div>` : ''
-                }
-              </div>` : ''
             }
+              </div>` : ''
+          }
 
             <div class="action-buttons">
-              ${estado === 'Asignado' ? 
-                `<button class="btn btn-primary" onclick="iniciarEvaluacion(${aplicacion.id})">
+              ${estado === 'Asignado' ?
+            `<button class="btn btn-primary" onclick="iniciarEvaluacion(${aplicacion.id})">
                   <i class="bi bi-play-circle"></i> Iniciar Evaluación
                 </button>` : ''
-              }
-              ${estado === 'evaluando' ? 
-                `<button class="btn btn-warning" onclick="continuarEvaluacion(${aplicacion.id})">
+          }
+              ${estado === 'evaluando' ?
+            `<button class="btn btn-warning" onclick="continuarEvaluacion(${aplicacion.id})">
                   <i class="bi bi-pencil-square"></i> Continuar Evaluación
                 </button>` : ''
-              }
-              ${estado === 'completada' ? 
-                `<button class="btn btn-secondary" onclick="verEvaluacion(${aplicacion.id})">
+          }
+              ${estado === 'completada' ?
+            `<button class="btn btn-secondary" onclick="verEvaluacion(${aplicacion.id})">
                   <i class="bi bi-eye"></i> Ver Evaluación
                 </button>
                 <button class="btn btn-warning" onclick="editarEvaluacion(${aplicacion.id})">
                   <i class="bi bi-pencil"></i> Editar
                 </button>` : ''
-              }
+          }
               <button class="btn btn-secondary" onclick="verDetalleProyecto(${proyecto?.id})">
                 <i class="bi bi-info-circle"></i> Detalles
               </button>
@@ -1093,11 +1206,11 @@
       const totalAsignados = proyectos.length;
       const completadas = proyectos.filter(p => determinarEstadoEvaluacion(p) === 'completada').length;
       const pendientes = proyectos.filter(p => determinarEstadoEvaluacion(p) === 'Asignado').length;
-      
+
       // Calcular promedio de calificaciones
       let totalCalificaciones = 0;
       let numCalificaciones = 0;
-      
+
       proyectos.forEach(proyecto => {
         const evaluacionesIndividuales = proyecto.evaluacionesIndividuales || [];
         const miEvaluacion = evaluacionesIndividuales.find(e => e.evaluadorEmail === evaluadorInfo?.email);
@@ -1106,7 +1219,7 @@
           numCalificaciones++;
         }
       });
-      
+
       const promedio = numCalificaciones > 0 ? (totalCalificaciones / numCalificaciones) : 0;
 
       document.getElementById('totalAsignados').textContent = totalAsignados;
@@ -1119,11 +1232,11 @@
     function iniciarEvaluacion(aplicacionId) {
       evaluacionActiva = aplicacionId;
       document.getElementById(`evaluationForm_${aplicacionId}`).classList.add('active');
-      
+
       // Scroll al formulario
-      document.getElementById(`evaluationForm_${aplicacionId}`).scrollIntoView({ 
-        behavior: 'smooth', 
-        block: 'start' 
+      document.getElementById(`evaluationForm_${aplicacionId}`).scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
       });
     }
 
@@ -1143,7 +1256,7 @@
       const tecnica = parseFloat(document.getElementById(`puntuacionTecnica_${aplicacionId}`).value) || 0;
       const financiera = parseFloat(document.getElementById(`puntuacionFinanciera_${aplicacionId}`).value) || 0;
       const impacto = parseFloat(document.getElementById(`puntuacionImpacto_${aplicacionId}`).value) || 0;
-      
+
       const total = ((tecnica + financiera + impacto) / 3).toFixed(1);
       document.getElementById(`puntajeTotal_${aplicacionId}`).textContent = total;
     }
@@ -1155,7 +1268,7 @@
         datosEvaluacion.completada = false;
 
         await guardarEvaluacionIndividual(aplicacionId, datosEvaluacion);
-        
+
         Swal.fire({
           title: 'Borrador guardado',
           text: 'Su evaluación parcial se ha guardado correctamente.',
@@ -1173,7 +1286,7 @@
     async function completarEvaluacion(aplicacionId) {
       try {
         const datosEvaluacion = obtenerDatosEvaluacion(aplicacionId);
-        
+
         // Validar que todos los campos estén completos
         if (!datosEvaluacion.puntuacionTecnica || !datosEvaluacion.puntuacionFinanciera || !datosEvaluacion.puntuacionImpacto) {
           Swal.fire('Error', 'Debe completar todas las puntuaciones antes de finalizar', 'warning');
@@ -1195,7 +1308,7 @@
         datosEvaluacion.fechaCompletada = new Date().toISOString();
 
         await guardarEvaluacionIndividual(aplicacionId, datosEvaluacion);
-        
+
         Swal.fire({
           title: '¡Evaluación completada!',
           text: 'Su evaluación se ha registrado exitosamente.',
@@ -1220,7 +1333,7 @@
       const financiera = parseFloat(document.getElementById(`puntuacionFinanciera_${aplicacionId}`).value) || 0;
       const impacto = parseFloat(document.getElementById(`puntuacionImpacto_${aplicacionId}`).value) || 0;
       const observaciones = document.getElementById(`observaciones_${aplicacionId}`).value;
-      
+
       return {
         evaluadorEmail: evaluadorInfo?.email,
         evaluadorNombre: evaluadorInfo?.nombre,
@@ -1236,27 +1349,27 @@
     // Guardar evaluación individual
     async function guardarEvaluacionIndividual(aplicacionId, datosEvaluacion) {
       const response = await fetch(`/api/asignacion-evaluadores/${aplicacionId}/evaluacion`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        ...datosEvaluacion,
-        criterio1_viabilidad_tecnica: document.getElementById(`puntuacionTecnica_${aplicacionId}`)?.value || 0,
-        criterio2_impacto_social: document.getElementById(`puntuacionFinanciera_${aplicacionId}`)?.value || 0,
-        criterio3_sostenibilidad_financiera: document.getElementById(`puntuacionImpacto_${aplicacionId}`)?.value || 0,
-       
-        recomendacion: document.getElementById(`observaciones_${aplicacionId}`)?.value || "",
-        prioridad: document.getElementById(`prioridad_${aplicacionId}`)?.value || "",
-        tiempoEvaluacion: document.getElementById(`tiempoEvaluacion_${aplicacionId}`)?.value || "",
-        archivosAdjuntos: document.getElementById(`archivosAdjuntos_${aplicacionId}`)?.files || [],
-        completarEvaluacion: datosEvaluacion.completada || false
-      })
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          ...datosEvaluacion,
+          criterio1_viabilidad_tecnica: document.getElementById(`puntuacionTecnica_${aplicacionId}`)?.value || 0,
+          criterio2_impacto_social: document.getElementById(`puntuacionFinanciera_${aplicacionId}`)?.value || 0,
+          criterio3_sostenibilidad_financiera: document.getElementById(`puntuacionImpacto_${aplicacionId}`)?.value || 0,
+
+          recomendacion: document.getElementById(`observaciones_${aplicacionId}`)?.value || "",
+          prioridad: document.getElementById(`prioridad_${aplicacionId}`)?.value || "",
+          tiempoEvaluacion: document.getElementById(`tiempoEvaluacion_${aplicacionId}`)?.value || "",
+          archivosAdjuntos: document.getElementById(`archivosAdjuntos_${aplicacionId}`)?.files || [],
+          completarEvaluacion: datosEvaluacion.completada || false
+        })
       });
 
       if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.message || 'Error al guardar evaluación');
+        const error = await response.json();
+        throw new Error(error.message || 'Error al guardar evaluación');
       }
 
       return response.json();
@@ -1267,7 +1380,7 @@
       const proyecto = proyectos.find(p => p.id === aplicacionId);
       const evaluacionesIndividuales = proyecto.evaluacionesIndividuales || [];
       const miEvaluacion = evaluacionesIndividuales.find(e => e.evaluadorEmail === evaluadorInfo?.email);
-      
+
       if (miEvaluacion) {
         Swal.fire({
           title: 'Evaluación Completada',
@@ -1279,10 +1392,10 @@
               <p><strong>Impacto:</strong> ${miEvaluacion.puntuacionImpacto}/100</p>
               <p><strong>Total:</strong> ${miEvaluacion.puntuacionTotal.toFixed(1)}/100</p>
               
-              ${miEvaluacion.observaciones ? 
-                `<h4 style="margin-top: 15px;">Observaciones:</h4>
+              ${miEvaluacion.observaciones ?
+              `<h4 style="margin-top: 15px;">Observaciones:</h4>
                  <p>${miEvaluacion.observaciones}</p>` : ''
-              }
+            }
               
               <p style="margin-top: 15px; color: #666; font-size: 0.9em;">
                 <strong>Completada:</strong> ${new Date(miEvaluacion.fechaCompletada).toLocaleString('es-ES')}
@@ -1309,43 +1422,17 @@
       });
     }
 
-    // Cerrar sesión
-    document.getElementById("cerrarSesion").addEventListener("click", () => {
-      Swal.fire({
-        title: '¿Estás seguro?',
-        text: '¿Quieres cerrar sesión?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Sí, cerrar sesión',
-        cancelButtonText: 'Cancelar',
-        reverseButtons: true
-      }).then((result) => {
-        if (result.isConfirmed) {
-          document.cookie = 'jwt=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-          document.cookie = 'user=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-          document.cookie = 'userId=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-          window.location.href = "/";
-        }
-      });
-    });
-
-    // Menú desplegable
-    const userMenuBtn = document.getElementById("userMenuBtn");
-    const dropdown = userMenuBtn.closest(".dropdown");
-
-    userMenuBtn.addEventListener("click", (event) => {
-      event.stopPropagation();
-      dropdown.classList.toggle("show");
-    });
-
-    document.addEventListener("click", () => {
-      dropdown.classList.remove("show");
-    });
-
     // Inicialización
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
       cargarDatos();
     });
   </script>
+  <script src="/js/config.js"></script>
+  <script src="/js/nav.js"></script>
+  <script src="js/notificaciones.js"></script>
+  <script src="/js/websocket.js"></script>
+  <script src="/js/menuGeneral.js"></script>
+
 </body>
+
 </html>

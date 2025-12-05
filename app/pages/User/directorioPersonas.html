@@ -18,10 +18,17 @@
     <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Leaflet.js para mapas -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
 
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
@@ -320,8 +327,7 @@
     <div class="neural-background">
         <canvas id="neuralCanvas"></canvas>
     </div>
-
-    <!-- Encabezado -->
+   <!-- Encabezado -->
     <header>
         <div class="header">
             <div onclick="window.location.href='/helice'">
@@ -356,11 +362,12 @@
             </div>
         </div>
         <nav class="nav">
-            <button class="nav-button " onclick="window.location.href='/helice'" id="inicio">Inicio</button>
+
+            <button class="nav-button" data-link="/helice" id="inicio"
+                onclick="window.location.href='/helice'">Inicio</button>
 
             <div class="dropdown menuG">
-                <button class="nav-button dropdown-btnG" id="directorioButton"
-                    data-link="/directorio">Directorio</button>
+                <button class="nav-button dropdown-btnG" data-link="/directorio">Directorio</button>
                 <div class="dropdown-menu dropdown-menuG">
                     <a href="/directorio">Entidades</a>
                     <a href="/directorioPersonas">Personas</a>
@@ -369,8 +376,7 @@
             <button class="nav-button" onclick="window.location.href='/proyectos'"
                 data-link="/proyectos">Proyectos</button>
             <button class="nav-button" onclick="window.location.href='/ofertaRegional'"
-                data-link="/ofertaRegional">Oferta
-                Regional</button>
+                data-link="/ofertaRegional">Oferta Regional</button>
             <div class="dropdown menuG">
                 <button class="nav-button dropdown-btnG" data-link="/retos">Innovación Abierta</button>
                 <div class="dropdown-menu dropdown-menuG">
@@ -392,10 +398,10 @@
 
             <button class="nav-button" id="btnEvaluador" style="display: none;" data-link="/portalEvaluadorUser"
                 onclick="window.location.href='/portalEvaluadorUser'">Evaluación</button>
+
         </nav>
+
     </header>
-
-
     <!-- Bienvenida y botones de acción -->
     <div class="welcome-container" id="welcome-container" style="display: none;">
         <div id="userPhoto" style="position: relative; display: inline-block; cursor: pointer; width: 5vw;">
@@ -1281,16 +1287,22 @@
             <!-- Enlaces en dos columnas -->
             <div class="footer-links">
                 <h4>Explorar</h4>
-
                 <div class="links-grid">
                     <a href="/helice">Inicio</a>
-                    <a href="/directorio">Directorio</a>
+                    <a></a>
+                    <a href="/directorio">Directorio Empresas</a>
+                    <a href="/directorioPersonas">Directorio Personas</a>
                     <a href="/proyectos">Proyectos</a>
+                    <a href="/ofertaRegional">Oferta Regional</a>
+                    <a href="/retosEmpresariales">Retos Empresariales</a>
+                    <a href="/retosAula">Retos de Aula</a>
+                    <a href="/conocimientoCursosVirtuales">Cursos</a>
+                    <a href="/conocimientoBiblioteca">Biblioteca</a>
                     <a href="/convocatorias">Convocatorias</a>
-
+                    <a href="/eventos">Eventos</a>
                 </div>
             </div>
-
+            
             <!-- Redes sociales -->
             <div class="footer-social">
                 <h4>Síguenos</h4>
@@ -1670,113 +1682,66 @@
 
     <!-- Vista muro / mapa en directorio-->
     <script>
-        // Simular clic en el botón de directorio al cargar la página
-        document.addEventListener('DOMContentLoaded', function () {
-            const directorioButton = document.getElementById('directorioButton');
-            if (directorioButton) {
-                directorioButton.click();
-            }
-        });
 
-        // Hacer clic en el botón de cambiar vista cuando finalice la carga de la página
-        window.addEventListener('load', function () {
-            const toggleViewBtn = document.getElementById('toggleViewBtn');
-            if (toggleViewBtn) {
-                toggleViewBtn.click();
-            }
-
-
-        });
-        const directorioDiv = document.getElementById('directorio');
-        const directorioButton = document.getElementById('directorioButton');
 
         const toggleViewBtn = document.getElementById('toggleViewBtn');
         const busquedaEntidad = document.getElementById('busquedaEntidad');
         const modalMapa = document.getElementById('modalMapa');
-        if (directorioDiv) {
-            const openDirectorio = () => {
-                document.getElementById('modalDirectorio').style.display = 'block';
-                document.getElementById('entidades').style.display = 'none';
-                document.getElementById('welcome-container').style.display = 'none';
+        window.addEventListener('DOMContentLoaded', function () {
 
-                document.getElementById('inicio').classList.remove('pulse');
+            document.getElementById('modalDirectorio').style.display = 'block';
+            document.getElementById('entidades').style.display = 'none';
+            document.getElementById('welcome-container').style.display = 'none';
+            loadUsers();
+            busquedaEntidad.style.display = 'block';
+            modalMapa.style.display = 'none';
+          
+            // loadUsers();
+            console.log('Cambiando a vista Muro');
+            busquedaEntidad.style.display = 'grid';
+            busquedaEntidad.style.gridTemplateColumns = 'repeat(auto-fill, minmax(280px, 1fr))';
+            busquedaEntidad.style.gap = '20px';
+            busquedaEntidad.style.padding = '20px';
 
-                // initializeMap();
-                // addColombiaMask();
-                loadUsers();
-            };
+            // Aplicar estilos de cuadrícula a los elementos user-item
+            const userItems = document.querySelectorAll('.user-item');
+            const usersListContent = document.getElementById('users-list-content');
+            const usersList = document.getElementById('users-list');
+            usersListContent.style.gridTemplateColumns = 'repeat(auto-fill, minmax(25vw, 1fr))';
+            usersListContent.style.gap = '20px';
+            usersListContent.style.padding = '10px';
 
-            if (directorioDiv) {
-                directorioDiv.addEventListener('click', openDirectorio);
-            }
-            if (directorioButton) {
-                directorioButton.addEventListener('click', openDirectorio);
-            }
-        }
-        // Estado inicial: modo muro
-        let isMuro = false;
-        busquedaEntidad.style.display = 'block';
-        modalMapa.style.display = 'none';
+            usersList.style.width = '100%';
 
+            busquedaEntidad.style.display = '';
+            busquedaEntidad.style.gridTemplateColumns = '';
+            busquedaEntidad.style.gap = '';
+            busquedaEntidad.style.padding = '';
+            busquedaEntidad.style.width = '';
+            usersListContent.style.display = 'grid';
+            userItems.forEach(item => {
+                item.style.display = 'flex';
+                item.style.flexDirection = 'column';
+                item.style.padding = '20px';
+                item.style.border = '1px solid #ecf0f1';
+                item.style.borderRadius = '12px';
+                item.style.backgroundColor = 'white';
+                item.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)';
+                item.style.transition = 'transform 0.3s, box-shadow 0.3s';
+                item.style.alignItems = 'center';
+                item.onmouseenter = function () {
+                    this.style.transform = 'translateY(-5px)';
+                    this.style.boxShadow = '0 4px 15px rgba(0,0,0,0.15)';
+                };
 
-        toggleViewBtn.addEventListener('click', () => {
-            isMuro = !isMuro;
-
-            if (isMuro) {
-                console.log('Cambiando a vista Muro');
-                // Mostrar muro
-                busquedaEntidad.style.display = 'block';
-                modalMapa.style.display = 'none';
-                toggleViewBtn.textContent = '🗺️ Mapa';
-                // loadUsers();
-                console.log('Cambiando a vista Muro');
-                busquedaEntidad.style.display = 'grid';
-                busquedaEntidad.style.gridTemplateColumns = 'repeat(auto-fill, minmax(280px, 1fr))';
-                busquedaEntidad.style.gap = '20px';
-                busquedaEntidad.style.padding = '20px';
-
-                // Aplicar estilos de cuadrícula a los elementos user-item
-                const userItems = document.querySelectorAll('.user-item');
-                const usersListContent = document.getElementById('users-list-content');
-                const usersList = document.getElementById('users-list');
-                usersListContent.style.gridTemplateColumns = 'repeat(auto-fill, minmax(25vw, 1fr))';
-
-                usersListContent.style.gap = '20px';
-                usersListContent.style.padding = '10px';
-
-                usersList.style.width = '100%';
-
-                busquedaEntidad.style.display = '';
-                busquedaEntidad.style.gridTemplateColumns = '';
-                busquedaEntidad.style.gap = '';
-                busquedaEntidad.style.padding = '';
-                busquedaEntidad.style.width = '';
-                usersListContent.style.display = 'grid';
-                userItems.forEach(item => {
-                    item.style.display = 'flex';
-                    item.style.flexDirection = 'column';
-                    item.style.padding = '20px';
-                    item.style.border = '1px solid #ecf0f1';
-                    item.style.borderRadius = '12px';
-                    item.style.backgroundColor = 'white';
-                    item.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)';
-                    item.style.transition = 'transform 0.3s, box-shadow 0.3s';
-                    item.style.alignItems = 'center';
-                    item.onmouseenter = function () {
-                        this.style.transform = 'translateY(-5px)';
-                        this.style.boxShadow = '0 4px 15px rgba(0,0,0,0.15)';
-                    };
-
-                    item.onmouseleave = function () {
-                        this.style.transform = 'translateY(0)';
-                        this.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)';
-                    };
-                });
-                busquedaEntidad.style.width = '100%';
-
-            }
-
+                item.onmouseleave = function () {
+                    this.style.transform = 'translateY(0)';
+                    this.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)';
+                };
+            });
+            busquedaEntidad.style.width = '100%';
         });
+
         applyFilters();
 
 
