@@ -491,10 +491,10 @@ h2 {
 /* Contenido principal */
 .main-content {
     max-width: 90%;
-    margin: 0 auto 2rem;
+    margin: 2rem auto 2rem;
     padding: 2rem;
     background-color: var(--card-bg);
-    border-radius: 15x;
+    border-radius: 15px;
     box-shadow: var(--shadow);
 }
 

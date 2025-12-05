@@ -1,23 +1,5 @@
 
 
-let cleanedStr = "";
-let DatosEntidad = "";
-// Función para obtener el valor de una cookie por su nombre
-function obtenerCookie(nombre) {
-  const nombreCookie = `${nombre}=`;
-  const cookies = document.cookie.split(';');
-
-  for (let i = 0; i < cookies.length; i++) {
-    let cookie = cookies[i].trim();
-
-    if (cookie.indexOf(nombreCookie) === 0) {
-      return cookie.substring(nombreCookie.length, cookie.length);
-    }
-  }
-
-  return null; // Retorna null si no se encuentra la cookie
-}
-
 
 const userid = document.cookie.split("; ").find(row => row.startsWith("userId="))?.split("=")[1];
 

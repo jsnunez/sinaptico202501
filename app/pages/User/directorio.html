@@ -26,9 +26,10 @@
 
     <!-- Leaflet.js para mapas -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
     <style>
         /* Header del mapa */
         .map-header {
@@ -462,8 +463,7 @@
                 onclick="window.location.href='/helice'">Inicio</button>
 
             <div class="dropdown menuG">
-                <button class="nav-button dropdown-btnG" id="directorioButton"
-                    data-link="/directorio">Directorio</button>
+                <button class="nav-button dropdown-btnG" data-link="/directorio">Directorio</button>
                 <div class="dropdown-menu dropdown-menuG">
                     <a href="/directorio">Entidades</a>
                     <a href="/directorioPersonas">Personas</a>
@@ -472,8 +472,7 @@
             <button class="nav-button" onclick="window.location.href='/proyectos'"
                 data-link="/proyectos">Proyectos</button>
             <button class="nav-button" onclick="window.location.href='/ofertaRegional'"
-                data-link="/ofertaRegional">Oferta
-                Regional</button>
+                data-link="/ofertaRegional">Oferta Regional</button>
             <div class="dropdown menuG">
                 <button class="nav-button dropdown-btnG" data-link="/retos">Innovación Abierta</button>
                 <div class="dropdown-menu dropdown-menuG">
@@ -495,10 +494,10 @@
 
             <button class="nav-button" id="btnEvaluador" style="display: none;" data-link="/portalEvaluadorUser"
                 onclick="window.location.href='/portalEvaluadorUser'">Evaluación</button>
+
         </nav>
+
     </header>
-
-
 
     <!-- Bienvenida y botones de acción -->
     <div class="welcome-container" id="welcome-container" style="display: none;">
@@ -1453,6 +1452,7 @@
     <script src="js/enviarInvitacion.js"></script>
     <script src="js/menu.js"></script>
     <script src="/js/habilitarEvaluador.js"></script>
+        <script src="/js/directorio.js"></script>
 
     <!-- Obtener departamentos y ciudades -->
     <script>
@@ -1588,7 +1588,6 @@
             document.getElementById('modalDirectorio').style.display = 'block';
             document.getElementById('entidades').style.display = 'none';
             document.getElementById('welcome-container').style.display = 'none';
-            directorioButton.classList.add('pulse');
             document.getElementById('inicio').classList.remove('pulse');
             modalMapa.style.display = 'block';
             toggleViewBtn.textContent = '🟦 Muro';

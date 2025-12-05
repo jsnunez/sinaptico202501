@@ -5,19 +5,30 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>sinaptico - Innovación Abierta</title>
+
   <link rel="stylesheet" href="styles/colores.css">
-
-  <link rel="stylesheet" href="styles/innovacion.css">
-  <link rel="stylesheet" href="styles/clasificados.css">
+  <link rel="stylesheet" href="styles/stylehelice2.css">
+  <link rel="stylesheet" href="styles/desplegables.css">
   <link rel="stylesheet" href="styles/menu.css">
-  <link rel="stylesheet" href="styles/conocimiento.css">
-  <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+  <link rel="stylesheet" href="styles/clasificados.css">
 
-  <link rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Leaflet.js para mapas -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -95,8 +106,6 @@
 
     </nav>
   </header>
-
-
 
 
   <!-- clasificados Section -->
@@ -295,17 +304,27 @@
     <div class="spinner" aria-hidden="true"></div>
     <div class="spinner-text">Cargando...</div>
   </div>
+
+
+
+
   <script src="/js/config.js"></script>
-   <script src="/js/habilitarEvaluador.js"></script>
-  <script src="js/retos.js"></script>
-  <script src="js/clasificadosMostrar.js"></script>
-  <script src="js/ContactarServicio.js"></script>
+  <script src="/js/nav.js"></script>
   <script src="js/notificaciones.js"></script>
   <script src="/js/websocket.js"></script>
-  <script src="/js/menu.js"></script>
   <script src="/js/habilitarEvaluador.js"></script>
+  <script src="/js/menuGeneral.js"></script>
+  <script src="js/clasificadosMostrar.js"></script>
+  <script src="js/ContactarServicio.js"></script>
+
+
+
+
+
   <!-- Formulario de clasificados -->
   <script>
+
+    const userid = document.cookie.split("; ").find(row => row.startsWith("userId="))?.split("=")[1];
 
     const priceInput = document.getElementById('classified-price');
 
@@ -332,12 +351,7 @@
   </script>
 
 
-  <!-- En construccion -->
   <script>
-    function irEnConstruccion() {
-      window.location.href = "/construccion"; // o la ruta que tengas
-    }
-
     const toggleViewBtn = document.getElementById('toggleViewBtn');
     const classifiedWall = document.querySelector('.classified-wall');
 
@@ -348,90 +362,6 @@
       toggleViewBtn.textContent = isList ? '🟦 Cuadrícula' : '📃 Lista';
     });
 
-
-
-    const gridBtn = document.getElementById('gridViewBtn');
-    const listBtn = document.getElementById('listViewBtn');
-    const wall = document.querySelector('.classified-wall');
-
-
-    document.addEventListener("DOMContentLoaded", async function () {
-
-      const usuario = obtenerCookie("user");
-      const userId = obtenerCookie("userId");
-      const userData = cargarDatosUsuario(userId);
-      console.log(userData.fotoPerfil);
-      // ✅ Verificación de cookies
-      if (!usuario || !userId) {
-        document.getElementById('bienvenido').innerText = "Error: No se encontró la información del usuario.";
-        return;
-      }
-
-      // ✅ Limpieza del nombre del usuario
-      let cleanedStr = decodeURIComponent(usuario.replace(/%20/g, " "));
-      let nombreUsuario = cleanedStr.split(" ")[0];
-
-      try {
-        const response = await fetch(`${API_BASE_URL}/api/entidad/verificar-entidad/${userId}`);
-        const data = await response.json();
-        console.log(data);
-        if (data.success && data.entidad && data.entidad.UserAdminId) {
-          idEntidad = data.entidad.id;
-
-          const estado = data.entidad.habilitado == 1 ? "Habilitado" : "Deshabilitado (estamos revisando tus datos)";
-
-          document.getElementById("crearReto").style.display = data.entidad.habilitado == 1 ? "block" : "none";
-          // document.getElementById("editarEntidad").style.display = data.entidad.habilitado == 1 ? "block" : "none";
-          // document.getElementById("asignarServicio").style.display = data.entidad.habilitado == 1 ? "block" : "none";
-          document.getElementById("vincularEntidad").style.display = "none";
-          document.getElementById('bienvenido').innerText =
-            `Hola ${nombreUsuario}, eres el administrador de ${data.entidad.razonSocial}. Actualmente tu estado es: ${estado}`;
-
-
-        } else {
-          // ✅ Verificar si pertenece a una entidad como usuarioempresa
-          const usuarioData = await verificarUsuarioEntidad(userId);
-          console.log(usuarioData)
-
-          if (usuarioData.length > 0) {
-            document.getElementById('bienvenido').innerText =
-              `Hola ${nombreUsuario},  Tu eres ${usuarioData[0].Cargo.nombre} del actor ${usuarioData[0].empresa.razonSocial} tu estado es
-           ${usuarioData[0].estado == 1 ? "Habilitado" : "Deshabilitado (contacta con el administrador de la entidad)"}`;
-            document.getElementById("vincularEntidad").style.display = "none";
-          } else {
-            document.getElementById('bienvenido').innerText =
-              `Hola ${nombreUsuario}, no estás unido a ninguna entidad.`;
-          }
-        }
-      } catch (error) {
-        console.error('Error:', error);
-        document.getElementById('bienvenido').innerText =
-          "Ocurrió un error al verificar tu entidad. Por favor intenta más tarde.";
-      }
-    });
-
-
-
-    async function cargarDatosUsuario(userId) {
-      const response = await fetch(`${API_BASE_URL}/api/user/${userId}`);
-      const data = await response.json();
-
-      document.getElementById("imagenPerfilSecundaria").src = data.fotoPerfil ? "photo/" + data.fotoPerfil : "photo/sinfoto.jpg";
-      document.getElementById("imagenPerfil").src = data.fotoPerfil ? "photo/" + data.fotoPerfil : "photo/sinfoto.jpg";
-
-
-      console.log(data);
-      return data;
-    }
-
-    document.getElementById("crearReto").addEventListener("click", function () {
-      document.getElementById("modalCrearReto").style.display = "block";
-    });
-
-    document.querySelector("#modalCrearReto .close").addEventListener("click", function () {
-      document.getElementById("modalCrearReto").style.display = "none";
-    });
-
     // ✅ Función para verificar si el usuario pertenece a una entidad
     async function verificarUsuarioEntidad(userId) {
       const response = await fetch(`${API_BASE_URL}/api/usuarioempresa/user/${userId}`);
@@ -439,106 +369,6 @@
       return data; // { exists: true, entidad: {...} }
     }
   </script>
-  <!-- Cerrar Sesion -->
-  <script>
-    document.getElementById("cerrarSesion").addEventListener("click", () => {
-      Swal.fire({
-        title: '¿Estás seguro?',
-        text: '¿Quieres cerrar sesión?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Sí, cerrar sesión',
-        cancelButtonText: 'Cancelar',
-        reverseButtons: true
-      }).then((result) => {
-        if (result.isConfirmed) {
-          // Borrar cookies y redirigir
-          document.cookie = 'jwt=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-          document.cookie = 'user=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-          document.cookie = 'userId=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-          document.location.href = "/";
-
-        }
-        // Si el usuario cancela, no pasa nada
-      });
-    });
-
-  </script>
-  <!-- Menú Desplegable -->
-  <script>
-    const userMenuBtn = document.getElementById("userMenuBtn");
-    const dropdown = userMenuBtn.closest(".dropdown");
-
-    // Mostrar / ocultar el menú al hacer clic
-    userMenuBtn.addEventListener("click", (event) => {
-      event.stopPropagation(); // evita que el clic cierre inmediatamente el menú
-      dropdown.classList.toggle("show");
-    });
-
-    // Cerrar el menú si haces clic fuera
-    document.addEventListener("click", () => {
-      dropdown.classList.remove("show");
-    });
-  </script>
-
-
-  <script>
-    (function () {
-      // Garantiza que el overlay permanezca al menos 5s desde que se ejecuta este script.
-      const MIN_MS = 2000;
-      const overlay = document.getElementById('page-spinner-overlay');
-      if (!overlay) return;
-
-      // Si ya pasó más de MIN_MS desde la navegación start, aun así mostramos el overlay breve
-      const start = performance.timing ? performance.timing.navigationStart : Date.now();
-      const now = Date.now();
-      const elapsed = Math.max(0, now - start);
-      const remaining = Math.max(0, MIN_MS - elapsed);
-
-      // Evita interacción mientras existe el overlay
-      document.documentElement.style.overflow = 'hidden';
-      document.body.style.overflow = 'hidden';
-
-      setTimeout(() => {
-        overlay.style.opacity = '0';
-        // permitir scroll cuando hide completo
-        setTimeout(() => {
-          if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
-          document.documentElement.style.overflow = '';
-          document.body.style.overflow = '';
-        }, 420);
-      }, remaining);
-    })();
-  </script>
-  <script>
-    (function () {
-      // Garantiza que el overlay permanezca al menos 5s desde que se ejecuta este script.
-      const MIN_MS = 1000;
-      const overlay = document.getElementById('page-spinner-overlay');
-      if (!overlay) return;
-
-      // Si ya pasó más de MIN_MS desde la navegación start, aun así mostramos el overlay breve
-      const start = performance.timing ? performance.timing.navigationStart : Date.now();
-      const now = Date.now();
-      const elapsed = Math.max(0, now - start);
-      const remaining = Math.max(0, MIN_MS - elapsed);
-
-      // Evita interacción mientras existe el overlay
-      document.documentElement.style.overflow = 'hidden';
-      document.body.style.overflow = 'hidden';
-
-      setTimeout(() => {
-        console.log('MIN_MS spinner:', MIN_MS);
-        // permitir scroll cuando hide completo
-        setTimeout(() => {
-          if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
-          document.documentElement.style.overflow = '';
-          document.body.style.overflow = '';
-        }, 420);
-      }, remaining);
-    })();
-  </script>
-
 
 </body>
 

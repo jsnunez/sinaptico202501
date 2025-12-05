@@ -13,15 +13,22 @@
     <link rel="stylesheet" href="styles/stylehelice2.css">
     <link rel="stylesheet" href="styles/menu.css">
     <link rel="stylesheet" href="styles/desplegables.css">
-
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Leaflet.js para mapas -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
 
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
@@ -320,8 +327,7 @@
     <div class="neural-background">
         <canvas id="neuralCanvas"></canvas>
     </div>
-
-    <!-- Encabezado -->
+   <!-- Encabezado -->
     <header>
         <div class="header">
             <div onclick="window.location.href='/helice'">
@@ -356,11 +362,12 @@
             </div>
         </div>
         <nav class="nav">
-            <button class="nav-button " onclick="window.location.href='/helice'" id="inicio">Inicio</button>
+
+            <button class="nav-button" data-link="/helice" id="inicio"
+                onclick="window.location.href='/helice'">Inicio</button>
 
             <div class="dropdown menuG">
-                <button class="nav-button dropdown-btnG" id="directorioButton"
-                    data-link="/directorio">Directorio</button>
+                <button class="nav-button dropdown-btnG" data-link="/directorio">Directorio</button>
                 <div class="dropdown-menu dropdown-menuG">
                     <a href="/directorio">Entidades</a>
                     <a href="/directorioPersonas">Personas</a>
@@ -369,8 +376,7 @@
             <button class="nav-button" onclick="window.location.href='/proyectos'"
                 data-link="/proyectos">Proyectos</button>
             <button class="nav-button" onclick="window.location.href='/ofertaRegional'"
-                data-link="/ofertaRegional">Oferta
-                Regional</button>
+                data-link="/ofertaRegional">Oferta Regional</button>
             <div class="dropdown menuG">
                 <button class="nav-button dropdown-btnG" data-link="/retos">Innovación Abierta</button>
                 <div class="dropdown-menu dropdown-menuG">
@@ -392,10 +398,10 @@
 
             <button class="nav-button" id="btnEvaluador" style="display: none;" data-link="/portalEvaluadorUser"
                 onclick="window.location.href='/portalEvaluadorUser'">Evaluación</button>
+
         </nav>
+
     </header>
-
-
     <!-- Bienvenida y botones de acción -->
     <div class="welcome-container" id="welcome-container" style="display: none;">
         <div id="userPhoto" style="position: relative; display: inline-block; cursor: pointer; width: 5vw;">

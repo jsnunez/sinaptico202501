@@ -1,21 +1,34 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Convocatorias - SINAPTICO</title>
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <link rel="stylesheet" href="styles/stylehelice2.css">
+
   <link rel="stylesheet" href="styles/colores.css">
-  <link rel="stylesheet" href="styles/postulaciones.css">
+  <link rel="stylesheet" href="styles/stylehelice2.css">
+  <link rel="stylesheet" href="styles/desplegables.css">
+  <link rel="stylesheet" href="styles/menu.css">
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
   <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
-
-  <link rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Leaflet.js para mapas -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   <style>
     .convocatoria-card {
@@ -247,225 +260,232 @@
         flex-direction: column;
       }
     }
+ 
+    /* === CONTENEDOR PRINCIPAL === */
+    .perfil-content {
+      display: flex;
+      width: 90%;
+      max-width: 1200px;
+      min-height: 70vh;
+      margin: 3rem auto;
+      border-radius: 25px;
+      background: white;
+      overflow: hidden;
+      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.12);
+      padding: 0;
+    }
+
+    /* === SISTEMA DE DOS COLUMNAS === */
+    .perfil-columns {
+      display: grid;
+      grid-template-columns: 40% 60%;
+      width: 100%;
+    }
+
+    /* === COLUMNA IZQUIERDA  === */
+    .perfil-column-left {
+      /* background: linear-gradient(180deg, #1c3d70, #6a8bf8); */
+      background: var(--secondary-color);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 0;
+    }
+
+    .perfil-foto-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .perfil-foto-custom {
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: white;
+      padding: 10px;
+      box-shadow: 0px 6px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    /* === COLUMNA DERECHA === */
+    .perfil-column-right {
+      background: white;
+      padding: 50px;
+      display: flex;
+      align-items: flex-start;
+    }
+
+    .perfil-datos-custom {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+    }
+
+    #MiNombreCompleto {
+      font-size: 2.2rem;
+      font-weight: bold;
+      color: #222;
+    }
+
+    #MiPerfilProfesional {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: #555;
+      text-align: justify;
+    }
+
+    /* Caja con datos básicos */
+    .perfil-datos-custom>div {
+      background: rgba(193, 198, 255, 0.28);
+      padding: 20px;
+      border-radius: 12px;
+    }
+
+    .perfil-dato-linea-custom strong {
+      min-width: 150px;
+      display: inline-block;
+      font-weight: 700;
+    }
+
+    /* Botón */
+    .action-button {
+      background: #ff7b00;
+      color: #fff;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 16px;
+      width: fit-content;
+    }
+
+    .action-button:hover {
+      background: #d46300;
+    }
+
+    /* === Modal y hoja de vida === */
+    #iframeHojaVida {
+      width: 100%;
+      height: 700px;
+      border: none;
+    }
+
+    /* === Spinner === */
+    #page-spinner-overlay {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      background: rgba(255, 255, 255, 0.95);
+      z-index: 99999;
+      transition: opacity .4s ease;
+      -webkit-backdrop-filter: blur(2px);
+      backdrop-filter: blur(2px);
+    }
+
+    #page-spinner-overlay .spinner {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      border: 6px solid rgba(0, 0, 0, 0.08);
+      border-top-color: #007bff;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
   </style>
 </head>
 
 <body>
-    <!-- Encabezado -->
-    <header>
-        <div class="header">
-            <div onclick="window.location.href='/helice'">
-                <!-- <span class="logo-icon">⚡</span> -->
-                <img src="/img/logo1.png" alt="SINAPTICO" class="logo" style="height:8vh;">
-            </div>
-            <div style="display: flex; align-items: center; gap: 20px;">
-                <div style="font-size:1.5em;cursor:pointer;">
-                    <span id="icono-notif">🔔 <span
-                            style='background:red;color:white;border-radius:50%;padding:2px 7px;font-size:0.9em;'>0</span></span>
-                </div>
-                <div class="notificaciones" id="notificaciones"></div>
-
-
-                <div class="dropdown">
-                    <button id="userMenuBtn" style="display: flex; align-items: center;">
-                        <div id="userPhoto ">
-                            <img class="imagenPerfil" id="imagenPerfilSecundaria" src="img/sinfoto.jpg"
-                                alt="Foto de perfil" onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
-
-                        </div>
-                        <h3 id="nombreUsuarioHeader" style="color:white; margin-left:10px;">Usuario <i
-                                class="bi bi-chevron-down"></i> </h3>
-                    </button>
-
-                    <div class="dropdown-menu" id="userMenu">
-                        <a class="perfilUser" id="perfilUser">Perfil</a>
-                        <a href="/miEntidad" id="habilitarMiEmpresa" style="display: none;">Empresa</a>
-                        <a href="#" id="cerrarSesion">Cerrar sesión</a>
-                    </div>
-                </div>
-            </div>
+  <!-- Encabezado -->
+  <header>
+    <div class="header">
+      <div onclick="window.location.href='/helice'">
+        <!-- <span class="logo-icon">⚡</span> -->
+        <img src="/img/logo1.png" alt="SINAPTICO" class="logo" style="height:8vh;">
+      </div>
+      <div style="display: flex; align-items: center; gap: 20px;">
+        <div style="font-size:1.5em;cursor:pointer;">
+          <span id="icono-notif">🔔 <span
+              style='background:red;color:white;border-radius:50%;padding:2px 7px;font-size:0.9em;'>0</span></span>
         </div>
-        <nav class="nav">
+        <div class="notificaciones" id="notificaciones"></div>
 
-            <button class="nav-button" data-link="/helice" id="inicio"
-                onclick="window.location.href='/helice'">Inicio</button>
 
-            <div class="dropdown menuG">
-                <button class="nav-button dropdown-btnG" data-link="/directorio">Directorio</button>
-                <div class="dropdown-menu dropdown-menuG">
-                    <a href="/directorio">Entidades</a>
-                    <a href="/directorioPersonas">Personas</a>
-                </div>
+        <div class="dropdown">
+          <button id="userMenuBtn" style="display: flex; align-items: center;">
+            <div id="userPhoto ">
+              <img class="imagenPerfil" id="imagenPerfilSecundaria" src="img/sinfoto.jpg" alt="Foto de perfil"
+                onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
+
             </div>
-            <div class="dropdown menuG">
-                <button class="nav-button dropdown-btnG" data-link="/innovacion">Innovación Abierta</button>
-                <div class="dropdown-menu dropdown-menuG">
-                    <a href="/retosEmpresariales">Retos Empresariales</a>
-                    <a href="/innovacion">Muro de servicios</a>
-                </div>
-            </div>
+            <h3 id="nombreUsuarioHeader" style="color:white; margin-left:10px;">Usuario <i
+                class="bi bi-chevron-down"></i> </h3>
+          </button>
 
-
-            <div class="dropdown menuG">
-                <button class="nav-button dropdown-btnG" data-link="/conocimiento">Conocimiento Abierto</button>
-                <div class="dropdown-menu dropdown-menuG">
-                    <a href="/cursosVirtuales">Cursos</a>
-                    <a href="/biblioteca">Biblioteca</a>
-                </div>
-            <button class="nav-button" onclick="window.location.href='/convocatorias'">Convocatorias</button>
-
-            <button class="nav-button" onclick="window.location.href='/eventos'">Eventos</button>
-        </nav>
-
-    </header>
-    <style>
-        /* === CONTENEDOR PRINCIPAL === */
-        .perfil-content {
-            display: flex;
-            width: 90%;
-            max-width: 1200px;
-            min-height: 70vh;
-            margin: 3rem auto;
-            border-radius: 25px;
-            background: white;
-            overflow: hidden;
-            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.12);
-            padding: 0;
-        }
-
-        /* === SISTEMA DE DOS COLUMNAS === */
-        .perfil-columns {
-            display: grid;
-            grid-template-columns: 40% 60%;
-            width: 100%;
-        }
-
-        /* === COLUMNA IZQUIERDA  === */
-        .perfil-column-left {
-            /* background: linear-gradient(180deg, #1c3d70, #6a8bf8); */
-            background: var(--secondary-color);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 40px 0;
-        }
-
-        .perfil-foto-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .perfil-foto-custom {
-            width: 260px;
-            height: 260px;
-            border-radius: 50%;
-            object-fit: cover;
-            background: white;
-            padding: 10px;
-            box-shadow: 0px 6px 25px rgba(0, 0, 0, 0.15);
-        }
-
-        /* === COLUMNA DERECHA === */
-        .perfil-column-right {
-            background: white;
-            padding: 50px;
-            display: flex;
-            align-items: flex-start;
-        }
-
-        .perfil-datos-custom {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-        }
-
-        #MiNombreCompleto {
-            font-size: 2.2rem;
-            font-weight: bold;
-            color: #222;
-        }
-
-        #MiPerfilProfesional {
-            font-size: 1.1rem;
-            line-height: 1.6;
-            color: #555;
-            text-align: justify;
-        }
-
-        /* Caja con datos básicos */
-        .perfil-datos-custom>div {
-            background: rgba(193, 198, 255, 0.28);
-            padding: 20px;
-            border-radius: 12px;
-        }
-
-        .perfil-dato-linea-custom strong {
-            min-width: 150px;
-            display: inline-block;
-            font-weight: 700;
-        }
-
-        /* Botón */
-        .action-button {
-            background: #ff7b00;
-            color: #fff;
-            padding: 12px 24px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 16px;
-            width: fit-content;
-        }
-
-        .action-button:hover {
-            background: #d46300;
-        }
-
-        /* === Modal y hoja de vida === */
-        #iframeHojaVida {
-            width: 100%;
-            height: 700px;
-            border: none;
-        }
-
-        /* === Spinner === */
-        #page-spinner-overlay {
-            position: fixed;
-            inset: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            background: rgba(255, 255, 255, 0.95);
-            z-index: 99999;
-            transition: opacity .4s ease;
-            -webkit-backdrop-filter: blur(2px);
-            backdrop-filter: blur(2px);
-        }
-
-        #page-spinner-overlay .spinner {
-            width: 64px;
-            height: 64px;
-            border-radius: 50%;
-            border: 6px solid rgba(0, 0, 0, 0.08);
-            border-top-color: #007bff;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-    </style>
-    <!-- Spinner -->
-    <div id="page-spinner-overlay" aria-hidden="true" role="status" aria-label="Cargando">
-        <div class="spinner"></div>
-        <div class="spinner-text">Cargando...</div>
+          <div class="dropdown-menu" id="userMenu">
+            <a class="perfilUser" id="perfilUser">Perfil</a>
+            <a id="habilitarMiEmpresa" style="display: none;">Empresa</a>
+            <a href="#" id="cerrarSesion">Cerrar sesión</a>
+          </div>
+        </div>
+      </div>
     </div>
+    <nav class="nav">
+
+      <button class="nav-button" data-link="/helice" id="inicio"
+        onclick="window.location.href='/helice'">Inicio</button>
+
+      <div class="dropdown menuG">
+        <button class="nav-button dropdown-btnG" id="directorioButton" data-link="/directorio">Directorio</button>
+        <div class="dropdown-menu dropdown-menuG">
+          <a href="/directorio">Entidades</a>
+          <a href="/directorioPersonas">Personas</a>
+        </div>
+      </div>
+      <button class="nav-button" onclick="window.location.href='/proyectos'" data-link="/proyectos">Proyectos</button>
+      <button class="nav-button" onclick="window.location.href='/ofertaRegional'" data-link="/ofertaRegional">Oferta
+        Regional</button>
+      <div class="dropdown menuG">
+        <button class="nav-button dropdown-btnG" data-link="/retos">Innovación Abierta</button>
+        <div class="dropdown-menu dropdown-menuG">
+          <a href="/retosEmpresariales">Retos Empresariales</a>
+          <a href="/retosAula">Retos de Aula</a>
+        </div>
+      </div>
+
+      <div class="dropdown menuG">
+        <button class="nav-button dropdown-btnG" data-link="/conocimiento">Conocimiento Abierto</button>
+        <div class="dropdown-menu dropdown-menuG">
+          <a href="/conocimientoCursosVirtuales" data-link="/cursosVirtuales">Cursos</a>
+          <a href="/conocimientoBiblioteca" data-link="/conocimientoBiblioteca">Biblioteca</a>
+        </div>
+      </div>
+      <button class="nav-button" onclick="window.location.href='/convocatorias'"  data-link="/convocatorias">Convocatorias</button>
+
+      <button class="nav-button" onclick="window.location.href='/eventos'" data-link="/eventos">Eventos</button>
+
+      <button class="nav-button" id="btnEvaluador" style="display: none;" data-link="/portalEvaluadorUser"
+        onclick="window.location.href='/portalEvaluadorUser'">Evaluación</button>
+
+    </nav>
+  </header>
+
+
+  <!-- Spinner -->
+  <div id="page-spinner-overlay" aria-hidden="true" role="status" aria-label="Cargando">
+    <div class="spinner"></div>
+    <div class="spinner-text">Cargando...</div>
+  </div>
 
   <!-- Contenido Principal -->
   <div class="main-content">
@@ -481,8 +501,8 @@
       <div class="filters-row">
         <div class="filter-group">
           <label class="filter-label">Buscar convocatoria</label>
-          <input type="text" id="buscarConvocatoria" class="filter-input" 
-                 placeholder="Título, descripción, tipo..." onkeyup="filtrarConvocatorias()">
+          <input type="text" id="buscarConvocatoria" class="filter-input" placeholder="Título, descripción, tipo..."
+            onkeyup="filtrarConvocatorias()">
         </div>
         <div class="filter-group">
           <label class="filter-label">Estado</label>
@@ -516,7 +536,7 @@
     <div class="modal-content" style="max-width:900px;">
       <span class="close" id="cerrarModalPostulacion">&times;</span>
       <h2>Ficha Técnica de PPI - Postulación a Convocatoria</h2>
-      
+
       <div id="infoConvocatoria" style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
         <!-- Info de la convocatoria seleccionada -->
       </div>
@@ -531,11 +551,13 @@
         <div class="input-row">
           <div class="input-box">
             <label for="nombreLider">Nombre y Cargo</label>
-            <input type="text" id="nombreLider" name="nombreLider" placeholder="Ingrese el nombre del Líder PPI" required>
+            <input type="text" id="nombreLider" name="nombreLider" placeholder="Ingrese el nombre del Líder PPI"
+              required>
           </div>
           <div class="input-box">
             <label for="telefonoLider">Teléfono / Celular</label>
-            <input disabled type="text" id="telefonoLider" name="telefonoLider" placeholder="Ingrese el teléfono o celular" required>
+            <input disabled type="text" id="telefonoLider" name="telefonoLider"
+              placeholder="Ingrese el teléfono o celular" required>
           </div>
         </div>
 
@@ -549,16 +571,18 @@
 
       <div class="form-section">
         <h3 class="section-title">Información del Proyecto</h3>
-        
+
         <div class="input-box full-width">
           <label for="nombreProyecto">Nombre del Proyecto</label>
-          <input type="text" id="nombreProyecto" name="nombreProyecto" placeholder="Ingrese el nombre del proyecto" required>
+          <input type="text" id="nombreProyecto" name="nombreProyecto" placeholder="Ingrese el nombre del proyecto"
+            required>
         </div>
 
         <div class="input-row">
           <div class="input-box">
             <label for="duracionProyecto">Duración (meses)</label>
-            <input type="number" id="duracionProyecto" name="duracionProyecto" placeholder="12" min="1" max="60" required>
+            <input type="number" id="duracionProyecto" name="duracionProyecto" placeholder="12" min="1" max="60"
+              required>
           </div>
           <div class="input-box">
             <label for="presupuestoProyecto">Presupuesto Solicitado</label>
@@ -568,27 +592,27 @@
 
         <div class="input-box full-width">
           <label for="objetivoGeneral">Objetivo General</label>
-          <textarea id="objetivoGeneral" name="objetivoGeneral" rows="3" 
-                    placeholder="Describa el objetivo principal del proyecto" required></textarea>
+          <textarea id="objetivoGeneral" name="objetivoGeneral" rows="3"
+            placeholder="Describa el objetivo principal del proyecto" required></textarea>
         </div>
 
         <div class="input-box full-width">
           <label for="descripcionProyecto">Descripción del Proyecto</label>
-          <textarea id="descripcionProyecto" name="descripcionProyecto" rows="4" 
-                    placeholder="Describa detalladamente el proyecto" required></textarea>
+          <textarea id="descripcionProyecto" name="descripcionProyecto" rows="4"
+            placeholder="Describa detalladamente el proyecto" required></textarea>
         </div>
 
         <div class="input-box full-width">
           <label for="justificacionProyecto">Justificación</label>
-          <textarea id="justificacionProyecto" name="justificacionProyecto" rows="3" 
-                    placeholder="Explique la necesidad y justificación del proyecto" required></textarea>
+          <textarea id="justificacionProyecto" name="justificacionProyecto" rows="3"
+            placeholder="Explique la necesidad y justificación del proyecto" required></textarea>
         </div>
 
         <div class="input-row">
           <div class="input-box">
             <label for="sectoresBeneficiados">Sectores Beneficiados</label>
-            <input type="text" id="sectoresBeneficiados" name="sectoresBeneficiados" 
-                   placeholder="Ej: Salud, Educación, Agricultura" required>
+            <input type="text" id="sectoresBeneficiados" name="sectoresBeneficiados"
+              placeholder="Ej: Salud, Educación, Agricultura" required>
           </div>
           <div class="input-box">
             <label for="nivelTRL">Nivel TRL</label>
@@ -610,7 +634,7 @@
 
       <div class="form-section">
         <h3 class="section-title">Equipo de Trabajo</h3>
-        
+
         <div class="input-row">
           <div class="input-box">
             <label for="equipoTecnico">Equipo Técnico (personas)</label>
@@ -624,24 +648,24 @@
 
         <div class="input-box full-width">
           <label for="experienciaEquipo">Experiencia del Equipo</label>
-          <textarea id="experienciaEquipo" name="experienciaEquipo" rows="3" 
-                    placeholder="Describa la experiencia y competencias del equipo" required></textarea>
+          <textarea id="experienciaEquipo" name="experienciaEquipo" rows="3"
+            placeholder="Describa la experiencia y competencias del equipo" required></textarea>
         </div>
       </div>
 
       <div class="form-section">
         <h3 class="section-title">Resultados Esperados</h3>
-        
+
         <div class="input-box full-width">
           <label for="resultadosEsperados">Resultados y Productos Esperados</label>
-          <textarea id="resultadosEsperados" name="resultadosEsperados" rows="4" 
-                    placeholder="Describa los resultados, productos y impactos esperados" required></textarea>
+          <textarea id="resultadosEsperados" name="resultadosEsperados" rows="4"
+            placeholder="Describa los resultados, productos y impactos esperados" required></textarea>
         </div>
 
         <div class="input-box full-width">
           <label for="indicadoresExito">Indicadores de Éxito</label>
-          <textarea id="indicadoresExito" name="indicadoresExito" rows="2" 
-                    placeholder="Defina los indicadores para medir el éxito del proyecto" required></textarea>
+          <textarea id="indicadoresExito" name="indicadoresExito" rows="2"
+            placeholder="Defina los indicadores para medir el éxito del proyecto" required></textarea>
         </div>
       </div>
 
@@ -697,281 +721,281 @@
     </div>
   </div>
 
-      <footer class="footer">
+  <footer class="footer">
 
-        <div class="footer-content">
+    <div class="footer-content">
 
-            <!-- Izquierda -->
-            <div class="footer-left">
-                <img src="/img/logo1.png" alt="SINAPTICO" class="footer-logo">
-                <p class="footer-desc">Conectando conocimiento, innovación y tecnología.</p>
+      <!-- Izquierda -->
+      <div class="footer-left">
+        <img src="/img/logo1.png" alt="SINAPTICO" class="footer-logo">
+        <p class="footer-desc">Conectando conocimiento, innovación y tecnología.</p>
 
 
-            </div>
+      </div>
 
-            <!-- Enlaces en dos columnas -->
-            <div class="footer-links">
-                <h4>Explorar</h4>
+      <!-- Enlaces en dos columnas -->
+      <div class="footer-links">
+        <h4>Explorar</h4>
 
-                <div class="links-grid">
-                    <a href="/helice">Inicio</a>
-                    <a href="/directorio">Directorio</a>
-                    <a href="/proyectos">Proyectos</a>
-                    <a href="/convocatorias">Convocatorias</a>
-           
-                </div>
-            </div>
-
-            <!-- Redes sociales -->
-            <div class="footer-social">
-                <h4>Síguenos</h4>
-                <div class="social-icons">
-                    <a href="#"><i class="bi bi-facebook"></i></a>
-                    <a href="#"><i class="bi bi-twitter"></i></a>
-                    <a href="#"><i class="bi bi-linkedin"></i></a>
-                    <a href="#"><i class="bi bi-instagram"></i></a>
-                </div>
-            </div>
-
-            <!-- Contacto -->
-            <div class="footer-contact">
-                <h4>Contáctanos</h4>
-
-                <p>Cra.19 #35-02 - UIS Bucarica</p>
-                <p>Bucaramanga, Colombia</p>
-
-                <div class="contact-item">
-                    <i class="bi bi-envelope"></i>
-                    <span>info@cpcoriente.org</span>
-                </div>
-
-                <div class="contact-item">
-                    <i class="bi bi-telephone"></i>
-                    <span>+57 315 494 0296</span>
-                </div>
-            </div>
+        <div class="links-grid">
+          <a href="/helice">Inicio</a>
+          <a href="/directorio">Directorio</a>
+          <a href="/proyectos">Proyectos</a>
+          <a href="/convocatorias">Convocatorias</a>
 
         </div>
+      </div>
 
-        <div class="footer-bottom">
-            <img src="/logos/logoCPCblanco.png" alt="SINAPTICO" class="footer-logoCPC">
-            <p>© 2025 CPC Oriente. Todos los derechos reservados.</p>
+      <!-- Redes sociales -->
+      <div class="footer-social">
+        <h4>Síguenos</h4>
+        <div class="social-icons">
+          <a href="#"><i class="bi bi-facebook"></i></a>
+          <a href="#"><i class="bi bi-twitter"></i></a>
+          <a href="#"><i class="bi bi-linkedin"></i></a>
+          <a href="#"><i class="bi bi-instagram"></i></a>
+        </div>
+      </div>
 
+      <!-- Contacto -->
+      <div class="footer-contact">
+        <h4>Contáctanos</h4>
+
+        <p>Cra.19 #35-02 - UIS Bucarica</p>
+        <p>Bucaramanga, Colombia</p>
+
+        <div class="contact-item">
+          <i class="bi bi-envelope"></i>
+          <span>info@cpcoriente.org</span>
         </div>
 
-    </footer>
-   <!-- Utilidades-->
-        <script src="/js/habilitarEvaluador.js"></script>
+        <div class="contact-item">
+          <i class="bi bi-telephone"></i>
+          <span>+57 315 494 0296</span>
+        </div>
+      </div>
 
-    <script>
-        // =========================
-        // Utilidades
-        // =========================
-        function obtenerCookie(nombre) {
-            const nombreCookie = `${nombre}=`;
-            const cookies = document.cookie.split(';');
-            for (let i = 0; i < cookies.length; i++) {
-                let cookie = cookies[i].trim();
-                if (cookie.indexOf(nombreCookie) === 0) {
-                    return cookie.substring(nombreCookie.length, cookie.length);
-                }
-            }
-            return null;
+    </div>
+
+    <div class="footer-bottom">
+      <img src="/logos/logoCPCblanco.png" alt="SINAPTICO" class="footer-logoCPC">
+      <p>© 2025 CPC Oriente. Todos los derechos reservados.</p>
+
+    </div>
+
+  </footer>
+  <!-- Utilidades-->
+  <script src="/js/habilitarEvaluador.js"></script>
+
+  <script>
+    // =========================
+    // Utilidades
+    // =========================
+    function obtenerCookie(nombre) {
+      const nombreCookie = `${nombre}=`;
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        let cookie = cookies[i].trim();
+        if (cookie.indexOf(nombreCookie) === 0) {
+          return cookie.substring(nombreCookie.length, cookie.length);
+        }
+      }
+      return null;
+    }
+
+    const userId = obtenerCookie("userId");
+
+    // =========================
+    // Inicialización de usuario (nombre, foto) y carga de proyectos
+    // =========================
+    (async () => {
+      try {
+        // Cargar usuario (para cabecera y foto)
+        const resUser = await fetch(`/api/user/${userId}`);
+        const dataUser = await resUser.json();
+
+        if (dataUser?.name) {
+          document.getElementById('nombreUsuarioHeader').innerText = ` ${dataUser.name.split(" ")[0]}`;
         }
 
-        const userId = obtenerCookie("userId");
- 
-        // =========================
-        // Inicialización de usuario (nombre, foto) y carga de proyectos
-        // =========================
-        (async () => {
-            try {
-                // Cargar usuario (para cabecera y foto)
-                const resUser = await fetch(`/api/user/${userId}`);
-                const dataUser = await resUser.json();
+        document.getElementById("imagenPerfilSecundaria").src = dataUser.fotoPerfil ? "photo/" + dataUser.fotoPerfil : "photo/sinfoto.jpg";
 
-                if (dataUser?.name) {
-                    document.getElementById('nombreUsuarioHeader').innerText = ` ${dataUser.name.split(" ")[0]}`;
-                }
-
-                document.getElementById("imagenPerfilSecundaria").src = dataUser.fotoPerfil ? "photo/" + dataUser.fotoPerfil : "photo/sinfoto.jpg";
-
-                if (dataUser?.fotoPerfil) {
-                    const img = document.getElementById('imagenPerfil');
-                    if (img) img.src = dataUser.fotoPerfil;
-                }
-
-                // Determinar entidad y setear input nombreEntidad
-                let entidadId = null;
-                const resUE = await fetch(`/api/usuarioempresa/user/${userId}`);
-                const dataUE = await resUE.json();
-
-                if (Array.isArray(dataUE) && dataUE.length > 0 && dataUE[0].empresa) {
-                    entidadId = dataUE[0].empresa.id;
-                } else {
-                    entidadId = 'null';
-                }
-
-                const inputEntidad = document.getElementById('nombreEntidad');
-                if (inputEntidad) inputEntidad.value = entidadId;
-
-                console.log('Entidad ID seleccionada:', entidadId);
-
-
-            } catch (err) {
-                console.error('Error inicializando la vista:', err);
-            }
-        })();
-
-        // =========================
-        // Cerrar modal de postulaciones
-        // =========================
-        const btnCerrar = document.getElementById('cerrarModalPostulaciones');
-        if (btnCerrar) {
-            btnCerrar.onclick = function () {
-                const modal = document.getElementById('modalPostulaciones');
-                if (modal) modal.style.display = 'none';
-            };
+        if (dataUser?.fotoPerfil) {
+          const img = document.getElementById('imagenPerfil');
+          if (img) img.src = dataUser.fotoPerfil;
         }
 
-        // =========================
-        // Helpers para renderizar select de Líder
-        // =========================
-        async function renderLiderEmpresa(empresaId) {
-            const nombreLiderInput = document.getElementById('nombreLider');
-            const correoLiderInput = document.getElementById('correoLider');
-            const telefonoLiderInput = document.getElementById('telefonoLider');
+        // Determinar entidad y setear input nombreEntidad
+        let entidadId = null;
+        const resUE = await fetch(`/api/usuarioempresa/user/${userId}`);
+        const dataUE = await resUE.json();
 
-            const selectLider = document.createElement('select');
-            selectLider.id = 'nombreLider';
-            selectLider.name = 'nombreLider';
-            selectLider.required = true;
-
-            const res = await fetch(`/api/usuarioempresa/empresa/${empresaId}`);
-            const data = await res.json();
-
-            (data || []).forEach(item => {
-                const option = document.createElement('option');
-                option.value = item.User.id;
-                option.text = `${item.User.name} (${item.Cargo?.nombre || 'Sin cargo'})`;
-
-                option.dataset.email = item.User.email || '';
-                option.dataset.telefono = item.User.telefono || '';
-                selectLider.appendChild(option);
-            });
-
-            // Seleccionar el primero y actualizar campos
-            if (selectLider.options.length > 0) {
-                const selectedOption = selectLider.options[0];
-                if (correoLiderInput) correoLiderInput.value = selectedOption.dataset.email || '';
-                if (telefonoLiderInput) telefonoLiderInput.value = selectedOption.dataset.telefono || '';
-            } else {
-                if (correoLiderInput) correoLiderInput.value = '';
-                if (telefonoLiderInput) telefonoLiderInput.value = '';
-            }
-
-            // Cambiar correo y teléfono al cambiar líder
-            selectLider.onchange = function () {
-                const selectedOption = selectLider.options[selectLider.selectedIndex];
-                if (correoLiderInput) correoLiderInput.value = selectedOption.dataset.email || '';
-                if (telefonoLiderInput) telefonoLiderInput.value = selectedOption.dataset.telefono || '';
-            };
-
-            if (nombreLiderInput && nombreLiderInput.parentNode) {
-                nombreLiderInput.parentNode.replaceChild(selectLider, nombreLiderInput);
-            } else {
-                // Si no existe el input a reemplazar, intenta anexar en un contenedor conocido
-                const cont = document.getElementById('contenedorLider') || document.body;
-                cont.appendChild(selectLider);
-            }
+        if (Array.isArray(dataUE) && dataUE.length > 0 && dataUE[0].empresa) {
+          entidadId = dataUE[0].empresa.id;
+        } else {
+          entidadId = 'null';
         }
 
-        async function renderLiderIndependiente() {
-            const nombreLiderInput = document.getElementById('nombreLider');
-            const correoLiderInput = document.getElementById('correoLider');
-            const telefonoLiderInput = document.getElementById('telefonoLider');
+        const inputEntidad = document.getElementById('nombreEntidad');
+        if (inputEntidad) inputEntidad.value = entidadId;
 
-            const selectLider = document.createElement('select');
-            selectLider.id = 'nombreLider';
-            selectLider.name = 'nombreLider';
-            selectLider.required = true;
+        console.log('Entidad ID seleccionada:', entidadId);
 
-            const uid = obtenerCookie("userId");
-            const resUser = await fetch(`/api/user/${uid}`);
-            const user = await resUser.json();
 
-            const optionUsuario = document.createElement('option');
-            optionUsuario.value = uid;
+      } catch (err) {
+        console.error('Error inicializando la vista:', err);
+      }
+    })();
 
-            // Tomar nombre desde #bienvenido si existe ("Hola Nombre")
+    // =========================
+    // Cerrar modal de postulaciones
+    // =========================
+    const btnCerrar = document.getElementById('cerrarModalPostulaciones');
+    if (btnCerrar) {
+      btnCerrar.onclick = function () {
+        const modal = document.getElementById('modalPostulaciones');
+        if (modal) modal.style.display = 'none';
+      };
+    }
 
-            optionUsuario.dataset.name = user.name || '';
-            optionUsuario.dataset.email = user.email || '';
-            optionUsuario.dataset.telefono = user.telefono || '';
-            selectLider.appendChild(optionUsuario);
-            optionUsuario.text = user.name || 'Usuario Actual';
+    // =========================
+    // Helpers para renderizar select de Líder
+    // =========================
+    async function renderLiderEmpresa(empresaId) {
+      const nombreLiderInput = document.getElementById('nombreLider');
+      const correoLiderInput = document.getElementById('correoLider');
+      const telefonoLiderInput = document.getElementById('telefonoLider');
 
-            // Rellenar inputs con datos del usuario
-            if (nombreLiderInput) nombreLiderInput.value = user.name || '';
-            if (correoLiderInput) correoLiderInput.value = user.email || '';
-            if (telefonoLiderInput) telefonoLiderInput.value = user.telefono || '';
+      const selectLider = document.createElement('select');
+      selectLider.id = 'nombreLider';
+      selectLider.name = 'nombreLider';
+      selectLider.required = true;
 
-            // Listener (aunque solo haya uno)
-            selectLider.onchange = function () {
+      const res = await fetch(`/api/usuarioempresa/empresa/${empresaId}`);
+      const data = await res.json();
 
-                const selectedOption = selectLider.options[selectLider.selectedIndex];
-                if (correoLiderInput) correoLiderInput.value = selectedOption.dataset.email || '';
-                if (telefonoLiderInput) telefonoLiderInput.value = selectedOption.dataset.telefono || '';
-            };
+      (data || []).forEach(item => {
+        const option = document.createElement('option');
+        option.value = item.User.id;
+        option.text = `${item.User.name} (${item.Cargo?.nombre || 'Sin cargo'})`;
 
-            if (nombreLiderInput && nombreLiderInput.parentNode) {
-                nombreLiderInput.parentNode.replaceChild(selectLider, nombreLiderInput);
-            } else {
-                const cont = document.getElementById('contenedorLider') || document.body;
-                cont.appendChild(selectLider);
-            }
+        option.dataset.email = item.User.email || '';
+        option.dataset.telefono = item.User.telefono || '';
+        selectLider.appendChild(option);
+      });
+
+      // Seleccionar el primero y actualizar campos
+      if (selectLider.options.length > 0) {
+        const selectedOption = selectLider.options[0];
+        if (correoLiderInput) correoLiderInput.value = selectedOption.dataset.email || '';
+        if (telefonoLiderInput) telefonoLiderInput.value = selectedOption.dataset.telefono || '';
+      } else {
+        if (correoLiderInput) correoLiderInput.value = '';
+        if (telefonoLiderInput) telefonoLiderInput.value = '';
+      }
+
+      // Cambiar correo y teléfono al cambiar líder
+      selectLider.onchange = function () {
+        const selectedOption = selectLider.options[selectLider.selectedIndex];
+        if (correoLiderInput) correoLiderInput.value = selectedOption.dataset.email || '';
+        if (telefonoLiderInput) telefonoLiderInput.value = selectedOption.dataset.telefono || '';
+      };
+
+      if (nombreLiderInput && nombreLiderInput.parentNode) {
+        nombreLiderInput.parentNode.replaceChild(selectLider, nombreLiderInput);
+      } else {
+        // Si no existe el input a reemplazar, intenta anexar en un contenedor conocido
+        const cont = document.getElementById('contenedorLider') || document.body;
+        cont.appendChild(selectLider);
+      }
+    }
+
+    async function renderLiderIndependiente() {
+      const nombreLiderInput = document.getElementById('nombreLider');
+      const correoLiderInput = document.getElementById('correoLider');
+      const telefonoLiderInput = document.getElementById('telefonoLider');
+
+      const selectLider = document.createElement('select');
+      selectLider.id = 'nombreLider';
+      selectLider.name = 'nombreLider';
+      selectLider.required = true;
+
+      const uid = obtenerCookie("userId");
+      const resUser = await fetch(`/api/user/${uid}`);
+      const user = await resUser.json();
+
+      const optionUsuario = document.createElement('option');
+      optionUsuario.value = uid;
+
+      // Tomar nombre desde #bienvenido si existe ("Hola Nombre")
+
+      optionUsuario.dataset.name = user.name || '';
+      optionUsuario.dataset.email = user.email || '';
+      optionUsuario.dataset.telefono = user.telefono || '';
+      selectLider.appendChild(optionUsuario);
+      optionUsuario.text = user.name || 'Usuario Actual';
+
+      // Rellenar inputs con datos del usuario
+      if (nombreLiderInput) nombreLiderInput.value = user.name || '';
+      if (correoLiderInput) correoLiderInput.value = user.email || '';
+      if (telefonoLiderInput) telefonoLiderInput.value = user.telefono || '';
+
+      // Listener (aunque solo haya uno)
+      selectLider.onchange = function () {
+
+        const selectedOption = selectLider.options[selectLider.selectedIndex];
+        if (correoLiderInput) correoLiderInput.value = selectedOption.dataset.email || '';
+        if (telefonoLiderInput) telefonoLiderInput.value = selectedOption.dataset.telefono || '';
+      };
+
+      if (nombreLiderInput && nombreLiderInput.parentNode) {
+        nombreLiderInput.parentNode.replaceChild(selectLider, nombreLiderInput);
+      } else {
+        const cont = document.getElementById('contenedorLider') || document.body;
+        cont.appendChild(selectLider);
+      }
+    }
+
+    // =========================
+    // Listeners de cambio
+    // =========================
+    // Cambiar líderes al cambiar el select de entidad (nombreEntidad)
+    document.addEventListener('change', async function (e) {
+      if (e.target && e.target.id === 'nombreEntidad') {
+        const empresaId = e.target.value;
+        if (empresaId && empresaId !== "null") {
+          await renderLiderEmpresa(empresaId);
+        } else {
+          await renderLiderIndependiente();
         }
+      }
+    });
 
-        // =========================
-        // Listeners de cambio
-        // =========================
-        // Cambiar líderes al cambiar el select de entidad (nombreEntidad)
-        document.addEventListener('change', async function (e) {
-            if (e.target && e.target.id === 'nombreEntidad') {
-                const empresaId = e.target.value;
-                if (empresaId && empresaId !== "null") {
-                    await renderLiderEmpresa(empresaId);
-                } else {
-                    await renderLiderIndependiente();
-                }
-            }
-        });
+    // Cambiar correo y teléfono al cambiar líder (nombreLider), incluso si no cambia la entidad
+    document.addEventListener('change', function (e) {
+      if (e.target && e.target.id === 'nombreLider') {
+        const selectedOption = e.target.options[e.target.selectedIndex];
+        const correoLiderInput = document.getElementById('correoLider');
+        const telefonoLiderInput = document.getElementById('telefonoLider');
+        if (correoLiderInput) correoLiderInput.value = selectedOption.dataset.email || '';
+        if (telefonoLiderInput) telefonoLiderInput.value = selectedOption.dataset.telefono || '';
+      }
+    });
 
-        // Cambiar correo y teléfono al cambiar líder (nombreLider), incluso si no cambia la entidad
-        document.addEventListener('change', function (e) {
-            if (e.target && e.target.id === 'nombreLider') {
-                const selectedOption = e.target.options[e.target.selectedIndex];
-                const correoLiderInput = document.getElementById('correoLider');
-                const telefonoLiderInput = document.getElementById('telefonoLider');
-                if (correoLiderInput) correoLiderInput.value = selectedOption.dataset.email || '';
-                if (telefonoLiderInput) telefonoLiderInput.value = selectedOption.dataset.telefono || '';
-            }
-        });
-
-        // =========================
-        // (Opcional) Si deseas forzar que al inicio se renderice el líder acorde al valor cargado de nombreEntidad
-        // =========================
-        window.addEventListener('DOMContentLoaded', async () => {
-            const inputEntidad = document.getElementById('nombreEntidad');
-            if (inputEntidad) {
-                if (inputEntidad.value && inputEntidad.value !== 'null') {
-                    await renderLiderEmpresa(inputEntidad.value);
-                } else {
-                    await renderLiderIndependiente();
-                }
-            }
-        });
-    </script>
+    // =========================
+    // (Opcional) Si deseas forzar que al inicio se renderice el líder acorde al valor cargado de nombreEntidad
+    // =========================
+    window.addEventListener('DOMContentLoaded', async () => {
+      const inputEntidad = document.getElementById('nombreEntidad');
+      if (inputEntidad) {
+        if (inputEntidad.value && inputEntidad.value !== 'null') {
+          await renderLiderEmpresa(inputEntidad.value);
+        } else {
+          await renderLiderIndependiente();
+        }
+      }
+    });
+  </script>
 
   <script>
     // Variables globales
@@ -995,13 +1019,13 @@
             const fechaCierre = new Date(conv.fechaCierre || conv.fechaLimite);
             const hoy = new Date();
             let estado = 'cerrada';
-            
+
             if (fechaApertura > hoy) {
               estado = 'proximamente';
             } else if (fechaCierre > hoy) {
               estado = 'abierta';
             }
-            
+
             return {
               id: conv.id,
               titulo: conv.titulo || conv.nombre,
@@ -1112,19 +1136,19 @@
     // Verificar postulaciones existentes para todas las convocatorias
     async function verificarPostulacionesExistentes() {
       if (!convocatoriasFiltradas.length) return;
-      
+
       try {
         const promises = convocatoriasFiltradas.map(async (convocatoria) => {
           const yaPostulado = await verificarPostulacionExistente(convocatoria.id);
           return { id: convocatoria.id, yaPostulado };
         });
-        
+
         const resultados = await Promise.all(promises);
-        
+
         resultados.forEach(resultado => {
           const boton = document.getElementById(`btnPostular${resultado.id}`);
           const texto = document.getElementById(`textoBoton${resultado.id}`);
-          
+
           if (boton && texto && resultado.yaPostulado) {
             boton.disabled = true;
             boton.style.background = '#6c757d';
@@ -1141,7 +1165,7 @@
     function cargarTiposConvocatoria() {
       const tipos = [...new Set(convocatorias.map(c => c.tipoConvocatoria.nombre))];
       const select = document.getElementById('filtroTipo');
-      
+
       // Limpiar opciones existentes excepto la primera
       while (select.children.length > 1) {
         select.removeChild(select.lastChild);
@@ -1158,7 +1182,7 @@
     // Renderizar convocatorias
     function renderizarConvocatorias() {
       const container = document.getElementById('listaConvocatorias');
-      
+
       if (convocatoriasFiltradas.length === 0) {
         container.innerHTML = `
           <div class="no-convocatorias">
@@ -1174,10 +1198,10 @@
         const fechaCierre = new Date(convocatoria.fechaCierre);
         const hoy = new Date();
         const diasRestantes = Math.ceil((fechaCierre - hoy) / (1000 * 60 * 60 * 24));
-        
+
         let estadoInfo = '';
         let puedePostular = false;
-        
+
         switch (convocatoria.estado) {
           case 'abierta':
             estadoInfo = `<span class="convocatoria-status status-abierta">Abierta - ${diasRestantes} días restantes</span>`;
@@ -1247,7 +1271,7 @@
       const tipo = document.getElementById('filtroTipo').value;
 
       convocatoriasFiltradas = convocatorias.filter(convocatoria => {
-        const coincideBusqueda = !busqueda || 
+        const coincideBusqueda = !busqueda ||
           convocatoria.titulo.toLowerCase().includes(busqueda) ||
           convocatoria.descripcion.toLowerCase().includes(busqueda) ||
           convocatoria.tipoConvocatoria.nombre.toLowerCase().includes(busqueda);
@@ -1273,36 +1297,36 @@
     // Ver detalles de convocatoria
     function verDetallesConvocatoria(id) {
       const convocatoria = convocatorias.find(c => c.id === id);
-      
+
       let urlInfo = '';
       if (convocatoria.urlConvocatoria) {
-        const url = convocatoria.urlConvocatoria.startsWith('http') 
-          ? convocatoria.urlConvocatoria 
+        const url = convocatoria.urlConvocatoria.startsWith('http')
+          ? convocatoria.urlConvocatoria
           : `https://${convocatoria.urlConvocatoria}`;
         urlInfo = `<p><strong>URL:</strong> <a href="${url}" target="_blank" style="color: #007bff;">${url}</a></p>`;
       }
-      
-      const documentosInfo = convocatoria.documentosRequeridos?.length > 0 
+
+      const documentosInfo = convocatoria.documentosRequeridos?.length > 0
         ? `<div style="margin-bottom: 15px;">
              <h4 style="color: #007bff; margin-bottom: 10px;">Documentos Requeridos</h4>
              <ul>${convocatoria.documentosRequeridos.map(doc => `<li>${doc}</li>`).join('')}</ul>
-           </div>` 
+           </div>`
         : '';
-      
-      const contactoInfo = convocatoria.contacto 
+
+      const contactoInfo = convocatoria.contacto
         ? `<div style="margin-bottom: 15px;">
              <h4 style="color: #007bff; margin-bottom: 10px;">Contacto</h4>
              <p style="white-space: pre-line;">${convocatoria.contacto}</p>
            </div>`
         : '';
-      
-      const observacionesInfo = convocatoria.observaciones 
+
+      const observacionesInfo = convocatoria.observaciones
         ? `<div style="margin-bottom: 15px;">
              <h4 style="color: #007bff; margin-bottom: 10px;">Observaciones</h4>
              <p style="white-space: pre-line;">${convocatoria.observaciones}</p>
            </div>`
         : '';
-      
+
       Swal.fire({
         title: convocatoria.titulo,
         html: `
@@ -1371,11 +1395,11 @@
     async function abrirModalPostulacion(id) {
       // Verificar si ya tiene una postulación
       const yaPostulado = await verificarPostulacionExistente(id);
-      
+
       if (yaPostulado) {
         const response = await fetch(`/api/convocatoria-proyectos/verificar/${userId}/${id}`);
         const data = await response.json();
-        
+
         Swal.fire({
           icon: 'info',
           title: 'Ya has postulado',
@@ -1392,7 +1416,7 @@
       }
 
       convocatoriaSeleccionada = convocatorias.find(c => c.id === id);
-      
+
       // Mostrar información de la convocatoria
       document.getElementById('infoConvocatoria').innerHTML = `
         <h4 style="margin: 0 0 10px 0; color: #007bff;">Postulación a: ${convocatoriaSeleccionada.titulo}</h4>
@@ -1406,7 +1430,7 @@
 
       // Cargar datos del usuario
       cargarDatosUsuario();
-      
+
       document.getElementById('modalPostulacion').style.display = 'block';
     }
 
@@ -1416,7 +1440,7 @@
         const response = await fetch(`/api/user/${userId}`);
         if (response.ok) {
           const usuario = await response.json();
-          
+
           // Cargar información de la entidad asociada si existe
           if (usuario.entidad) {
             document.getElementById('nombreEntidad').value = usuario.entidad.razonSocial || '';
@@ -1430,7 +1454,7 @@
               }
             }
           }
-          
+
           document.getElementById('telefonoLider').value = usuario.telefono || '';
           document.getElementById('correoLider').value = usuario.email || '';
         }
@@ -1448,11 +1472,11 @@
 
     // Limpiar formulario
     function limpiarFormulario() {
-      const campos = ['nombreLider', 'nombreProyecto', 'duracionProyecto', 'presupuestoProyecto', 
-                     'objetivoGeneral', 'descripcionProyecto', 'justificacionProyecto', 
-                     'sectoresBeneficiados', 'nivelTRL', 'equipoTecnico', 'equipoApoyo', 
-                     'experienciaEquipo', 'resultadosEsperados', 'indicadoresExito'];
-      
+      const campos = ['nombreLider', 'nombreProyecto', 'duracionProyecto', 'presupuestoProyecto',
+        'objetivoGeneral', 'descripcionProyecto', 'justificacionProyecto',
+        'sectoresBeneficiados', 'nivelTRL', 'equipoTecnico', 'equipoApoyo',
+        'experienciaEquipo', 'resultadosEsperados', 'indicadoresExito'];
+
       campos.forEach(campo => {
         const elemento = document.getElementById(campo);
         if (elemento.type === 'number') {
@@ -1468,9 +1492,9 @@
     // Validar formulario
     function validarFormulario() {
       const camposRequeridos = [
-        'nombreLider', 'nombreProyecto', 'duracionProyecto', 'presupuestoProyecto', 
-        'objetivoGeneral', 'descripcionProyecto', 'justificacionProyecto', 
-        'sectoresBeneficiados', 'nivelTRL', 'equipoTecnico', 'equipoApoyo', 
+        'nombreLider', 'nombreProyecto', 'duracionProyecto', 'presupuestoProyecto',
+        'objetivoGeneral', 'descripcionProyecto', 'justificacionProyecto',
+        'sectoresBeneficiados', 'nivelTRL', 'equipoTecnico', 'equipoApoyo',
         'experienciaEquipo', 'resultadosEsperados', 'indicadoresExito'
       ];
 
@@ -1548,7 +1572,7 @@
           entidadId: entidadId,
           userId: parseInt(userId),
           userLiderId: parseInt(userId), // El mismo usuario será el líder por ahora
-          
+
           // Mapear campos del formulario a campos del modelo
           nombrePPI: document.getElementById('nombreProyecto').value,
           determinanteProductividad: convocatoriaSeleccionada.tipoConvocatoria.nombre,
@@ -1557,7 +1581,7 @@
           necesidadProblema: document.getElementById('justificacionProyecto').value,
           impactos: document.getElementById('resultadosEsperados').value,
           objetivosEspecificos: document.getElementById('descripcionProyecto').value,
-          
+
           // Mapear duración a enum
           duracionPPI: (() => {
             const duracion = parseInt(document.getElementById('duracionProyecto').value);
@@ -1565,7 +1589,7 @@
             if (duracion <= 36) return 'Entre un año y tres años';
             return 'Más de tres años';
           })(),
-          
+
           // Mapear presupuesto a enum
           presupuestoPPI: (() => {
             const presupuesto = parseInt(document.getElementById('presupuestoProyecto').value);
@@ -1575,7 +1599,7 @@
             if (presupuesto <= 5000000000) return 'De 1001 a 5000 millones de pesos';
             return 'Más de 5000 millones de pesos';
           })(),
-          
+
           // Determinar fase según nivel TRL
           fasePPI: (() => {
             const trl = parseInt(document.getElementById('nivelTRL').value);
@@ -1584,7 +1608,7 @@
             if (trl <= 6) return 'Fase 3: Factibilidad';
             return 'Ejecución';
           })(),
-          
+
           // Campos adicionales con información del equipo
           rangoDeEmpleos: `Equipo técnico: ${document.getElementById('equipoTecnico').value || 0} personas, Equipo apoyo: ${document.getElementById('equipoApoyo').value || 0} personas`,
           estratosBeneficiarios: 'Estratos 1-6', // Valor por defecto
@@ -1606,7 +1630,7 @@
 
         if (response.ok) {
           const proyectoCreado = await response.json();
-          
+
           // Crear registro en ConvocatoriaProyectos
           try {
             const convocatoriaProyectoData = {
@@ -1636,7 +1660,7 @@
           } catch (error) {
             console.error('Error al registrar aplicación de convocatoria:', error);
           }
-          
+
           await Swal.fire({
             icon: 'success',
             title: '¡Postulación enviada!',
@@ -1647,7 +1671,7 @@
             timer: 6000,
             timerProgressBar: true
           });
-          
+
           cerrarModalPostulacion();
         } else {
           const error = await response.json();
@@ -1668,7 +1692,7 @@
     document.getElementById('cerrarModalPostulacion').addEventListener('click', cerrarModalPostulacion);
 
     // Cerrar modal al hacer clic fuera
-    window.addEventListener('click', function(event) {
+    window.addEventListener('click', function (event) {
       const modal = document.getElementById('modalPostulacion');
       if (event.target === modal) {
         cerrarModalPostulacion();
@@ -1676,23 +1700,23 @@
     });
 
 
-    
+
 
     // Inicializar página cuando el DOM esté listo
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
       cargarConvocatorias();
     });
   </script>
- 
-    <script src="/js/config.js"></script>
-    <script src="admin.js"></script>
-    <script src="js/formularios.js"></script>
-    <script src="js/cargarDatos.js"></script>
-    <script src="js/estadisticas.js"></script>
-    <script src="js/notificaciones.js"></script>
-    <script src="/js/websocket.js"></script>
-    <script src="/js/menu.js"></script>
-    <script src="/js/enviarInvitacion.js"></script>
+
+  <script src="/js/config.js"></script>
+  <script src="admin.js"></script>
+  <script src="js/formularios.js"></script>
+  <script src="js/cargarDatos.js"></script>
+  <script src="js/estadisticas.js"></script>
+  <script src="js/notificaciones.js"></script>
+  <script src="/js/websocket.js"></script>
+  <script src="/js/menu.js"></script>
+  <script src="/js/enviarInvitacion.js"></script>
 
 
 </body>

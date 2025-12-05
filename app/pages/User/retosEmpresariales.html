@@ -6,18 +6,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>sinaptico - Innovación Abierta</title>
   <link rel="stylesheet" href="styles/colores.css">
-
-  <link rel="stylesheet" href="styles/innovacion.css">
-  <link rel="stylesheet" href="styles/clasificados.css">
+  <link rel="stylesheet" href="styles/stylehelice2.css">
+  <link rel="stylesheet" href="styles/desplegables.css">
   <link rel="stylesheet" href="styles/menu.css">
-  <link rel="stylesheet" href="styles/conocimiento.css">
+  <link rel="stylesheet" href="styles/innovacion.css">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
   <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
-
-  <link rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+  <!-- Leaflet.js para mapas -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -147,48 +156,16 @@
     <div class="spinner-text">Cargando...</div>
   </div>
 
+
+  <!-- Scripts -->
   <script src="/js/config.js"></script>
-  <script src="js/retos.js"></script>
-  <script src="js/crearReto.js"></script>
+  <script src="/js/nav.js"></script>
   <script src="js/notificaciones.js"></script>
   <script src="/js/websocket.js"></script>
-  <script src="/js/menu.js"></script>
+  <script src="/js/menuGeneral.js"></script>
   <script src="/js/habilitarEvaluador.js"></script>
-  <script src="js/enviarInvitacion.js"></script>
-
-
-  <script>
-    (function () {
-      // Garantiza que el overlay permanezca al menos 5s desde que se ejecuta este script.
-      const MIN_MS = 1000;
-      const overlay = document.getElementById('page-spinner-overlay');
-      if (!overlay) return;
-
-      // Si ya pasó más de MIN_MS desde la navegación start, aun así mostramos el overlay breve
-      const start = performance.timing ? performance.timing.navigationStart : Date.now();
-      const now = Date.now();
-      const elapsed = Math.max(0, now - start);
-      const remaining = Math.max(0, MIN_MS - elapsed);
-
-      // Evita interacción mientras existe el overlay
-      document.documentElement.style.overflow = 'hidden';
-      document.body.style.overflow = 'hidden';
-
-      setTimeout(() => {
-        console.log('MIN_MS spinner:', MIN_MS);
-        // permitir scroll cuando hide completo
-        setTimeout(() => {
-          if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
-          document.documentElement.style.overflow = '';
-          document.body.style.overflow = '';
-        }, 420);
-      }, remaining);
-    })();
-  </script>
-
-  <!-- Utilidades-->
-
-
+  <script src="js/retos.js"></script>
+  <script src="js/crearReto.js"></script>
 </body>
 
 </html>

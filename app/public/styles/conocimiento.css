@@ -146,22 +146,8 @@ text-align: center;}
   border-radius: 4px;
   cursor: not-allowed;
 }
-/* Estilos base y reset */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
-}
 
 
-body {
-    background-color: var(--background-color);
-    color: var(--text-description);
-    line-height: 1.6;
-    overflow-x: hidden;
-    position: relative;
-}
 
 /* Fondo neuronal animado */
 .neural-background {
