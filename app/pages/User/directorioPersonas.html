@@ -1670,113 +1670,66 @@
 
     <!-- Vista muro / mapa en directorio-->
     <script>
-        // Simular clic en el botón de directorio al cargar la página
-        document.addEventListener('DOMContentLoaded', function () {
-            const directorioButton = document.getElementById('directorioButton');
-            if (directorioButton) {
-                directorioButton.click();
-            }
-        });
 
-        // Hacer clic en el botón de cambiar vista cuando finalice la carga de la página
-        window.addEventListener('load', function () {
-            const toggleViewBtn = document.getElementById('toggleViewBtn');
-            if (toggleViewBtn) {
-                toggleViewBtn.click();
-            }
-
-
-        });
-        const directorioDiv = document.getElementById('directorio');
-        const directorioButton = document.getElementById('directorioButton');
 
         const toggleViewBtn = document.getElementById('toggleViewBtn');
         const busquedaEntidad = document.getElementById('busquedaEntidad');
         const modalMapa = document.getElementById('modalMapa');
-        if (directorioDiv) {
-            const openDirectorio = () => {
-                document.getElementById('modalDirectorio').style.display = 'block';
-                document.getElementById('entidades').style.display = 'none';
-                document.getElementById('welcome-container').style.display = 'none';
+        window.addEventListener('DOMContentLoaded', function () {
 
-                document.getElementById('inicio').classList.remove('pulse');
+            document.getElementById('modalDirectorio').style.display = 'block';
+            document.getElementById('entidades').style.display = 'none';
+            document.getElementById('welcome-container').style.display = 'none';
+            loadUsers();
+            busquedaEntidad.style.display = 'block';
+            modalMapa.style.display = 'none';
+          
+            // loadUsers();
+            console.log('Cambiando a vista Muro');
+            busquedaEntidad.style.display = 'grid';
+            busquedaEntidad.style.gridTemplateColumns = 'repeat(auto-fill, minmax(280px, 1fr))';
+            busquedaEntidad.style.gap = '20px';
+            busquedaEntidad.style.padding = '20px';
 
-                // initializeMap();
-                // addColombiaMask();
-                loadUsers();
-            };
+            // Aplicar estilos de cuadrícula a los elementos user-item
+            const userItems = document.querySelectorAll('.user-item');
+            const usersListContent = document.getElementById('users-list-content');
+            const usersList = document.getElementById('users-list');
+            usersListContent.style.gridTemplateColumns = 'repeat(auto-fill, minmax(25vw, 1fr))';
+            usersListContent.style.gap = '20px';
+            usersListContent.style.padding = '10px';
 
-            if (directorioDiv) {
-                directorioDiv.addEventListener('click', openDirectorio);
-            }
-            if (directorioButton) {
-                directorioButton.addEventListener('click', openDirectorio);
-            }
-        }
-        // Estado inicial: modo muro
-        let isMuro = false;
-        busquedaEntidad.style.display = 'block';
-        modalMapa.style.display = 'none';
+            usersList.style.width = '100%';
 
+            busquedaEntidad.style.display = '';
+            busquedaEntidad.style.gridTemplateColumns = '';
+            busquedaEntidad.style.gap = '';
+            busquedaEntidad.style.padding = '';
+            busquedaEntidad.style.width = '';
+            usersListContent.style.display = 'grid';
+            userItems.forEach(item => {
+                item.style.display = 'flex';
+                item.style.flexDirection = 'column';
+                item.style.padding = '20px';
+                item.style.border = '1px solid #ecf0f1';
+                item.style.borderRadius = '12px';
+                item.style.backgroundColor = 'white';
+                item.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)';
+                item.style.transition = 'transform 0.3s, box-shadow 0.3s';
+                item.style.alignItems = 'center';
+                item.onmouseenter = function () {
+                    this.style.transform = 'translateY(-5px)';
+                    this.style.boxShadow = '0 4px 15px rgba(0,0,0,0.15)';
+                };
 
-        toggleViewBtn.addEventListener('click', () => {
-            isMuro = !isMuro;
-
-            if (isMuro) {
-                console.log('Cambiando a vista Muro');
-                // Mostrar muro
-                busquedaEntidad.style.display = 'block';
-                modalMapa.style.display = 'none';
-                toggleViewBtn.textContent = '🗺️ Mapa';
-                // loadUsers();
-                console.log('Cambiando a vista Muro');
-                busquedaEntidad.style.display = 'grid';
-                busquedaEntidad.style.gridTemplateColumns = 'repeat(auto-fill, minmax(280px, 1fr))';
-                busquedaEntidad.style.gap = '20px';
-                busquedaEntidad.style.padding = '20px';
-
-                // Aplicar estilos de cuadrícula a los elementos user-item
-                const userItems = document.querySelectorAll('.user-item');
-                const usersListContent = document.getElementById('users-list-content');
-                const usersList = document.getElementById('users-list');
-                usersListContent.style.gridTemplateColumns = 'repeat(auto-fill, minmax(25vw, 1fr))';
-
-                usersListContent.style.gap = '20px';
-                usersListContent.style.padding = '10px';
-
-                usersList.style.width = '100%';
-
-                busquedaEntidad.style.display = '';
-                busquedaEntidad.style.gridTemplateColumns = '';
-                busquedaEntidad.style.gap = '';
-                busquedaEntidad.style.padding = '';
-                busquedaEntidad.style.width = '';
-                usersListContent.style.display = 'grid';
-                userItems.forEach(item => {
-                    item.style.display = 'flex';
-                    item.style.flexDirection = 'column';
-                    item.style.padding = '20px';
-                    item.style.border = '1px solid #ecf0f1';
-                    item.style.borderRadius = '12px';
-                    item.style.backgroundColor = 'white';
-                    item.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)';
-                    item.style.transition = 'transform 0.3s, box-shadow 0.3s';
-                    item.style.alignItems = 'center';
-                    item.onmouseenter = function () {
-                        this.style.transform = 'translateY(-5px)';
-                        this.style.boxShadow = '0 4px 15px rgba(0,0,0,0.15)';
-                    };
-
-                    item.onmouseleave = function () {
-                        this.style.transform = 'translateY(0)';
-                        this.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)';
-                    };
-                });
-                busquedaEntidad.style.width = '100%';
-
-            }
-
+                item.onmouseleave = function () {
+                    this.style.transform = 'translateY(0)';
+                    this.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)';
+                };
+            });
+            busquedaEntidad.style.width = '100%';
         });
+
         applyFilters();
 
 
