@@ -63,18 +63,79 @@ export const obtenerEventoPorId = async (req, res) => {
         });
     }
 };
+import upload from '../config/multerConfig.js'; // Importa la configuración de multer
+import fs from 'fs/promises';
+import path from 'path';
+
 
 // Crear evento
 export const crearEvento = async (req, res) => {
-    try {
-        const nuevoEvento = await Evento.create(req.body);
-        res.status(201).json(nuevoEvento);
-    } catch (error) {
-        res.status(400).json({ 
-            message: 'Error al crear evento', 
-            error: error.message 
-        });
-    }
+
+    upload.single('fileImagenEvento')(req, res, async (err) => {
+        if (err) {
+            return res.status(500).json({ error: 'Error al subir la imagen' });
+        }
+
+        try {
+            const {
+                titulo,
+                codigo,
+                descripcion,
+                modalidad,
+                ubicacion,
+                fecha,
+                horaInicio,
+                horaFin,
+                cupoMaximo,
+                inscripcionRequerida,
+                fechaInicioInscripcion,
+                fechaCierreInscripcion,
+                costo,
+                organizador,
+                tipoEventoId,
+                urlConvocatoria,
+                userId,
+                tipoConvocatoriaId
+            } = req.body;
+
+            // Verificar que la imagen haya llegado
+            if (!req.file) {
+                return res.status(400).json({ error: 'La imagen del evento es obligatoria.' });
+            }
+
+            const urlImagen = req.file.filename;
+
+            const newEvento = await Evento.create({
+                titulo,
+                codigo,
+                descripcion,
+                modalidad,
+                ubicacion,
+                fecha,
+                horaInicio,
+                horaFin,
+                cupoMaximo,
+                inscripcionRequerida,
+                fechaInicioInscripcion,
+                fechaCierreInscripcion,
+                costo,
+                organizador,
+                tipoEventoId,
+                urlConvocatoria,
+                userId,
+                tipoConvocatoriaId,
+                urlImagen
+            });
+
+            return res.status(201).json({
+                message: 'Evento creado con éxito',
+                evento: newEvento
+            });
+        } catch (error) {
+            console.error('Error al crear el evento:', error);
+            return res.status(500).json({ message: 'Error del servidor', error: error.message });
+        }
+    });
 };
 
 // Actualizar evento

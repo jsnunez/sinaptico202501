@@ -285,7 +285,7 @@ document.addEventListener("click", () => {
  const dataUsuario = await obtenerDatosUsuario(userId);
 console.log(dataUsuario);
     document.getElementById('nombreUsuarioHeader').innerHTML = `${dataUsuario.name.split(' ')[0]} <i class="bi bi-chevron-down"></i>`;
-      document.getElementById("imagenPerfilSecundaria").src="photo/"+dataUsuario.fotoPerfil;
+      document.getElementById("imagenPerfilSecundaria").src="/photo/"+dataUsuario.fotoPerfil;
 
     }
     //  idEntidad = data.entidad.id;

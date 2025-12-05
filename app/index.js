@@ -104,7 +104,6 @@ app.get('/compartir-datos',  (req, res) => res.sendFile(path.join(__dirname, 'pa
 app.get('/helice', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/helice.html')));
 app.get('/directorio', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/directorio.html')));
 app.get('/ofertaRegional', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/oferta.html')));
-app.get('/eventos', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/eventos.html')));
 app.get('/convocatorias', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/convocatorias.html')));
 app.get('/construccion', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/construccion.html')));
 app.get('/conocimiento', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/conocimiento.html')));
@@ -120,6 +119,7 @@ app.get('/servicio', authorization.soloUser, (req, res) => res.sendFile(path.joi
 app.get('/directorioPersonas', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/directorioPersonas.html')));
 app.get('/convocatorias', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/convocatorias.html')));
 app.get('/retosEmpresariales', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/retosEmpresariales.html')));
+app.get('/eventos', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/eventos.html')));
 
 
 app.get('/mapa-publico', (req, res) => res.sendFile(path.join(__dirname, 'pages/User/mapa-usuarios.html')));

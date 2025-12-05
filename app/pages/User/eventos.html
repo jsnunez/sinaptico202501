@@ -6,354 +6,427 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SINAPTICO</title>
 
+  <!-- Librerías -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
-
-  <link rel="stylesheet" href="styles/colores.css">
-  <link rel="stylesheet" href="styles/stylehelice2.css">
-  <link rel="stylesheet" href="styles/eventos.css">
-
+  <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+  <link rel="stylesheet" href="/styles/colores.css">
+  <link rel="stylesheet" href="/styles/stylehelice2.css">
+  <link rel="stylesheet" href="/styles/eventos.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
+  <!-- PRIMERO cargar config.js para que API_BASE_URL exista -->
+  <script src="/js/config.js"></script>
+
 </head>
 
 <body>
-  <!-- Fondo de animación neuronal -->
+
+  <!-- Fondo neuronas -->
   <div class="neural-background">
     <canvas id="neuralCanvas"></canvas>
   </div>
-    <!-- Encabezado -->
+
+  <!-- Encabezado -->
   <header>
-        <div class="header">
-            <div onclick="window.location.href='/helice'">
-                <!-- <span class="logo-icon">⚡</span> -->
-                <img src="/img/logo1.png" alt="SINAPTICO" class="logo" style="height:8vh;">
-            </div>
-            <div style="display: flex; align-items: center; gap: 20px;">
-                <div style="font-size:1.5em;cursor:pointer;">
-                    <span id="icono-notif">🔔 <span
-                            style='background:red;color:white;border-radius:50%;padding:2px 7px;font-size:0.9em;'>0</span></span>
-                </div>
-                <div class="notificaciones" id="notificaciones"></div>
+    <div class="header">
 
+      <div onclick="window.location.href='/helice'">
+        <img src="/img/logo1.png" alt="SINAPTICO" class="logo" style="height:8vh;">
+      </div>
 
-                <div class="dropdown">
-                    <button id="userMenuBtn" style="display: flex; align-items: center;">
-                        <div id="userPhoto ">
-                            <img class="imagenPerfil" id="imagenPerfilSecundaria" src="img/sinfoto.jpg"
-                                alt="Foto de perfil" onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
+      <div style="display:flex;align-items:center;gap:20px;">
 
-                        </div>
-                        <h3 id="nombreUsuarioHeader" style="color:white; margin-left:10px;">Usuario <i
-                                class="bi bi-chevron-down"></i> </h3>
-                    </button>
-
-                    <div class="dropdown-menu" id="userMenu">
-                        <a class="perfilUser" id="perfilUser">Perfil</a>
-                        <a id="habilitarMiEmpresa" style="display: none;">Empresa</a>
-                        <a href="#" id="cerrarSesion">Cerrar sesión</a>
-                    </div>
-                </div>
-            </div>
+        <div style="font-size:1.5em;cursor:pointer;">
+          <span id="icono-notif">🔔 <span
+              style="background:red;color:white;border-radius:50%;padding:2px 7px;font-size:0.9em;">0</span></span>
         </div>
-        <nav class="nav">
 
-            <button class="nav-button" data-link="/helice" id="inicio"
-                onclick="window.location.href='/helice'">Inicio</button>
+        <div class="notificaciones" id="notificaciones"></div>
 
-            <div class="dropdown menuG">
-                <button class="nav-button dropdown-btnG" data-link="/directorio">Directorio</button>
-                <div class="dropdown-menu dropdown-menuG">
-                    <a href="/directorio">Entidades</a>
-                    <a href="/directorioPersonas">Personas</a>
-                </div>
-            </div>
-            <button class="nav-button" onclick="window.location.href='/proyectos'">Proyectos</button>
-            <button class="nav-button" onclick="window.location.href='/ofertaRegional'"
-                data-link="/ofertaRegional">Oferta Regional</button>
-            <div class="dropdown menuG">
-                <button class="nav-button dropdown-btnG" data-link="/retos">Innovación Abierta</button>
-                <div class="dropdown-menu dropdown-menuG">
-                    <a href="/retosEmpresariales">Retos Empresariales</a>
-                    <a href="/retosAula">Retos de Aula</a>
-                </div>
-            </div>
+        <div class="dropdown">
+          <button id="userMenuBtn" style="display:flex;align-items:center;">
+            <img class="imagenPerfil" id="imagenPerfilSecundaria" src="/img/sinfoto.jpg"
+              onerror="this.src='/img/sinfoto.jpg'">
+            <h3 id="nombreUsuarioHeader" style="color:white;margin-left:10px;">
+              Usuario <i class="bi bi-chevron-down"></i>
+            </h3>
+          </button>
 
-            <div class="dropdown menuG" >
-                <button class="nav-button dropdown-btnG" data-link="/conocimiento">Conocimiento Abierto</button>
-                <div class="dropdown-menu dropdown-menuG">
-                    <a href="/conocimientoCursosVirtuales" data-link="/cursosVirtuales">Cursos</a>
-                    <a href="/conocimientoBiblioteca"  data-link="/conocimientoBiblioteca">Biblioteca</a>
-                </div>
-            </div>
-            <button class="nav-button" onclick="window.location.href='/convocatorias'">Convocatorias</button>
+          <div class="dropdown-menu" id="userMenu">
+            <a class="perfilUser" id="perfilUser">Perfil</a>
+            <a id="habilitarMiEmpresa" style="display:none;">Empresa</a>
+            <a href="#" id="cerrarSesion">Cerrar sesión</a>
+          </div>
+        </div>
 
-            <button class="nav-button" onclick="window.location.href='/eventos'">Eventos</button>
+      </div>
 
-        </nav>
+    </div>
 
-    </header>
+    <nav class="nav">
 
-  <!-- Bienvenida y botones de acción -->
+      <button class="nav-button" onclick="window.location.href='/helice'">Inicio</button>
+
+      <div class="dropdown menuG">
+        <button class="nav-button dropdown-btnG">Directorio</button>
+        <div class="dropdown-menu dropdown-menuG">
+          <a href="/directorio">Entidades</a>
+          <a href="/directorioPersonas">Personas</a>
+        </div>
+      </div>
+
+      <button class="nav-button" onclick="window.location.href='/proyectos'">Proyectos</button>
+      <button class="nav-button" onclick="window.location.href='/ofertaRegional'">Oferta Regional</button>
+
+      <div class="dropdown menuG">
+        <button class="nav-button dropdown-btnG">Innovación Abierta</button>
+        <div class="dropdown-menu dropdown-menuG">
+          <a href="/retosEmpresariales">Retos Empresariales</a>
+          <a href="/retosAula">Retos de Aula</a>
+        </div>
+      </div>
+
+      <div class="dropdown menuG">
+        <button class="nav-button dropdown-btnG">Conocimiento Abierto</button>
+        <div class="dropdown-menu dropdown-menuG">
+          <a href="/conocimientoCursosVirtuales">Cursos</a>
+          <a href="/conocimientoBiblioteca">Biblioteca</a>
+        </div>
+      </div>
+
+      <button class="nav-button" onclick="window.location.href='/convocatorias'">Convocatorias</button>
+      <button class="nav-button" onclick="window.location.href='/eventos'">Eventos</button>
+
+    </nav>
+
+  </header>
+
+  <!-- Bienvenida -->
   <div class="welcome-container">
     <div class="welcome-text">
       <h2 id="title">Eventos</h2>
-      <p class="subtitle">Consulta los eventos activos para fortalecer tu participación en el ecosistema CTEI de
-        Santander</p>
+      <p class="subtitle">Consulta los eventos activos del ecosistema CTEI de Santander</p>
     </div>
-    <div class="action-buttons" style="display: none;">
+
+    <div class="action-buttons" style="display:flex;">
       <button class="action-button" id="btnNuevoEvento">
-        <i class="fas fa-plus button-icon"></i>
-        Nuevo evento
+        <i class="fas fa-plus button-icon"></i> Nuevo evento
       </button>
     </div>
   </div>
+
   <!-- Filtros -->
-  <div class="filter-container" id="filtros">
+  <div class="filter-container">
     <input type="text" id="buscarEvento" placeholder="Nombre Evento" class="filter-input">
-    <select id="tipoFiltro" class="filter-select" style="display: none;">
-      <option value="">Todos los Tipos</option>
-      <option value="1">Convocatoria</option>
-      <option value="2">Eventos</option>
-    </select>
     <select id="estadoFiltro" class="filter-select">
       <option value="">Todos los Estados</option>
       <option value="Abierto">Abierto</option>
       <option value="Cerrado">Cerrado</option>
     </select>
   </div>
+
+  <!-- Lista de eventos -->
   <div class="main-content" id="eventos"></div>
-  <!-- Modal de edición -->
+
+  <!-- Modal Crear / Editar Evento -->
   <div id="modalEdicion" class="modal">
     <div class="modal-content">
+
       <div class="modal-header">
-        <h3 id="opcionEvento">Editar Evento</h3>
+        <h3 id="opcionEvento">Nuevo Evento</h3>
         <span id="closeModalEdicion" class="close">&times;</span>
       </div>
+
       <form id="formEditarEvento">
+
+        <!-- Imagen -->
         <div class="form-group">
-          <label for="nombreEvento">Nombre:</label>
-          <input type="text" id="nombreEvento" name="nombre" required>
+          <label>Subir Imagen:</label>
+          <input type="file" id="fileImagenEvento" accept="image/*">
+          <img id="previewImagenEvento" style="max-width:120px;max-height:120px;border-radius:10px;margin-top:10px;">
         </div>
+
+        <!-- Script Preview Imagen -->
+        <script>
+          let selectedFile = null;
+
+          document.getElementById("fileImagenEvento").addEventListener("change", (e) => {
+        selectedFile = e.target.files[0];
+        if (!selectedFile) return;
+
+        const reader = new FileReader();
+        reader.onload = ev => {
+          document.getElementById("previewImagenEvento").src = ev.target.result;
+        };
+        reader.readAsDataURL(selectedFile);
+          });
+        </script>
+
+        <!-- Campos -->
         <div class="form-group">
-          <label for="financiamiento">Financiamiento:</label>
-          <input type="text" id="financiamiento" name="financiamiento">
+          <label>Título:</label>
+          <input type="text" id="tituloEvento" required>
         </div>
+
         <div class="form-group">
-          <label for="organizador">Organizador:</label>
-          <input type="text" id="organizador" name="organizador">
+          <label>Código:</label>
+          <input type="text" id="codigoEvento" required maxlength="20">
         </div>
+
         <div class="form-group">
-          <label for="urlEvento">URL Evento:</label>
-          <input type="text" id="urlEvento" name="urlEvento">
+          <label>Descripción:</label>
+          <textarea id="descripcionEvento" required minlength="10"></textarea>
         </div>
-        <div class="form-group" style="display: none;">
-          <label for="tipoEvento">Tipo Evento:</label>
-          <select id="tipoEvento" name="tipoEvento" required>
-            <option value="2">evento</option>
+
+        <div class="form-group">
+          <label>Modalidad:</label>
+          <select id="modalidadEvento" required>
+        <option value="presencial">Presencial</option>
+        <option value="virtual">Virtual</option>
+        <option value="hibrido">Híbrido</option>
           </select>
         </div>
+
         <div class="form-group">
-          <label for="fechaLimite">Fecha Límite:</label>
-          <input type="date" id="fechaLimite" name="fechaLimite" required>
+          <label>Ubicación:</label>
+          <input type="text" id="ubicacionEvento">
         </div>
-        <button type="submit" id="btnGuardarCambios" class="modal-button">Guardar cambios</button>
+
+        <div class="form-group">
+          <label>Fecha:</label>
+          <input type="date" id="fechaEvento" required>
+        </div>
+
+        <div class="form-group">
+          <label>Hora Inicio:</label>
+          <input type="time" id="horaInicioEvento" required>
+        </div>
+
+        <div class="form-group">
+          <label>Hora Fin:</label>
+          <input type="time" id="horaFinEvento" required>
+        </div>
+
+        <div class="form-group">
+          <label>Cupo Máximo:</label>
+          <input type="number" id="cupoMaximoEvento" min="1">
+        </div>
+
+        <div class="form-group">
+          <label>Inscripción Requerida:</label>
+          <select id="inscripcionRequeridaEvento">
+        <option value="true">Sí</option>
+        <option value="false">No</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>URL Evento:</label>
+          <input type="url" id="urlEvento">
+        </div>
+
+        <button type="submit" id="btnGuardarCambios" class="modal-button">Guardar</button>
+        <button type="button" id="btnDemoEvento" class="modal-button" style="background:#888;margin-left:10px;">Demo</button>
       </form>
+      <script>
+        document.getElementById("btnDemoEvento").onclick = function() {
+          const titulos = ["Feria de Innovación", "Congreso de Tecnología", "Taller de Creatividad", "Seminario de Ciencia"];
+          const descripciones = [
+        "Evento para compartir ideas innovadoras y conectar con expertos.",
+        "Un congreso donde se presentan los últimos avances tecnológicos.",
+        "Taller práctico para fomentar la creatividad en equipos multidisciplinarios.",
+        "Seminario sobre los retos actuales en ciencia y tecnología."
+          ];
+          const ubicaciones = ["Bucaramanga", "Virtual", "Universidad Industrial", "Centro de Convenciones"];
+          const urls = [
+        "https://evento-demo.com",
+        "https://ctei-santander.org/evento",
+        "https://innovacion2024.com",
+        "https://ciencia-tec.org"
+          ];
+          const modalidad = ["presencial", "virtual", "hibrido"];
+          function random(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+          function pad(n) { return n < 10 ? "0" + n : n; }
+          const today = new Date();
+          const fecha = today.getFullYear() + "-" + pad(today.getMonth() + 1) + "-" + pad(today.getDate());
+          const horaInicio = pad(Math.floor(Math.random() * 8 + 8)) + ":00";
+          const horaFin = pad(Math.floor(Math.random() * 3 + 16)) + ":00";
+          document.getElementById("tituloEvento").value = random(titulos);
+          document.getElementById("codigoEvento").value = "EVT" + Math.floor(Math.random() * 10000);
+          document.getElementById("descripcionEvento").value = random(descripciones);
+          document.getElementById("modalidadEvento").value = random(modalidad);
+          document.getElementById("ubicacionEvento").value = random(ubicaciones);
+          document.getElementById("fechaEvento").value = fecha;
+          document.getElementById("horaInicioEvento").value = horaInicio;
+          document.getElementById("horaFinEvento").value = horaFin;
+          document.getElementById("cupoMaximoEvento").value = Math.floor(Math.random() * 100 + 20);
+          document.getElementById("inscripcionRequeridaEvento").value = Math.random() > 0.5 ? "true" : "false";
+          document.getElementById("urlEvento").value = random(urls);
+        };
+      </script>
+
     </div>
   </div>
 
- 
-  <!-- Cerrar Sesion -->
+  <!-- Scripts finales -->
+  <script src="/js/nav.js"></script>
+  <script src="/js/notificaciones.js"></script>
+  <script src="/js/websocket.js"></script>
+  <script src="/js/menuGeneral.js"></script>
+
+
+  <!-- ========================== -->
+  <!-- LÓGICA DE EVENTOS          -->
+  <!-- ========================== -->
   <script>
-    document.getElementById("cerrarSesion").addEventListener("click", () => {
+
+    // -----------------------------------------
+    // Cerrar Sesión
+    // -----------------------------------------
+    document.getElementById("cerrarSesion").onclick = () => {
       Swal.fire({
-        title: '¿Estás seguro?',
-        text: '¿Quieres cerrar sesión?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Sí, cerrar sesión',
-        cancelButtonText: 'Cancelar',
-        reverseButtons: true
-      }).then((result) => {
-        if (result.isConfirmed) {
-          document.cookie = 'jwt=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-          document.cookie = 'user=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-          document.cookie = 'userId=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-          document.location.href = "/";
+        title: "¿Cerrar sesión?",
+        icon: "warning",
+        showCancelButton: true
+      }).then(r => {
+        if (r.isConfirmed) {
+          document.cookie = "jwt=; Path=/; Expires=Thu, 01 Jan 1970";
+          document.cookie = "user=; Path=/; Expires=Thu, 01 Jan 1970";
+          document.cookie = "userId=; Path=/; Expires=Thu, 01 Jan 1970";
+          location.href = "/";
         }
       });
-    });
-    function irEnConstruccion() {
-      window.location.href = "/construccion";
-    }
+    };
 
-    // Cargar eventos (tipoConvocatoriaId === 2)
-    async function cargarEventos(apiUrl = '/api/convocatorias') {
+    // -----------------------------------------
+    // Cargar Eventos
+    // -----------------------------------------
+    async function cargarEventos(url = "/api/convocatorias") {
       try {
-        const response = await fetch(apiUrl);
-        const data = await response.json();
+        const resp = await fetch(url);
+        const data = await resp.json();
 
-        const container = document.getElementById('eventos');
-        container.innerHTML = '';
+        const cont = document.getElementById("eventos");
+        cont.innerHTML = "";
 
-        if (!data.length) {
-          container.innerHTML = '<p>No se encontraron eventos.</p>';
-          return;
-        }
+        data.forEach(ev => {
 
-        data.forEach((evento, index) => {
-          if (evento.tipoConvocatoriaId === 2 && evento.habilitado == true) {
-            const card = document.createElement('div');
-            card.classList.add('convocatorias-container');
-            const url = evento.urlConvocatoria?.startsWith('http')
-              ? evento.urlConvocatoria
-              : `https://${evento.urlConvocatoria}`;
-            card.innerHTML = `
-              <div class="convocatorias-card" id="evento${index}">
-                <div class="convocatoria-header">
-                  <h3 class="convocatoria-title">${evento.nombre}</h3>
-                  <p class="convocatoria-subtitle">Financiamiento: ${evento.financiamiento || 'No especificado'}</p>
-                  <p class="convocatoria-subtitle-color">Organizador: ${evento.organizador || 'No especificado'}</p>
-                  <p class="convocatoria-subtitle-color">
-                    Fecha límite: ${evento.fechaLimite
-                ? new Date(evento.fechaLimite).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })
-                : 'Sin fecha'}
-                  </p>
+          if (ev.tipoConvocatoriaId !== 2 || !ev.habilitado) return;
+
+          const card = document.createElement("div");
+          card.className = "convocatorias-container";
+
+          card.innerHTML = `
+            <div class="convocatorias-card">
+              <div class="convocatoria-header">
+                <img src="${ev.urlImagen || 'img/sinfoto.jpg'}" class="evento-imagen">
+
+                <div>
+                  <h3>${ev.titulo}</h3>
+                  <p>Código: ${ev.codigo}</p>
+                  <p>Modalidad: ${ev.modalidad}</p>
+                  <p>Ubicación: ${ev.ubicacion}</p>
+                  <p>Fecha: ${ev.fecha ? new Date(ev.fecha).toLocaleDateString() : ''}</p>
+                  <p>Hora: ${ev.horaInicio} - ${ev.horaFin}</p>
+                  <p>Cupo: ${ev.cupoMaximo || 'Sin límite'}</p>
+                  <p>Inscripción: ${ev.inscripcionRequerida ? "Sí" : "No"}</p>
                 </div>
               </div>
+
               <div class="lateral-derecho">
-                <div class="tipo-convocatoria">
-                  <span class="tipo-convocatoria-text">${evento.tipoConvocatoria?.nombre || 'Tipo no asignado'}</span>
-                </div>
-                <a href="${url}" target="_blank" rel="noopener noreferrer" class="action-button">Ver más</a>
+                <a href="${ev.urlConvocatoria}" target="_blank" class="action-button">Ver más</a>
               </div>
-            `;
-            container.appendChild(card);
-          }
+            </div>
+          `;
+
+          cont.appendChild(card);
         });
-      } catch (error) {
-        console.error('Error al cargar eventos:', error);
-        document.getElementById('eventos').innerHTML = '<p>Error al cargar eventos.</p>';
+
+      } catch (err) {
+        document.getElementById("eventos").innerHTML = "Error al cargar eventos";
       }
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
-      cargarEventos();
-      const buscarInput = document.getElementById('buscarEvento');
-      const tipoFiltro = document.getElementById('tipoFiltro');
-      const estadoFiltro = document.getElementById('estadoFiltro');
+    // -----------------------------------------
+    // Filtros
+    // -----------------------------------------
+    document.getElementById("buscarEvento").oninput = () => aplicarFiltros();
+    document.getElementById("estadoFiltro").onchange = () => aplicarFiltros();
 
-      function aplicarFiltros() {
-        const nombre = buscarInput.value.trim();
-        const tipo = 2;
-        const estado = estadoFiltro.value;
-        const query = [];
-        if (nombre) query.push(`nombre=${encodeURIComponent(nombre)}`);
-        if (tipo) query.push(`tipo=${tipo}`);
-        if (estado) query.push(`estado=${estado}`);
-        const url = `/api/convocatorias${query.length ? '?' + query.join('&') : ''}`;
-        cargarEventos(url);
-      }
+    function aplicarFiltros() {
+      const nombre = document.getElementById("buscarEvento").value;
+      const estado = document.getElementById("estadoFiltro").value;
 
-      buscarInput.addEventListener('input', aplicarFiltros);
-      tipoFiltro.addEventListener('change', aplicarFiltros);
-      estadoFiltro.addEventListener('change', aplicarFiltros);
-    });
+      const params = [];
+      if (nombre) params.push(`nombre=${encodeURIComponent(nombre)}`);
+      params.push(`tipo=2`);
+      if (estado) params.push(`estado=${estado}`);
 
-    // Modal para nuevo evento
-    document.getElementById('btnNuevoEvento').addEventListener('click', () => {
-      document.getElementById('modalEdicion').style.display = 'block';
-      document.getElementById('opcionEvento').textContent = 'Nuevo Evento';
-      document.getElementById('formEditarEvento').reset();
-    });
+      cargarEventos(`/api/convocatorias?${params.join("&")}`);
+    }
 
-    document.getElementById('closeModalEdicion').addEventListener('click', () => {
-      document.getElementById('modalEdicion').style.display = 'none';
-    });
+    // -----------------------------------------
+    // Mostrar Modal Nuevo
+    // -----------------------------------------
+    document.getElementById("btnNuevoEvento").onclick = () => {
+      selectedFile = null;
+      document.getElementById("previewImagenEvento").src = "";
+      document.getElementById("formEditarEvento").reset();
+      document.getElementById("modalEdicion").style.display = "block";
+    };
 
-    window.addEventListener('click', (event) => {
-      const modal = document.getElementById('modalEdicion');
-      if (event.target === modal) {
-        modal.style.display = 'none';
-      }
-    });
+    document.getElementById("closeModalEdicion").onclick = () =>
+      document.getElementById("modalEdicion").style.display = "none";
 
-    // Manejar el formulario de edición/creación de evento
-    document.getElementById('formEditarEvento').addEventListener('submit', async (e) => {
+    // -----------------------------------------
+    // Guardar Evento (con archivo)
+    // -----------------------------------------
+    document.getElementById("formEditarEvento").onsubmit = async (e) => {
       e.preventDefault();
-      const nombre = document.getElementById('nombreEvento').value;
-      const financiamiento = document.getElementById('financiamiento').value;
-      const organizador = document.getElementById('organizador').value;
-      const urlConvocatoria = document.getElementById('urlEvento').value;
-      const tipoConvocatoriaId = 2;
-      const fechaInput = document.getElementById('fechaLimite').value;
-      const fechaLimite = new Date(fechaInput + 'T00:00:00');
-      const datosEvento = {
-        nombre,
-        financiamiento,
-        organizador,
-        urlConvocatoria,
-        tipoConvocatoriaId,
-        fechaLimite
-      };
-      try {
-        const response = await fetch('/api/convocatorias', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(datosEvento)
-        });
-        if (response.ok) {
-          Swal.fire('¡Éxito!', `El evento ha sido creado. Espera que el administrador la revise y la habilite.`, 'success');
-          document.getElementById('modalEdicion').style.display = "none";
-          document.getElementById('formEditarEvento').reset();
-        } else {
-          Swal.fire('Error', 'Hubo un problema al crear el evento.', 'error');
-        }
-      } catch (error) {
-        console.error('Error al crear el evento:', error);
-        Swal.fire('Error', 'Hubo un error al intentar crear el evento.', 'error');
-      }
-    });
 
-    // Mostrar botón solo si es entidad
-    document.addEventListener("DOMContentLoaded", async function () {
-      function obtenerCookie(nombre) {
-        const nombreCookie = `${nombre}=`;
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-          let cookie = cookies[i].trim();
-          if (cookie.indexOf(nombreCookie) === 0) {
-            return cookie.substring(nombreCookie.length, cookie.length);
-          }
-        }
-        return null;
-      }
-      const usuario = obtenerCookie("user");
-      const userId = obtenerCookie("userId");
-      if (!usuario || !userId) return;
+      const fd = new FormData();
+      const userId = document.cookie.split("userId=")[1]?.split(";")[0];
+
+      fd.append("userId", userId);
+      fd.append("tipoConvocatoriaId", 2);
+      fd.append("titulo", tituloEvento.value);
+      fd.append("codigo", codigoEvento.value);
+      fd.append("descripcion", descripcionEvento.value);
+      fd.append("modalidad", modalidadEvento.value);
+      fd.append("ubicacion", ubicacionEvento.value);
+      fd.append("fecha", fechaEvento.value);
+      fd.append("horaInicio", horaInicioEvento.value);
+      fd.append("horaFin", horaFinEvento.value);
+      fd.append("cupoMaximo", cupoMaximoEvento.value);
+      fd.append("inscripcionRequerida", inscripcionRequeridaEvento.value);
+      fd.append("urlConvocatoria", urlEvento.value);
+
+      if (selectedFile) fd.append("fileImagenEvento", selectedFile);
+
       try {
-        const response = await fetch(`${API_BASE_URL}/api/entidad/verificar-entidad/${userId}`);
-        const data = await response.json();
-        if (data.mensaje === 'Entidad encontrada') {
-          document.querySelector('.action-buttons').style.display = 'block';
-        }
-      } catch (error) {
-        console.error('Error:', error);
+        const resp = await fetch(`${API_BASE_URL}/api/eventos`, {
+          method: "POST",
+          body: fd
+        });
+
+        if (!resp.ok) throw await resp.json();
+
+        Swal.fire("Éxito", "Evento creado correctamente", "success");
+        document.getElementById("modalEdicion").style.display = "none";
+
+      } catch (err) {
+        Swal.fire("Error", err.message || "No se pudo crear el evento", "error");
       }
-    });
+    };
+
+    // Carga inicial
+    cargarEventos();
+
   </script>
 
-
-
-   <script src="/js/config.js"></script>
-    <script src="/js/nav.js"></script>
-    <script src="js/notificaciones.js"></script>
-    <script src="/js/websocket.js"></script>
-    <script src="/js/menuGeneral.js"></script>
 </body>
 
 </html>

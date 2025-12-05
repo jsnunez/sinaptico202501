@@ -16,8 +16,13 @@ const ensureDirExists = (dirPath) => {
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     let dir;
-
+    console.log("fieldname:", file.fieldname);
     switch (file.fieldname) {
+      case 'fileImagenEvento':
+                console.log("Directorio de foto de evento:", dir);
+
+        dir = 'app/public/eventos';
+        break;
       case 'video':
         dir = 'app/public/videos';
         break;
@@ -33,9 +38,9 @@ const storage = multer.diskStorage({
       case 'videoCursos':
         dir = 'app/public/videoCursos';
         break;
-case 'cvPdf':
-  dir = 'app/public/cv';
-  break;
+      case 'cvPdf':
+        dir = 'app/public/cv';
+        break;
       case 'fotoPerfil':
         dir = 'app/public/photo';
         console.log("Directorio de foto de perfil:", dir);
