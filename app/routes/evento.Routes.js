@@ -18,6 +18,7 @@ const router = express.Router();
 // Rutas originales (mantenidas para compatibilidad)
 router.get('/habilitados', obtenerEventoshabilitados);
 router.get('/', getEventos);
+router.get('/:id', obtenerEventoPorId);
 router.post('/', createEvento);
 router.delete('/:id', deleteEvento);
 router.put('/:id', updateEvento);

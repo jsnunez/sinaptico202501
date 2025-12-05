@@ -27,121 +27,134 @@
 
   <!-- Leaflet.js para mapas -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-<style>
-/* =============================== */
-/*   TARJETAS DE EVENTOS (FLIP)   */
-/* =============================== */
+  <style>
+    /* =============================== */
+    /*   TARJETAS DE EVENTOS (FLIP)   */
+    /* =============================== */
 
-.flip-card {
-    background-color: transparent;
-    width: 100%;
-    max-width: 650px;
-    height: 330px;
-    perspective: 1200px;
-    margin: 25px auto;
-}
-
-.flip-card-inner {
-    width: 100%;
-    height: 100%;
-    position: relative;
-    transition: transform .8s cubic-bezier(.4,1.6,.4,1);
-    transform-style: preserve-3d;
-}
-
-.flip-card.flipped .flip-card-inner {
-    transform: rotateY(180deg);
-}
-
-.flip-card-front,
-.flip-card-back {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    backface-visibility: hidden;
-    border-radius: 14px;
-    overflow: hidden;
-    background: #fff;
-    box-shadow: 0 4px 18px rgba(0,0,0,0.12);
-}
-
-/* Frente */
-.flip-card-front {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding-bottom: 10px;
-}
-
-.convocatoria-header {
-    display: flex;
-    gap: 1.2rem;
-    padding: 1.2rem;
-}
-
-.evento-imagen {
-    width: 120px;
-    height: 120px;
-    border-radius: 12px;
-    object-fit: cover;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.15);
-}
-
-/* Botón Flip */
-.flip-card-front .lateral-derecho {
-    display: flex;
-    justify-content: flex-end;
-    padding: 0 15px 15px 0;
-}
-
-.action-button {
-    background: var(--primary-color);
-    color: rgb(255, 255, 255);
-    padding: 0.6rem 1.4rem;
-    border-radius: 50px;
-    border: none;
-    cursor: pointer;
-    font-weight: 600;
-    box-shadow: 0 3px 12px rgba(0,0,0,0.1);
-}
-
-.action-button:hover {
-    background: var(--secondary-color);
-}
-
-.flip-btn {
-    background: var(--gradient-2);
-}
-
-/* Reverso */
-.flip-card-back {
-    transform: rotateY(180deg);
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-
-/* Móviles */
-@media (max-width: 700px) {
-    .flip-card {
-        height: 420px;
+    .tarjeta-evento {
+      width: 100%;
+      max-width: 380px;
     }
 
-    .evento-imagen {
-        width: 90px;
-        height: 90px;
+    /* Contenedor Flip */
+    .flip-card {
+      background-color: transparent;
+      width: 100%;
+      height: 330px;
+      perspective: 1200px;
+      border-radius: 14px;
+    }
+
+    .flip-card-inner {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transition: transform .8s cubic-bezier(.4, 1.6, .4, 1);
+      transform-style: preserve-3d;
+    }
+
+    .flip-card.flipped .flip-card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .flip-card-front,
+    .flip-card-back {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      border-radius: 14px;
+      overflow: hidden;
+      background: #fff;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.12);
+    }
+
+    /* Frente */
+    .flip-card-front {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
 
     .convocatoria-header {
-        flex-direction: column;
-        text-align: center;
+      display: flex;
+      gap: 1rem;
+      padding: 1rem;
     }
+
+    .evento-imagen {
+      height: 30%;
+      border-radius: 12px;
+      object-fit: cover;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+    }
+
+    .lateral-derecho {
+      display: flex;
+      justify-content: flex-end;
+      padding: 0 20px 15px 0;
+    }
+
+    /* Botones */
+    .action-button {
+      background: var(--primary-color);
+      color: #fff;
+      padding: 0.6rem 1.4rem;
+      border-radius: 50px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .action-button:hover {
+      background: var(--secondary-color);
+    }
+
+    .flip-btn {
+      background: var(--gradient-2);
+    }
+
+    /* Reverso */
+    .flip-card-back {
+      transform: rotateY(180deg);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    /* GRID para mostrar varias tarjetas */
+    #eventos {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 25px;
+      padding: 20px;
+    }
+
+    /* Imagen grande en la parte frontal */
+.evento-imagen-grande {
+    width: 100%;
+    height: 190px; /* puedes subir a 220px si quieres */
+    overflow: hidden;
 }
 
-  
-</style>
+.evento-imagen-grande img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;  /* recorta como portada profesional */
+    border-bottom: 4px solid #eee;
+}
+
+/* Texto después de la foto */
+.evento-info {
+    padding: 15px;
+}
+
+.evento-info h3 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+  </style>
 
   <!-- PRIMERO cargar config.js para que API_BASE_URL exista -->
   <script src="/js/config.js"></script>
@@ -362,115 +375,138 @@
       </form>
     </div>
   </div>
-  
-    <footer class="footer">
 
-        <div class="footer-content">
+  <footer class="footer">
 
-            <!-- Izquierda -->
-            <div class="footer-left">
-                <img src="/img/logo1.png" alt="SINAPTICO" class="footer-logo">
-                <p class="footer-desc">Conectando conocimiento, innovación y tecnología.</p>
+    <div class="footer-content">
+
+      <!-- Izquierda -->
+      <div class="footer-left">
+        <img src="/img/logo1.png" alt="SINAPTICO" class="footer-logo">
+        <p class="footer-desc">Conectando conocimiento, innovación y tecnología.</p>
 
 
-            </div>
+      </div>
 
-            <!-- Enlaces en dos columnas -->
-            <div class="footer-links">
-                <h4>Explorar</h4>
-                <div class="links-grid">
-                    <a href="/helice">Inicio</a>
-                    <a></a>
-                    <a href="/directorio">Directorio Empresas</a>
-                    <a href="/directorioPersonas">Directorio Personas</a>
-                    <a href="/proyectos">Proyectos</a>
-                    <a href="/ofertaRegional">Oferta Regional</a>
-                    <a href="/retosEmpresariales">Retos Empresariales</a>
-                    <a href="/retosAula">Retos de Aula</a>
-                    <a href="/conocimientoCursosVirtuales">Cursos</a>
-                    <a href="/conocimientoBiblioteca">Biblioteca</a>
-                    <a href="/convocatorias">Convocatorias</a>
-                    <a href="/eventos">Eventos</a>
-                </div>
-            </div>
+      <!-- Enlaces en dos columnas -->
+      <div class="footer-links">
+        <h4>Explorar</h4>
+        <div class="links-grid">
+          <a href="/helice">Inicio</a>
+          <a></a>
+          <a href="/directorio">Directorio Empresas</a>
+          <a href="/directorioPersonas">Directorio Personas</a>
+          <a href="/proyectos">Proyectos</a>
+          <a href="/ofertaRegional">Oferta Regional</a>
+          <a href="/retosEmpresariales">Retos Empresariales</a>
+          <a href="/retosAula">Retos de Aula</a>
+          <a href="/conocimientoCursosVirtuales">Cursos</a>
+          <a href="/conocimientoBiblioteca">Biblioteca</a>
+          <a href="/convocatorias">Convocatorias</a>
+          <a href="/eventos">Eventos</a>
+        </div>
+      </div>
 
-            <!-- Redes sociales -->
-            <div class="footer-social">
-                <h4>Síguenos</h4>
-                <div class="social-icons">
-                    <a href="#"><i class="bi bi-facebook"></i></a>
-                    <a href="#"><i class="bi bi-twitter"></i></a>
-                    <a href="#"><i class="bi bi-linkedin"></i></a>
-                    <a href="#"><i class="bi bi-instagram"></i></a>
-                </div>
-            </div>
+      <!-- Redes sociales -->
+      <div class="footer-social">
+        <h4>Síguenos</h4>
+        <div class="social-icons">
+          <a href="#"><i class="bi bi-facebook"></i></a>
+          <a href="#"><i class="bi bi-twitter"></i></a>
+          <a href="#"><i class="bi bi-linkedin"></i></a>
+          <a href="#"><i class="bi bi-instagram"></i></a>
+        </div>
+      </div>
 
-            <!-- Contacto -->
-            <div class="footer-contact">
-                <h4>Contáctanos</h4>
+      <!-- Contacto -->
+      <div class="footer-contact">
+        <h4>Contáctanos</h4>
 
-                <p>Cra.19 #35-02 - UIS Bucarica</p>
-                <p>Bucaramanga, Colombia</p>
+        <p>Cra.19 #35-02 - UIS Bucarica</p>
+        <p>Bucaramanga, Colombia</p>
 
-                <div class="contact-item">
-                    <i class="bi bi-envelope"></i>
-                    <span>info@cpcoriente.org</span>
-                </div>
-
-                <div class="contact-item">
-                    <i class="bi bi-telephone"></i>
-                    <span>+57 315 494 0296</span>
-                </div>
-            </div>
-
+        <div class="contact-item">
+          <i class="bi bi-envelope"></i>
+          <span>info@cpcoriente.org</span>
         </div>
 
-        <div class="footer-bottom">
-            <img src="/logos/logoCPCblanco.png" alt="SINAPTICO" class="footer-logoCPC">
-            <p>© 2025 CPC Oriente. Todos los derechos reservados.</p>
-
+        <div class="contact-item">
+          <i class="bi bi-telephone"></i>
+          <span>+57 315 494 0296</span>
         </div>
-
-    </footer>
-
-      <script>
-        document.getElementById("btnDemoEvento").onclick = function () {
-          const titulos = ["Feria de Innovación", "Congreso de Tecnología", "Taller de Creatividad", "Seminario de Ciencia"];
-          const descripciones = [
-            "Evento para compartir ideas innovadoras y conectar con expertos.",
-            "Un congreso donde se presentan los últimos avances tecnológicos.",
-            "Taller práctico para fomentar la creatividad en equipos multidisciplinarios.",
-            "Seminario sobre los retos actuales en ciencia y tecnología."
-          ];
-          const ubicaciones = ["Bucaramanga", "Virtual", "Universidad Industrial", "Centro de Convenciones"];
-          const urls = [
-            "https://evento-demo.com",
-            "https://ctei-santander.org/evento",
-            "https://innovacion2024.com",
-            "https://ciencia-tec.org"
-          ];
-          const modalidad = ["presencial", "virtual", "hibrido"];
-          function random(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
-          function pad(n) { return n < 10 ? "0" + n : n; }
-          const today = new Date();
-          const fecha = today.getFullYear() + "-" + pad(today.getMonth() + 1) + "-" + pad(today.getDate());
-          const horaInicio = pad(Math.floor(Math.random() * 8 + 8)) + ":00";
-          const horaFin = pad(Math.floor(Math.random() * 3 + 16)) + ":00";
-          document.getElementById("tituloEvento").value = random(titulos);
-          document.getElementById("codigoEvento").value = "EVT" + Math.floor(Math.random() * 10000);
-          document.getElementById("descripcionEvento").value = random(descripciones);
-          document.getElementById("modalidadEvento").value = random(modalidad);
-          document.getElementById("ubicacionEvento").value = random(ubicaciones);
-          document.getElementById("fechaEvento").value = fecha;
-          document.getElementById("horaInicioEvento").value = horaInicio;
-          document.getElementById("horaFinEvento").value = horaFin;
-          document.getElementById("cupoMaximoEvento").value = Math.floor(Math.random() * 100 + 20);
-          document.getElementById("inscripcionRequeridaEvento").value = Math.random() > 0.5 ? "true" : "false";
-          document.getElementById("urlEvento").value = random(urls);
-        };
-      </script>
+      </div>
 
     </div>
+
+    <div class="footer-bottom">
+      <img src="/logos/logoCPCblanco.png" alt="SINAPTICO" class="footer-logoCPC">
+      <p>© 2025 CPC Oriente. Todos los derechos reservados.</p>
+
+    </div>
+
+  </footer>
+ <!-- Modal Detalles Evento -->
+            <div class="modal" id="modalDetallesEvento" style="display:none;">
+              <div class="modal-content" style="max-width:60vw;display: flex; flex-direction: column;">
+                <div class="modal-header" style="margin-bottom: 2vh;">
+                  <h3 id="detalleTituloEvento"></h3>
+                  <span class="close" onclick="document.getElementById('modalDetallesEvento').style.display='none'">&times;</span>
+                </div>
+                <div style="display: flex;">
+                <div id="detalleImagenEvento" style="text-align:center;margin-bottom:15px;width: 30%;margin-right: 3vw;"></div>
+                <div class="modal-body" style="font-size:1.1em;color: #1b3360; width: 70%;">
+                  <p><strong>Código:</strong> <span id="detalleCodigoEvento"></span></p>
+                  <p><strong>Descripción:</strong> <span id="detalleDescripcionEvento"></span></p>
+                  <p><strong>Modalidad:</strong> <span id="detalleModalidadEvento"></span></p>
+                  <p><strong>Ubicación:</strong> <span id="detalleUbicacionEvento"></span></p>
+                  <p><strong>Fecha:</strong> <span id="detalleFechaEvento"></span></p>
+                  <p><strong>Hora Inicio:</strong> <span id="detalleHoraInicioEvento"></span></p>
+                  <p><strong>Hora Fin:</strong> <span id="detalleHoraFinEvento"></span></p>
+                  <p><strong>Cupo Máximo:</strong> <span id="detalleCupoMaximoEvento"></span></p>
+                  <p><strong>Inscripción Requerida:</strong> <span id="detalleInscripcionRequeridaEvento"></span></p>
+                  <p><strong>URL Evento:</strong> <a id="detalleUrlEvento" href="#" target="_blank"></a></p>
+                </div>
+              </div>
+              </div>
+            </div>
+  <script>
+    document.getElementById("btnDemoEvento").onclick = function () {
+      const titulos = ["Feria de Innovación", "Congreso de Tecnología", "Taller de Creatividad", "Seminario de Ciencia"];
+      const descripciones = [
+        "Evento para compartir ideas innovadoras y conectar con expertos.",
+        "Un congreso donde se presentan los últimos avances tecnológicos.",
+        "Taller práctico para fomentar la creatividad en equipos multidisciplinarios.",
+        "Seminario sobre los retos actuales en ciencia y tecnología."
+      ];
+      const ubicaciones = ["Bucaramanga", "Virtual", "Universidad Industrial", "Centro de Convenciones"];
+      const urls = [
+        "https://evento-demo.com",
+        "https://ctei-santander.org/evento",
+        "https://innovacion2024.com",
+        "https://ciencia-tec.org"
+      ];
+      const modalidad = ["presencial", "virtual", "hibrido"];
+      function random(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+      function pad(n) { return n < 10 ? "0" + n : n; }
+      const today = new Date();
+      const fecha = today.getFullYear() + "-" + pad(today.getMonth() + 1) + "-" + pad(today.getDate());
+      const horaInicio = pad(Math.floor(Math.random() * 8 + 8)) + ":00";
+      const horaFin = pad(Math.floor(Math.random() * 3 + 16)) + ":00";
+      document.getElementById("tituloEvento").value = random(titulos);
+      document.getElementById("codigoEvento").value = "EVT" + Math.floor(Math.random() * 10000);
+      document.getElementById("descripcionEvento").value = random(descripciones);
+      document.getElementById("modalidadEvento").value = random(modalidad);
+      document.getElementById("ubicacionEvento").value = random(ubicaciones);
+      document.getElementById("fechaEvento").value = fecha;
+      document.getElementById("horaInicioEvento").value = horaInicio;
+      document.getElementById("horaFinEvento").value = horaFin;
+      document.getElementById("cupoMaximoEvento").value = Math.floor(Math.random() * 100 + 20);
+      document.getElementById("inscripcionRequeridaEvento").value = Math.random() > 0.5 ? "true" : "false";
+      document.getElementById("urlEvento").value = random(urls);
+    };
+  </script>
+
+  </div>
   </div>
 
   <!-- Scripts finales -->
@@ -491,11 +527,11 @@
     // -----------------------------------------
     // Cargar Eventos
     // -----------------------------------------
-async function cargarEventos(url = "/api/eventos/habilitados") {
+    async function cargarEventos(url = "/api/eventos/habilitados") {
       try {
         const resp = await fetch(url);
         const data = await resp.json();
-console.log(data);
+        console.log(data);
         const cont = document.getElementById("eventos");
         cont.innerHTML = "";
 
@@ -504,26 +540,24 @@ console.log(data);
 
 
           const card = document.createElement("div");
-          card.className = "convocatorias-container";
+          card.className = "tarjeta-evento";
 
-         card.innerHTML = `
+          card.innerHTML = `
   <div class="flip-card">
     <div class="flip-card-inner">
 
       <!-- Frente -->
       <div class="flip-card-front">
-        <div class="convocatoria-header">
-          <img src="${ev.urlImagen || '/img/sinfoto.jpg'}" class="evento-imagen">
-          <div>
-            <h3>${ev.titulo}</h3>
-            <p><strong>Código:</strong> ${ev.codigo}</p>
-            <p><strong>Modalidad:</strong> ${ev.modalidad}</p>
-            <p><strong>Ubicación:</strong> ${ev.ubicacion}</p>
-            <p><strong>Fecha:</strong> ${ev.fecha ? new Date(ev.fecha).toLocaleDateString() : ''}</p>
-          </div>
-        </div>
+       <div class="evento-imagen-grande">
+    <img src="${ev.urlImagen || '/img/sinfoto.jpg'}" alt="Evento">
+</div>
 
-        <div class="lateral-derecho">
+<div class="evento-info">
+    <h3>${ev.titulo}</h3>
+    <p><strong>Fecha:</strong> ${ev.fecha ? new Date(ev.fecha).toLocaleDateString() : ''}</p>
+</div>
+
+        <div class="centro">
           <button class="action-button flip-btn flip-trigger">Ver detalles</button>
         </div>
       </div>
@@ -532,17 +566,23 @@ console.log(data);
       <div class="flip-card-back">
         <div>
           <h3>${ev.titulo}</h3>
-          <p><strong>Descripción:</strong> ${ev.descripcion}</p>
+          <p><strong>Descripción:</strong> ${ev.descripcion?.length > 60 ? ev.descripcion.slice(0, 60) + "..." : ev.descripcion}</p>
+              <p><strong>Fecha:</strong> ${ev.fecha ? new Date(ev.fecha).toLocaleDateString() : ''}</p>
+
           <p><strong>Hora:</strong> ${ev.horaInicio} - ${ev.horaFin}</p>
           <p><strong>Cupo:</strong> ${ev.cupoMaximo || 'Sin límite'}</p>
           <p><strong>Inscripción:</strong> ${ev.inscripcionRequerida ? "Sí" : "No"}</p>
         </div>
 
         <div>
-          <a href="${ev.urlConvocatoria}" target="_blank" class="action-button" style="width:100%;text-align:center;">
+            <button class="action-button flip-btn flip-trigger" style="width:100%;margin-top:10px;" onclick="mostrarModalDetallesEvento(${ev.id})">Ver detalles</button>
+
+           
+            
+          <a href="${ev.urlEvento}" target="_blank" class="action-button" style="width:100%;text-align:center;">
             Ir al evento
           </a>
-          <button class="action-button flip-btn flip-trigger" style="width:100%;margin-top:10px;">Volver</button>
+        
         </div>
       </div>
 
@@ -633,13 +673,53 @@ console.log(data);
     // Carga inicial
     cargarEventos();
     // Script para flip de tarjetas
-  document.addEventListener("click", function (e) {
-  if (e.target.classList.contains("flip-trigger")) {
-    const flipCard = e.target.closest(".flip-card");
-    flipCard.classList.toggle("flipped");
-  }
-});
+    document.addEventListener("mouseover", function (e) {
+      if (e.target.classList.contains("flip-card") || e.target.closest(".flip-card")) {
+        const flipCard = e.target.classList.contains("flip-card") ? e.target : e.target.closest(".flip-card");
+        flipCard.classList.add("flipped");
+      }
+    });
 
+    document.addEventListener("mouseout", function (e) {
+      if (e.target.classList.contains("flip-card") || e.target.closest(".flip-card")) {
+        const flipCard = e.target.classList.contains("flip-card") ? e.target : e.target.closest(".flip-card");
+        flipCard.classList.remove("flipped");
+      }
+    });
+
+            function mostrarModalDetallesEvento(btn) {
+                // Traer datos del evento desde la API usando el id
+                fetch(`/api/eventos/${btn}`)
+                .then(resp => resp.json())
+                .then(ev => {
+                  document.getElementById('detalleTituloEvento').textContent = ev.titulo || '';
+                  document.getElementById('detalleImagenEvento').innerHTML = ev.urlImagen ? `<img src="${ev.urlImagen}" alt="Evento" style="max-width:100%;border-radius:10px;">` : '';
+                  document.getElementById('detalleCodigoEvento').textContent = ev.codigo || 'N/A';
+                  document.getElementById('detalleDescripcionEvento').textContent = ev.descripcion || '';
+                  document.getElementById('detalleModalidadEvento').textContent = ev.modalidad || 'N/A';
+                  document.getElementById('detalleUbicacionEvento').textContent = ev.ubicacion || 'N/A';
+                  document.getElementById('detalleFechaEvento').textContent = ev.fecha ? new Date(ev.fecha).toLocaleDateString() : '';
+                  document.getElementById('detalleHoraInicioEvento').textContent = ev.horaInicio || '';
+                  document.getElementById('detalleHoraFinEvento').textContent = ev.horaFin || '';
+                  document.getElementById('detalleCupoMaximoEvento').textContent = ev.cupoMaximo || 'Sin límite';
+                  document.getElementById('detalleInscripcionRequeridaEvento').textContent = ev.inscripcionRequerida ? 'Sí' : 'No';
+                  let urlA = document.getElementById('detalleUrlEvento');
+                  urlA.href = ev.urlEvento || '#';
+                  urlA.textContent = ev.urlEvento || '';
+                  document.getElementById('modalDetallesEvento').style.display = 'block';
+                })
+                .catch(() => {
+                  Swal.fire("Error", "No se pudo cargar el evento", "error");
+                });
+            }
+            // Cierra el modal al hacer click fuera del contenido
+            window.onclick = function(event) {
+              let modal = document.getElementById('modalDetallesEvento');
+              if (event.target == modal) {
+                modal.style.display = "none";
+              }
+            }
+            </script>
   </script>
 
 </body>

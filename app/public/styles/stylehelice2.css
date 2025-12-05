@@ -444,7 +444,7 @@ h2 {
     max-width: 90%;
     margin: 0 auto 1.5rem;
     padding: 1rem 2rem;
-    background: var(--gradient-1);
+    background: var(--primary-color);
     border-radius: 15px;
     display: flex;
     justify-content: space-between;
