@@ -31,6 +31,32 @@
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   <style>
+    #listaConvocatorias {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      overflow-x: auto;
+      /* Scroll horizontal */
+      padding-bottom: 10px;
+      scroll-behavior: smooth;
+      max-height: 100%;
+      /* Mantiene tamaño normal */
+      padding-right: 10px;
+    }
+
+    #listaConvocatorias::-webkit-scrollbar {
+      height: 10px;
+    }
+
+    #listaConvocatorias::-webkit-scrollbar-thumb {
+      background: var(--primary-color);
+      border-radius: 10px;
+    }
+
+    #listaConvocatorias::-webkit-scrollbar-track {
+      background: #eee;
+    }
+
     .convocatoria-card {
       background: white;
       border-radius: 15px;
@@ -38,7 +64,10 @@
       padding: 25px;
       margin-bottom: 20px;
       transition: all 0.3s ease;
-      border-left: 4px solid #007bff;
+
+      min-width: 100%;
+      /* Necesario para scroll + grid */
+      box-sizing: border-box;
     }
 
     .convocatoria-card:hover {
@@ -47,10 +76,20 @@
     }
 
     .convocatoria-header {
-      display: flex;
+
       justify-content: space-between;
-      align-items: start;
+      align-items: center;
       margin-bottom: 15px;
+      gap: 5px;
+    }
+
+    .meGusta {
+      margin: 2px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      justify-content: center;
+      flex-direction: row-reverse;
     }
 
     .convocatoria-title {
@@ -58,6 +97,71 @@
       font-weight: bold;
       color: #2c3e50;
       margin: 0;
+    }
+
+    .action-p {
+      background: var(--gradient-1);
+      color: var(--light-text);
+      border: none;
+      border-radius: 20px;
+      padding: 12px 30px;
+      cursor: pointer;
+      font-size: 15px;
+      transition: 0.5s;
+      margin-top: 2%;
+    }
+
+    .action-v {
+      background: var(--naranja-color);
+      color: var(--light-text);
+      border: none;
+      border-radius: 20px;
+      padding: 12px 30px;
+      cursor: pointer;
+      font-size: 15px;
+      transition: 0.5s;
+      margin-top: 2%;
+    }
+
+    .filter-btn {
+      padding: 7px 5px;
+      border: 2px solid #ecf0f1;
+      border-radius: 6px;
+      background: #ecf0f1;
+      color: #2c3e50;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.3s;
+      margin-top: 28px;
+    }
+
+    .filter-btn.active {
+      background: #3498db;
+      color: white;
+    }
+
+    .filter-btn:hover {
+      background: #3498db;
+      color: white;
+    }
+
+    .action-like {
+      color: var(--hover-btn);
+      background: none;
+      border: 50%;
+      border: 0.5px solid var(--hover-btn);
+      border-radius: 50%;
+      padding: 1.5%;
+      font-size: 20px;
+      cursor: pointer;
+      margin-top: 2%;
+    }
+
+    .action-like:hover {
+      color: var(--naranja-color);
+      font-size: 25px;
+      border: 0.7px solid var(--naranja-color);
     }
 
     .convocatoria-status {
@@ -144,6 +248,7 @@
       color: #555;
       line-height: 1.5;
       margin: 15px 0;
+      text-align: justify;
     }
 
     .convocatoria-actions {
@@ -152,25 +257,7 @@
       margin-top: 20px;
     }
 
-    .btn-postular {
-      background: linear-gradient(135deg, #007bff, #0056b3);
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 25px;
-      cursor: pointer;
-      font-weight: 600;
-      transition: all 0.3s ease;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
 
-    .btn-postular:hover {
-      background: linear-gradient(135deg, #0056b3, #003d82);
-      transform: translateY(-2px);
-    }
 
     .btn-postular:disabled {
       background: #6c757d;
@@ -195,41 +282,6 @@
       color: white;
     }
 
-    .filters-container {
-      background: white;
-      border-radius: 15px;
-      padding: 20px;
-      margin-bottom: 30px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .filters-row {
-      display: flex;
-      gap: 20px;
-      align-items: end;
-      flex-wrap: wrap;
-    }
-
-    .filter-group {
-      flex: 1;
-      min-width: 200px;
-    }
-
-    .filter-label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: 600;
-      color: #2c3e50;
-    }
-
-    .filter-input,
-    .filter-select {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      font-size: 1em;
-    }
 
     .no-convocatorias {
       text-align: center;
@@ -260,7 +312,7 @@
         flex-direction: column;
       }
     }
- 
+
     /* === CONTENEDOR PRINCIPAL === */
     .perfil-content {
       display: flex;
@@ -349,21 +401,6 @@
       font-weight: 700;
     }
 
-    /* Botón */
-    .action-button {
-      background: #ff7b00;
-      color: #fff;
-      padding: 12px 24px;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      font-size: 16px;
-      width: fit-content;
-    }
-
-    .action-button:hover {
-      background: #d46300;
-    }
 
     /* === Modal y hoja de vida === */
     #iframeHojaVida {
@@ -395,6 +432,68 @@
       border: 6px solid rgba(0, 0, 0, 0.08);
       border-top-color: #007bff;
       animation: spin 1s linear infinite;
+    }
+
+    .filters-container {
+      background: var(--light-text);
+      border-radius: 10px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      align-items: flex-end;
+      padding: 10px;
+      justify-content: space-between
+    }
+
+    .filters-row {
+
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .control-label {
+      font-size: 0.9em;
+      font-weight: 600;
+      color: var(--text-description);
+    }
+
+    .control-input,
+    .control-select {
+      padding: 7px 2px;
+      border: 2px solid #ecf0f1;
+      border-radius: 6px;
+      font-size: 14px;
+      transition: border-color 0.3s;
+    }
+
+    .control-input:focus,
+    .control-select:focus {
+      outline: none;
+      border-color: #3498db;
+    }
+
+
+    .filter-input {
+      background: var(--background-color);
+      color: rgb(0, 0, 0);
+      border: none;
+      border-radius: 50px;
+      padding: 0.6rem 1.2rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+      flex: 1;
+      min-width: 250px;
+      max-width: 500px;
     }
 
     @keyframes spin {
@@ -470,7 +569,8 @@
           <a href="/conocimientoBiblioteca" data-link="/conocimientoBiblioteca">Biblioteca</a>
         </div>
       </div>
-      <button class="nav-button" onclick="window.location.href='/convocatorias'"  data-link="/convocatorias">Convocatorias</button>
+      <button class="nav-button" onclick="window.location.href='/convocatorias'"
+        data-link="/convocatorias">Convocatorias</button>
 
       <button class="nav-button" onclick="window.location.href='/eventos'" data-link="/eventos">Eventos</button>
 
@@ -489,9 +589,12 @@
 
   <!-- Contenido Principal -->
   <div class="main-content">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
-      <h2 class="title">Convocatorias Disponibles</h2>
-      <button class="filter-btn" onclick="cargarConvocatorias()" style="background: #28a745;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; ">
+        <div class="section-header">
+          
+          <h2 style="color:white;">Convocatorias - 2025</h2>
+        </div>
+      <button class="filter-btn" onclick="cargarConvocatorias()">
         <i class="bi bi-arrow-clockwise"></i> Actualizar
       </button>
     </div>
@@ -499,23 +602,23 @@
     <!-- Filtros -->
     <div class="filters-container">
       <div class="filters-row">
-        <div class="filter-group">
-          <label class="filter-label">Buscar convocatoria</label>
-          <input type="text" id="buscarConvocatoria" class="filter-input" placeholder="Título, descripción, tipo..."
+        <div class="control-group">
+          <label class="control-label">Buscar convocatoria</label>
+          <input type="text" id="buscarConvocatoria" class="control-input" placeholder="Título, descripción, tipo..."
             onkeyup="filtrarConvocatorias()">
         </div>
-        <div class="filter-group">
-          <label class="filter-label">Estado</label>
-          <select id="filtroEstado" class="filter-select" onchange="filtrarConvocatorias()">
+        <div class="control-group">
+          <label class="control-label">Estado</label>
+          <select id="filtroEstado" class="control-select" onchange="filtrarConvocatorias()">
             <option value="">Todos los estados</option>
             <option value="abierta">Abiertas</option>
             <option value="cerrada">Cerradas</option>
             <option value="proximamente">Próximamente</option>
           </select>
         </div>
-        <div class="filter-group">
-          <label class="filter-label">Tipo</label>
-          <select id="filtroTipo" class="filter-select" onchange="filtrarConvocatorias()">
+        <div class="control-group">
+          <label class="control-label">Tipo</label>
+          <select id="filtroTipo" class="control-select" onchange="filtrarConvocatorias()">
             <option value="">Todos los tipos</option>
           </select>
         </div>
@@ -670,8 +773,8 @@
       </div>
 
       <div style="display: flex; gap: 15px; justify-content: flex-end; margin-top: 30px;">
-        <button type="button" onclick="cerrarModalPostulacion()" class="btn-secondary">Cancelar</button>
-        <button type="button" onclick="enviarPostulacion()" class="btn-primary">Enviar Postulación</button>
+        <button type="button" onclick="cerrarModalPostulacion()" class="modal-button-secondary">Cancelar</button>
+        <button type="button" onclick="enviarPostulacion()" class="modal-button">Enviar Postulación</button>
       </div>
     </div>
   </div>
@@ -721,85 +824,85 @@
     </div>
   </div>
 
-    <footer class="footer">
+  <footer class="footer">
 
-        <div class="footer-content">
+    <div class="footer-content">
 
-            <!-- Izquierda -->
-            <div class="footer-left">
-                <img src="/img/logo1.png" alt="SINAPTICO" class="footer-logo">
-                <p class="footer-desc">Conectando conocimiento, innovación y tecnología.</p>
+      <!-- Izquierda -->
+      <div class="footer-left">
+        <img src="/img/logo1.png" alt="SINAPTICO" class="footer-logo">
+        <p class="footer-desc">Conectando conocimiento, innovación y tecnología.</p>
 
 
-            </div>
+      </div>
 
-            <!-- Enlaces en dos columnas -->
-            <div class="footer-links">
-                <h4>Explorar</h4>
-                <div class="links-grid">
-                    <a href="/helice">Inicio</a>
-                    <a></a>
-                    <a href="/directorio">Directorio Empresas</a>
-                    <a href="/directorioPersonas">Directorio Personas</a>
-                    <a href="/proyectos">Proyectos</a>
-                    <a href="/ofertaRegional">Oferta Regional</a>
-                    <a href="/retosEmpresariales">Retos Empresariales</a>
-                    <a href="/retosAula">Retos de Aula</a>
-                    <a href="/conocimientoCursosVirtuales">Cursos</a>
-                    <a href="/conocimientoBiblioteca">Biblioteca</a>
-                    <a href="/convocatorias">Convocatorias</a>
-                    <a href="/eventos">Eventos</a>
-                </div>
-            </div>
+      <!-- Enlaces en dos columnas -->
+      <div class="footer-links">
+        <h4>Explorar</h4>
+        <div class="links-grid">
+          <a href="/helice">Inicio</a>
+          <a></a>
+          <a href="/directorio">Directorio Empresas</a>
+          <a href="/directorioPersonas">Directorio Personas</a>
+          <a href="/proyectos">Proyectos</a>
+          <a href="/ofertaRegional">Oferta Regional</a>
+          <a href="/retosEmpresariales">Retos Empresariales</a>
+          <a href="/retosAula">Retos de Aula</a>
+          <a href="/conocimientoCursosVirtuales">Cursos</a>
+          <a href="/conocimientoBiblioteca">Biblioteca</a>
+          <a href="/convocatorias">Convocatorias</a>
+          <a href="/eventos">Eventos</a>
+        </div>
+      </div>
 
-            <!-- Redes sociales -->
-            <div class="footer-social">
-                <h4>Síguenos</h4>
-                <div class="social-icons">
-                    <a href="#"><i class="bi bi-facebook"></i></a>
-                    <a href="#"><i class="bi bi-twitter"></i></a>
-                    <a href="#"><i class="bi bi-linkedin"></i></a>
-                    <a href="#"><i class="bi bi-instagram"></i></a>
-                </div>
-            </div>
+      <!-- Redes sociales -->
+      <div class="footer-social">
+        <h4>Síguenos</h4>
+        <div class="social-icons">
+          <a href="#"><i class="bi bi-facebook"></i></a>
+          <a href="#"><i class="bi bi-twitter"></i></a>
+          <a href="#"><i class="bi bi-linkedin"></i></a>
+          <a href="#"><i class="bi bi-instagram"></i></a>
+        </div>
+      </div>
 
-            <!-- Contacto -->
-            <div class="footer-contact">
-                <h4>Contáctanos</h4>
+      <!-- Contacto -->
+      <div class="footer-contact">
+        <h4>Contáctanos</h4>
 
-                <p>Cra.19 #35-02 - UIS Bucarica</p>
-                <p>Bucaramanga, Colombia</p>
+        <p>Cra.19 #35-02 - UIS Bucarica</p>
+        <p>Bucaramanga, Colombia</p>
 
-                <div class="contact-item">
-                    <i class="bi bi-envelope"></i>
-                    <span>info@cpcoriente.org</span>
-                </div>
-
-                <div class="contact-item">
-                    <i class="bi bi-telephone"></i>
-                    <span>+57 315 494 0296</span>
-                </div>
-            </div>
-
+        <div class="contact-item">
+          <i class="bi bi-envelope"></i>
+          <span>info@cpcoriente.org</span>
         </div>
 
-        <div class="footer-bottom">
-            <img src="/logos/logoCPCblanco.png" alt="SINAPTICO" class="footer-logoCPC">
-            <p>© 2025 CPC Oriente. Todos los derechos reservados.</p>
-
+        <div class="contact-item">
+          <i class="bi bi-telephone"></i>
+          <span>+57 315 494 0296</span>
         </div>
+      </div>
 
-    </footer>
-  
+    </div>
+
+    <div class="footer-bottom">
+      <img src="/logos/logoCPCblanco.png" alt="SINAPTICO" class="footer-logoCPC">
+      <p>© 2025 CPC Oriente. Todos los derechos reservados.</p>
+
+    </div>
+
+  </footer>
 
 
-    <!-- Scripts -->
-    <script src="/js/config.js"></script>
-    <script src="/js/nav.js"></script>
-    <script src="/js/notificaciones.js"></script>
-    <script src="/js/websocket.js"></script>
-    <script src="/js/menuGeneral.js"></script>
-    <script src="/js/habilitarEvaluador.js"></script>
+
+  <!-- Scripts -->
+  <script src="/js/config.js"></script>
+  <script src="/js/nav.js"></script>
+  <script src="/js/notificaciones.js"></script>
+  <script src="/js/websocket.js"></script>
+  <script src="/js/menuGeneral.js"></script>
+  <script src="/js/habilitarEvaluador.js"></script>
 
 
   <script>
@@ -1023,7 +1126,12 @@
         return `
           <div class="convocatoria-card">
             <div class="convocatoria-header">
-              <h3 class="convocatoria-title">${convocatoria.titulo}</h3>
+                         <div class="meGusta">   <button class="action-like" onclick="marcarMeGusta(${convocatoria.id})" id="btnMeGusta${convocatoria.id}" title="Me gusta esta convocatoria">
+                <i class="bi bi-hand-thumbs-up-fill"></i>
+                  <span id="meGustaTexto${convocatoria.id}"> </span>
+                </button>
+              <h3 class="convocatoria-title">${convocatoria.titulo}</h3></div>
+        
               ${estadoInfo}
             </div>
 
@@ -1051,20 +1159,17 @@
             </div>
 
             <div class="convocatoria-actions">
-              <button class="btn-postular" ${!puedePostular ? 'disabled' : ''} 
+              <button class="action-p" ${!puedePostular ? 'disabled' : ''} 
                       onclick="abrirModalPostulacion(${convocatoria.id})" 
                       id="btnPostular${convocatoria.id}">
                 <i class="bi bi-send"></i>
                 <span id="textoBoton${convocatoria.id}">${puedePostular ? 'Postular Proyecto' : 'No Disponible'}</span>
               </button>
-              <button class="btn-ver-mas" onclick="verDetallesConvocatoria(${convocatoria.id})">
+              <button class="action-v" onclick="verDetallesConvocatoria(${convocatoria.id})">
                 <i class="bi bi-eye"></i>
-                Ver Más
+                Ver más
               </button>
-              <button class="btn-ver-mas" onclick="marcarMeGusta(${convocatoria.id})" id="btnMeGusta${convocatoria.id}" title="Me gusta esta convocatoria">
-                  <i class="bi bi-hand-thumbs-up"></i>
-                  <span id="meGustaTexto${convocatoria.id}">Me gusta</span>
-                </button>
+
             </div>
           </div>
         `;
@@ -1228,7 +1333,7 @@
 
       // Mostrar información de la convocatoria
       document.getElementById('infoConvocatoria').innerHTML = `
-        <h4 style="margin: 0 0 10px 0; color: #007bff;">Postulación a: ${convocatoriaSeleccionada.titulo}</h4>
+        <h4 style="margin: 0 0 10px 0; color: var(--secondary-color);">Postulación a: ${convocatoriaSeleccionada.titulo}</h4>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; font-size: 0.9em;">
           <p><strong>Tipo:</strong> ${convocatoriaSeleccionada.tipoConvocatoria.nombre}</p>
           <p><strong>Monto Máximo:</strong> $${convocatoriaSeleccionada.montoMaximo.toLocaleString('es-CO')}</p>
@@ -1517,7 +1622,7 @@
     });
   </script>
 
-  
+
 
 </body>
 

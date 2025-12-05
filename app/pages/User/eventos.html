@@ -32,18 +32,13 @@
     /*   TARJETAS DE EVENTOS (FLIP)   */
     /* =============================== */
 
-    .tarjeta-evento {
-      width: 100%;
-      max-width: 380px;
-    }
-
-    /* Contenedor Flip */
     .flip-card {
       background-color: transparent;
       width: 100%;
+      max-width: 650px;
       height: 330px;
       perspective: 1200px;
-      border-radius: 14px;
+      margin: 25px auto;
     }
 
     .flip-card-inner {
@@ -61,7 +56,8 @@
     .flip-card-front,
     .flip-card-back {
       position: absolute;
-      inset: 0;
+      width: 100%;
+      height: 100%;
       backface-visibility: hidden;
       border-radius: 14px;
       overflow: hidden;
@@ -74,41 +70,30 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      padding-bottom: 10px;
     }
 
     .convocatoria-header {
       display: flex;
-      gap: 1rem;
-      padding: 1rem;
+      gap: 1.2rem;
+      padding: 1.2rem;
     }
 
     .evento-imagen {
-      height: 30%;
+      width: 120px;
+      height: 120px;
       border-radius: 12px;
       object-fit: cover;
-      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
     }
 
-    .lateral-derecho {
+    /* Botón Flip */
+    .flip-card-front .lateral-derecho {
       display: flex;
       justify-content: flex-end;
-      padding: 0 20px 15px 0;
+      padding: 0 15px 15px 0;
     }
 
-    /* Botones */
-    .action-button {
-      background: var(--primary-color);
-      color: #fff;
-      padding: 0.6rem 1.4rem;
-      border-radius: 50px;
-      border: none;
-      cursor: pointer;
-      font-weight: 600;
-    }
-
-    .action-button:hover {
-      background: var(--secondary-color);
-    }
 
     .flip-btn {
       background: var(--gradient-2);
@@ -121,39 +106,114 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      
     }
 
-    /* GRID para mostrar varias tarjetas */
-    #eventos {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-      gap: 25px;
-      padding: 20px;
+    .action-button:hover {
+      background: var(--secondary-color);
     }
 
-    /* Imagen grande en la parte frontal */
-.evento-imagen-grande {
-    width: 100%;
-    height: 190px; /* puedes subir a 220px si quieres */
-    overflow: hidden;
+    /* Móviles */
+    @media (max-width: 700px) {
+      .flip-card {
+        height: 420px;
+      }
+
+      .evento-imagen {
+        width: 90px;
+        height: 90px;
+      }
+
+      .convocatoria-header {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+
+    .filters-container {
+      background: var(--light-text);
+      border-radius: 10px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      align-items: flex-end;
+      padding: 10px;
+      justify-content: space-between
+    }
+
+    .filters-row {
+
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .control-label {
+      font-size: 0.9em;
+      font-weight: 600;
+      color: var(--text-description);
+    }
+
+    .control-input,
+    .control-select {
+      padding: 7px 2px;
+      border: 2px solid #ecf0f1;
+      border-radius: 6px;
+      font-size: 14px;
+      transition: border-color 0.3s;
+    }
+
+    .control-input:focus,
+    .control-select:focus {
+      outline: none;
+      border-color: #3498db;
+    }
+
+
+    .filter-input {
+      background: var(--background-color);
+      color: rgb(0, 0, 0);
+      border: none;
+      border-radius: 50px;
+      padding: 0.6rem 1.2rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+      flex: 1;
+      min-width: 250px;
+      max-width: 500px;
+    }
+    #listaEventos {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 columnas */
+  gap: 20px;
+  overflow-x: auto;           /* Scroll horizontal */
+  padding-bottom: 12px;
+  scroll-behavior: smooth;
+  padding-right: 10px;
 }
 
-.evento-imagen-grande img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;  /* recorta como portada profesional */
-    border-bottom: 4px solid #eee;
+#listaEventos::-webkit-scrollbar {
+  height: 10px;
 }
 
-/* Texto después de la foto */
-.evento-info {
-    padding: 15px;
+#listaEventos::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 10px;
 }
 
-.evento-info h3 {
-    margin: 0;
-    font-size: 1.2rem;
+#listaEventos::-webkit-scrollbar-track {
+  background: #eee;
 }
+
   </style>
 
   <!-- PRIMERO cargar config.js para que API_BASE_URL exista -->
@@ -252,131 +312,150 @@
       <p class="subtitle"></p>
     </div>
 
-    <div class="action-buttons" style="display:flex;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; ">
+      <div class="section-header">
+
+        <h2 style="color:white;">Eventos - 2025</h2>
+      </div>
       <button class="action-button" id="btnNuevoEvento">
         <i class="fas fa-plus button-icon"></i> Nuevo evento
       </button>
+
     </div>
-  </div>
 
-  <!-- Filtros -->
-  <div class="filter-container">
-    <input type="text" id="buscarEvento" placeholder="Nombre Evento" class="filter-input">
-    <select id="estadoFiltro" class="filter-select">
-      <option value="">Todos los Estados</option>
-      <option value="Abierto">Abierto</option>
-      <option value="Cerrado">Cerrado</option>
-    </select>
-  </div>
-
-  <!-- Lista de eventos -->
-  <div class="main-content" id="eventos"></div>
-
-  <!-- Modal Crear / Editar Evento -->
-  <div id="modalEdicion" class="modal">
-    <div class="modal-content">
-
-      <div class="modal-header">
-        <h3 id="opcionEvento">Nuevo Evento</h3>
-        <span id="closeModalEdicion" class="close">&times;</span>
+    <!-- Filtros -->
+    <div class="filters-container">
+      <div class="filters-row">
+        <div class="control-group">
+          <label class="control-label">Buscar evento</label>
+          <input type="text" id="buscarEvento" placeholder="Nombre Evento" class="control-input">
+        </div>
+        <div class="control-group">
+          <label class="control-label">Selecciona el estado</label>
+          <select id="estadoFiltro" class="control-select">
+            <option value="">Todos los Estados</option>
+            <option value="Abierto">Abierto</option>
+            <option value="Cerrado">Cerrado</option>
+          </select>
+        </div>
       </div>
+    </div>
 
-      <form id="formEditarEvento">
+    <!-- Lista de eventos -->
+    <div class="main-content" id="eventos"></div>
 
-        <!-- Imagen -->
-        <div class="form-group">
-          <label>Subir Imagen:</label>
-          <input type="file" id="fileImagenEvento" accept="image/*">
-          <img id="previewImagenEvento" style="max-width:120px;max-height:120px;border-radius:10px;margin-top:10px;">
+    <!-- Modal Crear / Editar Evento -->
+    <div id="modalEdicion" class="modal">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h3 id="opcionEvento">Nuevo Evento</h3>
+          <span id="closeModalEdicion" class="close">&times;</span>
         </div>
 
-        <!-- Script Preview Imagen -->
-        <script>
-          let selectedFile = null;
+        <form id="formEditarEvento">
 
-          document.getElementById("fileImagenEvento").addEventListener("change", (e) => {
-            selectedFile = e.target.files[0];
-            if (!selectedFile) return;
+          <!-- Imagen -->
+          <div class="form-group">
+            <label>Subir Imagen:</label>
+            <input type="file" id="fileImagenEvento" accept="image/*">
+            <img id="previewImagenEvento" style="max-width:120px;max-height:120px;border-radius:10px;margin-top:10px;">
+          </div>
 
-            const reader = new FileReader();
-            reader.onload = ev => {
-              document.getElementById("previewImagenEvento").src = ev.target.result;
-            };
-            reader.readAsDataURL(selectedFile);
-          });
-        </script>
+          <!-- Script Preview Imagen -->
+          <script>
+            let selectedFile = null;
 
-        <!-- Campos -->
-        <div class="form-group">
-          <label>Título:</label>
-          <input type="text" id="tituloEvento" required>
-        </div>
+            document.getElementById("fileImagenEvento").addEventListener("change", (e) => {
+              selectedFile = e.target.files[0];
+              if (!selectedFile) return;
 
-        <div class="form-group">
-          <label>Código:</label>
-          <input type="text" id="codigoEvento" required maxlength="20">
-        </div>
+              const reader = new FileReader();
+              reader.onload = ev => {
+                document.getElementById("previewImagenEvento").src = ev.target.result;
+              };
+              reader.readAsDataURL(selectedFile);
+            });
+          </script>
 
-        <div class="form-group">
-          <label>Descripción:</label>
-          <textarea id="descripcionEvento" required minlength="10"></textarea>
-        </div>
+          <!-- Campos -->
+          <div class="form-group">
+            <label>Título:</label>
+            <input type="text" id="tituloEvento" required>
+          </div>
 
-        <div class="form-group">
-          <label>Modalidad:</label>
-          <select id="modalidadEvento" required>
-            <option value="presencial">Presencial</option>
-            <option value="virtual">Virtual</option>
-            <option value="hibrido">Híbrido</option>
-          </select>
-        </div>
+          <div class="form-group">
+            <label>Código:</label>
+            <input type="text" id="codigoEvento" required maxlength="20">
+          </div>
 
-        <div class="form-group">
-          <label>Ubicación:</label>
-          <input type="text" id="ubicacionEvento">
-        </div>
+          <div class="form-group">
+            <label>Descripción:</label>
+            <textarea id="descripcionEvento" required minlength="10"></textarea>
+          </div>
 
-        <div class="form-group">
-          <label>Fecha:</label>
-          <input type="date" id="fechaEvento" required>
-        </div>
+          <div class="form-group">
+            <label>Modalidad:</label>
+            <select id="modalidadEvento" required>
+              <option value="presencial">Presencial</option>
+              <option value="virtual">Virtual</option>
+              <option value="hibrido">Híbrido</option>
+            </select>
+          </div>
 
-        <div class="form-group">
-          <label>Hora Inicio:</label>
-          <input type="time" id="horaInicioEvento" required>
-        </div>
+          <div class="form-group">
+            <label>Ubicación:</label>
+            <input type="text" id="ubicacionEvento">
+          </div>
 
-        <div class="form-group">
-          <label>Hora Fin:</label>
-          <input type="time" id="horaFinEvento" required>
-        </div>
+          <div class="form-group">
+            <label>Fecha:</label>
+            <input type="date" id="fechaEvento" required>
+          </div>
 
-        <div class="form-group">
-          <label>Cupo Máximo:</label>
-          <input type="number" id="cupoMaximoEvento" min="1">
-        </div>
+          <div class="form-group">
+            <label>Hora Inicio:</label>
+            <input type="time" id="horaInicioEvento" required>
+          </div>
 
-        <div class="form-group">
-          <label>Inscripción Requerida:</label>
-          <select id="inscripcionRequeridaEvento">
-            <option value="true">Sí</option>
-            <option value="false">No</option>
-          </select>
-        </div>
+          <div class="form-group">
+            <label>Hora Fin:</label>
+            <input type="time" id="horaFinEvento" required>
+          </div>
 
-        <div class="form-group">
-          <label>URL Evento:</label>
-          <input type="url" id="urlEvento">
-        </div>
+          <div class="form-group">
+            <label>Cupo Máximo:</label>
+            <input type="number" id="cupoMaximoEvento" min="1">
+          </div>
 
-        <button type="submit" id="btnGuardarCambios" class="modal-button">Guardar</button>
-        <button type="button" id="btnDemoEvento" class="modal-button"
-          style="background:#888;margin-left:10px;">Demo</button>
-      </form>
+          <div class="form-group">
+            <label>Inscripción Requerida:</label>
+            <select id="inscripcionRequeridaEvento">
+              <option value="true">Sí</option>
+              <option value="false">No</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>URL Evento:</label>
+            <input type="url" id="urlEvento">
+          </div>
+
+          <button type="submit" id="btnGuardarCambios" class="modal-button">Guardar</button>
+          <button type="button" id="btnDemoEvento" class="modal-button"
+            style="background:#888;margin-left:10px;">Demo</button>
+        </form>
+      </div>
     </div>
   </div>
-
   <footer class="footer">
+
+    <div class="footer-content">
+
+      <!-- Izquierda -->
+      <div class="footer-left">
+        <img src="/img/logo1.png" alt="SINAPTICO" class="footer-logo">
+        <p class="footer-desc">Conectando conocimiento, innovación y tecnología.</p>
 
     <div class="footer-content">
 
@@ -445,30 +524,7 @@
     </div>
 
   </footer>
- <!-- Modal Detalles Evento -->
-            <div class="modal" id="modalDetallesEvento" style="display:none;">
-              <div class="modal-content" style="max-width:60vw;display: flex; flex-direction: column;">
-                <div class="modal-header" style="margin-bottom: 2vh;">
-                  <h3 id="detalleTituloEvento"></h3>
-                  <span class="close" onclick="document.getElementById('modalDetallesEvento').style.display='none'">&times;</span>
-                </div>
-                <div style="display: flex;">
-                <div id="detalleImagenEvento" style="text-align:center;margin-bottom:15px;width: 30%;margin-right: 3vw;"></div>
-                <div class="modal-body" style="font-size:1.1em;color: #1b3360; width: 70%;">
-                  <p><strong>Código:</strong> <span id="detalleCodigoEvento"></span></p>
-                  <p><strong>Descripción:</strong> <span id="detalleDescripcionEvento"></span></p>
-                  <p><strong>Modalidad:</strong> <span id="detalleModalidadEvento"></span></p>
-                  <p><strong>Ubicación:</strong> <span id="detalleUbicacionEvento"></span></p>
-                  <p><strong>Fecha:</strong> <span id="detalleFechaEvento"></span></p>
-                  <p><strong>Hora Inicio:</strong> <span id="detalleHoraInicioEvento"></span></p>
-                  <p><strong>Hora Fin:</strong> <span id="detalleHoraFinEvento"></span></p>
-                  <p><strong>Cupo Máximo:</strong> <span id="detalleCupoMaximoEvento"></span></p>
-                  <p><strong>Inscripción Requerida:</strong> <span id="detalleInscripcionRequeridaEvento"></span></p>
-                  <p><strong>URL Evento:</strong> <a id="detalleUrlEvento" href="#" target="_blank"></a></p>
-                </div>
-              </div>
-              </div>
-            </div>
+
   <script>
     document.getElementById("btnDemoEvento").onclick = function () {
       const titulos = ["Feria de Innovación", "Congreso de Tecnología", "Taller de Creatividad", "Seminario de Ciencia"];
