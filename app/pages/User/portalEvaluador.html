@@ -27,19 +27,15 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>
-    .evaluation-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-
     .evaluador-header {
-      background: linear-gradient(135deg, #007bff, #0056b3);
+      background: var(--primary-color);
       color: white;
       border-radius: 12px;
-      padding: 25px;
-      margin-bottom: 30px;
       box-shadow: 0 4px 20px rgba(0, 123, 255, 0.3);
+      width: 90%;
+      margin: 2rem auto 2rem;
+      padding: 2rem;
+
     }
 
     .evaluador-info {
@@ -78,11 +74,11 @@
     }
 
     .stat-card {
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 8px;
-      padding: 15px;
+
       text-align: center;
     }
+
+
 
     .stat-number {
       font-size: 2em;
@@ -91,16 +87,21 @@
     }
 
     .stat-label {
-      font-size: 0.9em;
+      font-size: 1.2em;
       opacity: 0.8;
     }
 
     .filters-section {
-      background: white;
-      border-radius: 8px;
-      padding: 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    background: var(--light-text);
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: flex-end;
+    padding: 10px;
+    justify-content: space-between
     }
 
     .filters-row {
@@ -110,34 +111,13 @@
       flex-wrap: wrap;
     }
 
-    .filter-group {
-      flex: 1;
-      min-width: 200px;
-    }
-
-    .filter-label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: 600;
-      color: #2c3e50;
-    }
-
-    .filter-input,
-    .filter-select {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-      font-size: 1em;
-    }
-
     .project-card {
       background: white;
       border-radius: 12px;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
       padding: 25px;
       margin-bottom: 20px;
-      border-left: 4px solid #007bff;
+
       position: relative;
     }
 
@@ -212,11 +192,11 @@
       align-items: center;
       gap: 8px;
       font-size: 0.9em;
-      color: #666;
+      color: var(--text-description);
     }
 
     .meta-item i {
-      color: #007bff;
+      color: var(--secondary-color);
       width: 16px;
     }
 
@@ -306,7 +286,7 @@
       border-radius: 8px;
       padding: 20px;
       margin-top: 20px;
-      border: 2px solid #28a745;
+      border: 2px solid #00cf30;
     }
 
     .total-score {
@@ -388,14 +368,6 @@
       transform: translateY(-2px);
     }
 
-    .btn-secondary {
-      background: #6c757d;
-      color: white;
-    }
-
-    .btn-secondary:hover {
-      background: #545b62;
-    }
 
     .btn-warning {
       background: #ffc107;
@@ -559,37 +531,38 @@
     <nav class="nav">
 
 
-            <button class="nav-button" data-link="/helice" id="inicio"
-                onclick="window.location.href='/helice'">Inicio</button>
+      <button class="nav-button" data-link="/helice" id="inicio"
+        onclick="window.location.href='/helice'">Inicio</button>
 
-            <div class="dropdown menuG">
-                <button class="nav-button dropdown-btnG" data-link="/directorio">Directorio</button>
-                <div class="dropdown-menu dropdown-menuG">
-                    <a href="/directorio">Entidades</a>
-                    <a href="/directorioPersonas">Personas</a>
-                </div>
-            </div>
-            <button class="nav-button" onclick="window.location.href='/proyectos'">Proyectos</button>
-            <button class="nav-button" onclick="window.location.href='/ofertaRegional'"
-                data-link="/ofertaRegional">Oferta Regional</button>
-            <div class="dropdown menuG">
-                <button class="nav-button dropdown-btnG" data-link="/retos">Innovación Abierta</button>
-                <div class="dropdown-menu dropdown-menuG">
-                    <a href="/retosEmpresariales" data-link="/retosEmpresariales">Retos Empresariales</a>
-                    <a href="/retosAula" data-link="/retosAula">Retos de Aula</a>
-                </div>
-            </div>
+      <div class="dropdown menuG">
+        <button class="nav-button dropdown-btnG" data-link="/directorio">Directorio</button>
+        <div class="dropdown-menu dropdown-menuG">
+          <a href="/directorio">Entidades</a>
+          <a href="/directorioPersonas">Personas</a>
+        </div>
+      </div>
+      <button class="nav-button" onclick="window.location.href='/proyectos'">Proyectos</button>
+      <button class="nav-button" onclick="window.location.href='/ofertaRegional'" data-link="/ofertaRegional">Oferta
+        Regional</button>
+      <div class="dropdown menuG">
+        <button class="nav-button dropdown-btnG" data-link="/retos">Innovación Abierta</button>
+        <div class="dropdown-menu dropdown-menuG">
+          <a href="/retosEmpresariales" data-link="/retosEmpresariales">Retos Empresariales</a>
+          <a href="/retosAula" data-link="/retosAula">Retos de Aula</a>
+        </div>
+      </div>
 
-            <div class="dropdown menuG" >
-                <button class="nav-button dropdown-btnG" data-link="/conocimiento">Conocimiento Abierto</button>
-                <div class="dropdown-menu dropdown-menuG">
-                    <a href="/conocimientoCursosVirtuales" data-link="/cursosVirtuales">Cursos</a>
-                    <a href="/conocimientoBiblioteca"  data-link="/conocimientoBiblioteca">Biblioteca</a>
-                </div>
-            </div>
-            <button class="nav-button" onclick="window.location.href='/convocatorias'" data-link="/convocatorias">Convocatorias</button>
+      <div class="dropdown menuG">
+        <button class="nav-button dropdown-btnG" data-link="/conocimiento">Conocimiento Abierto</button>
+        <div class="dropdown-menu dropdown-menuG">
+          <a href="/conocimientoCursosVirtuales" data-link="/cursosVirtuales">Cursos</a>
+          <a href="/conocimientoBiblioteca" data-link="/conocimientoBiblioteca">Biblioteca</a>
+        </div>
+      </div>
+      <button class="nav-button" onclick="window.location.href='/convocatorias'"
+        data-link="/convocatorias">Convocatorias</button>
 
-            <button class="nav-button" onclick="window.location.href='/eventos'" data-link="/eventos">Eventos</button>
+      <button class="nav-button" onclick="window.location.href='/eventos'" data-link="/eventos">Eventos</button>
 
       <button class="nav-button pulse" data-link="/portalEvaluadorUser"
         onclick="window.location.href='/portalEvaluadorUser'">Evaluación</button>
@@ -603,64 +576,64 @@
     <div class="spinner"></div>
     <div class="spinner-text">Cargando...</div>
   </div>
-
-  <!-- Contenido Principal -->
-  <div class="evaluation-container">
-    <!-- Header del evaluador -->
-    <div class="evaluador-header">
-      <div class="evaluador-info">
-        <div class="evaluador-avatar" id="evaluadorAvatar">E</div>
-        <div class="evaluador-details">
-          <h2 id="evaluadorNombre">Cargando...</h2>
-          <p id="evaluadorEmail">evaluador@email.com</p>
-          <p id="evaluadorInstitucion">Institución</p>
-        </div>
-      </div>
-
-      <div class="stats-grid">
-        <div class="stat-card">
-          <span class="stat-number" id="totalAsignados">0</span>
-          <span class="stat-label">Proyectos Asignados</span>
-        </div>
-        <div class="stat-card">
-          <span class="stat-number" id="totalEvaluados">0</span>
-          <span class="stat-label">Evaluados</span>
-        </div>
-        <div class="stat-card">
-          <span class="stat-number" id="totalPendientes">0</span>
-          <span class="stat-label">Pendientes</span>
-        </div>
-        <div class="stat-card">
-          <span class="stat-number" id="promedioCalificacion">0.0</span>
-          <span class="stat-label">Promedio Calificaciones</span>
-        </div>
+  <!-- Header del evaluador -->
+  <div class="evaluador-header">
+    <div class="evaluador-info">
+      <div class="evaluador-avatar" id="evaluadorAvatar">E</div>
+      <div class="evaluador-details">
+        <h2 id="evaluadorNombre" style="color: white;">Cargando...</h2>
+        <p id="evaluadorEmail" hidden>evaluador@email.com</p>
+        <p id="evaluadorInstitucion" hidden>Institución</p>
       </div>
     </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <span class="stat-number" id="totalAsignados">0</span>
+        <span class="stat-label">Proyectos Asignados</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number" id="totalEvaluados">0</span>
+        <span class="stat-label">Evaluados</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number" id="totalPendientes">0</span>
+        <span class="stat-label">Pendientes</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number" id="promedioCalificacion">0.0</span>
+        <span class="stat-label">Promedio Calificaciones</span>
+      </div>
+    </div>
+  </div>
+  <!-- Contenido Principal -->
+  <div class="main-content ">
+
 
     <!-- Filtros -->
     <div class="filters-section">
       <div class="filters-row">
-        <div class="filter-group">
-          <label class="filter-label">Buscar proyecto</label>
-          <input type="text" id="filtroProyecto" class="filter-input" placeholder="Nombre, ID, entidad..."
+        <div class="control-group">
+          <label class="control-label">Buscar proyecto</label>
+          <input type="text" id="filtroProyecto" class="control-input" placeholder="Nombre, ID, entidad..."
             onkeyup="aplicarFiltros()">
         </div>
-        <div class="filter-group">
-          <label class="filter-label">Estado de Evaluación</label>
-          <select id="filtroEstado" class="filter-select" onchange="aplicarFiltros()">
+        <div class="control-group">
+          <label class="control-label">Estado de Evaluación</label>
+          <select id="filtroEstado" class="control-select" onchange="aplicarFiltros()">
             <option value="">Todos los estados</option>
             <option value="Asignado">Asignado</option>
             <option value="evaluando">Evaluando</option>
             <option value="completada">Completada</option>
           </select>
         </div>
-        <div class="filter-group">
-          <label class="filter-label">Convocatoria</label>
-          <select id="filtroConvocatoria" class="filter-select" onchange="aplicarFiltros()">
+        <div class="control-group">
+          <label class="control-label">Convocatoria</label>
+          <select id="filtroConvocatoria" class="control-select" onchange="aplicarFiltros()">
             <option value="">Todas las convocatorias</option>
           </select>
         </div>
-        <button class="btn btn-secondary" onclick="limpiarFiltros()">
+        <button class="filter-btn" onclick="limpiarFiltros()">
           <i class="bi bi-filter"></i> Limpiar
         </button>
       </div>
@@ -684,75 +657,75 @@
       <p>Actualmente no tienes proyectos para evaluar. Contacta al administrador para más información.</p>
     </div>
   </div>
-   <footer class="footer">
+  <footer class="footer">
 
-        <div class="footer-content">
+    <div class="footer-content">
 
-            <!-- Izquierda -->
-            <div class="footer-left">
-                <img src="/img/logo1.png" alt="SINAPTICO" class="footer-logo">
-                <p class="footer-desc">Conectando conocimiento, innovación y tecnología.</p>
+      <!-- Izquierda -->
+      <div class="footer-left">
+        <img src="/img/logo1.png" alt="SINAPTICO" class="footer-logo">
+        <p class="footer-desc">Conectando conocimiento, innovación y tecnología.</p>
 
 
-            </div>
+      </div>
 
-            <!-- Enlaces en dos columnas -->
-            <div class="footer-links">
-                <h4>Explorar</h4>
-                <div class="links-grid">
-                    <a href="/helice">Inicio</a>
-                    <a></a>
-                    <a href="/directorio">Directorio Empresas</a>
-                    <a href="/directorioPersonas">Directorio Personas</a>
-                    <a href="/proyectos">Proyectos</a>
-                    <a href="/ofertaRegional">Oferta Regional</a>
-                    <a href="/retosEmpresariales">Retos Empresariales</a>
-                    <a href="/retosAula">Retos de Aula</a>
-                    <a href="/conocimientoCursosVirtuales">Cursos</a>
-                    <a href="/conocimientoBiblioteca">Biblioteca</a>
-                    <a href="/convocatorias">Convocatorias</a>
-                    <a href="/eventos">Eventos</a>
-                </div>
-            </div>
+      <!-- Enlaces en dos columnas -->
+      <div class="footer-links">
+        <h4>Explorar</h4>
+        <div class="links-grid">
+          <a href="/helice">Inicio</a>
+          <a></a>
+          <a href="/directorio">Directorio Empresas</a>
+          <a href="/directorioPersonas">Directorio Personas</a>
+          <a href="/proyectos">Proyectos</a>
+          <a href="/ofertaRegional">Oferta Regional</a>
+          <a href="/retosEmpresariales">Retos Empresariales</a>
+          <a href="/retosAula">Retos de Aula</a>
+          <a href="/conocimientoCursosVirtuales">Cursos</a>
+          <a href="/conocimientoBiblioteca">Biblioteca</a>
+          <a href="/convocatorias">Convocatorias</a>
+          <a href="/eventos">Eventos</a>
+        </div>
+      </div>
 
-            <!-- Redes sociales -->
-            <div class="footer-social">
-                <h4>Síguenos</h4>
-                <div class="social-icons">
-                    <a href="#"><i class="bi bi-facebook"></i></a>
-                    <a href="#"><i class="bi bi-twitter"></i></a>
-                    <a href="#"><i class="bi bi-linkedin"></i></a>
-                    <a href="#"><i class="bi bi-instagram"></i></a>
-                </div>
-            </div>
+      <!-- Redes sociales -->
+      <div class="footer-social">
+        <h4>Síguenos</h4>
+        <div class="social-icons">
+          <a href="#"><i class="bi bi-facebook"></i></a>
+          <a href="#"><i class="bi bi-twitter"></i></a>
+          <a href="#"><i class="bi bi-linkedin"></i></a>
+          <a href="#"><i class="bi bi-instagram"></i></a>
+        </div>
+      </div>
 
-            <!-- Contacto -->
-            <div class="footer-contact">
-                <h4>Contáctanos</h4>
+      <!-- Contacto -->
+      <div class="footer-contact">
+        <h4>Contáctanos</h4>
 
-                <p>Cra.19 #35-02 - UIS Bucarica</p>
-                <p>Bucaramanga, Colombia</p>
+        <p>Cra.19 #35-02 - UIS Bucarica</p>
+        <p>Bucaramanga, Colombia</p>
 
-                <div class="contact-item">
-                    <i class="bi bi-envelope"></i>
-                    <span>info@cpcoriente.org</span>
-                </div>
-
-                <div class="contact-item">
-                    <i class="bi bi-telephone"></i>
-                    <span>+57 315 494 0296</span>
-                </div>
-            </div>
-
+        <div class="contact-item">
+          <i class="bi bi-envelope"></i>
+          <span>info@cpcoriente.org</span>
         </div>
 
-        <div class="footer-bottom">
-            <img src="/logos/logoCPCblanco.png" alt="SINAPTICO" class="footer-logoCPC">
-            <p>© 2025 CPC Oriente. Todos los derechos reservados.</p>
-
+        <div class="contact-item">
+          <i class="bi bi-telephone"></i>
+          <span>+57 315 494 0296</span>
         </div>
+      </div>
 
-    </footer>
+    </div>
+
+    <div class="footer-bottom">
+      <img src="/logos/logoCPCblanco.png" alt="SINAPTICO" class="footer-logoCPC">
+      <p>© 2025 CPC Oriente. Todos los derechos reservados.</p>
+
+    </div>
+
+  </footer>
 
   <script>
     // Variables globales
@@ -970,7 +943,7 @@
         // Obtener evaluación individual del evaluador actual
         const evaluacionesIndividuales = aplicacion.evaluacionesIndividuales || [];
         const miEvaluacion = evaluacionesIndividuales.find(e => e.evaluadorEmail === evaluadorInfo?.email);
-        const miPuntuacionFinal = aplicacion.puntuacionTotal / 3;
+        const miPuntuacionFinal = Math.round((aplicacion.puntuacionTotal || 0) / 3);
         console.log('Mi evaluación para el proyecto', proyecto?.id, ':', miPuntuacionFinal);
         return `
           <div class="project-card ${estadoClase}">
@@ -982,7 +955,7 @@
               <div class="evaluation-status">
                 <span class="status-badge ${estado}">${obtenerTextoEstado(estado)}</span>
                 ${miPuntuacionFinal ?
-            `<div style="font-size: 1.2em; font-weight: bold; color: #28a745;">
+            `<div style="font-size: 1.2em; font-weight: bold; color: var(--naranja-color);">
                     ${miPuntuacionFinal}
                 /100
                   </div>` :
