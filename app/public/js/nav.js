@@ -66,7 +66,7 @@ function obtenerCookie(nombre) {
 
 // ✅ Función para verificar si el usuario pertenece a una entidad
 async function verificarUsuarioEntidad(userId) {
-  const response = await fetch(`$/api/usuarioempresa/user/${userId}`);
+  const response = await fetch(`/api/usuarioempresa/user/${userId}`);
   const data = await response.json();
   return data; // { exists: true, entidad: {...} }
 }
@@ -74,7 +74,7 @@ async function verificarUsuarioEntidad(userId) {
 // ✅ Función para obtener datos del usuario
 async function obtenerDatosUsuario(userId) {
     try {
-        const response = await fetch(`$/api/user/${userId}`);
+        const response = await fetch(`/api/user/${userId}`);
         data = await response.json();
         return data;
     } catch (error) {
@@ -99,7 +99,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   let nombreUsuario = cleanedStr.split(" ")[0];
 
   try {
-    const response = await fetch(`$/api/entidad/verificar-entidad/${userId}`);
+    const response = await fetch(`/api/entidad/verificar-entidad/${userId}`);
     const data = await response.json();
     console.log(data);
     if (data.success) {
