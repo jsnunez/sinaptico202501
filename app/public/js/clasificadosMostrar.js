@@ -309,7 +309,7 @@ const App = {
       cardHTML += `
         <div class="card-actions">
           <button class="card-action-btn contact-btn" data-classified-id="${classified.id}" id="anuncio${classified.id}">
-            <i class="fas fa-${classified.type === 'offer' ? 'shopping-cart' : 'hand-holding-usd'}"></i>
+            <i class="fas fa-${classified.type === 'offer' ? 'solid fa-message' : 'hand-holding-usd'}"></i>
           </button>
         </div>
           </div>
