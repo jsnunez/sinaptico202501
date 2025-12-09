@@ -151,43 +151,6 @@
       font-weight: 500;
     }
 
-    .search-filter-container {
-      background: white;
-      border-radius: 15px;
-      padding: 20px;
-      margin-bottom: 30px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .filter-row {
-      display: flex;
-      gap: 20px;
-      align-items: end;
-      flex-wrap: wrap;
-    }
-
-    .filter-group {
-      flex: 1;
-      min-width: 200px;
-    }
-
-    .filter-label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: 600;
-      color: #2c3e50;
-    }
-
-    .filter-input,
-    .filter-select {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      font-size: 1em;
-    }
-
-
     .btn-contact,
     .btn-view {
       padding: 8px 16px;
@@ -362,8 +325,6 @@
     .modal-verAsociados.activo {
       display: flex;
     }
-
-  
   </style>
 </head>
 
@@ -473,28 +434,30 @@
 
     <!-- Filtros y búsqueda -->
     <div class="search-filter-container">
-      <div class="filter-row">
-        <div class="filter-group">
-          <label class="filter-label">Buscar miembro</label>
-          <input type="text" id="buscarMiembro" class="filter-input" placeholder="Nombre, cargo, especialidad...">
+      <div class="control-column">
+
+        <div class="control-group">
+          <label class="control-label">Buscar miembro</label>
+          <input type="text" id="buscarMiembro" class="control-input" placeholder="Nombre, cargo, especialidad...">
         </div>
-        <div class="filter-group">
-          <label class="filter-label">Estado</label>
-          <select id="filtroEstado" class="filter-select">
+        <div class="control-group">
+          <label class="control-label">Estado</label>
+          <select id="filtroEstado" class="control-select">
             <option value="">Todos los estados</option>
             <option value="activo">Activos</option>
             <option value="inactivo">Inactivos</option>
           </select>
         </div>
-        <div class="filter-group">
-          <label class="filter-label">Especialidad</label>
-          <select id="filtroEspecialidad" class="filter-select">
+        <div class="control-group">
+          <label class="control-label">Especialidad</label>
+          <select id="filtroEspecialidad" class="control-select">
             <option value="">Todas las especialidades</option>
           </select>
         </div>
         <button class="filter-btn" onclick="limpiarFiltros()">
-          <i class="bi bi-arrow-clockwise"></i> Limpiar
+          <i class="bi bi-filter"></i>Limpiar
         </button>
+
       </div>
     </div>
 
@@ -1128,7 +1091,7 @@
 
     function verDetallesMiembro(id) {
       const miembro = miembrosComite.find(m => m.id === id);
-console.log('Miembro seleccionado para ver detalles:', miembro);
+      console.log('Miembro seleccionado para ver detalles:', miembro);
       const modal = document.querySelector(".modal-verAsociados");
       modal.innerHTML = ` 
     <div class="modal-overlay"></div>
@@ -1210,8 +1173,8 @@ console.log('Miembro seleccionado para ver detalles:', miembro);
       <label><strong>Especialidades:</strong></label>
       <div style="display:flex; flex-wrap:wrap; gap:8px;">
           ${miembro.especialidades.map(esp =>
-              `<span style="background:#e3f2fd;padding:4px 12px;border-radius:15px;font-size:.9em;color:#1976d2;">${esp}</span>`
-          ).join('')}
+        `<span style="background:#e3f2fd;padding:4px 12px;border-radius:15px;font-size:.9em;color:#1976d2;">${esp}</span>`
+      ).join('')}
       </div>
   </div>
 

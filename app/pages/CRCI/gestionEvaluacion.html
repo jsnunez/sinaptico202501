@@ -323,41 +323,7 @@
       color: #c62828;
     }
 
-    .filters-section {
-      background: white;
-      border-radius: 8px;
-      padding: 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .filters-row {
-      display: flex;
-      gap: 20px;
-      align-items: end;
-      flex-wrap: wrap;
-    }
-
-    .filter-group {
-      flex: 1;
-      min-width: 200px;
-    }
-
-    .filter-label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: 600;
-      color: #2c3e50;
-    }
-
-    .filter-input,
-    .filter-select {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-      font-size: 1em;
-    }
+ 
 
     .progress-bar {
       background: #e9ecef;
@@ -401,27 +367,7 @@
       background: #6c757d;
     }
 
-    @media (max-width: 768px) {
-      .filters-row {
-        flex-direction: column;
-      }
 
-      .filter-group {
-        min-width: auto;
-      }
-
-      .committee-members {
-        grid-template-columns: 1fr;
-      }
-
-      .evaluation-criteria {
-        grid-template-columns: 1fr;
-      }
-
-      .action-buttons {
-        flex-direction: column;
-      }
-    }
 
     /* Estilos para asignación múltiple */
     #asignacionControls {
@@ -717,15 +663,15 @@
 
     <!-- Filtros -->
     <div class="filters-section">
-      <div class="filters-row">
-        <div class="filter-group">
-          <label class="filter-label">Buscar proyecto</label>
-          <input type="text" id="buscarProyecto" class="filter-input" placeholder="Nombre, ID, entidad..."
+      <div class="control-column">
+        <div class="control-group">
+          <label class="control-label">Buscar proyecto</label>
+          <input type="text" id="buscarProyecto" class="control-input" placeholder="Nombre, ID, entidad..."
             onkeyup="aplicarFiltros()">
         </div>
-        <div class="filter-group">
-          <label class="filter-label">Estado de Evaluación</label>
-          <select id="filtroEstado" class="filter-select" onchange="aplicarFiltros()">
+        <div class="control-group">
+          <label class="control-label">Estado de Evaluación</label>
+          <select id="filtroEstado" class="control-select" onchange="aplicarFiltros()">
             <option value="">Todos los estados</option>
             <option value="Postulado">Postulado</option>
             <option value="En Evaluacion">En Evaluación</option>
@@ -734,13 +680,13 @@
             <option value="Rechazado">Rechazado</option>
           </select>
         </div>
-        <div class="filter-group">
-          <label class="filter-label">Convocatoria</label>
-          <select id="filtroConvocatoria" class="filter-select" onchange="aplicarFiltros()">
+        <div class="control-group">
+          <label class="control-label">Convocatoria</label>
+          <select id="filtroConvocatoria" class="control-select" onchange="aplicarFiltros()">
             <option value="">Todas las convocatorias</option>
           </select>
         </div>
-        <button class="btn btn-secondary" onclick="limpiarFiltros()">
+        <button class="filter-btn" onclick="limpiarFiltros()">
           <i class="bi bi-filter"></i> Limpiar
         </button>
       </div>

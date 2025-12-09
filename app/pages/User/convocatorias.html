@@ -123,34 +123,12 @@
       margin-top: 2%;
     }
 
-    .filter-btn {
-      padding: 7px 5px;
-      border: 2px solid #ecf0f1;
-      border-radius: 6px;
-      background: #ecf0f1;
-      color: #2c3e50;
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: 500;
-      transition: all 0.3s;
-      margin-top: 28px;
-    }
-
-    .filter-btn.active {
-      background: #3498db;
-      color: white;
-    }
-
-    .filter-btn:hover {
-      background: #3498db;
-      color: white;
-    }
 
     .action-like {
       color: var(--hover-btn);
       background: none;
       border: 50%;
-      border: 0.5px solid var(--hover-btn);
+      border: 2px solid var(--hover-btn);
       border-radius: 50%;
       padding: 1.5%;
       font-size: 20px;
@@ -161,7 +139,7 @@
     .action-like:hover {
       color: var(--naranja-color);
       font-size: 25px;
-      border: 0.7px solid var(--naranja-color);
+      border: 3px solid var(--naranja-color);
     }
 
     .convocatoria-status {
@@ -287,6 +265,7 @@
       text-align: center;
       padding: 50px;
       color: #666;
+      justify-content: center !important;
     }
 
     .no-convocatorias i {
@@ -433,74 +412,6 @@
       border-top-color: #007bff;
       animation: spin 1s linear infinite;
     }
-
-    .filters-container {
-      background: var(--light-text);
-      border-radius: 10px;
-      margin-bottom: 20px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      display: flex;
-      flex-wrap: wrap;
-      gap: 15px;
-      align-items: flex-end;
-      padding: 10px;
-      justify-content: space-between
-    }
-
-    .filters-row {
-
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-
-    .control-group {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-    }
-
-    .control-label {
-      font-size: 0.9em;
-      font-weight: 600;
-      color: var(--text-description);
-    }
-
-    .control-input,
-    .control-select {
-      padding: 7px 2px;
-      border: 2px solid #ecf0f1;
-      border-radius: 6px;
-      font-size: 14px;
-      transition: border-color 0.3s;
-    }
-
-    .control-input:focus,
-    .control-select:focus {
-      outline: none;
-      border-color: #3498db;
-    }
-
-
-    .filter-input {
-      background: var(--background-color);
-      color: rgb(0, 0, 0);
-      border: none;
-      border-radius: 50px;
-      padding: 0.6rem 1.2rem;
-      font-size: 0.9rem;
-      font-weight: 500;
-      flex: 1;
-      min-width: 250px;
-      max-width: 500px;
-    }
-
-    @keyframes spin {
-      to {
-        transform: rotate(360deg);
-      }
-    }
   </style>
 </head>
 
@@ -590,10 +501,9 @@
   <!-- Contenido Principal -->
   <div class="main-content">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; ">
-        <div class="section-header">
-          
-          <h2 style="color:white;">Convocatorias - 2025</h2>
-        </div>
+      <div>
+        <h2>Convocatorias - 2025</h2>
+      </div>
       <button class="filter-btn" onclick="cargarConvocatorias()">
         <i class="bi bi-arrow-clockwise"></i> Actualizar
       </button>
@@ -601,7 +511,7 @@
 
     <!-- Filtros -->
     <div class="filters-container">
-      <div class="filters-row">
+      <div class="control-column">
         <div class="control-group">
           <label class="control-label">Buscar convocatoria</label>
           <input type="text" id="buscarConvocatoria" class="control-input" placeholder="Título, descripción, tipo..."
@@ -622,9 +532,11 @@
             <option value="">Todos los tipos</option>
           </select>
         </div>
-        <button class="filter-btn" onclick="limpiarFiltros()">
-          <i class="bi bi-arrow-clockwise"></i> Limpiar
-        </button>
+        <div class="control-group">
+          <button class="filter-btn" id="filter-misIdeas" onclick="limpiarFiltros()"><i class="bi bi-filter"></i>
+            Limpiar</button>
+        </div>
+
       </div>
     </div>
 
@@ -632,7 +544,9 @@
     <div id="listaConvocatorias">
       <!-- Las convocatorias se cargarán dinámicamente aquí -->
     </div>
+      <div id="paginador" class="paginador"></div>
   </div>
+
 
   <!-- Modal para Postulación -->
   <div id="modalPostulacion" class="modal">
@@ -823,6 +737,22 @@
       </form>
     </div>
   </div>
+  <!-- Modal Detalles Convocatoria -->
+  <div id="verDetallesConvocatoria" class="modal">
+    <div class="modal-content">
+      <span id="cerrarModalConvocatoria"
+        style="position:absolute; top:10px; right:15px; font-size:22px; cursor:pointer;">
+        &times;
+      </span>
+
+      <div class="modal-header">
+        <h3 id="tituloConvocatoria"></h3>
+      </div>
+
+      <div id="contenidoConvocatoria"></div>
+    </div>
+  </div>
+
 
   <footer class="footer">
 
@@ -910,6 +840,8 @@
     let convocatorias = [];
     let convocatoriasFiltradas = [];
     let convocatoriaSeleccionada = null;
+let paginaActual = 1;
+const convocatoriasPorPagina = 4; // Puedes cambiar la cantidad
 
     // Utilidades: reutilizar obtenerCookie y userId definidos en el script anterior
     // (Se omite la redefinición para evitar "Cannot redeclare block-scoped variable 'userId'.)
@@ -1087,96 +1019,160 @@
       });
     }
 
-    // Renderizar convocatorias
-    function renderizarConvocatorias() {
-      const container = document.getElementById('listaConvocatorias');
+function renderizarConvocatorias() {
+  const container = document.getElementById('listaConvocatorias');
+  container.innerHTML = '';
 
-      if (convocatoriasFiltradas.length === 0) {
-        container.innerHTML = `
-          <div class="no-convocatorias">
-            <i class="bi bi-megaphone"></i>
-            <h3>No se encontraron convocatorias</h3>
-            <p>No hay convocatorias que coincidan con los filtros seleccionados.</p>
-          </div>
-        `;
-        return;
-      }
-
-      const convocatoriasHTML = convocatoriasFiltradas.map(convocatoria => {
-        const fechaCierre = new Date(convocatoria.fechaCierre);
-        const hoy = new Date();
-        const diasRestantes = Math.ceil((fechaCierre - hoy) / (1000 * 60 * 60 * 24));
-
-        let estadoInfo = '';
-        let puedePostular = false;
-
-        switch (convocatoria.estado) {
-          case 'abierta':
-            estadoInfo = `<span class="convocatoria-status status-abierta">Abierta - ${diasRestantes} días restantes</span>`;
-            puedePostular = true;
-            break;
-          case 'cerrada':
-            estadoInfo = '<span class="convocatoria-status status-cerrada">Cerrada</span>';
-            break;
-          case 'proximamente':
-            estadoInfo = '<span class="convocatoria-status status-proximamente">Próximamente</span>';
-            break;
-        }
-
-        return `
-          <div class="convocatoria-card">
-            <div class="convocatoria-header">
-                         <div class="meGusta">   <button class="action-like" onclick="marcarMeGusta(${convocatoria.id})" id="btnMeGusta${convocatoria.id}" title="Me gusta esta convocatoria">
-                <i class="bi bi-hand-thumbs-up-fill"></i>
-                  <span id="meGustaTexto${convocatoria.id}"> </span>
-                </button>
-              <h3 class="convocatoria-title">${convocatoria.titulo}</h3></div>
-        
-              ${estadoInfo}
-            </div>
-
-            <div class="convocatoria-info">
-              <div class="info-item">
-                <i class="bi bi-calendar"></i>
-                <span>Cierre: ${new Date(convocatoria.fechaCierre).toLocaleDateString('es-ES')}</span>
-              </div>
-              <div class="info-item">
-                <i class="bi bi-cash"></i>
-                <span>Hasta: $${convocatoria.montoMaximo.toLocaleString('es-CO')}</span>
-              </div>
-              <div class="info-item">
-                <i class="bi bi-clock"></i>
-                <span>Máx: ${convocatoria.duracionMaxima} meses</span>
-              </div>
-              <div class="info-item">
-                <i class="bi bi-tag"></i>
-                <span>${convocatoria.tipoConvocatoria.nombre}</span>
-              </div>
-            </div>
-
-            <div class="convocatoria-description">
-              ${convocatoria.descripcion}
-            </div>
-
-            <div class="convocatoria-actions">
-              <button class="action-p" ${!puedePostular ? 'disabled' : ''} 
-                      onclick="abrirModalPostulacion(${convocatoria.id})" 
-                      id="btnPostular${convocatoria.id}">
-                <i class="bi bi-send"></i>
-                <span id="textoBoton${convocatoria.id}">${puedePostular ? 'Postular Proyecto' : 'No Disponible'}</span>
-              </button>
-              <button class="action-v" onclick="verDetallesConvocatoria(${convocatoria.id})">
-                <i class="bi bi-eye"></i>
-                Ver más
-              </button>
-
-            </div>
-          </div>
-        `;
-      }).join('');
-
-      container.innerHTML = convocatoriasHTML;
+    if (convocatoriasFiltradas.length === 0) {
+      container.style.display = 'block';
+      container.innerHTML = `
+        <div class="no-convocatorias">
+          <i class="bi bi-megaphone"></i>
+          <h3>No se encontraron convocatorias</h3>
+          <p>No hay convocatorias que coincidan con los filtros seleccionados.</p>
+        </div>
+      `;
+      document.getElementById("paginador").innerHTML = ""; 
+      return;
     }
+
+    container.style.display = 'grid';
+  if (convocatoriasFiltradas.length === 0) {
+
+    container.innerHTML = `
+      <div class="no-convocatorias">
+        <i class="bi bi-megaphone"></i>
+        <h3>No se encontraron convocatorias</h3>
+        <p>No hay convocatorias que coincidan con los filtros seleccionados.</p>
+      </div>
+    `;
+    document.getElementById("paginador").innerHTML = ""; 
+    return;
+  }
+
+  // PAGINACIÓN
+  const inicio = (paginaActual - 1) * convocatoriasPorPagina;
+  const fin = inicio + convocatoriasPorPagina;
+  const paginaConvocatorias = convocatoriasFiltradas.slice(inicio, fin);
+
+  const convocatoriasHTML = paginaConvocatorias.map(convocatoria => {
+    const fechaCierre = new Date(convocatoria.fechaCierre);
+    const hoy = new Date();
+    const diasRestantes = Math.ceil((fechaCierre - hoy) / (1000 * 60 * 60 * 24));
+
+    let estadoInfo = '';
+    let puedePostular = false;
+
+    switch (convocatoria.estado) {
+      case 'abierta':
+        estadoInfo = `<span class="convocatoria-status status-abierta">Abierta - ${diasRestantes} días restantes</span>`;
+        puedePostular = true;
+        break;
+      case 'cerrada':
+        estadoInfo = '<span class="convocatoria-status status-cerrada">Cerrada</span>';
+        break;
+      case 'proximamente':
+        estadoInfo = '<span class="convocatoria-status status-proximamente">Próximamente</span>';
+        break;
+    }
+
+    return `
+      <div class="convocatoria-card">
+        <div>
+         <img src="/img/convocatoria.jpg" alt="Imagen de Convocatoria" style="width: 100%; height: 200px; object-fit: cover; border-radius: 10px; margin-bottom: 15px;">
+        </div>
+        <div class="convocatoria-header">
+          <div class="meGusta">   
+            <button class="action-like" onclick="marcarMeGusta(${convocatoria.id})" id="btnMeGusta${convocatoria.id}" title="Me gusta esta convocatoria">
+              <i class="bi bi-hand-thumbs-up-fill"></i>
+              <span id="meGustaTexto${convocatoria.id}"> </span>
+            </button>
+            <h3 class="convocatoria-title">${convocatoria.titulo}</h3>
+          </div>
+
+          ${estadoInfo}
+        </div>
+
+        <div class="convocatoria-info">
+          <div class="info-item">
+            <i class="bi bi-calendar"></i>
+            <span>Cierre: ${new Date(convocatoria.fechaCierre).toLocaleDateString('es-ES')}</span>
+          </div>
+          <div class="info-item">
+            <i class="bi bi-cash"></i>
+            <span>Hasta: $${convocatoria.montoMaximo.toLocaleString('es-CO')}</span>
+          </div>
+          <div class="info-item">
+            <i class="bi bi-clock"></i>
+            <span>Máx: ${convocatoria.duracionMaxima} meses</span>
+          </div>
+          <div class="info-item">
+            <i class="bi bi-tag"></i>
+            <span>${convocatoria.tipoConvocatoria.nombre}</span>
+          </div>
+        </div>
+
+        <div class="convocatoria-actions">
+          <button class="action-p" ${!puedePostular ? 'disabled' : ''} 
+                  onclick="abrirModalPostulacion(${convocatoria.id})" 
+                  id="btnPostular${convocatoria.id}">
+            <i class="bi bi-send"></i>
+            <span id="textoBoton${convocatoria.id}">${puedePostular ? 'Postular Proyecto' : 'No Disponible'}</span>
+          </button>
+
+          <button class="action-v" onclick="verDetallesConvocatoria(${convocatoria.id})">
+            <i class="bi bi-eye"></i>
+            Ver más
+          </button>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  container.innerHTML = convocatoriasHTML;
+
+  // RENDER PAGINADOR
+  renderizarPaginador();
+}
+function renderizarPaginador() {
+    const totalPaginas = Math.ceil(convocatoriasFiltradas.length / convocatoriasPorPagina);
+    const paginador = document.getElementById("paginador");
+
+    if (totalPaginas <= 1) {
+        paginador.innerHTML = "";
+        return;
+    }
+
+    let html = `
+        <button class="btn-pagina" onclick="cambiarPagina(${paginaActual - 1})" 
+                ${paginaActual === 1 ? "disabled" : ""}>Anterior</button>
+    `;
+
+    for (let i = 1; i <= totalPaginas; i++) {
+        html += `
+            <button class="btn-pagina ${i === paginaActual ? "activo" : ""}" 
+                    onclick="cambiarPagina(${i})">
+                ${i}
+            </button>
+        `;
+    }
+
+    html += `
+        <button class="btn-pagina" onclick="cambiarPagina(${paginaActual + 1})" 
+                ${paginaActual === totalPaginas ? "disabled" : ""}>Siguiente</button>
+    `;
+
+    paginador.innerHTML = html;
+}
+
+function cambiarPagina(num) {
+    const totalPaginas = Math.ceil(convocatoriasFiltradas.length / convocatoriasPorPagina);
+    if (num < 1 || num > totalPaginas) return;
+
+    paginaActual = num;
+    renderizarConvocatorias();
+}
+
 
     // Filtrar convocatorias
     function filtrarConvocatorias() {
@@ -1211,85 +1207,99 @@
     // Ver detalles de convocatoria
     function verDetallesConvocatoria(id) {
       const convocatoria = convocatorias.find(c => c.id === id);
+      if (!convocatoria) return;
 
       let urlInfo = '';
       if (convocatoria.urlConvocatoria) {
         const url = convocatoria.urlConvocatoria.startsWith('http')
           ? convocatoria.urlConvocatoria
           : `https://${convocatoria.urlConvocatoria}`;
-        urlInfo = `<p><strong>URL:</strong> <a href="${url}" target="_blank" style="color: #007bff;">${url}</a></p>`;
+        urlInfo = `<p><strong>URL:</strong> 
+                 <a href="${url}" target="_blank" >${url}</a>
+               </p>`;
       }
 
       const documentosInfo = convocatoria.documentosRequeridos?.length > 0
-        ? `<div style="margin-bottom: 15px;">
-             <h4 style="color: #007bff; margin-bottom: 10px;">Documentos Requeridos</h4>
-             <ul>${convocatoria.documentosRequeridos.map(doc => `<li>${doc}</li>`).join('')}</ul>
-           </div>`
+        ? `<div style="margin: 15px;">
+         <h4 >Documentos Requeridos</h4>
+         <ul>${convocatoria.documentosRequeridos.map(doc => `<li>${doc}</li>`).join('')}</ul>
+       </div>`
         : '';
 
       const contactoInfo = convocatoria.contacto
-        ? `<div style="margin-bottom: 15px;">
-             <h4 style="color: #007bff; margin-bottom: 10px;">Contacto</h4>
-             <p style="white-space: pre-line;">${convocatoria.contacto}</p>
-           </div>`
+        ? `<div style="margin: 15px;">
+         <h4 >Contacto</h4>
+         <p style="white-space: pre-line;">${convocatoria.contacto}</p>
+       </div>`
         : '';
 
       const observacionesInfo = convocatoria.observaciones
-        ? `<div style="margin-bottom: 15px;">
-             <h4 style="color: #007bff; margin-bottom: 10px;">Observaciones</h4>
-             <p style="white-space: pre-line;">${convocatoria.observaciones}</p>
-           </div>`
+        ? `<div style="margin: 15px;">
+         <h4 style="color:#007bff">Observaciones</h4>
+         <p style="white-space: pre-line; text-align: justify">${convocatoria.observaciones}</p>
+       </div>`
         : '';
 
-      Swal.fire({
-        title: convocatoria.titulo,
-        html: `
-          <div style="text-align: left; max-height: 600px; overflow-y: auto;">
-            <div style="margin-bottom: 20px;">
-              <h4 style="color: #007bff; margin-bottom: 10px;">Información General</h4>
-              ${convocatoria.numero ? `<p><strong>Número:</strong> ${convocatoria.numero}</p>` : ''}
-              <p><strong>Tipo:</strong> ${convocatoria.tipoConvocatoria.nombre}</p>
-              <p><strong>Estado:</strong> ${convocatoria.estado}</p>
-              <p><strong>Fecha Apertura:</strong> ${new Date(convocatoria.fechaApertura).toLocaleDateString('es-ES')}</p>
-              <p><strong>Fecha de Cierre:</strong> ${new Date(convocatoria.fechaCierre).toLocaleDateString('es-ES')}</p>
-              <p><strong>Presupuesto Total:</strong> $${convocatoria.presupuestoTotal.toLocaleString('es-CO')}</p>
-              ${convocatoria.presupuestoMinimo ? `<p><strong>Presupuesto Mínimo:</strong> $${convocatoria.presupuestoMinimo.toLocaleString('es-CO')}</p>` : ''}
-              <p><strong>Presupuesto Máximo:</strong> $${convocatoria.montoMaximo.toLocaleString('es-CO')}</p>
-              ${convocatoria.duracionMinima ? `<p><strong>Duración Mínima:</strong> ${convocatoria.duracionMinima} meses</p>` : ''}
-              <p><strong>Duración Máxima:</strong> ${convocatoria.duracionMaxima} meses</p>
-              ${convocatoria.maxProyectos ? `<p><strong>Máximo Proyectos:</strong> ${convocatoria.maxProyectos}</p>` : ''}
-              <p><strong>Organizador:</strong> ${convocatoria.organizador}</p>
-              ${urlInfo}
-            </div>
-            
-            <div style="margin-bottom: 20px;">
-              <h4 style="color: #007bff; margin-bottom: 10px;">Descripción</h4>
-              <p style="white-space: pre-line;">${convocatoria.descripcion}</p>
-            </div>
-            
-            <div style="margin-bottom: 20px;">
-              <h4 style="color: #007bff; margin-bottom: 10px;">Requisitos</h4>
-              <p style="white-space: pre-line;">${convocatoria.requisitos}</p>
-            </div>
-            
-            <div style="margin-bottom: 20px;">
-              <h4 style="color: #007bff; margin-bottom: 10px;">Áreas Temáticas</h4>
-              <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-                ${convocatoria.sectores.map(sector => `<span style="background: #e3f2fd; color: #1976d2; padding: 4px 12px; border-radius: 15px; font-size: 0.9em;">${sector}</span>`).join('')}
-              </div>
-            </div>
-            
-            ${documentosInfo}
-            ${contactoInfo}
-            ${observacionesInfo}
-          </div>
-        `,
-        width: 900,
-        showCloseButton: true,
-        confirmButtonText: 'Cerrar',
-        confirmButtonColor: '#007bff'
-      });
+      const contenidoHTML = `
+    <div style="text-align:left;" class="form-section">
+            <h3 class="section-title" >Áreas Temáticas</h3>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        ${convocatoria.sectores.map(sector =>
+        `<span style="background:#e3f2fd;color:#1976d2;padding:4px 12px;border-radius:15px;">${sector}</span>`
+      ).join('')}
+      </div>
+      <br>
+      <h3 class="section-title" >Información General</h3>
+      ${convocatoria.numero ? `<p><strong>Número:</strong> ${convocatoria.numero}</p>` : ''}
+      <p><strong>Tipo:</strong> ${convocatoria.tipoConvocatoria.nombre}</p>
+      <p><strong>Estado:</strong> ${convocatoria.estado}</p>
+      <p><strong>Fecha Apertura:</strong> ${new Date(convocatoria.fechaApertura).toLocaleDateString('es-ES')}</p>
+      <p><strong>Fecha Cierre:</strong> ${new Date(convocatoria.fechaCierre).toLocaleDateString('es-ES')}</p>
+      <p><strong>Presupuesto Total:</strong> $${convocatoria.presupuestoTotal.toLocaleString('es-CO')}</p>
+      ${convocatoria.presupuestoMinimo ? `<p><strong>Presupuesto Mínimo:</strong> $${convocatoria.presupuestoMinimo.toLocaleString('es-CO')}</p>` : ''}
+      <p><strong>Presupuesto Máximo:</strong> $${convocatoria.montoMaximo.toLocaleString('es-CO')}</p>
+      ${convocatoria.duracionMinima ? `<p><strong>Duración Mínima:</strong> ${convocatoria.duracionMinima} meses</p>` : ''}
+      <p><strong>Duración Máxima:</strong> ${convocatoria.duracionMaxima} meses</p>
+      ${convocatoria.maxProyectos ? `<p><strong>Máximo Proyectos:</strong> ${convocatoria.maxProyectos}</p>` : ''}
+      <p><strong>Organizador:</strong> ${convocatoria.organizador}</p>
+      ${urlInfo}
+
+      <br>
+      <h4 >Descripción</h4>
+      <p style="white-space: pre-line; text-align:justify; margin-left:10px">${convocatoria.descripcion}</p>
+
+      <h4 >Requisitos</h4>
+      <p style="white-space: pre-line;">${convocatoria.requisitos}</p>
+
+
+
+      ${documentosInfo}
+      ${contactoInfo}
+      ${observacionesInfo}
+    </div>
+  `;
+
+      // Insertar contenido
+      document.getElementById("tituloConvocatoria").innerText = convocatoria.titulo;
+      document.getElementById("contenidoConvocatoria").innerHTML = contenidoHTML;
+
+      // Abrir modal
+      document.getElementById("verDetallesConvocatoria").style.display = "block";
     }
+    // Cerrar con la X
+    document.getElementById("cerrarModalConvocatoria").onclick = function () {
+      document.getElementById("verDetallesConvocatoria").style.display = "none";
+    };
+
+    // Cerrar al hacer clic afuera del contenido
+    window.onclick = function (event) {
+      const modal = document.getElementById("verDetallesConvocatoria");
+      if (event.target === modal) {
+        modal.style.display = "none";
+      }
+    };
+
+
 
     // Verificar si ya existe una postulación
     async function verificarPostulacionExistente(convocatoriaId) {

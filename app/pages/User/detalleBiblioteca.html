@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Biblioteca de documentos</title>
+    <title>Detalle Documento</title>
 
     <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
 
@@ -33,6 +33,132 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
+<style>
+    /* CONTENEDOR GENERAL */
+    .documento-contenedor {
+        width: 90%;
+        margin: 2rem auto;
+        background: var(--card-bg);
+        border-radius: 15px;
+        box-shadow: var(--shadow);
+        overflow: hidden;
+    }
+
+    /* ENCABEZADO CON DEGRADADO */
+    .documento-header {
+        padding: 2rem 2.5rem;
+        background: linear-gradient(135deg, #1b4ea4 0%, #1b3360 100%);
+        color: var(--light-text);
+        border-radius: 15px 15px 0 0;
+    }
+
+    .documento-titulo {
+        font-size: 2rem;
+        font-weight: 700;
+    }
+
+    .documento-fecha {
+        margin-top: 5px;
+        font-size: 0.95rem;
+    }
+
+    .documento-categoria {
+        margin-top: 10px;
+        display: inline-block;
+        background: #e9f2ff;
+        color: #003b94;
+        padding: 6px 20px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+
+    /* CUERPO PRINCIPAL */
+    .documento-body {
+        display: grid;
+        grid-template-columns: 65% 35%;
+        padding: 2.5rem;
+        gap: 2rem;
+    }
+
+    /* COL IZQUIERDA */
+    .documento-info {
+        color: var(--parrafo);
+    }
+
+    .subtitulo {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        margin-bottom: 0.8rem;
+        border-bottom: 3px solid #0a704b;
+        display: inline-block;
+        padding-bottom: 5px;
+    }
+
+    /* COL DERECHA – TARJETA VERDE */
+    .documento-descarga {
+        background: #0a612d;
+        border-radius: 15px;
+        overflow: hidden;
+        color: white;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .descarga-header {
+        background: #085422;
+        padding: 1.2rem;
+    }
+
+    .descarga-header-title {
+        font-size: 0.85rem;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+
+    .descarga-content {
+        padding: 1.5rem;
+        background: #0d0d22;
+    }
+
+    .descarga-title {
+        color: #00d26a;
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+    }
+
+    /* BOTÓN DE DESCARGA */
+    .btn-descargar {
+        width: 100%;
+        background: #00cc58;
+        border: none;
+        padding: 12px;
+        border-radius: 8px;
+        margin: 1rem 0;
+        color: #000;
+        font-weight: 700;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .btn-descargar:hover {
+        background: #06e56c;
+    }
+
+    /* FORMATO */
+    .descarga-formato {
+        font-size: 0.9rem;
+        color: #c4c4c4;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 992px) {
+        .documento-body {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
 
 <body>
     <!-- Encabezado -->
@@ -117,62 +243,60 @@
         <div class="spinner-text">Cargando...</div>
     </div>
 
-    <!-- Biblioteca Section -->
-    <section id="bibliotecaSection" class="main-content" style="display: block;">
-        <div class="container" id="bibliotecaConocimiento">
-            <section class="page-title">
-                <h1>Biblioteca de Conocimiento</h1>
-            </section>
+    <div class="documento-contenedor">
 
-            <div class="filters-container" id="filtros">
-                <div class="control-column">
-                    <div class="control-group">
-                        <label for="buscarCurso" class="control-label">Buscar Recurso:</label>
-                        <input type="text" id="buscarCurso" placeholder="Nombre recurso" class="control-input">
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label">Categoría</label>
-                        <select class="control-select" id="filter-categoria">
-                            <option value="">Todas las categorías</option>
-                        </select>
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label">Tipo de archivo</label>
-                        <select class="control-select" id="filter-TipoArchivo">
-                            <option value="">Selecciona el tipo de archivo</option>
-                        </select>
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label">Año</label>
-                        <select class="control-select" id="filter-years">
-                            <option value="">Selecciona</option>
-                        </select>
-                    </div>
-                    <div class="control-group">
-                        <button class="filter-btn" id="filter-biblioteca"><i class="bi bi-filter"></i> Limpiar</button>
-                    </div>
+        <!-- ENCABEZADO -->
+        <div class="documento-header">
+            <h1 class="documento-titulo">Documento borrador 1</h1>
+            <p class="documento-fecha">Junio 18, 2018</p>
+
+            <span class="documento-categoria">CATEGORÍA: Literatura Juvenil </span>
+        </div>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <div class="documento-body">
+
+            <!-- COLUMNA IZQUIERDA -->
+            <div class="documento-info">
+
+                <h2 class="subtitulo">Descripción del Documento</h2>
+
+                <p>Es la tercera parte de la saga "Rey", que narra la historia de amor entre un rey endurecido por el pasado y la joven Emily. Él debe elegir entre el deber de proteger su reino de las intrigas de la nobleza y su amor por ella, una mujer que pertenece al reino enemigo y a quien no debería amar. Emily, por su parte, debe decidir entre el odio que le han inculcado por su rey y los sentimientos que su corazón le dicta, enfrentando un mundo de alianzas ocultas y juicios públicos. </p>
+
+                <br>
+
+                <p><strong>Autor(es):</strong> Karine Bernal Lobo</p>
+                <p><strong>Entidad:</strong> Editores</p>
+                <p><strong>Tipo de documento:</strong> Libro · PDF</p>
+                <p><strong>Extensión:</strong> 45 páginas</p>
+
+            </div>
+
+            <!-- COLUMNA DERECHA -->
+            <div class="documento-descarga">
+
+                <div class="descarga-header">
+                    <p class="descarga-header-title">DESCARGA ESTE DOCUMENTO GRATIS Y<br>MANTENTE ACTUALIZADO</p>
                 </div>
-            </div>
 
-            <!-- Único contenedor para todos los Recursos -->
-            <div class="grid-container" id="grid-container"></div>
-            <div id="paginador" class="paginador"></div>
+                <div class="descarga-content">
+                    <h3 class="descarga-title">Descarga gratuita</h3>
 
-        </div>
+                    <p class="descarga-text">
+                        Este documento es de libre descarga para los usuarios del Ecosistema de Innovación.
+                        Puedes consultarlo, citarlo y usarlo como insumo para análisis de competitividad y formulación
+                        de políticas públicas.
+                    </p>
 
-        <div class="container" id="documentosInteres">
-            <section class="page-title">
-                <h1>Documento de Interés</h1>
-            </section>
-            <div class="documentos-lista">
-                <ul>
-                    <li>Guia metodologica</li>
-                    <li>Informe Tecnico</li>
-                    <li>Politica de Acceso Abierto</li>
-                </ul>
+                    <button class="btn-descargar">DESCARGAR DOCUMENTO</button>
+
+                    <p class="descarga-formato">Formato: PDF · Tamaño aproximado: 2.3 MB</p>
+                </div>
+
             </div>
         </div>
-    </section>
+    </div>
+
 
     <footer class="footer">
 
