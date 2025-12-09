@@ -74,7 +74,7 @@ async function verificarUsuarioEntidad(userId) {
 // ✅ Función para obtener datos del usuario
 async function obtenerDatosUsuario(userId) {
     try {
-        const response = await fetch(`${API_BASE_URL}/api/user/${userId}`);
+        const response = await fetch(`$/api/user/${userId}`);
         data = await response.json();
         return data;
     } catch (error) {
@@ -99,7 +99,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   let nombreUsuario = cleanedStr.split(" ")[0];
 
   try {
-    const response = await fetch(`${API_BASE_URL}/api/entidad/verificar-entidad/${userId}`);
+    const response = await fetch(`$/api/entidad/verificar-entidad/${userId}`);
     const data = await response.json();
     console.log(data);
     if (data.success) {
