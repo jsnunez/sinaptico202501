@@ -121,6 +121,7 @@ app.get('/convocatorias', authorization.soloUser, (req, res) => res.sendFile(pat
 app.get('/retosEmpresariales', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/retosEmpresariales.html')));
 app.get('/eventos', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/eventos.html')));
 app.get('/retosAula', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/construccion.html')));
+app.get('/detalleBiblioteca', authorization.soloUser, (req, res) => res.sendFile(path.join(__dirname, 'pages/User/detalleBiblioteca.html')));
 
 app.get('/mapa-publico', (req, res) => res.sendFile(path.join(__dirname, 'pages/User/mapa-usuarios.html')));
 
