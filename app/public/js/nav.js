@@ -1,6 +1,9 @@
 let cleanedStr = "";
 let idEntidad = "";
 let dataUsuario = {};
+
+
+
 document.getElementById("cerrarSesion").addEventListener("click", () => {
   Swal.fire({
     title: '¿Estás seguro?',
@@ -63,7 +66,7 @@ function obtenerCookie(nombre) {
 
 // ✅ Función para verificar si el usuario pertenece a una entidad
 async function verificarUsuarioEntidad(userId) {
-  const response = await fetch(`${API_BASE_URL}/api/usuarioempresa/user/${userId}`);
+  const response = await fetch(`$/api/usuarioempresa/user/${userId}`);
   const data = await response.json();
   return data; // { exists: true, entidad: {...} }
 }
